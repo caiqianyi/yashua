@@ -1,0 +1,30 @@
+spring:
+  aop:
+    proxyTargetClass: true
+  application:
+    name: yashua-admin
+  session:
+    store-type: none
+  http:
+    multipart:
+    max-file-size: 100MB
+    max-request-size: 100MB
+    enabled: true
+  freemarker:
+    request-context-attribute: req  #req访问request
+    suffix: .html  #后缀名
+  cloud:
+    config:
+      name: fast
+      profile: test
+      username: guess
+      password: 123123
+      uri: http://47.95.7.11:7369/
+      label: master
+      
+
+# Define the port where the API gateway server would be running
+server:
+  port: 8090
+logging:
+  file: /www/log4j/logs/${spring.application.name}/log4j.log

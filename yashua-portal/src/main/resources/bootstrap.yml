@@ -1,0 +1,21 @@
+spring:
+  aop:
+    proxyTargetClass: true
+  application:
+    name: agent-gateway
+  session:
+    store-type: none
+  cloud:
+    config:
+      name: platform
+      profile: local
+      label: master
+      uri: http://123.206.192.46:7369/
+      username: config
+      password: QWERtyuiP
+
+# Define the port where the API gateway server would be running
+server:
+  port: 8888
+logging:
+  file: /www/log4j/logs/${spring.application.name}/log4j.log
