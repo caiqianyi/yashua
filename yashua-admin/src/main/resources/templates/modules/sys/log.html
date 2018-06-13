@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ç³»ç»Ÿæ—¥å¿—</title>
+<title>ÏµÍ³ÈÕÖ¾</title>
 <#include "/header.html">
 </head>
 <body>
@@ -9,9 +9,9 @@
 	<div>
 		<div class="grid-btn">
 			<div class="form-group col-sm-2">
-				<input type="text" class="form-control" v-model="q.key" @keyup.enter="query" placeholder="ç”¨æˆ·åã€ç”¨æˆ·æ“ä½œ">
+				<input type="text" class="form-control" v-model="q.key" @keyup.enter="query" placeholder="ÓÃ»§Ãû¡¢ÓÃ»§²Ù×÷">
 			</div>
-			<a class="btn btn-default" @click="query">æŸ¥è¯¢</a>
+			<a class="btn btn-default" @click="query">²éÑ¯</a>
 		</div>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
@@ -19,6 +19,6 @@
     
 </div>
 
-<script src="${request.contextPath}/statics/js/modules/sys/log.js?_${.now?long}"></script>
+<script src="/statics/js/modules/sys/log.js?_${.now?long}"></script>
 </body>
 </html>

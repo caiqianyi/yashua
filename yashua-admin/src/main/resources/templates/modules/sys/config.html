@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>å‚æ•°ç®¡ç†</title>
+<title>²ÎÊý¹ÜÀí</title>
 <#include "/header.html">
 </head>
 <body>
@@ -9,13 +9,13 @@
 	<div v-show="showList">
 		<div class="grid-btn">
 			<div class="form-group col-sm-2">
-				<input type="text" class="form-control" v-model="q.paramKey" @keyup.enter="query" placeholder="å‚æ•°å">
+				<input type="text" class="form-control" v-model="q.paramKey" @keyup.enter="query" placeholder="²ÎÊýÃû">
 			</div>
-			<a class="btn btn-default" @click="query">æŸ¥è¯¢</a>
+			<a class="btn btn-default" @click="query">²éÑ¯</a>
 			
-			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;æ–°å¢ž</a>
-			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;ä¿®æ”¹</a>
-			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;åˆ é™¤</a>
+			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;ÐÂÔö</a>
+			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;ÐÞ¸Ä</a>
+			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;É¾³ý</a>
 		</div>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
@@ -25,32 +25,32 @@
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">å‚æ•°å</div>
+			   	<div class="col-sm-2 control-label">²ÎÊýÃû</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="config.paramKey" placeholder="å‚æ•°å"/>
+			      <input type="text" class="form-control" v-model="config.paramKey" placeholder="²ÎÊýÃû"/>
 			    </div>
 			</div>
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">å‚æ•°å€¼</div>
+			   	<div class="col-sm-2 control-label">²ÎÊýÖµ</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="config.paramValue" placeholder="å‚æ•°å€¼"/>
+			      <input type="text" class="form-control" v-model="config.paramValue" placeholder="²ÎÊýÖµ"/>
 			    </div>
 			</div>
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">å¤‡æ³¨</div>
+			   	<div class="col-sm-2 control-label">±¸×¢</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="config.remark" placeholder="å¤‡æ³¨"/>
+			      <input type="text" class="form-control" v-model="config.remark" placeholder="±¸×¢"/>
 			    </div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
-				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="ç¡®å®š"/>
-				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="è¿”å›ž"/>
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="È·¶¨"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="·µ»Ø"/>
 			</div>
 		</form>
 	</div>
 </div>
 
-<script src="${request.contextPath}/statics/js/modules/sys/config.js?_${.now?long}"></script>
+<script src="/statics/js/modules/sys/config.js?_${.now?long}"></script>
 </body>
 </html>

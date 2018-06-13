@@ -28,11 +28,18 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(authorityInterceptor())
         	.excludePathPatterns("/*.html")
         	.excludePathPatterns("/statics/**")
-        	.excludePathPatterns("/notify/**")
         	.excludePathPatterns("/hystrix.stream")
         	.excludePathPatterns("/hystrix/**")
         	.excludePathPatterns("/turbine/**")
-        	.excludePathPatterns("/noverify/**")
+        	.excludePathPatterns("/swagger/**", "anon")
+	        .excludePathPatterns("/v2/api-docs", "anon")
+	        .excludePathPatterns("/swagger-ui.html", "anon")
+	        .excludePathPatterns("/webjars/**", "anon")
+	        .excludePathPatterns("/swagger-resources/**", "anon")
+	
+	        .excludePathPatterns("/sys/login", "anon")
+	        .excludePathPatterns("/favicon.ico", "anon")
+	        .excludePathPatterns("/captcha.jpg", "anon")
         	;
     }
     

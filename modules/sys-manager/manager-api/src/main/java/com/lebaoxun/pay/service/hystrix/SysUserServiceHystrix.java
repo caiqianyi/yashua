@@ -53,4 +53,9 @@ public class SysUserServiceHystrix implements ISysUserService {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
+	@Override
+	public SysUserEntity login(String username, String password) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
 }

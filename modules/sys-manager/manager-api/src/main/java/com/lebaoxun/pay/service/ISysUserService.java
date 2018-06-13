@@ -34,6 +34,9 @@ public interface ISysUserService {
 	@RequestMapping("/sys/user/findByUsername")
 	SysUserEntity findByUsername(@RequestParam("username") String username);
 	
+	@RequestMapping("/sys/user/login")
+	SysUserEntity login(@RequestParam("username") String username,@RequestParam("password") String password);
+	
 	/**
 	 * 用户信息
 	 */

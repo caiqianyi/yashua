@@ -73,6 +73,11 @@ public class SysUserController extends AbstractController {
 		return sysUserService.selectOne( new EntityWrapper<SysUserEntity>().eq("username", username));
 	}
 	
+	@RequestMapping("/sys/user/login")
+	SysUserEntity login(@RequestParam("username") String username,@RequestParam("password") String password){
+		return sysUserService.selectOne(new EntityWrapper<SysUserEntity>().eq("username", username).eq("password", PwdUtil.getMd5Password(username, password)));
+	}
+	
 	/**
 	 * 修改登录用户密码
 	 */

@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysDeptService sysDeptService;
+	
+	@Value("${security.md5.password}")
+	private String passwdSecret;
 
 	@Override
 	public List<Long> queryAllMenuId(Long userId) {
@@ -86,7 +90,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
 		user.setSalt(salt);
-		user.setPassword(PwdUtil.getMd5Password(user.getUsername(), user.getPassword()));
+		user.setPassword(PwdUtil.getMd5Password(passwdSecret,user.getUsername(), user.getPassword()));
 		this.insert(user);
 		
 		//保存用户与角色关系
@@ -99,7 +103,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		if(StringUtils.isBlank(user.getPassword())){
 			user.setPassword(null);
 		}else{
-			user.setPassword(PwdUtil.getMd5Password(user.getUsername(), user.getPassword()));
+			user.setPassword(PwdUtil.getMd5Password(passwdSecret,user.getUsername(), user.getPassword()));
 		}
 		this.updateById(user);
 		

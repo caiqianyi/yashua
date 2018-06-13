@@ -3,6 +3,7 @@ package com.lebaoxun;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.lebaoxun.commons.utils.DesUtils;
 
 
 @SpringBootApplication
@@ -52,6 +54,14 @@ public class YaShuaAdminApplication extends WebMvcConfigurerAdapter{
 	@LoadBalanced
 	RestTemplate restTemplate() {
 		return new RestTemplate();
+	}
+	
+	@Value("${security.oauth2.des.password}")
+	private String securityKey;
+	
+	@Bean
+	public DesUtils desUtils(){
+		return new DesUtils(securityKey);
 	}
 	
 	public static void main(String[] args) {
