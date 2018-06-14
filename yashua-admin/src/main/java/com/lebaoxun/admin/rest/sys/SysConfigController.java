@@ -14,10 +14,9 @@
  * the License.
  */
 
-package com.lebaoxun.manager.sys.rest;
+package com.lebaoxun.admin.rest.sys;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.admin.rest.BaseController;
 import com.lebaoxun.commons.exception.ResponseMessage;
-import com.lebaoxun.commons.utils.PageUtils;
-import com.lebaoxun.commons.utils.ValidatorUtils;
 import com.lebaoxun.manager.sys.entity.SysConfigEntity;
-import com.lebaoxun.manager.sys.service.SysConfigService;
+import com.lebaoxun.pay.service.ISysConfigService;
 
 /**
  * 系统配置信息
@@ -41,63 +39,50 @@ import com.lebaoxun.manager.sys.service.SysConfigService;
  * @date 2016年12月4日 下午6:55:53
  */
 @RestController
-public class SysConfigController extends AbstractController {
+@RequestMapping("/sys/config")
+public class SysConfigController extends BaseController {
 	@Autowired
-	private SysConfigService sysConfigService;
+	private ISysConfigService sysConfigService;
 	
 	/**
 	 * 所有配置列表
 	 */
-	@RequestMapping("/sys/config/list")
+	@RequestMapping("/list")
 	public ResponseMessage list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysConfigService.queryPage(params);
-		return ResponseMessage.ok(page);
+		return sysConfigService.list(params);
 	}
 	
 	
 	/**
 	 * 配置信息
 	 */
-	@RequestMapping("/sys/config/info/{id}")
+	@RequestMapping("/info/{id}")
 	public ResponseMessage info(@PathVariable("id") Long id){
-		SysConfigEntity config = sysConfigService.selectById(id);
-		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("config", config);
-		return ResponseMessage.ok(data);
+		return sysConfigService.info(id);
 	}
 	
 	/**
 	 * 保存配置
 	 */
-	@RequestMapping("/sys/config/save")
+	@RequestMapping("/save")
 	public ResponseMessage save(@RequestBody SysConfigEntity config){
-		ValidatorUtils.validateEntity(config);
-
-		sysConfigService.save(config);
-		
-		return ResponseMessage.ok();
+		return sysConfigService.save(config);
 	}
 	
 	/**
 	 * 修改配置
 	 */
-	@RequestMapping("/sys/config/update")
+	@RequestMapping("/update")
 	public ResponseMessage update(@RequestBody SysConfigEntity config){
-		ValidatorUtils.validateEntity(config);
-		
-		sysConfigService.update(config);
-		
-		return ResponseMessage.ok();
+		return sysConfigService.update(config);
 	}
 	
 	/**
 	 * 删除配置
 	 */
-	@RequestMapping("/sys/config/delete")
+	@RequestMapping("/delete")
 	public ResponseMessage delete(@RequestBody Long[] ids){
-		sysConfigService.deleteBatch(ids);
-		
-		return ResponseMessage.ok();
+		return sysConfigService.delete(ids);
 	}
 
 }

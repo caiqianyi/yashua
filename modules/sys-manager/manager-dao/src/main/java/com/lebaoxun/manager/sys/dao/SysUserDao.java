@@ -19,6 +19,7 @@ package com.lebaoxun.manager.sys.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lebaoxun.manager.sys.entity.SysUserEntity;
@@ -37,11 +38,11 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 	 * 查询用户的所有权限
 	 * @param userId  用户ID
 	 */
-	List<String> queryAllPerms(Long userId);
+	List<String> queryAllPerms(@Param("userId") Long userId);
 	
 	/**
 	 * 查询用户的所有菜单ID
 	 */
-	List<Long> queryAllMenuId(Long userId);
+	List<Long> queryAllMenuId(@Param("userId") Long userId);
 
 }

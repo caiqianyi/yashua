@@ -5,14 +5,14 @@
 	
 	<select id="queryDeptIdList" resultType="long">
 		select dept_id from sys_role_dept where role_id in
-		<foreach item="roleId" collection="array" open="(" separator="," close=")">
+		<foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
 			#{roleId}
 		</foreach>
 	</select>
 
 	<delete id="deleteBatch">
-		delete from sys_role_dept where role_id in
-		<foreach item="roleId" collection="array" open="(" separator="," close=")">
+		delete from sys_role_dept where roleId in
+		<foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
 			#{roleId}
 		</foreach>
 	</delete>

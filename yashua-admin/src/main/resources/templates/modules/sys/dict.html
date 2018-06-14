@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>◊÷µ‰π‹¿Ì</title>
-	<#include "/header.html">
+<meta charset="utf-8">
+   <title>Â≠óÂÖ∏ÁÆ°ÁêÜ</title>
+<#include "/header.html">
 </head>
 <body>
 <div id="rrapp" v-cloak>
     <div v-show="showList">
         <div class="grid-btn">
             <div class="form-group col-sm-2">
-                <input type="text" class="form-control" v-model="q.name" @keyup.enter="query" placeholder="◊÷µ‰√˚≥∆">
+                <input type="text" class="form-control" v-model="q.name" @keyup.enter="query" placeholder="Â≠óÂÖ∏ÂêçÁß∞">
             </div>
-            <a class="btn btn-default" @click="query">≤È—Ø</a>
-			<#if shiro.hasPermission("sys:dict:save")>
-            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;–¬‘ˆ</a>
-			</#if>
-			<#if shiro.hasPermission("sys:dict:update")>
-            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;–ﬁ∏ƒ</a>
-			</#if>
-			<#if shiro.hasPermission("sys:dict:delete")>
-            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;…æ≥˝</a>
-			</#if>
+            <a class="btn btn-default" @click="query">Êü•ËØ¢</a>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;Êñ∞Â¢û</a>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;‰øÆÊîπ</a>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;Âà†Èô§</a>
         </div>
         <table id="jqGrid"></table>
         <div id="jqGridPager"></div>
@@ -30,45 +25,45 @@
         <div class="panel-heading">{{title}}</div>
         <form class="form-horizontal">
 														                    <div class="form-group">
-                        <div class="col-sm-2 control-label">◊÷µ‰√˚≥∆</div>
+                        <div class="col-sm-2 control-label">Â≠óÂÖ∏ÂêçÁß∞</div>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="dict.name" placeholder="◊÷µ‰√˚≥∆"/>
+                            <input type="text" class="form-control" v-model="dict.name" placeholder="Â≠óÂÖ∏ÂêçÁß∞"/>
                         </div>
                     </div>
 											                    <div class="form-group">
-                        <div class="col-sm-2 control-label">◊÷µ‰¿‡–Õ</div>
+                        <div class="col-sm-2 control-label">Â≠óÂÖ∏Á±ªÂûã</div>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="dict.type" placeholder="◊÷µ‰¿‡–Õ"/>
+                            <input type="text" class="form-control" v-model="dict.type" placeholder="Â≠óÂÖ∏Á±ªÂûã"/>
                         </div>
                     </div>
 											                    <div class="form-group">
-                        <div class="col-sm-2 control-label">◊÷µ‰¬Î</div>
+                        <div class="col-sm-2 control-label">Â≠óÂÖ∏Á†Å</div>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="dict.code" placeholder="◊÷µ‰¬Î"/>
+                            <input type="text" class="form-control" v-model="dict.code" placeholder="Â≠óÂÖ∏Á†Å"/>
                         </div>
                     </div>
 											                    <div class="form-group">
-                        <div class="col-sm-2 control-label">◊÷µ‰÷µ</div>
+                        <div class="col-sm-2 control-label">Â≠óÂÖ∏ÂÄº</div>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="dict.value" placeholder="◊÷µ‰÷µ"/>
+                            <input type="text" class="form-control" v-model="dict.value" placeholder="Â≠óÂÖ∏ÂÄº"/>
                         </div>
                     </div>
 											                    <div class="form-group">
-                        <div class="col-sm-2 control-label">≈≈–Ú</div>
+                        <div class="col-sm-2 control-label">ÊéíÂ∫è</div>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="dict.orderNum" placeholder="≈≈–Ú"/>
+                            <input type="text" class="form-control" v-model="dict.orderNum" placeholder="ÊéíÂ∫è"/>
                         </div>
                     </div>
 											                    <div class="form-group">
-                        <div class="col-sm-2 control-label">±∏◊¢</div>
+                        <div class="col-sm-2 control-label">Â§áÊ≥®</div>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="dict.remark" placeholder="±∏◊¢"/>
+                            <input type="text" class="form-control" v-model="dict.remark" placeholder="Â§áÊ≥®"/>
                         </div>
                     </div>
 							            <div class="form-group">
                 <div class="col-sm-2 control-label"></div>
-                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="»∑∂®"/>
-                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="∑µªÿ"/>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="Á°ÆÂÆö"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="ËøîÂõû"/>
             </div>
         </form>
     </div>

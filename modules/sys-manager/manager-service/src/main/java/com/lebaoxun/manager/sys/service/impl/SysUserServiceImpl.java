@@ -23,15 +23,17 @@ import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.lebaoxun.commons.utils.Constant;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.PwdUtil;
 import com.lebaoxun.commons.utils.Query;
@@ -52,6 +54,9 @@ import com.lebaoxun.manager.sys.service.SysUserService;
  */
 @Service("sysUserService")
 public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
@@ -76,8 +81,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		);
 
 		for(SysUserEntity sysUserEntity : page.getRecords()){
+			logger.debug("deptId={}",sysUserEntity.getDeptId());
 			SysDeptEntity sysDeptEntity = sysDeptService.selectById(sysUserEntity.getDeptId());
-			sysUserEntity.setDeptName(sysDeptEntity.getName());
+			if(sysDeptEntity != null){
+				sysUserEntity.setDeptName(sysDeptEntity.getName());
+			}
 		}
 
 		return new PageUtils(page);
@@ -119,5 +127,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return this.update(userEntity,
                 new EntityWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
     }
+	
+	@Override
+	public SysUserEntity selectOne(Wrapper<SysUserEntity> wrapper) {
+		// TODO Auto-generated method stub
+		List<SysUserEntity> list = this.selectList(wrapper);
+		return list == null || list.isEmpty() ? null : list.get(0);
+	}
 
 }

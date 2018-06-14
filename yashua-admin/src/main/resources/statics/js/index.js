@@ -47,13 +47,23 @@ var vm = new Vue({
 	},
 	methods: {
 		getMenuList: function (event) {
-			$.getJSON("sys/menu/nav?_"+$.now(), function(r){
-				vm.menuList = r.menuList;
-			});
+			$.ajax({url:"sys/menu/nav?_"+$.now(), success:function(response){
+				if(response.errcode == 0){
+					var r = response.data;
+					vm.menuList = r.menuList;
+					return;
+				}
+				layer.alert(response.errmsg);
+			}});
 		},
 		getUser: function(){
-			$.getJSON("sys/user/info?_"+$.now(), function(r){
-				vm.user = r.user;
+			$.getJSON("sys/user/info?_"+$.now(), function(response){
+				if(response.errcode == 0){
+					var r = response.data;
+					vm.user = r.user;
+					return;
+				}
+				layer.alert(response.errmsg);
 			});
 		},
 		updatePassword: function(){
@@ -73,29 +83,23 @@ var vm = new Vue({
 					    data: data,
 					    dataType: "json",
 					    success: function(result){
-							if(result.code == 0){
+							if(result.errcode == 0){
 								layer.close(index);
 								layer.alert('修改成功', function(index){
 									location.reload();
 								});
 							}else{
-								layer.alert(result.msg);
+								layer.alert(result.errmsg);
 							}
 						}
 					});
 	            }
 			});
 		},
-        donate: function () {
-            layer.open({
-                type: 2,
-                title: false,
-                area: ['806px', '467px'],
-                closeBtn: 1,
-                shadeClose: false,
-                content: ['http://cdn.renren.io/donate.jpg', 'no']
-            });
-        }
+		logout: function(){
+			window.storage.clear();
+			parent.location.href ='/login.html';
+		}
 	},
 	created: function(){
 		this.getMenuList();

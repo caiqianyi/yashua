@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -28,14 +29,14 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.weaver.loadtime.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
@@ -59,7 +60,7 @@ import com.lebaoxun.soa.core.redis.IRedisCache;
  * @email sunlightcs@gmail.com
  * @date 2016年11月10日 下午1:15:31
  */
-@Controller
+@RestController
 public class SysLoginController extends BaseController{
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -72,9 +73,6 @@ public class SysLoginController extends BaseController{
 	
 	@Resource
 	private IRedisCache redisCache;
-	
-	@Resource
-	private DesUtils desUtils;
 	
 	@Autowired
 	private ISysUserService sysUserService;
@@ -95,17 +93,92 @@ public class SysLoginController extends BaseController{
         ImageIO.write(image, "jpg", out);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/security/token.js",produces="application/javascript;charset=UTF-8")
+	String securitySecret(){
+		String secret = UUID.randomUUID().toString().replaceAll("-", "");
+		request.getSession().setAttribute("app.secret", secret);
+		return "var token = \""+secret+"\";";
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/security/encrypt")
+	ResponseMessage encrypt(@RequestParam("encrypts") String encrypts[],@RequestParam("token") String token) throws Exception{
+		String secret = (String) request.getSession().getAttribute("app.secret");
+		if(StringUtils.isBlank(secret) || !token.equals(secret)){
+			throw new I18nMessageException("10015", "密钥不对");
+		}
+		if(encrypts != null && encrypts.length < 10){
+			DesUtils desUtils = new DesUtils(token);
+			StringBuffer bf = new StringBuffer();
+			for(int i=0;i<encrypts.length;i++){
+				String str = encrypts[i];
+				bf.append(desUtils.encrypt(str));
+				if(i < encrypts.length-1){
+					bf.append(",");
+				}
+				logger.debug("str[{}]={}",i,str);
+			}
+			return new ResponseMessage(bf.toString().split(","));
+		}
+		throw new I18nMessageException("500");
+	}
+	
 	/**
 	 * 登录
 	 */
-	@ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-	public ResponseMessage login(String username, String password, String captcha) {
+	ResponseMessage login(String username, String password, String captcha) {
 		String kaptcha = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+		String secret = (String) request.getSession().getAttribute("app.secret");
 		if(!captcha.equalsIgnoreCase(kaptcha)){
 			throw new I18nMessageException("10001", "验证码不正确");
 		}
-		return ResponseMessage.ok();
+		String key = AccountConstant.CACHEKEY_LOGIN_ACCOUNT_LOCK + "." + username;
+		String value = (String) redisCache.get(key);
+		if (StringUtils.isNotBlank(value) && "LOCK".equals(value)) {
+			throw new I18nMessageException("10005",new String[]{AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",redisCache.ttl(key)/60+1+""});
+		}
+		Integer errorCount = 0;
+		if(StringUtils.isNumeric(value)){
+			errorCount = Integer.parseInt(value);
+		}
+		
+		String account = username,passwd = null;
+		if(StringUtils.isBlank(secret)){
+			throw new I18nMessageException("10015", "密钥不对");
+		}
+		try {
+			logger.debug("secret={}",secret);
+			DesUtils desUtils = new DesUtils(secret);
+			account = desUtils.decrypt(username);
+			passwd = desUtils.decrypt(password);
+		} catch (Exception e) {
+			IncrErrorCount(username, value);
+			throw new I18nMessageException("10002", new String[]{AccountConstant.ACCOUNT_ERROR_COUNT+"",AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",(AccountConstant.ACCOUNT_ERROR_COUNT-errorCount-1)+""});
+		}
+		logger.debug("username={},password={}",account,passwd);
+		
+		SysUserEntity a = sysUserService.login(account, passwd);
+		if(a == null){
+			IncrErrorCount(username, value);
+			throw new I18nMessageException("10002", new String[]{AccountConstant.ACCOUNT_ERROR_COUNT+"",AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",(AccountConstant.ACCOUNT_ERROR_COUNT-errorCount-1)+""});
+		}
+		if(a.getStatus() == 0){
+			throw new I18nMessageException("10014","账户已被禁用，请联系管理员");
+		}
+		Boolean isCorrectPwd = null; 
+		if(passwd != null){
+			isCorrectPwd = !PwdUtil.isCorrectPwd(passwd);
+		}
+		String openid = oauth2SecuritySubject.getOpenid(account);
+		Oauth2 oauth2 = oauth2SecuritySubject.refreshToken(request,openid);
+		Oauth2AccessToken.setToken(oauth2.getAssess_token());
+		
+		Map<String,Object> json = new TreeMap<String,Object>();
+		json.put("access_token", oauth2.getAssess_token());
+		json.put("openid", oauth2.getOpenid());
+		json.put("expires_in", oauth2.getExpires_in());
+		json.put("isCorrectPwd", isCorrectPwd);
+		return new ResponseMessage(json);
 	}
 	
 	/**
@@ -149,6 +222,9 @@ public class SysLoginController extends BaseController{
 			String account = username,passwd = null;
 			if(!"wechatOA".equals(platform)){
 				try {
+					String secret = (String) request.getSession().getAttribute("app.secret");
+					logger.debug("secret={}",secret);
+					DesUtils desUtils = new DesUtils(secret);
 					account = desUtils.decrypt(username);
 					passwd = desUtils.decrypt(password);
 				} catch (Exception e) {

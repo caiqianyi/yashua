@@ -56,14 +56,6 @@ public class YaShuaAdminApplication extends WebMvcConfigurerAdapter{
 		return new RestTemplate();
 	}
 	
-	@Value("${security.oauth2.des.password}")
-	private String securityKey;
-	
-	@Bean
-	public DesUtils desUtils(){
-		return new DesUtils(securityKey);
-	}
-	
 	public static void main(String[] args) {
         SpringApplication.run(YaShuaAdminApplication.class, args);
     }

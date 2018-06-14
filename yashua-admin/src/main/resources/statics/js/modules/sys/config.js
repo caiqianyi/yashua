@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'sys/config/list',
+        url: '/sys/config/list',
         datatype: "json",
         colModel: [			
 			{ label: 'ID', name: 'id', width: 30, key: true },
@@ -18,13 +18,13 @@ $(function () {
         multiselect: true,
         pager: "#jqGridPager",
         jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
+        	root: "data.list",
+            page: "data.currPage",
+            total: "data.totalPage",
+            records: "data.totalCount"
         },
         prmNames : {
-            page:"page", 
+            page:"data", 
             rows:"limit", 
             order: "order"
         },
@@ -61,6 +61,9 @@ var vm = new Vue({
 			}
 			
 			$.get(baseURL + "sys/config/info/"+id, function(r){
+				if(r.errcode && r.errcode != 0){
+		    		return;
+		    	}
                 vm.showList = false;
                 vm.title = "修改";
                 vm.config = r.config;
@@ -79,12 +82,12 @@ var vm = new Vue({
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
-						if(r.code == 0){
+						if(r.errcode == 0){
 							alert('操作成功', function(index){
 								vm.reload();
 							});
 						}else{
-							alert(r.msg);
+							alert(r.errmsg);
 						}
 					}
 				});
@@ -98,12 +101,12 @@ var vm = new Vue({
                 contentType: "application/json",
 			    data: JSON.stringify(vm.config),
 			    success: function(r){
-			    	if(r.code === 0){
+			    	if(r.errcode === 0){
 						alert('操作成功', function(index){
 							vm.reload();
 						});
 					}else{
-						alert(r.msg);
+						alert(r.errmsg);
 					}
 				}
 			});

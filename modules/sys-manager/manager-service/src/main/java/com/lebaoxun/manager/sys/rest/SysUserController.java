@@ -59,8 +59,7 @@ public class SysUserController extends AbstractController {
 	@RequestMapping("/sys/user/list")
 	ResponseMessage list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysUserService.queryPage(params);
-
-		return ResponseMessage.ok().put("page", page);
+		return ResponseMessage.ok(page);
 	}
 	
 	@RequestMapping("/sys/user/findByUserId")

@@ -17,5 +17,5 @@
 			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
 		where ur.user_id = #{userId}
 	</select>
-
+	
 </mapper>

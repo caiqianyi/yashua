@@ -57,7 +57,7 @@ public class SysRoleController extends AbstractController {
 	public ResponseMessage list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysRoleService.queryPage(params);
 
-		return ResponseMessage.ok().put("page", page);
+		return ResponseMessage.ok(page);
 	}
 	
 	/**

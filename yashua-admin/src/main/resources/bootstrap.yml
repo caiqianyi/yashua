@@ -15,7 +15,7 @@ spring:
     suffix: .html  #后缀名
   cloud:
     config:
-      name: fast
+      name: yashua
       profile: test
       username: guess
       password: 123123

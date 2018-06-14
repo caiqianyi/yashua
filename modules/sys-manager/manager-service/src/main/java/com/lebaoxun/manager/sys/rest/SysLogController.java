@@ -47,9 +47,7 @@ public class SysLogController {
 	@RequestMapping("/sys/log/list")
 	public ResponseMessage list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysLogService.queryPage(params);
-		Map<String,Object> dataModel = new HashMap<String,Object>();
-		dataModel.put("page", page);
-		return ResponseMessage.ok();
+		return ResponseMessage.ok(page);
 	}
 	
 }

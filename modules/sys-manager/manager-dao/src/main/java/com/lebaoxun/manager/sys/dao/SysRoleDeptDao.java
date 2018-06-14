@@ -19,6 +19,7 @@ package com.lebaoxun.manager.sys.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lebaoxun.manager.sys.entity.SysRoleDeptEntity;
@@ -36,10 +37,10 @@ public interface SysRoleDeptDao extends BaseMapper<SysRoleDeptEntity> {
 	/**
 	 * 根据角色ID，获取部门ID列表
 	 */
-	List<Long> queryDeptIdList(Long[] roleIds);
+	List<Long> queryDeptIdList(@Param("roleIds") Long[] roleIds);
 
 	/**
 	 * 根据角色ID数组，批量删除
 	 */
-	int deleteBatch(Long[] roleIds);
+	int deleteBatch(@Param("roleIds") Long[] roleIds);
 }

@@ -29,10 +29,16 @@
 			<artifactId>manager-model</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
-		<dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
-        </dependency>
+        <dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-test-support</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<build>

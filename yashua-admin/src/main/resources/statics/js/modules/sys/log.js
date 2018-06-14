@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'sys/log/list',
+        url: '/sys/log/list',
         datatype: "json",
         colModel: [			
 			{ label: 'id', name: 'id', width: 30, key: true },
@@ -10,7 +10,9 @@ $(function () {
 			{ label: '请求参数', name: 'params', width: 80 },
             { label: '执行时长(毫秒)', name: 'time', width: 80 },
 			{ label: 'IP地址', name: 'ip', width: 70 }, 			
-			{ label: '创建时间', name: 'createDate', width: 90 }			
+			{ label: '创建时间', name: 'createDate', width: 90, formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yyyy-MM-dd hh:mm:ss") : null;
+			}}	
         ],
 		viewrecords: true,
         height: 385,
@@ -22,13 +24,13 @@ $(function () {
         multiselect: false,
         pager: "#jqGridPager",
         jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
+        	root: "data.list",
+            page: "data.currPage",
+            total: "data.totalPage",
+            records: "data.totalCount"
         },
         prmNames : {
-            page:"page", 
+            page:"data", 
             rows:"limit", 
             order: "order"
         },

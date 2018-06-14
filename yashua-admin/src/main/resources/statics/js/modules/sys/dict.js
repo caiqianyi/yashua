@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'sys/dict/list',
+        url: '/sys/dict/list',
         datatype: "json",
         colModel: [			
 			{ label: '字典名称', name: 'name', index: 'name', width: 80 },
@@ -20,13 +20,13 @@ $(function () {
         multiselect: true,
         pager: "#jqGridPager",
         jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
+        	root: "data.list",
+            page: "data.currPage",
+            total: "data.totalPage",
+            records: "data.totalCount"
         },
         prmNames : {
-            page:"page", 
+            page:"data", 
             rows:"limit", 
             order: "order"
         },
@@ -74,12 +74,12 @@ var vm = new Vue({
                 contentType: "application/json",
 			    data: JSON.stringify(vm.dict),
 			    success: function(r){
-			    	if(r.code === 0){
+			    	if(r.errcode === 0){
 						alert('操作成功', function(index){
 							vm.reload();
 						});
 					}else{
-						alert(r.msg);
+						alert(r.errmsg);
 					}
 				}
 			});

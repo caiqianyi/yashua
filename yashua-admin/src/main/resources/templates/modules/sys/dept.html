@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>╡©це╧эюМ</title>
+<meta charset="utf-8">
+<title>И┐╗И≈╗Г╝║Г░├</title>
 <#include "/header.html">
 <link rel="stylesheet" href="/statics/css/bootstrap-table.min.css">
 <link rel="stylesheet" href="/statics/plugins/treegrid/jquery.treegrid.css">
@@ -15,15 +16,9 @@
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
 		<div class="grid-btn">
-			<#if shiro.hasPermission("sys:dept:save")>
-			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;пбтЖ</a>
-			</#if>
-			<#if shiro.hasPermission("sys:dept:update")>
-			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;пч╦д</a>
-			</#if>
-			<#if shiro.hasPermission("sys:dept:delete")>
-			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;и╬ЁЩ</a>
-			</#if>
+			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;Ф√╟Е╒·</a>
+			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;Д©╝Ф■╧</a>
+			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;Е┬═И≥╓</a>
 		</div>
 		<table id="deptTable" data-mobile-responsive="true" data-click-to-select="true">
 			<thead>
@@ -38,33 +33,33 @@
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
 			<div class="form-group">
-				<div class="col-sm-2 control-label">╡©цецШЁф</div>
+				<div class="col-sm-2 control-label">И┐╗И≈╗Е░█Г╖╟</div>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" v-model="dept.name" placeholder="╡©цецШЁф"/>
+					<input type="text" class="form-control" v-model="dept.name" placeholder="И┐╗И≈╗Е░█Г╖╟"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-2 control-label">ио╪╤╡©це</div>
+				<div class="col-sm-2 control-label">Д╦┼Г╨╖И┐╗И≈╗</div>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" style="cursor:pointer;" v-model="dept.parentName" @click="deptTree" readonly="readonly" placeholder="р╩╪╤╡©це"/>
+					<input type="text" class="form-control" style="cursor:pointer;" v-model="dept.parentName" @click="deptTree" readonly="readonly" placeholder="Д╦─Г╨╖И┐╗И≈╗"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-2 control-label">еепР╨е</div>
+				<div class="col-sm-2 control-label">Ф▌▓Е╨▐Е▐╥</div>
 				<div class="col-sm-10">
-					<input type="number" class="form-control" v-model="dept.orderNum" placeholder="еепР╨е"/>
+					<input type="number" class="form-control" v-model="dept.orderNum" placeholder="Ф▌▓Е╨▐Е▐╥"/>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div>
-				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="х╥╤╗"/>
-				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="╥╣╩ь"/>
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="Г║╝Е╝ "/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="Х©■Е⌡·"/>
 			</div>
 		</form>
 	</div>
 </div>
 
-<!-- я║тЯ╡©це -->
+<!-- И─┴Ф▀╘И┐╗И≈╗ -->
 <div id="deptLayer" style="display: none;padding:10px;">
 	<ul id="deptTree" class="ztree"></ul>
 </div>

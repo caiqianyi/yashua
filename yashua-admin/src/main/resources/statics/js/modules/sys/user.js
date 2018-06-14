@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'sys/user/list',
+        url: '/sys/user/list',
         datatype: "json",
         colModel: [			
 			{ label: '用户ID', name: 'userId', index: "user_id", width: 45, key: true },
@@ -13,7 +13,9 @@ $(function () {
 					'<span class="label label-danger">禁用</span>' : 
 					'<span class="label label-success">正常</span>';
 			}},
-			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85}
+			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85, formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yyyy-MM-dd hh:mm:ss") : null;
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -25,13 +27,13 @@ $(function () {
         multiselect: true,
         pager: "#jqGridPager",
         jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
+            root: "data.list",
+            page: "data.currPage",
+            total: "data.totalPage",
+            records: "data.totalCount"
         },
         prmNames : {
-            page:"page", 
+            page:"data", 
             rows:"limit", 
             order: "order"
         },
@@ -89,14 +91,17 @@ var vm = new Vue({
         },
         getDept: function(){
             //加载部门树
-            $.get(baseURL + "sys/dept/list", function(r){
-                ztree = $.fn.zTree.init($("#deptTree"), setting, r);
-                var node = ztree.getNodeByParam("deptId", vm.user.deptId);
-                if(node != null){
-                    ztree.selectNode(node);
-
-                    vm.user.deptName = node.name;
-                }
+            $.get("/sys/dept/list", function(r){
+            	if(r.errcode && r.errcode != 0){
+            		return;
+            	}
+				ztree = $.fn.zTree.init($("#deptTree"), setting, r);
+				var node = ztree.getNodeByParam("deptId", vm.user.deptId);
+				if(node != null){
+					ztree.selectNode(node);
+					
+					vm.user.deptName = node.name;
+				}
             })
         },
         update: function () {
@@ -121,50 +126,57 @@ var vm = new Vue({
             confirm('确定要删除选中的记录？', function(){
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "sys/user/delete",
+                    url: "/sys/user/delete",
                     contentType: "application/json",
                     data: JSON.stringify(userIds),
                     success: function(r){
-                        if(r.code == 0){
+                        if(r.errcode == 0){
                             alert('操作成功', function(){
                                 vm.reload();
                             });
                         }else{
-                            alert(r.msg);
+                            alert(r.errmsg);
                         }
                     }
                 });
             });
         },
         saveOrUpdate: function () {
-            var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";
+            var url = vm.user.userId == null ? "/sys/user/save" : "/sys/user/update";
             $.ajax({
                 type: "POST",
-                url: baseURL + url,
+                url: url,
                 contentType: "application/json",
                 data: JSON.stringify(vm.user),
                 success: function(r){
-                    if(r.code === 0){
+                    if(r.errcode === 0){
                         alert('操作成功', function(){
                             vm.reload();
                         });
                     }else{
-                        alert(r.msg);
+                        alert(r.errmsg);
                     }
                 }
             });
         },
         getUser: function(userId){
-            $.get(baseURL + "sys/user/info/"+userId, function(r){
-                vm.user = r.user;
+            $.get("/sys/user/info/"+userId, function(r){
+            	if(r.errcode && r.errcode != 0){
+            		return;
+            	}
+        		vm.user = r.user;
                 vm.user.password = null;
 
                 vm.getDept();
+                
             });
         },
         getRoleList: function(){
             $.get(baseURL + "sys/role/select", function(r){
-                vm.roleList = r.list;
+            	if(r.errcode && r.errcode != 0){
+            		return;
+            	}
+        		vm.roleList = r.list;
             });
         },
         deptTree: function(){

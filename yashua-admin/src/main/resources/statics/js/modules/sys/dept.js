@@ -28,6 +28,9 @@ var vm = new Vue({
         getDept: function(){
             //加载部门树
             $.get(baseURL + "sys/dept/select", function(r){
+            	if(r.errcode && r.errcode != 0){
+            		return;
+            	}
                 ztree = $.fn.zTree.init($("#deptTree"), setting, r.deptList);
                 var node = ztree.getNodeByParam("deptId", vm.dept.parentId);
                 ztree.selectNode(node);
@@ -48,6 +51,9 @@ var vm = new Vue({
             }
 
             $.get(baseURL + "sys/dept/info/"+deptId, function(r){
+            	if(r.errcode && r.errcode != 0){
+            		return;
+            	}
                 vm.showList = false;
                 vm.title = "修改";
                 vm.dept = r.dept;
@@ -67,12 +73,12 @@ var vm = new Vue({
                     url: baseURL + "sys/dept/delete",
                     data: "deptId=" + deptId,
                     success: function(r){
-                        if(r.code === 0){
+                        if(r.errcode === 0){
                             alert('操作成功', function(){
                                 vm.reload();
                             });
                         }else{
-                            alert(r.msg);
+                            alert(r.errmsg);
                         }
                     }
                 });
@@ -86,12 +92,12 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.dept),
                 success: function(r){
-                    if(r.code === 0){
+                    if(r.errcode === 0){
                         alert('操作成功', function(){
                             vm.reload();
                         });
                     }else{
-                        alert(r.msg);
+                        alert(r.errmsg);
                     }
                 }
             });
@@ -157,6 +163,9 @@ function getDeptId () {
 
 $(function () {
     $.get(baseURL + "sys/dept/info", function(r){
+    	if(r.errcode && r.errcode != 0){
+    		return;
+    	}
         var colunms = Dept.initColumn();
         var table = new TreeTable(Dept.id, baseURL + "sys/dept/list", colunms);
         table.setRootCodeValue(r.deptId);

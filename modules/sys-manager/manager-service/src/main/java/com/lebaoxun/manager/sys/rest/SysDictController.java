@@ -50,9 +50,7 @@ public class SysDictController {
     @RequestMapping("/sys/dict/list")
     public ResponseMessage list(@RequestParam Map<String, Object> params){
         PageUtils page = sysDictService.queryPage(params);
-        Map<String,Object> dataModel = new HashMap<String,Object>();
-		dataModel.put("page", page);
-        return ResponseMessage.ok(dataModel);
+        return ResponseMessage.ok(page);
     }
 
 

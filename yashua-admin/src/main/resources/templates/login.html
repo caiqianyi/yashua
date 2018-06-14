@@ -23,7 +23,7 @@
 <body class="hold-transition login-page">
 <div class="login-box" id="rrapp" v-cloak>
   <div class="login-logo">
-    <b>人人权限系统</b>
+    <b>最最新牙刷管理系统</b>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -71,7 +71,9 @@
 <script src="/statics/libs/bootstrap.min.js"></script>
 <script src="/statics/libs/jquery.slimscroll.min.js"></script>
 <script src="/statics/libs/fastclick.min.js"></script>
+<script src="/statics/libs/storge.js"></script>
 <script src="/statics/libs/app.js"></script>
+<script src="/security/token.js"></script>
 <script type="text/javascript">
 var vm = new Vue({
 	el:'#rrapp',
@@ -93,21 +95,56 @@ var vm = new Vue({
 			this.src = "captcha.jpg?t=" + $.now();
 		},
 		login: function (event) {
-			var data = "username="+vm.username+"&password="+vm.password+"&captcha="+vm.captcha;
 			$.ajax({
-				type: "POST",
-			    url: "sys/login",
-			    data: data,
+				type: "GET",
+			    url: "/security/encrypt",
+			    data: {
+			    	encrypts : vm.username+","+vm.password,
+			    	token : token
+			    },
 			    dataType: "json",
-			    success: function(result){
-					if(result.code == 0){//登录成功
-						parent.location.href ='index.html';
-					}else{
-						vm.error = true;
-						vm.errorMsg = result.msg;
-						
+			    success: function(response){
+			    	var data = {};;
+			    	if(response.errcode == 0){
+			    		data.username=response.data[0];
+			    		data.password=response.data[1];
+			    		data.captcha=vm.captcha;
+			    		$.ajax({
+							type: "POST",
+						    url: "/sys/login",
+						    data: data,
+						    dataType: "json",
+						    success: function(result){
+								if(result.errcode == 0){//登录成功
+									for(var ke in result.data){
+										window.storage.set("login."+ke,result.data[ke],false);
+									}
+									var expiresTime = result.data["expires_in"];
+									var now = new Date();
+									now.setSeconds(now.getSeconds() + expiresTime);
+									var loginTime = now.getTime();
+									window.storage.set('login.expire',loginTime,false);
+									
+									parent.location.href ='index.html';
+								}else{
+									vm.error = true;
+									vm.errorMsg = result.errmsg;
+									
+									vm.refreshCode();
+								}
+							}
+						});
+			    	}else{
+			    		vm.error = true;
+						vm.errorMsg = response.errmsg;
+			    		if(response.errcode == 10015){
+			    			setTimeout(function (){
+			    				parent.location.reload();
+			    			},1000);
+			    			return;
+			    		}
 						vm.refreshCode();
-					}
+			    	}
 				}
 			});
 		}

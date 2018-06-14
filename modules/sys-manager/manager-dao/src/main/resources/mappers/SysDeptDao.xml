@@ -4,7 +4,7 @@
 <mapper namespace="com.lebaoxun.manager.sys.dao.SysDeptDao">
 	
 	<select id="queryDetpIdList" resultType="long">
-		select dept_id from sys_dept where parent_id = #{value} and del_flag = 0
+		select dept_id from sys_dept where parent_id = #{parentId} and del_flag = 0
 	</select>
 
 </mapper>

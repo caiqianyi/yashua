@@ -16,11 +16,15 @@
 
 package com.lebaoxun.admin.rest;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.google.code.kaptcha.Constants;
 
 /**
  * 系统页面视图
@@ -30,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2016年11月24日 下午11:05:27
  */
 @Controller
-public class PageRouteController {
+public class PageRouteController extends BaseController{
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
