@@ -129,19 +129,6 @@ public class SysLoginController extends BaseController{
 	ResponseMessage login(String username, String password, String captcha) {
 		String kaptcha = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
 		String secret = (String) request.getSession().getAttribute("app.secret");
-		if(!captcha.equalsIgnoreCase(kaptcha)){
-			throw new I18nMessageException("10001", "验证码不正确");
-		}
-		String key = AccountConstant.CACHEKEY_LOGIN_ACCOUNT_LOCK + "." + username;
-		String value = (String) redisCache.get(key);
-		if (StringUtils.isNotBlank(value) && "LOCK".equals(value)) {
-			throw new I18nMessageException("10005",new String[]{AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",redisCache.ttl(key)/60+1+""});
-		}
-		Integer errorCount = 0;
-		if(StringUtils.isNumeric(value)){
-			errorCount = Integer.parseInt(value);
-		}
-		
 		String account = username,passwd = null;
 		if(StringUtils.isBlank(secret)){
 			throw new I18nMessageException("10015", "密钥不对");
@@ -152,14 +139,25 @@ public class SysLoginController extends BaseController{
 			account = desUtils.decrypt(username);
 			passwd = desUtils.decrypt(password);
 		} catch (Exception e) {
-			IncrErrorCount(username, value);
-			throw new I18nMessageException("10002", new String[]{AccountConstant.ACCOUNT_ERROR_COUNT+"",AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",(AccountConstant.ACCOUNT_ERROR_COUNT-errorCount-1)+""});
+			throw new I18nMessageException("10015", "密钥不对");
 		}
 		logger.debug("username={},password={}",account,passwd);
+		if(!captcha.equalsIgnoreCase(kaptcha)){
+			throw new I18nMessageException("10001", "验证码不正确");
+		}
+		String key = AccountConstant.CACHEKEY_LOGIN_ACCOUNT_LOCK + "." + account;
+		String value = (String) redisCache.get(key);
+		if (StringUtils.isNotBlank(value) && "LOCK".equals(value)) {
+			throw new I18nMessageException("10005",new String[]{AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",redisCache.ttl(key)/60+1+""});
+		}
+		Integer errorCount = 0;
+		if(StringUtils.isNumeric(value)){
+			errorCount = Integer.parseInt(value);
+		}
 		
 		SysUserEntity a = sysUserService.login(account, passwd);
 		if(a == null){
-			IncrErrorCount(username, value);
+			IncrErrorCount(account, value);
 			throw new I18nMessageException("10002", new String[]{AccountConstant.ACCOUNT_ERROR_COUNT+"",AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",(AccountConstant.ACCOUNT_ERROR_COUNT-errorCount-1)+""});
 		}
 		if(a.getStatus() == 0){
