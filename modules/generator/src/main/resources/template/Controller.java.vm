@@ -1,0 +1,84 @@
+package ${package}.${moduleName}.controller;
+
+import java.util.Arrays;
+import java.util.Map;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.${className}Service;
+import ${mainPath}.common.utils.PageUtils;
+import ${mainPath}.common.utils.ResponseMessage;
+
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @RequestMapping("${moduleName}/${pathName}/list")
+    @RequiresPermissions("${moduleName}:${pathName}:list")
+    public ResponseMessage list(@RequestParam Map<String, Object> params){
+        PageUtils page = ${classname}Service.queryPage(params);
+        return ResponseMessage.ok(page);
+    }
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("${moduleName}/${pathName}/info/{${pk.attrname}}")
+    @RequiresPermissions("${moduleName}:${pathName}:info")
+    public ResponseMessage info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+		${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
+        return ResponseMessage.ok().put("${classname}", ${classname});
+    }
+
+    /**
+     * 保存
+     */
+    @RequestMapping("${moduleName}/${pathName}/save")
+    @RequiresPermissions("${moduleName}:${pathName}:save")
+    public ResponseMessage save(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.insert(${classname});
+        return ResponseMessage.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("${moduleName}/${pathName}/update")
+    @RequiresPermissions("${moduleName}:${pathName}:update")
+    public ResponseMessage update(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.updateById(${classname});
+        return ResponseMessage.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping("${moduleName}/${pathName}/delete")
+    @RequiresPermissions("${moduleName}:${pathName}:delete")
+    public ResponseMessage delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+		${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
+        return ResponseMessage.ok();
+    }
+
+}

@@ -98,9 +98,7 @@ public class SysMenuController extends AbstractController {
 	@RequestMapping("/sys/menu/info/{menuId}")
 	public ResponseMessage info(@PathVariable("menuId") Long menuId){
 		SysMenuEntity menu = sysMenuService.selectById(menuId);
-		Map<String,Object> dataModel = new HashMap<String,Object>();
-		dataModel.put("menu", menu);
-		return ResponseMessage.ok();
+		return ResponseMessage.ok().put("menu", menu);
 	}
 	
 	/**
