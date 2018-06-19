@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lebaoxun.modules.account.dao.UserLogDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lebaoxun.modules.account.entity.UserLogEntity" id="userLogMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="logType" column="log_type"/>
+        <result property="tradeMoney" column="trade_money"/>
+        <result property="money" column="money"/>
+        <result property="platform" column="platform"/>
+        <result property="hostIp" column="host_ip"/>
+        <result property="descr" column="descr"/>
+        <result property="adjunctInfo" column="adjunct_info"/>
+    </resultMap>
+
+
+</mapper>

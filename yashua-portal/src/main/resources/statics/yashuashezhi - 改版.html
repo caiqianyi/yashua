@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="css/css.css" type="text/css">
+<title>牙刷设置</title>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/waterbubble.js"></script>
+<script type="text/javascript" src="js/Font.js"></script>
+</head>
+<body>
+<div class="Top"><span></span>设置<a href="">完成</a></div>
+<div class="shezhi-qiu">
+	<canvas id="dowebok"></canvas>
+	<p>续航 10 天</p>
+    <span>电量</span>
+</div>
+
+<div class="shezhi-nini font-32">牙刷名称<em></em></div>
+
+<div class="shezhi-moshi font-26">
+	<p>牙刷模式</p>
+    <span>开启您想要的牙刷模式</span>
+</div>
+
+<div class="shezhi-plv bg-white">
+	<h3>振动频率：</h3>
+	<ul>
+		<li>低</li>
+        <li>中</li>
+        <li>高</li>
+	</ul>
+    <div class="cl"></div>
+	<p><img src="images/plv.png" alt=""/></p> 
+</div>
+
+<div class="shezhi-time bg-white">
+	<h3>刷牙时长:</h3>
+    <ul>
+    	<li>10秒</li>
+    	<li>15秒</li>
+    	<li>20秒</li>
+    	<li>25秒</li>
+    	<li>30秒</li>
+        <img src="images/plv.png" alt=""/>
+    </ul> 
+</div>
+
+<div class="shezhi-tou bg-white font-30">
+	<span class="fl">刷头可使用：</span>
+    <p><em></em></p>
+</div>
+
+</body>
+</html>
+<script>
+$(function(){
+	$('#dowebok').waterbubble({
+		txt: '75%',
+		textColor: '#1c161a',
+		font: '3rem arial',
+		data: 0.75,
+		waterColor: '#14dbfa',
+	});
+});
+</script>

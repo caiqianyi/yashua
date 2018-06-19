@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="css/css.css" type="text/css">
+<title>发现</title>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="js/Font.js"></script>
+</head>
+<body>
+<div class="Top">发现</div>
+<div id="focus" class="focus">
+    <div class="hd"><ul></ul></div>
+    <div class="bd">
+        <ul>
+            <li><a href=""><img src="images/banner-1.jpg"/></a></li>
+            <li><a href=""><img src="images/banner-2.jpg"/></a></li>
+            <li><a href=""><img src="images/banner-1.jpg"/></a></li>
+            <li><a href=""><img src="images/banner-2.jpg"/></a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="find">
+	<ul class="find-1">
+    	<li><a href="wodejinbi.html">我的积分<em></em></a></li>
+    </ul>
+    <ul class="find-2">
+    	<li><a href="zixunliebiao.html">牙科小知识<em></em></a></li>
+        <li><a href="qiandao.html">日常签到<em></em></a></li>
+    </ul>
+    <ul class="find-3">
+    	<li><a href="">私人医生<em></em></a></li>
+        <li><a href="shangcheng.html">商城<em></em></a></li>
+    </ul>
+    <ul class="find-more">
+    	<li><a href="">更多<em></em></a></li>
+    </ul>
+</div>
+
+<!--公用底部-->
+<div class="bot-nav bg-white font-26">
+	<ul>
+		<li><a href="index.html">首页</a></li>
+        <li><a href="shuaya.html">历史</a></li>
+        <li class="on"><a href="faxian.html">发现</a></li>
+        <li><a href="wode.html">我的</a></li>
+	</ul>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+    TouchSlide({ 
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"left", 
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页c" 
+    });
+</script>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="css/css.css" type="text/css">
+<title>牙刷设置</title>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/waterbubble.js"></script>
+<script type="text/javascript" src="js/Font.js"></script>
+</head>
+<body>
+<div class="Top"><span></span>设置<a href="">完成</a></div>
+<div class="shezhi-qiu">
+	<canvas id="dowebok"></canvas>
+	<p>还可使用 10 天</p>
+    <span>电量</span>
+</div>
+
+<div class="shezhi-nini font-32">牙刷名称<em></em></div>
+
+<div class="shezhi-moshi font-26">
+	<p>牙刷模式</p>
+    <span>开启您想要的牙刷模式，用拖拉的方式来改变模式的顺序</span>
+</div>
+
+<div class="shezhi-xx bg-white">
+	<ul>
+		<li class="on">清洁--日常清洁牙刷</li>
+        <li class="on">美白--日常美白牙齿</li>
+        <li>钻白--深层美白牙齿</li>
+        <li>敏感--防止牙龈出血</li>
+        <li>按摩--按摩牙床，预防牙周炎</li>
+        <li>牙龈护理--改善牙龈健康</li>
+        <li>清洁舌苔--清洁舌苔，除口臭</li>    
+	</ul>
+</div>
+
+<div class="shezhi-tou bg-white font-30">
+	<span class="fl">刷头可使用：</span>
+    <p><em></em></p>
+</div>
+
+</body>
+</html>
+<script>
+$(function(){
+	$('#dowebok').waterbubble({
+		txt: '75%',
+		textColor: '#1c161a',
+		font: '3rem arial',
+		data: 0.75,
+		waterColor: '#14dbfa',
+	});
+});
+</script>

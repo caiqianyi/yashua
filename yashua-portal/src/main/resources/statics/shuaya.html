@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="css/css.css" type="text/css">
+<title>刷牙详情</title>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="js/Font.js"></script>
+</head>
+<body>
+<div class="Top">刷牙详情</div>
+
+<div id="shuaya" class="shuaya">
+	<p class="day font-30">今日刷牙情况：</p>
+    <div class="bd">
+        <ul>
+            <li>
+            	<div class="txt">
+                    <span>7:00 AM</span>
+                    <p>口气： 8 分</p>
+                </div>
+            </li>
+            <li>
+            	<div class="txt">
+                    <span>13:00 PM</span>
+                    <p>口气： 8 分</p>
+                </div>
+            </li>
+            <li>
+            	<div class="txt">
+                    <span>9:00 PM</span>
+                    <p>口气： 8 分</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="hd"><ul></ul></div>
+</div>
+
+<!--刷牙记录-->
+<div class="shuayajilu">
+	<p class="tit font-30">近期口气记录：</p>
+    <ul>
+    	<li>
+        	<div class="date fl on"><span><em>5</em>/18</span><p><i>07:28</i><i>21:00</i></p></div>
+            <div class="tiao fl font-22">
+            	<p><em style="width:4rem;">8分</em></p>
+                <p><em style="width:3.5rem;">7分</em></p>
+            </div>
+        </li>
+        <li>
+        	<div class="date fl"><span><em>5</em>/17</span><p><i>07:35</i><i>20:00</i></p></div>
+            <div class="tiao fl font-22">
+            	<p><em style="width:4.5rem;">9分</em></p>
+                <p><em style="width:3rem;">6分</em></p>
+            </div>
+        </li>
+        <li>
+        	<div class="date fl"><span><em>5</em>/16</span><p><i>08:28</i><i>18:30</i></p></div>
+            <div class="tiao fl font-22">
+            	<p><em style="width:5rem;">10分</em></p>
+                <p><em style="width:4rem;">8分</em></p>
+            </div>
+        </li>
+        <li>
+        	<div class="date fl"><span><em>5</em>/15</span><p><i>08:00</i><i>19:10</i></p></div>
+            <div class="tiao fl font-22">
+            	<p><em style="width:4rem;">8分</em></p>
+                <p><em style="width:4.5rem;">9分</em></p>
+            </div>
+        </li>
+        <li>
+        	<div class="date fl"><span><em>5</em>/14</span><p><i>07:10</i><i>20:05</i></p></div>
+            <div class="tiao fl font-22">
+            	<p><em style="width:3.5rem;">7分</em></p>
+                <p><em style="width:4rem;">8分</em></p>
+            </div>
+        </li>
+        <li>
+        	<div class="date fl"><span><em>5</em>/13</span><p><i>07:00</i><i>20:15</i></p></div>
+            <div class="tiao fl font-22">
+            	<p><em style="width:4.5rem;">9分</em></p>
+                <p><em style="width:5rem;">10分</em></p>
+            </div>
+        </li>
+    </ul>
+    <a href="lishijilu.html">查看更多>></a>
+</div>
+
+<!--公用底部-->
+<div class="bot-nav bg-white font-26">
+	<ul>
+		<li><a href="index.html">首页</a></li>
+        <li class="on"><a href="shuaya.html">历史</a></li>
+        <li><a href="faxian.html">发现</a></li>
+        <li><a href="wode.html">我的</a></li>
+	</ul>
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+    TouchSlide({ 
+        slideCell:"#shuaya",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"left", 
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页c" 
+    });
+</script>

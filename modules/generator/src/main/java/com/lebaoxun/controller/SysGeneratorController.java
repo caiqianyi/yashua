@@ -1,24 +1,26 @@
 package com.lebaoxun.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.lebaoxun.service.SysGeneratorService;
-import com.lebaoxun.utils.PageUtils;
-import com.lebaoxun.utils.Query;
-import com.lebaoxun.utils.R;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.fastjson.JSON;
+import com.lebaoxun.service.SysGeneratorService;
+import com.lebaoxun.utils.PageUtils;
+import com.lebaoxun.utils.Query;
+import com.lebaoxun.utils.R;
 
 /**
  * 代码生成器
@@ -30,6 +32,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/sys/generator")
 public class SysGeneratorController {
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private SysGeneratorService sysGeneratorService;
 	
@@ -57,11 +61,10 @@ public class SysGeneratorController {
 		String[] tableNames = new String[]{};
 		String tables = request.getParameter("tables");
 		tableNames = JSON.parseArray(tables).toArray(tableNames);
-		
 		byte[] data = sysGeneratorService.generatorCode(tableNames);
-		
+		String zipName = tableNames.length == 1 ? tableNames[0] :"generator";
 		response.reset();  
-        response.setHeader("Content-Disposition", "attachment; filename=\"renren.zip\"");  
+        response.setHeader("Content-Disposition", "attachment; filename=\""+zipName+".zip\"");  
         response.addHeader("Content-Length", "" + data.length);  
         response.setContentType("application/octet-stream; charset=UTF-8");  
   

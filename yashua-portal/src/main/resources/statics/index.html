@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="css/css.css" type="text/css">
+<title>主页</title>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/Font.js"></script>
+</head>
+<body>
+<div class="Top font-30">首页</div>
+<div class="sy-top">
+	<div class="sy-t1">
+    	<p class="fl">牙刷电量<span><i>86</i>%</span></p>
+        <p class="fr">刷头剩余寿命<span><i>28</i>天</span></p>
+    </div>
+    <div class="sy-t2">
+    	<a href="yashuashezhi - 改版.html"><img src="images/sy-ys.png" alt=""/>设置我的牙刷</a>
+    </div>
+    <div class="sy-t3">
+    	<p class="fl">获得积分<span><i>2400</i></span></p>
+        <p class="fr">累计刷牙<span><i>203</i>次</span></p>
+    </div>
+</div>
+
+<div class="sy-kouqi bg-white">
+	<h3>口气检测</h3>
+    <div class="kouqi-txt">
+    	<p><span><i>当前口气：<b>8分</b></i></span></p>
+        <em>开始检测</em>
+    </div>
+    <div class="moshi font-24">当前模式：<em>漱口水</em></div>    
+</div>
+
+<div class="sy-mid bg-white">
+	<h3>健康计划<a href="tianjiajihua.html">添加</a></h3>
+    <div class="line">
+    	<div class="plan on">
+        	<span>07:00</span>
+            <p>起床刷牙<i>（已完成）</i></p>
+        </div>
+        <div class="plan plan1">
+        	<span>12:30</span>
+            <p>别忘了漱口</p>
+        </div>
+        <div class="plan plan2">
+        	<span>23:30</span>
+            <p>睡前记得刷牙</p>
+        </div>
+    </div>
+</div>
+
+<div class="sy-fot bg-white font-26">
+	<h3>牙科小知识</h3>
+    <a href="zixunliebiao.html">
+        <dl>
+            <p>8个刷牙错误常识</p>
+            <dt>错误1 冰冷刷牙</dt>
+            <dd>冷水会导致牙本质敏感的人牙齿酸痛，而且不利于牙膏内的有效物质发挥活性。牙膏中的主要成分是摩擦剂和氟化物，实验室研究发现这些有效成分发...</dd>
+        </dl> 
+    </a>   
+</div>
+
+<!--公用底部-->
+<div class="bot-nav bg-white font-26">
+	<ul>
+		<li class="on"><a href="index.html">首页</a></li>
+        <li><a href="shuaya.html">历史</a></li>
+        <li><a href="faxian.html">发现</a></li>
+        <li><a href="wode.html">我的</a></li>
+	</ul>
+</div>
+
+<!--口气模式弹窗-->
+<div class="pop-kefu font-28" style="text-align:center;">
+	<div></div>
+	<ul style="width:3.8rem;height:4rem;padding-top:.8rem; overflow:hidden;">
+    	<li>漱口水</li>
+        <li>口香糖</li>
+        <li>刷牙</li>
+        <li class="last">水果</li>
+        <em>请选择改善口气的模式</em>
+    </ul>
+</div>
+
+</body>
+</html>
+<script>
+	$('.moshi em').click(function(){
+		$('.pop-kefu div').show();
+		$('.pop-kefu ul').show();
+	});
+	$('.pop-kefu li').click(function(){
+		$('.pop-kefu div').hide();
+		$('.pop-kefu ul').hide();
+	});
+</script>

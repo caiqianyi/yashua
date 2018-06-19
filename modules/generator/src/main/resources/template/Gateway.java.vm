@@ -1,0 +1,72 @@
+package ${package}.rest.${moduleName};
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.I${className}Service;
+import ${mainPath}.commons.utils.PageUtils;
+import ${mainPath}.commons.exception.ResponseMessage;
+
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+public class ${className}Controller {
+    @Autowired
+    private I${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/${moduleName}/${pathName}/list")
+    ResponseMessage list(@RequestParam Map<String, Object> params){
+        return ${classname}Service.list(params);
+    }
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/${moduleName}/${pathName}/info/{${pk.attrname}}")
+    ResponseMessage info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+        return ${classname}Service.info(${pk.attrname});
+    }
+
+    /**
+     * 保存
+     */
+    @RequestMapping("/${moduleName}/${pathName}/save")
+    ResponseMessage save(@RequestBody ${className}Entity ${classname}){
+        return ${classname}Service.save(${classname});
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/${moduleName}/${pathName}/update")
+    ResponseMessage update(@RequestBody ${className}Entity ${classname}){
+        return ${classname}Service.update(${classname});
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/${moduleName}/${pathName}/delete")
+    ResponseMessage delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+        return ${classname}Service.delete(${pk.attrname}s);
+    }
+
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="css/css.css" type="text/css">
+<title>商品详情</title>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="js/Font.js"></script>
+</head>
+<body>
+<div class="Top"><span></span>商品详情</div>
+<!--图片展示-->
+<div id="focus" class="thing bg-white">
+    <div class="bd">
+        <ul>
+            <li><a href=""><img src="images/yst-2.png"/></a></li>
+            <li><a href=""><img src="images/yst-1.png"/></a></li>           
+        </ul>
+    </div>
+    <div class="hd"><ul></ul></div>
+</div>
+<!--文字介绍-->
+<div class="thing-txt bg-white">
+	<div class="txt-name">
+    	<h3>爱尔兰进口 美牙电动牙刷头 EB20-4<br/>配件正品原装替换头</h3>
+        <span>分享</span>
+    </div>
+    <p class="money">￥<i>98</i>.00-<i>148</i>.00<span>价格</span></p>
+    <p class="free">快递 免运费<i>月销3597笔</i>上海</p>    
+</div>
+<!--选择宝贝-->
+<div class="thing-cho bg-white">
+	<span>选择 主要颜色</span>
+    <em></em>
+</div>
+<!--宝贝评价-->
+<div class="thing-cho bg-white" style="margin-bottom:2rem;">
+	<span>宝贝评价（55）</span>
+    <em></em>
+</div>
+<!--购买-->
+<div class="thing-mai bg-white">
+	<span>客服</span>
+    <ul>
+    	<li class="bg-gwc">购物车</li>
+        <li class="bg-mai">立即购买</li>
+    </ul>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+    TouchSlide({ 
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"left", 
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页c" 
+    });
+</script>

@@ -27,7 +27,7 @@ public class ${className}Entity implements Serializable {
 	#if($column.columnName == $pk.columnName)
 @TableId
 	#end
-private $column.attrType $column.attrname;
+	private $column.attrType $column.attrname;
 #end
 
 #foreach ($column in $columns)

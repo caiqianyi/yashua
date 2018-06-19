@@ -46,9 +46,12 @@ import java.util.zip.ZipOutputStream;
  */
 public class GenUtils {
 
-	public static List<String> getTemplates(){
+	public static List<String> getTemplates(Integer flag){
 		List<String> templates = new ArrayList<String>();
 		templates.add("template/Entity.java.vm");
+		templates.add("template/Api.java.vm");
+		templates.add("template/Gateway.java.vm");
+		templates.add("template/Hystrix.java.vm");
 		templates.add("template/Dao.java.vm");
 		templates.add("template/Dao.xml.vm");
 		templates.add("template/Service.java.vm");
@@ -57,13 +60,21 @@ public class GenUtils {
 		templates.add("template/list.html.vm");
 		templates.add("template/list.js.vm");
 		templates.add("template/menu.sql.vm");
+		
+		if(flag == 0){
+			templates.add("template/Pom-api.xml.vm");
+			templates.add("template/Pom-dao.xml.vm");
+			templates.add("template/Pom-model.xml.vm");
+			templates.add("template/Pom-modules.xml.vm");
+			templates.add("template/Pom-service.xml.vm");
+		}
 		return templates;
 	}
 	
 	/**
 	 * 生成代码
 	 */
-	public static void generatorCode(Map<String, String> table,
+	public static void generatorCode(Integer flag,Map<String, String> table,
 			List<Map<String, String>> columns, ZipOutputStream zip){
 		//配置信息
 		Configuration config = getConfig();
@@ -138,7 +149,7 @@ public class GenUtils {
         VelocityContext context = new VelocityContext(map);
         
         //获取模板列表
-		List<String> templates = getTemplates();
+		List<String> templates = getTemplates(flag);
 		for(String template : templates){
 			//渲染模板
 			StringWriter sw = new StringWriter();
@@ -152,6 +163,7 @@ public class GenUtils {
 				IOUtils.closeQuietly(sw);
 				zip.closeEntry();
 			} catch (IOException e) {
+				e.printStackTrace();
 				throw new I18nMessageException("-1","渲染模板失败，表名：" + tableEntity.getTableName(), e);
 			}
 		}
@@ -190,49 +202,75 @@ public class GenUtils {
 	 * 获取文件名
 	 */
 	public static String getFileName(String template, String className, String packageName, String moduleName) {
-		String packagePath = "main" + File.separator + "java" + File.separator;
+		String packagePath = "src" + File.separator + "main" + File.separator + "java" + File.separator;
 		if (StringUtils.isNotBlank(packageName)) {
 			packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
 		}
-
+		
+		if (template.contains("Api.java.vm" )) {
+			return moduleName+ "-api" + File.separator + packagePath + "service" + File.separator + "I"+className + "Service.java";
+		}
+		if (template.contains("Hystrix.java.vm" )) {
+			return moduleName+ "-api" + File.separator + packagePath + "service" + File.separator + "hystrix" + File.separator + className + "ServiceHystrix.java";
+		}
+		
+		if (template.contains("Gateway.java.vm" )) {
+			return moduleName+ "-gateway" + File.separator +  "src" + File.separator + "main" + File.separator + "java" + File.separator+ packageName.replace(".", File.separator) + File.separator + "rest" + File.separator + moduleName + File.separator + className + "Controller.java";
+		}
+		
 		if (template.contains("Entity.java.vm" )) {
-			return packagePath + "entity" + File.separator + className + "Entity.java";
+			return moduleName+ "-model" + File.separator + packagePath + "entity" + File.separator + className + "Entity.java";
 		}
 
 		if (template.contains("Dao.java.vm" )) {
-			return packagePath + "dao" + File.separator + className + "Dao.java";
+			return moduleName+ "-dao" + File.separator + packagePath + "dao" + File.separator + className + "Dao.java";
 		}
 
 		if (template.contains("Service.java.vm" )) {
-			return packagePath + "service" + File.separator + className + "Service.java";
+			return moduleName+ "-service" + File.separator + packagePath + "service" + File.separator + className + "Service.java";
 		}
 
 		if (template.contains("ServiceImpl.java.vm" )) {
-			return packagePath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
+			return moduleName+ "-service" + File.separator + packagePath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
 		}
 
 		if (template.contains("Controller.java.vm" )) {
-			return packagePath + "controller" + File.separator + className + "Controller.java";
+			return moduleName+ "-service" + File.separator + packagePath + "controller" + File.separator + className + "Controller.java";
 		}
 
 		if (template.contains("Dao.xml.vm" )) {
-			return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + moduleName + File.separator + className + "Dao.xml";
+			return moduleName+ "-dao" + File.separator + "src"+ File.separator +"main" + File.separator + "resources" + File.separator + "mappers" + File.separator + className + "Dao.xml";
 		}
 
 		if (template.contains("list.html.vm" )) {
-			return "main" + File.separator + "resources" + File.separator + "templates" + File.separator
+			return moduleName+ "-gateway" + File.separator + "src"+ File.separator + "main" + File.separator + "resources" + File.separator + "templates" + File.separator
 					+ "modules" + File.separator + moduleName + File.separator + className.toLowerCase() + ".html";
 		}
 
 		if (template.contains("list.js.vm" )) {
-			return "main" + File.separator + "resources" + File.separator + "statics" + File.separator + "js" + File.separator
+			return moduleName+ "-gateway" + File.separator + "src"+ File.separator + "main" + File.separator + "resources" + File.separator + "statics" + File.separator + "js" + File.separator
 					+ "modules" + File.separator + moduleName + File.separator + className.toLowerCase() + ".js";
 		}
 
 		if (template.contains("menu.sql.vm" )) {
-			return className.toLowerCase() + "_menu.sql";
+			return "db"+ File.separator +className.toLowerCase() + ".sql";
 		}
 
+		if (template.contains("Pom-api.xml.vm" )) {
+			return moduleName+ "-api" + File.separator + "pom.xml";
+		}
+		if (template.contains("Pom-dao.xml.vm" )) {
+			return moduleName+ "-dao" + File.separator + "pom.xml";
+		}
+		if (template.contains("Pom-model.xml.vm" )) {
+			return moduleName+ "-model" + File.separator + "pom.xml";
+		}
+		if (template.contains("Pom-modules.xml.vm" )) {
+			return File.separator +"pom.xml";
+		}
+		if (template.contains("Pom-service.xml.vm" )) {
+			return moduleName+ "-service" + File.separator + "pom.xml";
+		}
 		return null;
 	}
 }

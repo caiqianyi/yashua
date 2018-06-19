@@ -1,0 +1,56 @@
+package ${package}.${moduleName}.service;
+
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.hystrix.${className}ServiceHystrix;
+import ${mainPath}.commons.exception.ResponseMessage;
+
+import java.util.Map;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+
+@FeignClient(value="${moduleName}-service",fallback=${className}ServiceHystrix.class)
+public interface I${className}Service {
+	/**
+     * 列表
+     */
+    @RequestMapping("/${moduleName}/${pathName}/list")
+    ResponseMessage list(@RequestParam Map<String, Object> params);
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/${moduleName}/${pathName}/info/{${pk.attrname}}")
+    ResponseMessage info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname});
+
+    /**
+     * 保存
+     */
+    @RequestMapping("/${moduleName}/${pathName}/save")
+    ResponseMessage save(@RequestBody ${className}Entity ${classname});
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/${moduleName}/${pathName}/update")
+    ResponseMessage update(@RequestBody ${className}Entity ${classname});
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/${moduleName}/${pathName}/delete")
+    ResponseMessage delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s);
+    
+}
+
