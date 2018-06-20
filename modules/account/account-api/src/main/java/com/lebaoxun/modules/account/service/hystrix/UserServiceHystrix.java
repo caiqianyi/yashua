@@ -43,6 +43,25 @@ public class UserServiceHystrix implements IUserService {
 	public ResponseMessage delete(String[] ids) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+
+	@Override
+	public UserEntity findByUserId(Long userId) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public UserEntity findByAccount(String account) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public UserEntity login(String username, String password) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
     
+	@Override
+	public UserEntity findByOpenid(String openid, String groupid) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
 }
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<#include "/header.html">
+<title>登录</title>
+<script type="text/javascript">
+	//密码可视设置
+	function OpenEye(){
+		 $('#seeEye').addClass('hid');
+		 $('#closeEye').removeClass('hid');
+		 $('#password').attr('type','password');
+	}
+	function ShutEye(){
+		 $('#closeEye').addClass('hid');
+		 $('#seeEye').removeClass('hid');
+		$('#password').attr('type','text');
+	}	
+</script>
+</head>
+<body class="bg-white">
+<div class="Top">登录<a href="zhuce.html">注册</a></div>
+<section class="zhuce">
+	<div class="logo"><!--请放入logo图片--></div>
+    <div class="login">
+    	<div class="tel">
+            <em></em>
+            <input type="text" id="region"  placeholder="请输入手机号码" maxlength="11" />
+        </div>
+        <div class="tel psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="password" value="" placeholder="请输入密码">
+            <i id="closeEye" class="hid" onclick="ShutEye()"></i><i id="seeEye" onclick="OpenEye()"></i>
+        </div> 
+        <a href="wangjimima.html" class="forget">忘记密码？</a>     	
+        <a href="" class="denglu font-36">登 录</a>
+        <div class="opt">
+        	<p><span>其他方式登录</span></p>
+            <ul>
+            	<li><img src="/statics/images/weixin.png" alt=""/></li>
+                <li><img src="/statics/images/qq.png" alt=""/></li>
+            </ul>
+        </div>
+        
+    </div>
+</section>
+</body>
+</html>
+

@@ -95,6 +95,16 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.lebaoxun</groupId>
+			<artifactId>account-api</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lebaoxun</groupId>
+			<artifactId>wechat-api</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
 	</dependencies>
 
 </project>

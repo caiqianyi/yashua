@@ -1,10 +1,10 @@
-package com.lebaoxun.admin.config;
+package com.lebaoxun.portal.config;
 
 public class AccountConstant {
 	/**
 	 * 账号锁定n小时
 	 */
-	public static final String CACHEKEY_LOGIN_ACCOUNT_LOCK = "admin:login:account:lock";
+	public static final String CACHEKEY_LOGIN_ACCOUNT_LOCK = "user:login:account:lock";
 	
 	public final static Integer ACCOUNT_ERROR_COUNT = 10;//一天账号密码错误次数
 	
