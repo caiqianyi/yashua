@@ -8,7 +8,7 @@ $(function () {
             { label: '所属部门', name: 'deptName', sortable: false, width: 75 },
             { label: '备注', name: 'remark', width: 100 },
             { label: '创建时间', name: 'createTime', index: "create_time", width: 85, formatter: function(value){
-				return value ? new Date(parseInt(value,10)).format("yyyy-MM-dd hh:mm:ss") : null;
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
 			}}
         ],
         viewrecords: true,

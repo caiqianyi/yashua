@@ -14,7 +14,7 @@ $(function () {
 					'<span class="label label-success">正常</span>';
 			}},
 			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85, formatter: function(value){
-				return value ? new Date(parseInt(value,10)).format("yyyy-MM-dd hh:mm:ss") : null;
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
 			}}
         ],
 		viewrecords: true,

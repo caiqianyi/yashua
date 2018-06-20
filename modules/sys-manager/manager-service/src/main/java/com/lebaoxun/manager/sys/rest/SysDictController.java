@@ -49,6 +49,7 @@ public class SysDictController {
      */
     @RequestMapping("/sys/dict/list")
     public ResponseMessage list(@RequestParam Map<String, Object> params){
+    	
         PageUtils page = sysDictService.queryPage(params);
         return ResponseMessage.ok(page);
     }

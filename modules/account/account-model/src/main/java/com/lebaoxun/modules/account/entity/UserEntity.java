@@ -20,8 +20,8 @@ public class UserEntity implements Serializable {
 	/**
 	 * 主键
 	 */
-@TableId
-	private String id;
+	@TableId
+	private Long id;
 	/**
 	 * 用户ID
 	 */
@@ -134,13 +134,13 @@ public class UserEntity implements Serializable {
 	/**
 	 * 设置：主键
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：主键
 	 */
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 	/**

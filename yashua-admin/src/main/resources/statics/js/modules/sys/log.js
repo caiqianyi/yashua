@@ -11,7 +11,7 @@ $(function () {
             { label: '执行时长(毫秒)', name: 'time', width: 80 },
 			{ label: 'IP地址', name: 'ip', width: 70 }, 			
 			{ label: '创建时间', name: 'createDate', width: 90, formatter: function(value){
-				return value ? new Date(parseInt(value,10)).format("yyyy-MM-dd hh:mm:ss") : null;
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
 			}}	
         ],
 		viewrecords: true,
