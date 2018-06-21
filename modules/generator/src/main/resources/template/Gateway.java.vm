@@ -13,6 +13,7 @@ import ${package}.${moduleName}.entity.${className}Entity;
 import ${package}.${moduleName}.service.I${className}Service;
 import ${mainPath}.commons.utils.PageUtils;
 import ${mainPath}.commons.exception.ResponseMessage;
+import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 
 
 
@@ -27,6 +28,9 @@ import ${mainPath}.commons.exception.ResponseMessage;
 public class ${className}Controller {
     @Autowired
     private I${className}Service ${classname}Service;
+    
+    @Resource
+	private Oauth2SecuritySubject oauth2SecuritySubject;
 
     /**
      * 列表
@@ -50,7 +54,7 @@ public class ${className}Controller {
      */
     @RequestMapping("/${moduleName}/${pathName}/save")
     ResponseMessage save(@RequestBody ${className}Entity ${classname}){
-        return ${classname}Service.save(${classname});
+        return ${classname}Service.save(oauth2SecuritySubject.getCurrentUser(),${classname});
     }
 
     /**
@@ -58,7 +62,7 @@ public class ${className}Controller {
      */
     @RequestMapping("/${moduleName}/${pathName}/update")
     ResponseMessage update(@RequestBody ${className}Entity ${classname}){
-        return ${classname}Service.update(${classname});
+        return ${classname}Service.update(oauth2SecuritySubject.getCurrentUser(),${classname});
     }
 
     /**
@@ -66,7 +70,7 @@ public class ${className}Controller {
      */
     @RequestMapping("/${moduleName}/${pathName}/delete")
     ResponseMessage delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
-        return ${classname}Service.delete(${pk.attrname}s);
+        return ${classname}Service.delete(oauth2SecuritySubject.getCurrentUser(),${pk.attrname}s);
     }
 
 }

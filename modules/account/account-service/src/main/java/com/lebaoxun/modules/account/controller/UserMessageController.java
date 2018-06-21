@@ -16,6 +16,7 @@ import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.account.entity.UserMessageEntity;
 import com.lebaoxun.modules.account.service.UserMessageService;
+import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 
 
@@ -57,7 +58,9 @@ public class UserMessageController {
      * 保存
      */
     @RequestMapping("/account/usermessage/save")
-    ResponseMessage save(@RequestBody UserMessageEntity userMessage){
+    @RedisLock(value="account:usermessage:save:lock:#arg0")
+    ResponseMessage save(@RequestParam("adminId") Long adminId,
+    		@RequestBody UserMessageEntity userMessage){
 		userMessageService.insert(userMessage);
         return ResponseMessage.ok();
     }
@@ -66,7 +69,9 @@ public class UserMessageController {
      * 修改
      */
     @RequestMapping("/account/usermessage/update")
-    ResponseMessage update(@RequestBody UserMessageEntity userMessage){
+    @RedisLock(value="account:usermessage:save:lock:#arg0")
+    ResponseMessage update(@RequestParam("adminId") Long adminId,
+    		@RequestBody UserMessageEntity userMessage){
 		userMessageService.updateById(userMessage);
         return ResponseMessage.ok();
     }
@@ -75,7 +80,8 @@ public class UserMessageController {
      * 删除
      */
     @RequestMapping("/account/usermessage/delete")
-    ResponseMessage delete(@RequestBody Integer[] ids){
+    ResponseMessage delete(@RequestParam("adminId") Long adminId,
+    		@RequestBody Integer[] ids){
 		userMessageService.deleteBatchIds(Arrays.asList(ids));
         return ResponseMessage.ok();
     }

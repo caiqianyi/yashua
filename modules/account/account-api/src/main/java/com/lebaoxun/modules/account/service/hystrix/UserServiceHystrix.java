@@ -3,6 +3,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.lebaoxun.modules.account.em.UserLogAction;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
 import com.lebaoxun.commons.exception.I18nMessageException;
@@ -30,17 +31,52 @@ public class UserServiceHystrix implements IUserService {
 	}
 
 	@Override
-	public ResponseMessage save(UserEntity user) {
+	public ResponseMessage save(Long adminId, UserEntity user) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage update(UserEntity user) {
+	public ResponseMessage disabled(Long adminId, Long userId, String scope) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage delete(String[] ids) {
+	public ResponseMessage modifyPassword(Long userId, String newPasswd,
+			String scope, Long adminId) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage modifyBalance(Long userId, Integer amount,
+			String scope, Long adminId, String descr) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage modifyInfo(Long userId, UserEntity user,
+			String scope, Long adminId, String descr) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage bindMobile(Long userId, String scope, String mobile,
+			String password) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage bindOpenid(Long userId, String scope, String openid) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage wechatOARegister(Long userId, UserEntity user,
+			String scope) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage delete(Long adminId, String[] ids) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
@@ -55,13 +91,20 @@ public class UserServiceHystrix implements IUserService {
 	}
 
 	@Override
-	public UserEntity login(String username, String password) {
-		throw new I18nMessageException("502","服务器异常，请稍后重试");
-	}
-    
-	@Override
 	public UserEntity findByOpenid(String openid, String groupid) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+
+	@Override
+	public UserEntity login(String username, String password) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage loginLog(Long userId, String scope,
+			UserLogAction logType, String adjunctInfo, String descr) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
 }
 

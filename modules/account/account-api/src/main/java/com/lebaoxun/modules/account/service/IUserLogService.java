@@ -34,23 +34,5 @@ public interface IUserLogService {
     @RequestMapping("/account/userlog/info/{id}")
     ResponseMessage info(@PathVariable("id") Integer id);
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/account/userlog/save")
-    ResponseMessage save(@RequestBody UserLogEntity userLog);
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/account/userlog/update")
-    ResponseMessage update(@RequestBody UserLogEntity userLog);
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/account/userlog/delete")
-    ResponseMessage delete(@RequestBody Integer[] ids);
-    
 }
 

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.modules.account.em.UserLogAction;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.hystrix.UserServiceHystrix;
 
@@ -40,19 +40,99 @@ public interface IUserService {
      * 保存
      */
     @RequestMapping("/account/user/save")
-    ResponseMessage save(@RequestBody UserEntity user);
+    ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody UserEntity user);
 
     /**
-     * 修改
+     * 设置用户账户状态
+     * @param adminId 管理员
+     * @param userId 用户ID
+     * @param scope 获取管理员host使用
+     * @return
      */
-    @RequestMapping("/account/user/update")
-    ResponseMessage update(@RequestBody UserEntity user);
+    @RequestMapping("/account/user/disabled")
+    ResponseMessage disabled(@RequestParam(value="adminId")Long adminId,
+    		@RequestParam(value="userId")Long userId,
+    		@RequestParam(value="scope")String scope);
+    
+    /**
+     * 修改密码
+     * @param userId 用户ID
+     * @param newPasswd 新密码（非加密）
+     * @param adminId 操作人
+     */
+    @RequestMapping("/account/user/modifyPassword")
+    ResponseMessage modifyPassword(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="newPasswd") String newPasswd,
+    		@RequestParam(value="scope") String scope,
+    		@RequestParam(value="adminId",required=false) Long adminId);
+    
+    /**
+     * 修改账户金额
+     * @param userId 用户ID
+     * @param amount 变更数量
+     * @param adminId 操作人
+     * @param logType 带字母U开头，为用户本人操作产生的日志
+     * @param descr 操作说明
+     */
+    @RequestMapping("/account/user/modifyBalance")
+    ResponseMessage modifyBalance(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="amount") Integer amount,
+    		@RequestParam(value="scope") String scope, 
+    		@RequestParam(value="adminId",required=false) Long adminId,
+    		@RequestParam(value="descr",required=false) String descr);
+    
+    /**
+     * 修改用户信息
+     * @param userId
+     * @param user
+     * @param logType
+     * @param adminId
+     * @param descr
+     */
+    @RequestMapping("/account/user/modifyInfo")
+    ResponseMessage modifyInfo(@RequestParam(value="userId") Long userId,
+    		@RequestBody UserEntity user, 
+    		@RequestParam(value="scope") String scope, 
+    		@RequestParam(value="adminId",required=false) Long adminId,
+    		@RequestParam(value="descr",required=false) String descr);
+    
+    /**
+     * 绑定账号
+     * @param userId
+     * @param account
+     */
+    @RequestMapping("/account/user/bindMobile")
+    ResponseMessage bindMobile(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="scope") String scope,
+    		@RequestParam(value="mobile") String mobile, 
+    		@RequestParam(value="password") String password);
+    
+    /**
+     * 绑定微信公众号openid
+     * @param userId 用户ID
+     * @param openid 微信openid
+     */
+    @RequestMapping("/account/user/bindOpenid")
+    ResponseMessage bindOpenid(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="scope") String scope, 
+    		@RequestParam(value="openid") String openid);
+    
+    /**
+     * 微信公众号注册
+     * @param userId
+     * @param user
+     * @param scope
+     */
+    @RequestMapping("/account/user/wechatOARegister")
+    ResponseMessage wechatOARegister(@RequestParam(value="userId") Long userId, 
+    		@RequestBody UserEntity user, 
+    		@RequestParam(value="scope") String scope);
 
     /**
      * 删除
      */
     @RequestMapping("/account/user/delete")
-    ResponseMessage delete(@RequestBody String[] ids);
+    ResponseMessage delete(@RequestParam("adminId") Long adminId,@RequestBody String[] ids);
     
     /**
      * 根据用户ID查询用户信息
@@ -71,14 +151,6 @@ public interface IUserService {
 	UserEntity findByAccount(@RequestParam("account") String account);
 	
 	/**
-     * 根据用户名，密码验证登录
-     * @param username
-     * @return
-     */
-	@RequestMapping("/account/user/login")
-	UserEntity login(@RequestParam("username") String username,@RequestParam("password") String password);
-	
-	/**
      * 根据用户名查询用户信息
      * @param username
      * @return
@@ -86,5 +158,28 @@ public interface IUserService {
 	@RequestMapping("/account/user/findByOpenid")
 	UserEntity findByOpenid(@RequestParam("openid") String openid,
 			@RequestParam(value="groupid",required=false) String groupid);
+	
+	/**
+     * 根据用户名，密码验证登录
+     * @param username
+     * @return
+     */
+	@RequestMapping("/account/user/login")
+	UserEntity login(@RequestParam("username") String username,@RequestParam("password") String password);
+
+	/**
+     * 记录登录日志
+     * @param userId
+     * @param scope
+     * @param logType
+     * @param adjunctInfo
+     * @param descr
+     */
+	@RequestMapping("/account/user/loginLog")
+	ResponseMessage loginLog(@RequestParam("userId") Long userId,
+			@RequestParam(value="scope") String scope,
+			@RequestParam(value="logType") UserLogAction logType,
+			@RequestParam(value="adjunctInfo") String adjunctInfo,
+			@RequestParam(value="descr") String descr);
 }
 

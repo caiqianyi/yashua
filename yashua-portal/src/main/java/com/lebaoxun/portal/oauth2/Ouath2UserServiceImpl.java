@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
+import com.lebaoxun.portal.config.AccountConstant;
 import com.lebaoxun.security.oauth2.IOuath2UserService;
 import com.lebaoxun.security.oauth2.entity.Oauth2UserLog;
 import com.lebaoxun.security.oauth2.entity.Oauth2VisitPath;
 
-@Service
+@Service("ouath2UserService")
 public class Ouath2UserServiceImpl implements IOuath2UserService {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -34,6 +35,8 @@ public class Ouath2UserServiceImpl implements IOuath2UserService {
 	public void saveLoginLog(Oauth2UserLog log) {
 		// TODO Auto-generated method stub
 		logger.debug("login log={}",new Gson().toJson(log));
+		
+		//userService.loginLog(userId, scope, logType, adjunctInfo, descr);
 	}
 
 	@Override
@@ -42,4 +45,9 @@ public class Ouath2UserServiceImpl implements IOuath2UserService {
 		return null;
 	}
 
+	@Override
+	public String getScope() {
+		// TODO Auto-generated method stub
+		return AccountConstant.SCOPE;
+	}
 }

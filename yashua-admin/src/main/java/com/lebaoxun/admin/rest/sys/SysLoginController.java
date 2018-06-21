@@ -35,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.code.kaptcha.Constants;
@@ -48,9 +47,9 @@ import com.lebaoxun.commons.utils.DesUtils;
 import com.lebaoxun.commons.utils.PwdUtil;
 import com.lebaoxun.manager.sys.entity.SysUserEntity;
 import com.lebaoxun.pay.service.ISysUserService;
-import com.lebaoxun.security.oauth2.Oauth2;
 import com.lebaoxun.security.oauth2.Oauth2AccessToken;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
+import com.lebaoxun.security.oauth2.entity.Oauth2;
 import com.lebaoxun.soa.core.redis.IRedisCache;
 
 /**

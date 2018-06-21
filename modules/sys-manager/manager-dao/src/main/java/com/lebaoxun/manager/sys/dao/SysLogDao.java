@@ -31,5 +31,4 @@ import com.lebaoxun.manager.sys.entity.SysLogEntity;
  */
 @Mapper
 public interface SysLogDao extends BaseMapper<SysLogEntity> {
-	
 }

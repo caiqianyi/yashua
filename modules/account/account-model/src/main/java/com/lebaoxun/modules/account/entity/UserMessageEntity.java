@@ -20,7 +20,7 @@ public class UserMessageEntity implements Serializable {
 	/**
 	 * 
 	 */
-@TableId
+	@TableId
 	private Integer id;
 	/**
 	 * 消息标题

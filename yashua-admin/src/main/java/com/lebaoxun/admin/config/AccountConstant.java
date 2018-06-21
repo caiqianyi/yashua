@@ -11,4 +11,6 @@ public class AccountConstant {
 	public final static Long ACCOUNT_ERROR_LOCK_TIME = 60 * 60 * 2L;//锁定时间
 	
 	public final static Long ACCOUNT_ERROR_CHECK_EXPIRE = 60 * 60 * 24L;
+	
+	public final static String SCOPE = "admin";
 }

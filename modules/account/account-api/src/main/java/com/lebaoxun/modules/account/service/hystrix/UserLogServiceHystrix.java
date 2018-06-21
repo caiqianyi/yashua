@@ -29,20 +29,5 @@ public class UserLogServiceHystrix implements IUserLogService {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
-	@Override
-	public ResponseMessage save(UserLogEntity userLog) {
-		throw new I18nMessageException("502","服务器异常，请稍后重试");
-	}
-
-	@Override
-	public ResponseMessage update(UserLogEntity userLog) {
-		throw new I18nMessageException("502","服务器异常，请稍后重试");
-	}
-
-	@Override
-	public ResponseMessage delete(Integer[] ids) {
-		throw new I18nMessageException("502","服务器异常，请稍后重试");
-	}
-    
 }
 

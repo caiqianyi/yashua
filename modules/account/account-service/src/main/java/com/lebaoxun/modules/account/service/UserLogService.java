@@ -2,6 +2,7 @@ package com.lebaoxun.modules.account.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
+import com.lebaoxun.modules.account.em.UserLogAction;
 import com.lebaoxun.modules.account.entity.UserLogEntity;
 
 import java.util.Map;
@@ -16,5 +17,6 @@ import java.util.Map;
 public interface UserLogService extends IService<UserLogEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    
 }
 

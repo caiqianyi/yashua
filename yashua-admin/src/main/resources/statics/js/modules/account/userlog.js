@@ -1,10 +1,11 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'userId/userlog/list',
+        url: baseURL + 'account/userlog/list',
         datatype: "json",
         colModel: [			
 			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
 			{ label: '用户ID', name: 'userId', index: 'user_id', width: 80 }, 			
+			{ label: '用户账号', name: 'account', index: 'account', width: 80 },
 			{ label: '日志时间', name: 'createTime', index: 'create_time', width: 80 }, 			
 			{ label: '日志类型', name: 'logType', index: 'log_type', width: 80 }, 			
 			{ label: '交易金额', name: 'tradeMoney', index: 'trade_money', width: 80 }, 			
@@ -85,7 +86,7 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.userLog.id == null ? "userId/userlog/save" : "userId/userlog/update";
+			var url = vm.userLog.id == null ? "account/userlog/save" : "account/userlog/update";
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
@@ -111,7 +112,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
-				    url: baseURL + "userId/userlog/delete",
+				    url: baseURL + "account/userlog/delete",
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
@@ -127,7 +128,7 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get(baseURL + "userId/userlog/info/"+id, function(r){
+			$.get(baseURL + "account/userlog/info/"+id, function(r){
 				if(r.errcode && r.errcode != 0){
             		return;
             	}

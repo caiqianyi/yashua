@@ -30,17 +30,17 @@ public class ${className}ServiceHystrix implements I${className}Service {
 	}
 
 	@Override
-	public ResponseMessage save(${className}Entity ${classname}) {
+	public ResponseMessage save(Long adminId,${className}Entity ${classname}) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage update(${className}Entity ${classname}) {
+	public ResponseMessage update(Long adminId,${className}Entity ${classname}) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage delete(${pk.attrType}[] ${pk.attrname}s) {
+	public ResponseMessage delete(Long adminId,${pk.attrType}[] ${pk.attrname}s) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
     

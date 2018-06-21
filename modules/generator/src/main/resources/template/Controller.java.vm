@@ -14,7 +14,7 @@ import ${package}.${moduleName}.entity.${className}Entity;
 import ${package}.${moduleName}.service.${className}Service;
 import ${mainPath}.commons.utils.PageUtils;
 import ${mainPath}.commons.exception.ResponseMessage;
-
+import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 
 /**
@@ -52,7 +52,8 @@ public class ${className}Controller {
      * 保存
      */
     @RequestMapping("/${moduleName}/${pathName}/save")
-    ResponseMessage save(@RequestBody ${className}Entity ${classname}){
+    @RedisLock(value="${moduleName}:${pathName}:save:lock:#arg0")
+    ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody ${className}Entity ${classname}){
 		${classname}Service.insert(${classname});
         return ResponseMessage.ok();
     }
@@ -61,7 +62,8 @@ public class ${className}Controller {
      * 修改
      */
     @RequestMapping("/${moduleName}/${pathName}/update")
-    ResponseMessage update(@RequestBody ${className}Entity ${classname}){
+    @RedisLock(value="${moduleName}:${pathName}:update:lock:#arg0")
+    ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody ${className}Entity ${classname}){
 		${classname}Service.updateById(${classname});
         return ResponseMessage.ok();
     }
@@ -70,7 +72,8 @@ public class ${className}Controller {
      * 删除
      */
     @RequestMapping("/${moduleName}/${pathName}/delete")
-    ResponseMessage delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+    @RedisLock(value="${moduleName}:${pathName}:delete:lock:#arg0")
+    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody ${pk.attrType}[] ${pk.attrname}s){
 		${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
         return ResponseMessage.ok();
     }

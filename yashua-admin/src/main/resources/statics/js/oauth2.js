@@ -17,9 +17,9 @@ $.ajaxSetup({
     	    var expire = parseInt(window.storage.get('login.expire', false),10)
     	    if (nowTime < expire-1000) {
     	        alert('您的账号在其它地方登录，如非您本人操作，请尽快修改密码！')
-    	        window.alert = function () { return false };
+    	        parent.window.alert = function () { return false };
     	    }
-    	    window.storage.clear();
+    	    parent.window.storage.clear();
     	    parent.location.href = '/login.html';
     	}
     }

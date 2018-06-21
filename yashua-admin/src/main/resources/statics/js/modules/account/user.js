@@ -87,6 +87,34 @@ var vm = new Vue({
             
             vm.getInfo(id)
 		},
+		lock: function (){
+			var id = getSelectedRow();
+			if(id == null){
+				return ;
+			}
+			var item = $("#jqGrid").jqGrid('getRowData',id);
+			var text = "确定要禁用此用户"+item.account+'？';
+			if(item.status == "禁用"){
+				text = "此用户已是禁用状态，本次操作将为启用！确定要启用用户"+item.account+'吗？';
+			}
+			confirm(text, function(){
+				$.ajax({
+					type: "POST",
+				    url: baseURL + "account/user/disabled",
+				    data: {userId:item.userId},
+				    success: function(r){
+						if(r.errcode == 0){
+							alert('操作成功', function(index){
+								$("#jqGrid").trigger("reloadGrid");
+							});
+						}else{
+							parent.layer.closeAll();
+							alert(r.errmsg);
+						}
+					}
+				});
+			});
+		},
 		saveOrUpdate: function (event) {
 			var url = vm.user.id == null ? "account/user/save" : "account/user/update";
 			$.ajax({
@@ -123,6 +151,7 @@ var vm = new Vue({
 								$("#jqGrid").trigger("reloadGrid");
 							});
 						}else{
+							parent.layer.closeAll();
 							alert(r.errmsg);
 						}
 					}

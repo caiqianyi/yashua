@@ -38,19 +38,19 @@ public interface I${className}Service {
      * 保存
      */
     @RequestMapping("/${moduleName}/${pathName}/save")
-    ResponseMessage save(@RequestBody ${className}Entity ${classname});
+    ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody ${className}Entity ${classname});
 
     /**
      * 修改
      */
     @RequestMapping("/${moduleName}/${pathName}/update")
-    ResponseMessage update(@RequestBody ${className}Entity ${classname});
+    ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody ${className}Entity ${classname});
 
     /**
      * 删除
      */
     @RequestMapping("/${moduleName}/${pathName}/delete")
-    ResponseMessage delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s);
+    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody ${pk.attrType}[] ${pk.attrname}s);
     
 }
 

@@ -2,6 +2,8 @@ package com.lebaoxun.admin.rest.account;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lebaoxun.modules.account.entity.UserMessageEntity;
 import com.lebaoxun.modules.account.service.IUserMessageService;
+import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.exception.ResponseMessage;
 
@@ -27,6 +30,9 @@ import com.lebaoxun.commons.exception.ResponseMessage;
 public class UserMessageController {
     @Autowired
     private IUserMessageService userMessageService;
+    
+    @Resource
+	private Oauth2SecuritySubject oauth2SecuritySubject;
 
     /**
      * 列表
@@ -50,7 +56,7 @@ public class UserMessageController {
      */
     @RequestMapping("/account/usermessage/save")
     ResponseMessage save(@RequestBody UserMessageEntity userMessage){
-        return userMessageService.save(userMessage);
+        return userMessageService.save(oauth2SecuritySubject.getCurrentUser(),userMessage);
     }
 
     /**
@@ -58,7 +64,7 @@ public class UserMessageController {
      */
     @RequestMapping("/account/usermessage/update")
     ResponseMessage update(@RequestBody UserMessageEntity userMessage){
-        return userMessageService.update(userMessage);
+        return userMessageService.update(oauth2SecuritySubject.getCurrentUser(),userMessage);
     }
 
     /**
@@ -66,7 +72,7 @@ public class UserMessageController {
      */
     @RequestMapping("/account/usermessage/delete")
     ResponseMessage delete(@RequestBody Integer[] ids){
-        return userMessageService.delete(ids);
+        return userMessageService.delete(oauth2SecuritySubject.getCurrentUser(),ids);
     }
 
 }

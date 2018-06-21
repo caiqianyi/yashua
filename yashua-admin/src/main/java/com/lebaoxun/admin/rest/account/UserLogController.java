@@ -44,28 +44,4 @@ public class UserLogController {
         return userLogService.info(id);
     }
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/account/userlog/save")
-    ResponseMessage save(@RequestBody UserLogEntity userLog){
-        return userLogService.save(userLog);
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/account/userlog/update")
-    ResponseMessage update(@RequestBody UserLogEntity userLog){
-        return userLogService.update(userLog);
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/account/userlog/delete")
-    ResponseMessage delete(@RequestBody Integer[] ids){
-        return userLogService.delete(ids);
-    }
-
 }

@@ -30,19 +30,20 @@ public class UserMessageServiceHystrix implements IUserMessageService {
 	}
 
 	@Override
-	public ResponseMessage save(UserMessageEntity userMessage) {
+	public ResponseMessage save(Long adminId, UserMessageEntity userMessage) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage update(UserMessageEntity userMessage) {
+	public ResponseMessage update(Long adminId, UserMessageEntity userMessage) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage delete(Integer[] ids) {
+	public ResponseMessage delete(Long adminId, Integer[] ids) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+
     
 }
 

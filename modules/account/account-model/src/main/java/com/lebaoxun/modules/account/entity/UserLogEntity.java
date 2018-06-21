@@ -20,12 +20,16 @@ public class UserLogEntity implements Serializable {
 	/**
 	 * 
 	 */
-@TableId
+	@TableId
 	private Integer id;
 	/**
 	 * 用户ID
 	 */
-	private Integer userId;
+	private Long userId;
+	/**
+	 * 用户名
+	 */
+	private String account;
 	/**
 	 * 日志时间
 	 */
@@ -74,13 +78,13 @@ public class UserLogEntity implements Serializable {
 	/**
 	 * 设置：用户ID
 	 */
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 	/**
 	 * 获取：用户ID
 	 */
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 	/**
@@ -178,5 +182,14 @@ public class UserLogEntity implements Serializable {
 	 */
 	public String getAdjunctInfo() {
 		return adjunctInfo;
+	}
+	/**
+	 * 获取：用户名
+	 */
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
 	}
 }
