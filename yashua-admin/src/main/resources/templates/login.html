@@ -131,14 +131,7 @@ var vm = new Vue({
 						    dataType: "json",
 						    success: function(result){
 								if(result.errcode == 0){//登录成功
-									for(var ke in result.data){
-										window.storage.set("login."+ke,result.data[ke],false);
-									}
-									var expiresTime = result.data["expires_in"];
-									var now = new Date();
-									var t = now.getTime()+expiresTime*1000;
-									var loginTime = new Date(t);
-									window.storage.set('login.expire',loginTime,false);
+									login(result.data);
 									parent.location.href ='index.html';
 								}else{
 									vm.error = true;

@@ -8,6 +8,10 @@
 <div id="rrapp" v-cloak>
     <div v-show="showList">
         <div class="grid-btn">
+        	<div class="form-group col-sm-2">
+				<input type="text" class="form-control" v-model="q.account" @keyup.enter="query" placeholder="账号">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a>
             <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
             <a class="btn btn-primary" @click="lock"><i class="fa fa-lock"></i>&nbsp;禁用</a>
             <a class="btn btn-primary" @click="resetPassword"><i class="fa fa-refresh"></i>&nbsp;重置密码</a>
@@ -22,7 +26,7 @@
         <div class="panel-heading">{{title}}</div>
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="col-sm-2 control-label">用户账号</div>
+                <div class="col-sm-2 control-label">用户手机号</div>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" v-model="user.account" placeholder="用户账号"/>
                 </div>
@@ -34,51 +38,18 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-2 control-label">注册来源</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="user.source" placeholder="注册来源"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">Y 正常 N 禁用</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="user.status" placeholder="Y 正常 N 禁用  F 异常冻结" value="Y"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">账户余额</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="user.balance" placeholder="账户余额"/>
-                </div>
+                <div class="col-sm-2 control-label">状态</div>
+                <label class="radio-inline">
+					<input type="radio" name="status" value="N" v-model="user.status"/> 禁用
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="status" value="Y" v-model="user.status"/> 正常
+				</label>
             </div>
             <div class="form-group">
                 <div class="col-sm-2 control-label">用户的昵称</div>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" v-model="user.nickname" placeholder="用户的昵称"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">性别</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="user.sex" placeholder="用户的性别，值为1时是男性，值为2时是女性，值为0时是未知"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">所在城市</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="user.city" placeholder="用户所在城市"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">所在国家</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="user.country" placeholder="用户所在国家"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">所在省份</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="user.province" placeholder="用户所在省份"/>
                 </div>
             </div>
             <div class="form-group">

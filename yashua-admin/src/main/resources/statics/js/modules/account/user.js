@@ -69,7 +69,10 @@ var vm = new Vue({
 		user: {account:null},
 		newPasswd: null,
 		account: null,
-		amount: null
+		amount: null,
+		q:{
+			account: null
+		}
 	},
 	methods: {
 		query: function () {
@@ -201,7 +204,7 @@ var vm = new Vue({
                 contentType: "application/json",
 			    data: JSON.stringify(vm.user),
 			    success: function(r){
-			    	if(r.errcode === 0){
+			    	if(r.errcode == 0){
 						alert('操作成功', function(index){
 							vm.reload();
 						});
@@ -248,6 +251,7 @@ var vm = new Vue({
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
+				postData:{"account": vm.q.account},
                 page:page
             }).trigger("reloadGrid");
 		}

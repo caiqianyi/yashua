@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lebaoxun.admin.config.AccountConstant;
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.commons.utils.GenerateCode;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
@@ -57,6 +57,11 @@ public class UserController {
      */
     @RequestMapping("/account/user/save")
     ResponseMessage save(@RequestBody UserEntity user){
+    	user.setBalance(0);
+    	user.setLevel(0);
+    	user.setSource("ADMIN");
+    	user.setType("A");
+    	user.setUserId(GenerateCode.gen16(9));
         return userService.save(oauth2SecuritySubject.getCurrentUser(),user);
     }
 

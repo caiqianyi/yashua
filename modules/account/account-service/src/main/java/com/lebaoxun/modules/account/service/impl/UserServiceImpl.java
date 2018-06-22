@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     	String account = (String) params.get("account");
         Page<UserEntity> page = this.selectPage(
                 new Query<UserEntity>(params).getPage(),
-                new EntityWrapper<UserEntity>().eq(StringUtils.isNotBlank(account), "account", account)
+                new EntityWrapper<UserEntity>().like(StringUtils.isNotBlank(account), "account", account)
         );
 
         return new PageUtils(page);

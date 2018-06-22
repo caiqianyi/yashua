@@ -5,7 +5,9 @@ $(function () {
         colModel: [			
 			{ label: '用户ID', name: 'userId', index: 'user_id', width: 80 }, 			
 			{ label: '用户账号', name: 'account', index: 'account', width: 80 },
-			{ label: '日志时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '日志时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}}, 			
 			{ label: '日志类型', name: 'logType', index: 'log_type', width: 80 }, 			
 			{ label: '交易金额', name: 'tradeMoney', index: 'trade_money', width: 80 }, 			
 			{ label: '账户余额', name: 'money', index: 'money', width: 80 }, 			

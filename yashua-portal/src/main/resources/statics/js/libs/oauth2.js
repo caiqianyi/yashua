@@ -62,3 +62,4 @@ function tokenSurvey(){
 }
 tokenSurvey();
 tokenTimer = setInterval('tokenSurvey()',1400);
+
