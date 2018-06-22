@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.lebaoxun.admin.rest.BaseController;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.manager.sys.entity.SysUserEntity;
@@ -88,6 +89,7 @@ public class SysUserController extends BaseController {
 	 */
 	@RequestMapping("/save")
 	public ResponseMessage save(@RequestBody SysUserEntity user){
+		logger.debug("user={}",new Gson().toJson(user));
 		return sysUserService.save(user);
 	}
 	

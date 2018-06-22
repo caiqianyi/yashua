@@ -25,8 +25,6 @@ import com.lebaoxun.modules.account.em.UserLogAction;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.entity.UserLogEntity;
 import com.lebaoxun.modules.account.service.UserService;
-import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
-import com.lebaoxun.security.oauth2.entity.Oauth2UserLog;
 
 
 @Service("userService")
@@ -34,9 +32,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
 	@Resource
 	private UserLogDao userLogDao;
-	
-	@Resource
-	private Oauth2SecuritySubject oauth2Security;
 	
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -51,21 +46,20 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void lock(Long userId, String scope, Long adminId) {
+	public void lock(Long userId, Long adminId) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user == null){
 			throw new I18nMessageException("500");
 		}
-		String status = "N",adjunctInfo = null;
+		String status = "N",adjunctInfo = adminId+"";
 		UserLogAction logType = UserLogAction.A_LOCK;
 		if("N".equals(user.getStatus())){
 			logType = UserLogAction.A_UNLOCK;
 			status = "Y";
-			adjunctInfo = adminId+"";
 		}
 		
-		insertLog(user, logType, scope, logType.getDescr(), adjunctInfo);
+		insertLog(user, logType, 0, logType.getDescr(), adjunctInfo);
 		
 		UserEntity entity = new UserEntity();
 		entity.setId(user.getId());
@@ -76,7 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void modifyPassword(Long userId, String newPasswd,
-			String scope, Long adminId) {
+			Long adminId) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user == null){
@@ -88,7 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 			adjunctInfo = adminId+"";
 			logType = UserLogAction.A_MODIFY_PASSWD;
 		}
-		insertLog(user, logType, scope, logType.getDescr(), adjunctInfo);
+		insertLog(user, logType, 0, logType.getDescr(), adjunctInfo);
 		
 		String passwd = PwdUtil.getMd5Password(user.getAccount(), newPasswd);
 		UserEntity entity = new UserEntity();
@@ -99,8 +93,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void modifyBalance(Long userId, Integer amount,String scope, 
-			Long adminId, String descr) {
+	public void modifyBalance(Long userId,Integer amount, String descr, Long adminId) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user == null){
@@ -121,7 +114,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 				logType = UserLogAction.A_BALANCE_REDUCE;
 			}
 		}
-		insertLog(user, logType, scope, descr, adjunctInfo);
+		if(StringUtils.isBlank(descr)){
+			descr = logType.getDescr();
+		}
+		insertLog(user, logType, amount, descr, adjunctInfo);
 		
 		UserEntity entity = new UserEntity();
 		entity.setId(user.getId());
@@ -132,7 +128,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void modifyInfo(Long userId, UserEntity q,
-			String scope, Long adminId, String descr) {
+			Long adminId, String descr) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user == null){
@@ -144,7 +140,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 			adjunctInfo = adminId+"";
 			logType = UserLogAction.A_MODIFY_INFO;
 		}
-		insertLog(user, logType, scope, logType.getDescr(), adjunctInfo);
+		insertLog(user, logType, null, logType.getDescr(), adjunctInfo);
 		UserEntity entity = new UserEntity();
 		entity.setId(user.getId());
 		entity.setCity(q.getCity());
@@ -161,7 +157,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void bindMobile(Long userId,String scope, String mobile, String password) {
+	public void bindMobile(Long userId,String mobile, String password) {
 		// TODO Auto-generated method stub
 		if(StringUtils.isBlank(mobile) || ValidatorUtils.checkTel(mobile)){
 			throw new I18nMessageException("-1","手机号格式不正确！");
@@ -172,7 +168,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 			throw new I18nMessageException("500");
 		}
 		UserLogAction logType = UserLogAction.U_BIND_MOBILE;
-		insertLog(user, logType, scope, logType.getDescr());
+		insertLog(user, logType, logType.getDescr());
 		
 		String passwd = PwdUtil.getMd5Password(mobile, password);
 		
@@ -186,7 +182,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void bindOpenid(Long userId, String openid,String scope) {
+	public void bindOpenid(Long userId, String openid) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user == null){
@@ -194,7 +190,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		}
 		
 		UserLogAction logType = UserLogAction.U_BIND_OPENID;
-		insertLog(user, logType, scope, logType.getDescr());
+		insertLog(user, logType, logType.getDescr());
 		
 		UserEntity entity = new UserEntity();
 		entity.setId(user.getId());
@@ -204,7 +200,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 	
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void wechatOARegister(Long userId, UserEntity q, String scope) {
+	public void wechatOARegister(Long userId, UserEntity q) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user != null){
@@ -230,24 +226,24 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		entity.setStatus("Y");
 		
 		UserLogAction logType = UserLogAction.U_WECHATOA_REGISTER;
-		insertLog(entity, logType, scope, new Gson().toJson(q));
+		insertLog(entity, logType, new Gson().toJson(q));
 		
 		this.insert(entity);
 	}
 	
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void loginLog(Long userId, String scope, UserLogAction logType, String adjunctInfo,
+	public void loginLog(Long userId, UserLogAction logType, String adjunctInfo,
 			String descr) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user != null){
 			throw new I18nMessageException("500");
 		}
-		insertLog(user, logType, scope, descr, adjunctInfo);
+		insertLog(user, logType, 0, descr, adjunctInfo);
 	}
 	
-	void insertLog(UserEntity user,UserLogAction logType,String scope,String descr,String adjunctInfo){
+	void insertLog(UserEntity user,UserLogAction logType,Integer tradeMoney,String descr,String adjunctInfo){
 		UserLogEntity log = new UserLogEntity();
 		if(adjunctInfo != null){
 			log.setAdjunctInfo(adjunctInfo);
@@ -257,19 +253,14 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		log.setDescr(descr);
 		log.setLogType(logType.toString());
 		log.setMoney(user.getBalance());
-		log.setTradeMoney(0);
+		log.setTradeMoney(tradeMoney);
 		log.setUserId(user.getUserId());
 		
-		Oauth2UserLog userLog = oauth2Security.getSessionUser(user.getAccount(), scope);
-		if(userLog != null){
-			log.setHostIp(userLog.getHost());
-			log.setPlatform(userLog.getPlatformSource());
-		}
 		userLogDao.insert(log);
 	}
 	
-	void insertLog(UserEntity user,UserLogAction logType,String scope,String descr){
-		insertLog(user, logType, scope, descr, null);
+	void insertLog(UserEntity user,UserLogAction logType,String descr){
+		insertLog(user, logType, 0, descr, null);
 	}
 
 }

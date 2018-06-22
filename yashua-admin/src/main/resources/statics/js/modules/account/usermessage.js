@@ -30,7 +30,7 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames : {
-            page:"data", 
+            page:"page", 
             rows:"limit", 
             order: "order"
         },
@@ -38,11 +38,12 @@ $(function () {
         	//隐藏grid底部滚动条
         	if((!vm.q.userId || vm.q.userId.length == 0)
         			&& (!vm.selected || vm.selected.length == 0) ){
-        		var types = new Set($("#jqGrid").jqGrid('getCol',"type"));
+        		var types = new Set($("#jqGrid").jqGrid('getCol',"logType"));
         		var d = vm.types.slice(0,1);
-        		for(var i=0;i<types.length;i++){
-        			d[d.length] = {text: types[i], value: types[i]};
+        		for(var i=0;i<types.size();i++){
+        			d[d.length] = {text: types.get(i), value: types.get(i)};
         		}
+        		vm.types = d;
         	}
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }

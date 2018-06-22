@@ -24,7 +24,7 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames : {
-            page:"data", 
+            page:"page", 
             rows:"limit", 
             order: "order"
         },
@@ -66,7 +66,7 @@ var vm = new Vue({
 		    	}
                 vm.showList = false;
                 vm.title = "修改";
-                vm.config = r.config;
+                vm.config = r.data.config;
             });
 		},
 		del: function (event) {
@@ -101,7 +101,7 @@ var vm = new Vue({
                 contentType: "application/json",
 			    data: JSON.stringify(vm.config),
 			    success: function(r){
-			    	if(r.errcode === 0){
+			    	if(r.errcode == 0){
 						alert('操作成功', function(index){
 							vm.reload();
 						});

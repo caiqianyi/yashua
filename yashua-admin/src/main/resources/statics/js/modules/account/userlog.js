@@ -3,15 +3,12 @@ $(function () {
         url: baseURL + 'account/userlog/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
 			{ label: '用户ID', name: 'userId', index: 'user_id', width: 80 }, 			
 			{ label: '用户账号', name: 'account', index: 'account', width: 80 },
 			{ label: '日志时间', name: 'createTime', index: 'create_time', width: 80 }, 			
 			{ label: '日志类型', name: 'logType', index: 'log_type', width: 80 }, 			
 			{ label: '交易金额', name: 'tradeMoney', index: 'trade_money', width: 80 }, 			
 			{ label: '账户余额', name: 'money', index: 'money', width: 80 }, 			
-			{ label: '操作平台标识', name: 'platform', index: 'platform', width: 80 }, 			
-			{ label: '日志发生IP', name: 'hostIp', index: 'host_ip', width: 80 }, 			
 			{ label: '日志说明', name: 'descr', index: 'descr', width: 80 }, 			
 			{ label: '日志参数', name: 'adjunctInfo', index: 'adjunct_info', width: 80 }, 			
         ],
@@ -31,19 +28,20 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames : {
-            page:"data", 
+            page:"page", 
             rows:"limit", 
             order: "order"
         },
         gridComplete:function(){
         	
-        	if((!vm.q.userId || vm.q.userId.length == 0)
+        	if((!vm.q.account || vm.q.account.length == 0)
         			&& (!vm.selected || vm.selected.length == 0) ){
-        		var types = new Set($("#jqGrid").jqGrid('getCol',"type"));
+        		var types = new Set($("#jqGrid").jqGrid('getCol',"logType"));
         		var d = vm.types.slice(0,1);
-        		for(var i=0;i<types.length;i++){
-        			d[d.length] = {text: types[i], value: types[i]};
+        		for(var i=0;i<types.size();i++){
+        			d[d.length] = {text: types.get(i), value: types.get(i)};
         		}
+        		vm.types = d;
         	}
         	
         	//隐藏grid底部滚动条
@@ -59,7 +57,7 @@ var vm = new Vue({
 		title: null,
 		userLog: {},
 		q:{
-			userId: null
+			account: null
 		},
 		selected: '',
 		types: [
@@ -139,7 +137,7 @@ var vm = new Vue({
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
-				postData:{'userId': vm.q.userId, "type": vm.selected},
+				postData:{"account": vm.q.account, "type": vm.selected},
                 page:page
             }).trigger("reloadGrid");
 		}

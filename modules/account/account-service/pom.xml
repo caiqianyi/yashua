@@ -50,10 +50,6 @@
     </dependency>
     <dependency>
     	<groupId>com.lebaoxun</groupId>
-    	<artifactId>soa-shiro-oauth2</artifactId>
-    </dependency>
-    <dependency>
-    	<groupId>com.lebaoxun</groupId>
     	<artifactId>manager-dao</artifactId>
     	<version>1.0.0-RELEASE</version>
     </dependency>

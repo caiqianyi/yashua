@@ -34,6 +34,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.google.gson.Gson;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.PwdUtil;
 import com.lebaoxun.commons.utils.Query;
@@ -98,6 +99,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
 		user.setSalt(salt);
+		logger.debug("user={}",new Gson().toJson(user));
 		user.setPassword(PwdUtil.getMd5Password(passwdSecret,user.getUsername(), user.getPassword()));
 		this.insert(user);
 		

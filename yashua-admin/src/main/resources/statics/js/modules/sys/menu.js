@@ -57,7 +57,7 @@ var vm = new Vue({
             	}
                 vm.showList = false;
                 vm.title = "修改";
-                vm.menu = r.menu;
+                vm.menu = r.data.menu;
 
                 vm.getMenu();
             });
@@ -74,7 +74,7 @@ var vm = new Vue({
                     url: "/sys/menu/delete",
                     data: "menuId=" + menuId,
                     success: function(r){
-                        if(r.errcode === 0){
+                        if(r.errcode == 0){
                             alert('操作成功', function(){
                                 vm.reload();
                             });
@@ -97,7 +97,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.menu),
                 success: function(r){
-                    if(r.errcode === 0){
+                    if(r.errcode == 0){
                         alert('操作成功', function(){
                             vm.reload();
                         });
@@ -139,7 +139,7 @@ var vm = new Vue({
             }
 
             //菜单
-            if(vm.menu.type === 1 && isBlank(vm.menu.url)){
+            if(vm.menu.type == 1 && isBlank(vm.menu.url)){
                 alert("菜单URL不能为空");
                 return true;
             }
@@ -167,13 +167,13 @@ Menu.initColumn = function () {
             return item.icon == null ? '' : '<i class="'+item.icon+' fa-lg"></i>';
         }},
         {title: '类型', field: 'type', align: 'center', valign: 'middle', sortable: true, width: '100px', formatter: function(item, index){
-            if(item.type === 0){
+            if(item.type == 0){
                 return '<span class="label label-primary">目录</span>';
             }
-            if(item.type === 1){
+            if(item.type == 1){
                 return '<span class="label label-success">菜单</span>';
             }
-            if(item.type === 2){
+            if(item.type == 2){
                 return '<span class="label label-warning">按钮</span>';
             }
         }},

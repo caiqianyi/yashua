@@ -26,7 +26,7 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames : {
-            page:"data", 
+            page:"page", 
             rows:"limit", 
             order: "order"
         },
@@ -74,7 +74,7 @@ var vm = new Vue({
                 contentType: "application/json",
 			    data: JSON.stringify(vm.dict),
 			    success: function(r){
-			    	if(r.errcode === 0){
+			    	if(r.errcode == 0){
 						alert('操作成功', function(index){
 							vm.reload();
 						});
@@ -110,7 +110,10 @@ var vm = new Vue({
 		},
 		getInfo: function(id){
 			$.get(baseURL + "sys/dict/info/"+id, function(r){
-                vm.dict = r.dict;
+				if(r.errcode && r.errcode != 0){
+		    		return;
+		    	}
+                vm.dict = r.data.dict;
             });
 		},
 		reload: function (event) {

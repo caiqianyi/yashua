@@ -6,18 +6,16 @@ CREATE TABLE `user_log` (
   `log_type` varchar(50) DEFAULT 'P' COMMENT '日志类型',
   `trade_money` int(11) DEFAULT '0' COMMENT '交易金额',
   `money` int(11) DEFAULT '0' COMMENT '账户余额',
-  `platform` varchar(500) NOT NULL COMMENT '操作平台标识',
-  `host_ip` varchar(500) DEFAULT NULL COMMENT '日志发生IP',
   `descr` varchar(500) DEFAULT NULL COMMENT '日志说明',
   `adjunct_info` varchar(500) DEFAULT NULL COMMENT '日志参数',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `account` (`account`) USING BTREE,
   KEY `create_time` (`create_time`) USING BTREE,
-  KEY `log_type` (`log_type`) USING BTREE,
-  KEY `platform` (`platform`(255)) USING BTREE,
-  KEY `host_ip` (`host_ip`(255)) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `log_type` (`log_type`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户日志表';
+
+
 
 
 

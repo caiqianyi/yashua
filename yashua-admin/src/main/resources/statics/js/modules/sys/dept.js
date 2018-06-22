@@ -31,7 +31,7 @@ var vm = new Vue({
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-                ztree = $.fn.zTree.init($("#deptTree"), setting, r.deptList);
+                ztree = $.fn.zTree.init($("#deptTree"), setting, r.data.deptList);
                 var node = ztree.getNodeByParam("deptId", vm.dept.parentId);
                 ztree.selectNode(node);
 
@@ -56,7 +56,7 @@ var vm = new Vue({
             	}
                 vm.showList = false;
                 vm.title = "修改";
-                vm.dept = r.dept;
+                vm.dept = r.data.dept;
 
                 vm.getDept();
             });
@@ -73,7 +73,7 @@ var vm = new Vue({
                     url: baseURL + "sys/dept/delete",
                     data: "deptId=" + deptId,
                     success: function(r){
-                        if(r.errcode === 0){
+                        if(r.errcode == 0){
                             alert('操作成功', function(){
                                 vm.reload();
                             });
@@ -92,7 +92,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.dept),
                 success: function(r){
-                    if(r.errcode === 0){
+                    if(r.errcode == 0){
                         alert('操作成功', function(){
                             vm.reload();
                         });
@@ -168,7 +168,7 @@ $(function () {
     	}
         var colunms = Dept.initColumn();
         var table = new TreeTable(Dept.id, baseURL + "sys/dept/list", colunms);
-        table.setRootCodeValue(r.deptId);
+        table.setRootCodeValue(r.data.deptId);
         table.setExpandColumn(2);
         table.setIdField("deptId");
         table.setCodeField("deptId");

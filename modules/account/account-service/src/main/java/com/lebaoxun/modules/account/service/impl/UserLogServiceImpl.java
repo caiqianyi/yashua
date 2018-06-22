@@ -21,12 +21,14 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogDao, UserLogEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
     	String userId = (String)params.get("userId");
+    	String account = (String)params.get("account");
     	String type = (String)params.get("type");
         Page<UserLogEntity> page = this.selectPage(
                 new Query<UserLogEntity>(params).getPage(),
                 new EntityWrapper<UserLogEntity>()
                 .eq(StringUtils.isNotBlank(userId) && StringUtils.isNumeric(userId), "user_id", userId)
-                .eq(StringUtils.isNotBlank(type), "type", type)
+                .eq(StringUtils.isNotBlank(account), "account", account)
+                .eq(StringUtils.isNotBlank(type), "log_type", type)
         );
 
         return new PageUtils(page);

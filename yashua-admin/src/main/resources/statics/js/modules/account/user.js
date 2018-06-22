@@ -50,7 +50,7 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames : {
-            page:"data", 
+            page:"page", 
             rows:"limit", 
             order: "order"
         },
@@ -66,7 +66,10 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		user: {}
+		user: {account:null},
+		newPasswd: null,
+		account: null,
+		amount: null
 	},
 	methods: {
 		query: function () {
@@ -113,6 +116,81 @@ var vm = new Vue({
 						}
 					}
 				});
+			});
+		},
+		resetPassword: function(){
+			var id = getSelectedRow();
+			if(id == null){
+				return ;
+			}
+			var item = $("#jqGrid").jqGrid('getRowData',id);
+			vm.account = item.account;
+			layer.open({
+				type: 1,
+				skin: 'layui-layer-molv',
+				title: "重置密码",
+				area: ['550px', '270px'],
+				shadeClose: false,
+				content: jQuery("#passwordLayer"),
+				btn: ['修改','取消'],
+				btn1: function (index) {
+					var data = "userId="+item.userId+"&newPasswd="+vm.newPasswd;
+					$.ajax({
+						type: "POST",
+					    url: "/account/user/modifyPassword",
+					    data: data,
+					    dataType: "json",
+					    success: function(result){
+							if(result.errcode == 0){
+								layer.close(index);
+								layer.alert('修改成功', function(index){
+									layer.close(index);
+									vm.reload();
+								});
+							}else{
+								layer.alert(result.errmsg);
+							}
+						}
+					});
+	            }
+			});
+		},
+		recharge: function(){
+			var id = getSelectedRow();
+			if(id == null){
+				return ;
+			}
+			var item = $("#jqGrid").jqGrid('getRowData',id);
+			vm.account = item.account;
+			vm.amount = null;
+			layer.open({
+				type: 1,
+				skin: 'layui-layer-molv',
+				title: "手动充值",
+				area: ['550px', '270px'],
+				shadeClose: false,
+				content: jQuery("#rechargeLayer"),
+				btn: ['确定','取消'],
+				btn1: function (index) {
+					var data = "userId="+item.userId+"&amount="+vm.amount;
+					$.ajax({
+						type: "POST",
+					    url: "/account/user/modifyBalance",
+					    data: data,
+					    dataType: "json",
+					    success: function(result){
+							if(result.errcode == 0){
+								layer.close(index);
+								layer.alert('操作成功', function(index){
+									layer.close(index);
+									vm.reload();
+								});
+							}else{
+								layer.alert(result.errmsg);
+							}
+						}
+					});
+	            }
 			});
 		},
 		saveOrUpdate: function (event) {

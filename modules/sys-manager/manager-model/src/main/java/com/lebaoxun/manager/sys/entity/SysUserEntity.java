@@ -52,7 +52,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 密码
 	 */
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 
 	/**

@@ -51,8 +51,7 @@ public interface IUserService {
      */
     @RequestMapping("/account/user/disabled")
     ResponseMessage disabled(@RequestParam(value="adminId")Long adminId,
-    		@RequestParam(value="userId")Long userId,
-    		@RequestParam(value="scope")String scope);
+    		@RequestParam(value="userId")Long userId);
     
     /**
      * 修改密码
@@ -63,7 +62,6 @@ public interface IUserService {
     @RequestMapping("/account/user/modifyPassword")
     ResponseMessage modifyPassword(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="newPasswd") String newPasswd,
-    		@RequestParam(value="scope") String scope,
     		@RequestParam(value="adminId",required=false) Long adminId);
     
     /**
@@ -77,7 +75,6 @@ public interface IUserService {
     @RequestMapping("/account/user/modifyBalance")
     ResponseMessage modifyBalance(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="amount") Integer amount,
-    		@RequestParam(value="scope") String scope, 
     		@RequestParam(value="adminId",required=false) Long adminId,
     		@RequestParam(value="descr",required=false) String descr);
     
@@ -92,7 +89,6 @@ public interface IUserService {
     @RequestMapping("/account/user/modifyInfo")
     ResponseMessage modifyInfo(@RequestParam(value="userId") Long userId,
     		@RequestBody UserEntity user, 
-    		@RequestParam(value="scope") String scope, 
     		@RequestParam(value="adminId",required=false) Long adminId,
     		@RequestParam(value="descr",required=false) String descr);
     
@@ -103,7 +99,6 @@ public interface IUserService {
      */
     @RequestMapping("/account/user/bindMobile")
     ResponseMessage bindMobile(@RequestParam(value="userId") Long userId,
-    		@RequestParam(value="scope") String scope,
     		@RequestParam(value="mobile") String mobile, 
     		@RequestParam(value="password") String password);
     
@@ -114,7 +109,6 @@ public interface IUserService {
      */
     @RequestMapping("/account/user/bindOpenid")
     ResponseMessage bindOpenid(@RequestParam(value="userId") Long userId,
-    		@RequestParam(value="scope") String scope, 
     		@RequestParam(value="openid") String openid);
     
     /**
@@ -125,8 +119,7 @@ public interface IUserService {
      */
     @RequestMapping("/account/user/wechatOARegister")
     ResponseMessage wechatOARegister(@RequestParam(value="userId") Long userId, 
-    		@RequestBody UserEntity user, 
-    		@RequestParam(value="scope") String scope);
+    		@RequestBody UserEntity user);
 
     /**
      * 删除
@@ -177,7 +170,6 @@ public interface IUserService {
      */
 	@RequestMapping("/account/user/loginLog")
 	ResponseMessage loginLog(@RequestParam("userId") Long userId,
-			@RequestParam(value="scope") String scope,
 			@RequestParam(value="logType") UserLogAction logType,
 			@RequestParam(value="adjunctInfo") String adjunctInfo,
 			@RequestParam(value="descr") String descr);

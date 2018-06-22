@@ -36,42 +36,41 @@ public class UserServiceHystrix implements IUserService {
 	}
 
 	@Override
-	public ResponseMessage disabled(Long adminId, Long userId, String scope) {
+	public ResponseMessage disabled(Long adminId, Long userId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
 	public ResponseMessage modifyPassword(Long userId, String newPasswd,
-			String scope, Long adminId) {
+			Long adminId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
 	public ResponseMessage modifyBalance(Long userId, Integer amount,
-			String scope, Long adminId, String descr) {
+			Long adminId, String descr) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
 	public ResponseMessage modifyInfo(Long userId, UserEntity user,
-			String scope, Long adminId, String descr) {
+			Long adminId, String descr) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage bindMobile(Long userId, String scope, String mobile,
+	public ResponseMessage bindMobile(Long userId, String mobile,
 			String password) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage bindOpenid(Long userId, String scope, String openid) {
+	public ResponseMessage bindOpenid(Long userId, String openid) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage wechatOARegister(Long userId, UserEntity user,
-			String scope) {
+	public ResponseMessage wechatOARegister(Long userId, UserEntity user) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
@@ -101,8 +100,8 @@ public class UserServiceHystrix implements IUserService {
 	}
 
 	@Override
-	public ResponseMessage loginLog(Long userId, String scope,
-			UserLogAction logType, String adjunctInfo, String descr) {
+	public ResponseMessage loginLog(Long userId, UserLogAction logType, 
+			String adjunctInfo, String descr) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 

@@ -39,7 +39,6 @@ public class UserMessageController {
      */
     @RequestMapping("/account/usermessage/list")
     ResponseMessage list(@RequestParam Map<String, Object> params){
-    	logger.debug("params={}",params);
         PageUtils page = userMessageService.queryPage(params);
         return ResponseMessage.ok(page);
     }

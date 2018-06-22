@@ -21,7 +21,7 @@ public class UserLogEntity implements Serializable {
 	 * 
 	 */
 	@TableId
-	private Integer id;
+	private long id;
 	/**
 	 * 用户ID
 	 */
@@ -47,14 +47,6 @@ public class UserLogEntity implements Serializable {
 	 */
 	private Integer money;
 	/**
-	 * 操作平台标识
-	 */
-	private String platform;
-	/**
-	 * 日志发生IP
-	 */
-	private String hostIp;
-	/**
 	 * 日志说明
 	 */
 	private String descr;
@@ -66,13 +58,13 @@ public class UserLogEntity implements Serializable {
 	/**
 	 * 设置：
 	 */
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：
 	 */
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 	/**
@@ -134,30 +126,6 @@ public class UserLogEntity implements Serializable {
 	 */
 	public Integer getMoney() {
 		return money;
-	}
-	/**
-	 * 设置：操作平台标识
-	 */
-	public void setPlatform(String platform) {
-		this.platform = platform;
-	}
-	/**
-	 * 获取：操作平台标识
-	 */
-	public String getPlatform() {
-		return platform;
-	}
-	/**
-	 * 设置：日志发生IP
-	 */
-	public void setHostIp(String hostIp) {
-		this.hostIp = hostIp;
-	}
-	/**
-	 * 获取：日志发生IP
-	 */
-	public String getHostIp() {
-		return hostIp;
 	}
 	/**
 	 * 设置：日志说明

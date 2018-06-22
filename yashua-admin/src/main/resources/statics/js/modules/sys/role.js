@@ -27,8 +27,8 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames : {
-            page:"data", 
-            rows:"limit",
+            page:"page", 
+            rows:"limit", 
             order: "order"
         },
         gridComplete:function(){
@@ -164,7 +164,7 @@ var vm = new Vue({
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-				vm.role = r.role;
+				vm.role = r.data.role;
 				
 				//勾选角色所拥有的菜单
 				var menuIds = vm.role.menuIdList;
@@ -207,7 +207,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.role),
                 success: function(r){
-                    if(r.errcode === 0){
+                    if(r.errcode == 0){
                         alert('操作成功', function(){
                             vm.reload();
                         });
@@ -250,7 +250,7 @@ var vm = new Vue({
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-                dept_ztree = $.fn.zTree.init($("#deptTree"), dept_setting, r);
+                dept_ztree = $.fn.zTree.init($("#deptTree"), dept_setting, r.data);
                 var node = dept_ztree.getNodeByParam("deptId", vm.role.deptId);
                 if(node != null){
                     dept_ztree.selectNode(node);

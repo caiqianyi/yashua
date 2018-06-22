@@ -2,9 +2,6 @@ package com.lebaoxun.modules.account.service;
 
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.account.em.UserLogAction;
@@ -26,7 +23,7 @@ public interface UserService extends IService<UserEntity> {
      * @param userId
      * @param status
      */
-    void lock(Long userId,String scope,Long adminId);
+    void lock(Long userId, Long adminId);
     
     /**
      * 修改密码
@@ -34,7 +31,7 @@ public interface UserService extends IService<UserEntity> {
      * @param newPasswd 新密码（非加密）
      * @param adminId 操作人
      */
-    void modifyPassword(Long userId,String newPasswd,String scope, Long adminId);
+    void modifyPassword(Long userId, String newPasswd, Long adminId);
     
     /**
      * 修改账户金额
@@ -44,7 +41,7 @@ public interface UserService extends IService<UserEntity> {
      * @param logType 带字母U开头，为用户本人操作产生的日志
      * @param descr 操作说明
      */
-    void modifyBalance(Long userId,Integer amount,String scope, Long adminId,String descr);
+    void modifyBalance(Long userId,Integer amount, String descr, Long adminId);
     
     /**
      * 修改用户信息
@@ -54,21 +51,21 @@ public interface UserService extends IService<UserEntity> {
      * @param adminId
      * @param descr
      */
-    void modifyInfo(Long userId,UserEntity user, String scope, Long adminId,String descr);
+    void modifyInfo(Long userId,UserEntity user, Long adminId,String descr);
     
     /**
      * 绑定账号
      * @param userId
      * @param account
      */
-    void bindMobile(Long userId,String scope, String mobile, String password);
+    void bindMobile(Long userId,String mobile, String password);
     
     /**
      * 绑定微信公众号openid
      * @param userId 用户ID
      * @param openid 微信openid
      */
-    void bindOpenid(Long userId,String scope, String openid);
+    void bindOpenid(Long userId,String openid);
     
     /**
      * 微信公众号注册
@@ -76,7 +73,7 @@ public interface UserService extends IService<UserEntity> {
      * @param user
      * @param scope
      */
-    void wechatOARegister(Long userId, UserEntity user ,String scope);
+    void wechatOARegister(Long userId, UserEntity user);
     
     /**
      * 记录登录日志
@@ -86,6 +83,6 @@ public interface UserService extends IService<UserEntity> {
      * @param adjunctInfo
      * @param descr
      */
-    void loginLog(Long userId,String scope,UserLogAction logType,String adjunctInfo,String descr);
+    void loginLog(Long userId,UserLogAction logType,String adjunctInfo,String descr);
 }
 

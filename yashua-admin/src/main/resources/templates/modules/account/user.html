@@ -10,8 +10,8 @@
         <div class="grid-btn">
             <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
             <a class="btn btn-primary" @click="lock"><i class="fa fa-lock"></i>&nbsp;禁用</a>
-            <a class="btn btn-primary" @click="update"><i class="fa fa-refresh"></i>&nbsp;重置密码</a>
-            <a class="btn btn-primary" @click="update"><i class="fa fa-cny"></i>&nbsp;手动充值</a>
+            <a class="btn btn-primary" @click="resetPassword"><i class="fa fa-refresh"></i>&nbsp;重置密码</a>
+            <a class="btn btn-primary" @click="recharge"><i class="fa fa-cny"></i>&nbsp;手动充值</a>
             <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
         </div>
         <table id="jqGrid"></table>
@@ -88,8 +88,40 @@
             </div>
         </form>
     </div>
+	<div id="passwordLayer" style="display: none;">
+		<form class="form-horizontal">
+		<div class="form-group">
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">账号</div>
+			    <span class="label label-success" style="vertical-align: bottom;">{{account}}</span>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">新密码</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="newPasswd" placeholder="新密码"/>
+			    </div>
+			</div>
+		</div>
+		</form>
+	</div>
+	
+	<div id="rechargeLayer" style="display: none;">
+		<form class="form-horizontal">
+		<div class="form-group">
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">账号</div>
+			    <span class="label label-success" style="vertical-align: bottom;">{{account}}</span>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">金额</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="amount" placeholder="充值金额，正数为充值，负数为扣除"/>
+			    </div>
+			</div>
+		</div>
+		</form>
+	</div>
 </div>
-
 <script src="/statics/js/modules/account/user.js?_${.now?long}"></script>
 </body>
 </html>

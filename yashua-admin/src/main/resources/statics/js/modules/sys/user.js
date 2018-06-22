@@ -9,12 +9,12 @@ $(function () {
 			{ label: '邮箱', name: 'email', width: 90 },
 			{ label: '手机号', name: 'mobile', width: 100 },
 			{ label: '状态', name: 'status', width: 60, formatter: function(value, options, row){
-				return value === 0 ? 
+				return value == 0 ? 
 					'<span class="label label-danger">禁用</span>' : 
 					'<span class="label label-success">正常</span>';
 			}},
 			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85, formatter: function(value){
-				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+				return value ? new Date(parseInt(value,10)).format("yyyy-MM-dd hh:mm") : "";
 			}}
         ],
 		viewrecords: true,
@@ -33,7 +33,7 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames : {
-            page:"data", 
+            page:"page", 
             rows:"limit", 
             order: "order"
         },
@@ -143,13 +143,15 @@ var vm = new Vue({
         },
         saveOrUpdate: function () {
             var url = vm.user.userId == null ? "/sys/user/save" : "/sys/user/update";
+            var u = vm.user;
+            u.createTime = null;
             $.ajax({
                 type: "POST",
                 url: url,
                 contentType: "application/json",
-                data: JSON.stringify(vm.user),
+                data: JSON.stringify(u),
                 success: function(r){
-                    if(r.errcode === 0){
+                    if(r.errcode == 0){
                         alert('操作成功', function(){
                             vm.reload();
                         });
@@ -164,7 +166,7 @@ var vm = new Vue({
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-        		vm.user = r.user;
+        		vm.user = r.data.user;
                 vm.user.password = null;
 
                 vm.getDept();
@@ -176,7 +178,7 @@ var vm = new Vue({
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-        		vm.roleList = r.list;
+        		vm.roleList = r.data.list;
             });
         },
         deptTree: function(){

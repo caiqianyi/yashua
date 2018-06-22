@@ -52,6 +52,10 @@ Set.prototype.size = function () {
     return this.dataStore.length;
 }
 
+Set.prototype.get = function (i) {
+	return this.dataStore[i];
+}
+
 Set.prototype.show = function () {
     return "[" + this.dataStore + "]";
 }

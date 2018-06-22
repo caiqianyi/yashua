@@ -78,7 +78,7 @@ public class UserController {
      */
     @RequestMapping("/account/user/disabled")
     ResponseMessage disabled(@RequestParam(value="userId")Long userId){
-    	return userService.disabled(oauth2SecuritySubject.getCurrentUser(), userId, AccountConstant.SCOPE);
+    	return userService.disabled(oauth2SecuritySubject.getCurrentUser(), userId);
     }
     
     /**
@@ -90,7 +90,7 @@ public class UserController {
     @RequestMapping("/account/user/modifyPassword")
     ResponseMessage modifyPassword(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="newPasswd") String newPasswd){
-    	return userService.modifyPassword(userId, newPasswd, AccountConstant.SCOPE, oauth2SecuritySubject.getCurrentUser());
+    	return userService.modifyPassword(userId, newPasswd, oauth2SecuritySubject.getCurrentUser());
     }
     
     
@@ -106,6 +106,6 @@ public class UserController {
     ResponseMessage modifyBalance(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="amount") Integer amount,
     		@RequestParam(value="descr",required=false) String descr){
-    	return userService.modifyBalance(userId, amount, AccountConstant.SCOPE, oauth2SecuritySubject.getCurrentUser(), descr);
+    	return userService.modifyBalance(userId, amount, oauth2SecuritySubject.getCurrentUser(), descr);
     }
 }

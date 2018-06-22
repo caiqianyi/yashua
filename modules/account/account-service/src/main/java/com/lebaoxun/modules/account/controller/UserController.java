@@ -3,6 +3,10 @@ package com.lebaoxun.modules.account.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +34,12 @@ import com.lebaoxun.soa.core.redis.lock.RedisLock;
  */
 @RestController
 public class UserController {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@Autowired
+	public HttpServletRequest request;
+	
     @Autowired
     private UserService userService;
 
@@ -72,9 +82,9 @@ public class UserController {
     @RequestMapping("/account/user/disabled")
     @RedisLock(value="account:user:disabled:lock:#arg0:#arg1")
     ResponseMessage disabled(@RequestParam(value="adminId")Long adminId,
-    		@RequestParam(value="userId")Long userId,
-    		@RequestParam(value="scope")String scope){
-    	 userService.lock(userId, scope, adminId);
+    		@RequestParam(value="userId")Long userId){
+    	 logger.debug("host={}",request.getHeader("oauth2.host"));
+    	 userService.lock(userId, adminId);
     	 return ResponseMessage.ok();
     }
     
@@ -88,9 +98,8 @@ public class UserController {
     @RedisLock(value="account:user:modifyPassword:lock:#arg0")
     ResponseMessage modifyPassword(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="newPasswd") String newPasswd,
-    		@RequestParam(value="scope") String scope,
     		@RequestParam(value="adminId",required=false) Long adminId){
-    	userService.modifyPassword(userId, newPasswd, scope, adminId);
+    	userService.modifyPassword(userId, newPasswd, adminId);
     	return ResponseMessage.ok();
     }
     
@@ -106,10 +115,9 @@ public class UserController {
     @RedisLock(value="account:user:modifyBalance:lock:#arg0")
     ResponseMessage modifyBalance(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="amount") Integer amount,
-    		@RequestParam(value="scope") String scope, 
     		@RequestParam(value="adminId",required=false) Long adminId,
     		@RequestParam(value="descr",required=false) String descr){
-    	userService.modifyBalance(userId, amount, scope, adminId, descr);
+    	userService.modifyBalance(userId, amount, descr, adminId);
     	return ResponseMessage.ok();
     }
     
@@ -125,10 +133,9 @@ public class UserController {
     @RedisLock(value="account:user:modifyInfo:lock:#arg0")
     ResponseMessage modifyInfo(@RequestParam(value="userId") Long userId,
     		@RequestBody UserEntity user, 
-    		@RequestParam(value="scope") String scope, 
     		@RequestParam(value="adminId",required=false) Long adminId,
     		@RequestParam(value="descr",required=false) String descr){
-    	userService.modifyInfo(userId, user, scope, adminId, descr);
+    	userService.modifyInfo(userId, user, adminId, descr);
     	return ResponseMessage.ok();
     }
     
@@ -140,10 +147,9 @@ public class UserController {
     @RequestMapping("/account/user/bindMobile")
     @RedisLock(value="account:user:bindMobile:lock:#arg0")
     ResponseMessage bindMobile(@RequestParam(value="userId") Long userId,
-    		@RequestParam(value="scope") String scope,
     		@RequestParam(value="mobile") String mobile, 
     		@RequestParam(value="password") String password){
-    	userService.bindMobile(userId, scope, mobile, password);
+    	userService.bindMobile(userId, mobile, password);
     	return ResponseMessage.ok();
     }
     
@@ -155,9 +161,8 @@ public class UserController {
     @RequestMapping("/account/user/bindOpenid")
     @RedisLock(value="account:user:bindOpenid:lock:#arg0")
     ResponseMessage bindOpenid(@RequestParam(value="userId") Long userId,
-    		@RequestParam(value="scope") String scope, 
     		@RequestParam(value="openid") String openid){
-    	userService.bindOpenid(userId, scope, openid);
+    	userService.bindOpenid(userId, openid);
     	return ResponseMessage.ok();
     }
     
@@ -170,9 +175,8 @@ public class UserController {
     @RequestMapping("/account/user/wechatOARegister")
     @RedisLock(value="account:user:wechatOARegister:lock:#arg0")
     ResponseMessage wechatOARegister(@RequestParam(value="userId") Long userId, 
-    		@RequestBody UserEntity user, 
-    		@RequestParam(value="scope") String scope){
-    	userService.wechatOARegister(userId, user, scope);
+    		@RequestBody UserEntity user){
+    	userService.wechatOARegister(userId, user);
     	return ResponseMessage.ok();
     }
 
@@ -238,11 +242,10 @@ public class UserController {
 	@RequestMapping("/account/user/loginLog")
     @RedisLock(value="account:user:loginLog:lock:#arg0")
 	ResponseMessage loginLog(@RequestParam("userId") Long userId,
-			@RequestParam(value="scope") String scope,
 			@RequestParam(value="logType") UserLogAction logType,
 			@RequestParam(value="adjunctInfo") String adjunctInfo,
 			@RequestParam(value="descr") String descr){
-		userService.loginLog(userId, scope, logType, adjunctInfo, descr);
+		userService.loginLog(userId, logType, adjunctInfo, descr);
 		return ResponseMessage.ok();
     }
 }
