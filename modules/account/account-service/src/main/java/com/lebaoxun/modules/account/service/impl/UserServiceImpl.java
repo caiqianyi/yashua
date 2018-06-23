@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.gson.Gson;
@@ -43,7 +44,39 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
         return new PageUtils(page);
     }
-
+    
+    @Override
+    public void save(Long adminId,UserEntity user) {
+    	// TODO Auto-generated method stub
+    	
+    	UserEntity u = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", user.getUserId()));
+		if(u != null){
+			throw new I18nMessageException("-1","用户ID已存在");
+		}
+		
+		if(StringUtils.isBlank(user.getMobile()) || !ValidatorUtils.checkTel(user.getMobile())){
+			throw new I18nMessageException("-1","手机号格式不正确！");
+		}
+		
+		u = this.selectOne( new EntityWrapper<UserEntity>().eq("account", user.getAccount()).or().eq("mobile", user.getMobile()));
+		if(u != null){
+			if(u.getAccount().equals(user.getAccount())){
+				throw new I18nMessageException("-1","账号已存在！");
+			}
+			
+			if(u.getMobile().equals(user.getMobile())){
+				throw new I18nMessageException("-1","手机号已存在！");
+			}
+		}
+		String passwd = PwdUtil.getMd5Password(user.getAccount(), user.getPassword());
+		
+    	user.setCreateTime(new Date());
+    	user.setBalance(0);
+    	user.setLevel(0);
+    	user.setPassword(passwd);
+    	this.baseMapper.insert(user);
+    }
+    
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void lock(Long userId, Long adminId) {
@@ -159,7 +192,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void bindMobile(Long userId,String mobile, String password) {
 		// TODO Auto-generated method stub
-		if(StringUtils.isBlank(mobile) || ValidatorUtils.checkTel(mobile)){
+		if(StringUtils.isBlank(mobile) || !ValidatorUtils.checkTel(mobile)){
 			throw new I18nMessageException("-1","手机号格式不正确！");
 		}
 		

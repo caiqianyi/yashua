@@ -21,7 +21,7 @@ public class UserMessageEntity implements Serializable {
 	 * 
 	 */
 	@TableId
-	private Integer id;
+	private long id;
 	/**
 	 * 消息标题
 	 */
@@ -62,13 +62,13 @@ public class UserMessageEntity implements Serializable {
 	/**
 	 * 设置：
 	 */
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：
 	 */
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 	/**

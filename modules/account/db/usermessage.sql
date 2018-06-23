@@ -10,7 +10,7 @@ CREATE TABLE `user_message` (
   `type` tinyint(4) DEFAULT NULL COMMENT '类型  0：个人   1：系统',
   `del_flag` tinyint(4) DEFAULT '0' COMMENT '是否删除  -1：已删除  0：正常',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户消息';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='用户消息';
 
 
 -- 菜单SQL

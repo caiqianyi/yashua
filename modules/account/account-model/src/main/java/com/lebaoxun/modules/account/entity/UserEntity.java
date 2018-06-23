@@ -21,7 +21,7 @@ public class UserEntity implements Serializable {
 	 * 主键
 	 */
 	@TableId
-	private Long id;
+	private long id;
 	/**
 	 * 用户ID
 	 */
@@ -134,13 +134,13 @@ public class UserEntity implements Serializable {
 	/**
 	 * 设置：主键
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：主键
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**

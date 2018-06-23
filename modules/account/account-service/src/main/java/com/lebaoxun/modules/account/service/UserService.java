@@ -18,6 +18,8 @@ public interface UserService extends IService<UserEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
     
+    void save(Long adminId,UserEntity user);
+    
     /**
      * 设置用户账户状态
      * @param userId

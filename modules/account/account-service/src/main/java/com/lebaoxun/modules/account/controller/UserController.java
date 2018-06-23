@@ -68,7 +68,7 @@ public class UserController {
     @RequestMapping("/account/user/save")
     @RedisLock(value="account:user:save:lock:#arg0")
     ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody UserEntity user){
-		userService.insert(user);
+		userService.save(adminId,user);
         return ResponseMessage.ok();
     }
 
