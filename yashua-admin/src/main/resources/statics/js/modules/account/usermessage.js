@@ -1,9 +1,36 @@
+var um;
 $(function () {
+	
+	jeDate({
+        dateCell:"#datestart",
+        format:"YYYY-MM-DD hh:mm:ss",
+        isinitVal:true,
+        isTime:true, //isClear:false,
+        //isClear:false,
+        //minDate:"2014-09-19 00:00:00"
+    })
+    
+    jeDate({
+    	dateCell:"#dateend",
+    	format:"YYYY-MM-DD hh:mm:ss",
+    	isinitVal:true,
+    	isTime:true, //isClear:false,
+    	//isClear:false,
+    	//minDate:"2014-09-19 00:00:00"
+    })
+    
+    um = UM.getEditor('myEditor');
+	um.addListener('blur',function(){
+	    $('#focush2').html('编辑器失去焦点了')
+	});
+	um.addListener('focus',function(){
+	    $('#focush2').html('')
+	});
+    
     $("#jqGrid").jqGrid({
         url: baseURL + 'account/usermessage/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
 			{ label: '消息标题', name: 'title', index: 'title', width: 80 }, 			
 			{ label: '开始时间', name: 'startTime', index: 'start_time', width: 80 }, 			
 			{ label: '结束时间', name: 'endTime', index: 'end_time', width: 80 }, 			
@@ -11,8 +38,16 @@ $(function () {
 			{ label: '消息时间', name: 'createTime', index: 'create_time', width: 80 }, 			
 			{ label: '发送人', name: 'createBy', index: 'create_by', width: 80 }, 			
 			{ label: '接收人', name: 'userId', index: 'user_id', width: 80 }, 			
-			{ label: '类型  0：个人   1：系统', name: 'type', index: 'type', width: 80 }, 			
-			{ label: '是否删除  -1：已删除  0：正常', name: 'delFlag', index: 'del_flag', width: 80 }, 			
+			{ label: '消息类型', name: 'type', index: 'type', width: 80, formatter: function(value, options, row){
+				return value == 0 ? 
+						'<span class="label label-danger">通知</span>' : 
+						'<span class="label label-success">系统</span>';
+			}}, 			
+			{ label: '是否生效', name: 'delFlag', index: 'del_flag', width: 80, formatter: function(value, options, row){
+				return value == 0 ? 
+						'<span class="label label-danger">生效</span>' : 
+						'<span class="label label-success">失效</span>';
+			}}, 			
         ],
 		viewrecords: true,
         height: 385,
@@ -85,13 +120,15 @@ var vm = new Vue({
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.userMessage.id == null ? "account/usermessage/save" : "account/usermessage/update";
+			var content = um.getContent();
+			vm.userMessage.content = content;
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
                 contentType: "application/json",
 			    data: JSON.stringify(vm.userMessage),
 			    success: function(r){
-			    	if(r.errcode === 0){
+			    	if(r.errcode == 0){
 						alert('操作成功', function(index){
 							vm.reload();
 						});

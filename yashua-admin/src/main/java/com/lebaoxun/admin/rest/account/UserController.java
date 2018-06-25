@@ -62,6 +62,7 @@ public class UserController {
     	user.setSource("ADMIN");
     	user.setType("A");
     	user.setUserId(GenerateCode.gen16(9));
+    	user.setMobile(user.getAccount());
         return userService.save(oauth2SecuritySubject.getCurrentUser(),user);
     }
 

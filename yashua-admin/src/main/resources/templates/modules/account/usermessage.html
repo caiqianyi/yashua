@@ -3,6 +3,13 @@
 <head>
     <title>用户消息</title>
 	<#include "/header.html">
+	<link rel="stylesheet" href="/statics/plugins/jedate/jedate.css">
+	<script src="/statics/plugins/jedate/jedate.js"></script>
+	<script src="/statics/plugins/jedate/jedate.js"></script>
+	<link href="/statics/plugins/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" charset="utf-8" src="/statics/plugins/umeditor/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/statics/plugins/umeditor/umeditor.min.js"></script>
+    <script type="text/javascript" src="/statics/plugins/umeditor/lang/zh-cn/zh-cn.js"></script>
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -38,50 +45,36 @@
             <div class="form-group">
                 <div class="col-sm-2 control-label">开始时间</div>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.startTime" placeholder="开始时间"/>
+                    <input type="text" class="datainp" v-model="userMessage.startTime" placeholder="可以为空" id="datestart" readonly/>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-2 control-label">结束时间</div>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.endTime" placeholder="结束时间"/>
+                    <input type="text" class="datainp" v-model="userMessage.endTime" placeholder="可以为空" id="dateend" readonly/>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-2 control-label">内容</div>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.content" placeholder="内容"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">消息时间</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.createTime" placeholder="消息时间"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">发送人</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.createBy" placeholder="发送人"/>
+                	<script type="text/plain" id="myEditor" style="width:1000px;height:240px;">
+					</script>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-2 control-label">接收人</div>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.userId" placeholder="接收人"/>
+                    <input type="text" class="form-control" v-model="userMessage.userId" placeholder="接收用户ID"/>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-2 control-label">类型  0：个人   1：系统</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.type" placeholder="类型  0：个人   1：系统"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label">是否删除  -1：已删除  0：正常</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="userMessage.delFlag" placeholder="是否删除  -1：已删除  0：正常"/>
-                </div>
+                <div class="col-sm-2 control-label">是否生效</div>
+                 <label class="radio-inline">
+					<input type="radio" name="status" value="-1" v-model="userMessage.type"/> 失效
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="status" value="0" v-model="userMessage.type"/> 有效
+				</label>
             </div>
             <div class="form-group">
                 <div class="col-sm-2 control-label"></div>

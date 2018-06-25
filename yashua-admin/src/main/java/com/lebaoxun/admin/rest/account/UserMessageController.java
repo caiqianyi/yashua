@@ -1,5 +1,6 @@
 package com.lebaoxun.admin.rest.account;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -11,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.account.entity.UserMessageEntity;
 import com.lebaoxun.modules.account.service.IUserMessageService;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
-import com.lebaoxun.commons.utils.PageUtils;
-import com.lebaoxun.commons.exception.ResponseMessage;
 
 
 
@@ -56,6 +56,9 @@ public class UserMessageController {
      */
     @RequestMapping("/account/usermessage/save")
     ResponseMessage save(@RequestBody UserMessageEntity userMessage){
+    	userMessage.setCreateBy(oauth2SecuritySubject.getCurrentUser());
+    	userMessage.setCreateTime(new Date());
+    	userMessage.setType(1);
         return userMessageService.save(oauth2SecuritySubject.getCurrentUser(),userMessage);
     }
 

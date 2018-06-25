@@ -25,17 +25,6 @@ $.ajaxSetup({
     }
 });
 
-function login(oauth2){
-	for(var ke in oauth2){
-		window.storage.set("login."+ke,oauth2[ke],false);
-	}
-	var expiresTime = oauth2["expires_in"];
-	var now = new Date();
-	var t = now.getTime()+expiresTime*1000;
-	var loginTime = new Date(t);
-	window.storage.set('login.expire',loginTime.getTime(),false);
-}
-
 var tokenTimer = null;
 function tokenSurvey(){
 	if(isTokenAlert == true){
