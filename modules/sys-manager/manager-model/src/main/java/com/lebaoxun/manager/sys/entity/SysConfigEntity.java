@@ -29,15 +29,15 @@ import com.baomidou.mybatisplus.annotations.TableName;
 @TableName("sys_config")
 public class SysConfigEntity {
 	@TableId
-	private Long id;
+	private long id;
 	private String paramKey;
 	private String paramValue;
 	private String remark;
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

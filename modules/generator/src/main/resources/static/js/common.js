@@ -36,7 +36,7 @@ function hasPermission(permission) {
 window.alert = function(msg, callback){
 	parent.layer.alert(msg, function(index){
 		parent.layer.close(index);
-		if(typeof(callback) === "function"){
+		if(typeof(callback) == "function"){
 			callback("ok");
 		}
 	});
@@ -46,7 +46,7 @@ window.alert = function(msg, callback){
 window.confirm = function(msg, callback){
 	parent.layer.confirm(msg, {btn: ['确定','取消']},
 	function(){//确定事件
-		if(typeof(callback) === "function"){
+		if(typeof(callback) == "function"){
 			callback("ok");
 		}
 	});

@@ -35,21 +35,27 @@ $(function () {
             order: "order"
         },
         gridComplete:function(){
-        	
-        	if((!vm.q.account || vm.q.account.length == 0)
-        			&& (!vm.selected || vm.selected.length == 0) ){
-        		var types = new Set($("#jqGrid").jqGrid('getCol',"logType"));
-        		var d = vm.types.slice(0,1);
-        		for(var i=0;i<types.size();i++){
-        			d[d.length] = {text: types.get(i), value: types.get(i)};
-        		}
-        		vm.types = d;
-        	}
-        	
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+    
+    $.ajax({
+		type: "POST",
+		url: baseURL + "account/userlog/allLogType",
+	    success: function(r){
+	    	if(r.errcode == 0){
+	    		var types = r.data;
+        		var d = vm.types.slice(0,1);
+        		for(var i=0;i<types.length;i++){
+        			d[d.length] = {text: types[i].descr, value: types[i].log_type};
+        		}
+        		vm.types = d;
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
 });
 
 var vm = new Vue({
@@ -93,7 +99,7 @@ var vm = new Vue({
                 contentType: "application/json",
 			    data: JSON.stringify(vm.userLog),
 			    success: function(r){
-			    	if(r.errcode === 0){
+			    	if(r.errcode == 0){
 						alert('操作成功', function(index){
 							vm.reload();
 						});

@@ -1,8 +1,12 @@
 package com.lebaoxun.modules.account.dao;
 
-import com.lebaoxun.modules.account.entity.UserLogEntity;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lebaoxun.modules.account.entity.UserLogEntity;
 
 /**
  * 
@@ -14,4 +18,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 @Mapper
 public interface UserLogDao extends BaseMapper<UserLogEntity> {
 	
+	List<Map<String,Object>> queryAllLogType();
 }

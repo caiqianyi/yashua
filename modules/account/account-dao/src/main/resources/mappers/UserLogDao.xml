@@ -17,5 +17,7 @@
         <result property="adjunctInfo" column="adjunct_info"/>
     </resultMap>
 
-
+	<select id="queryAllLogType" resultType="java.util.Map">
+	    select log_type,descr from user_log group by log_type;
+	</select>
 </mapper>

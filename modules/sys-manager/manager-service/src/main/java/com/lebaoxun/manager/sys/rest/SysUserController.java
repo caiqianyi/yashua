@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +53,8 @@ public class SysUserController extends AbstractController {
 	private SysUserService sysUserService;
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
+	@Value("${security.md5.password}")
+	private String passwdSecret;
 	
 	/**
 	 * 所有用户列表
@@ -74,7 +77,7 @@ public class SysUserController extends AbstractController {
 	
 	@RequestMapping("/sys/user/login")
 	SysUserEntity login(@RequestParam("username") String username,@RequestParam("password") String password){
-		return sysUserService.selectOne(new EntityWrapper<SysUserEntity>().eq("username", username).eq("password", PwdUtil.getMd5Password(username, password)));
+		return sysUserService.selectOne(new EntityWrapper<SysUserEntity>().eq("username", username).eq("password", PwdUtil.getMd5Password(passwdSecret,username, password)));
 	}
 	
 	/**
@@ -87,8 +90,8 @@ public class SysUserController extends AbstractController {
 		Assert.notEmpty(newPassword, "-1","新密码不为能空");
 		SysUserEntity user = sysUserService.selectById(userId);
 		//新密码
-		password = PwdUtil.getMd5Password(user.getUsername(), password);
-		newPassword = PwdUtil.getMd5Password(user.getUsername(), newPassword);
+		password = PwdUtil.getMd5Password(passwdSecret,user.getUsername(), password);
+		newPassword = PwdUtil.getMd5Password(passwdSecret,user.getUsername(), newPassword);
 				
 		//更新密码
 		boolean flag = sysUserService.updatePassword(userId, password, newPassword);

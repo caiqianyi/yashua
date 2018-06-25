@@ -42,7 +42,7 @@ public class SysUserEntity implements Serializable {
 	 * 用户ID
 	 */
 	@TableId
-	private Long userId;
+	private long userId;
 
 	/**
 	 * 用户名
@@ -102,7 +102,7 @@ public class SysUserEntity implements Serializable {
 	 * 设置：
 	 * @param userId 
 	 */
-	public void setUserId(Long userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 
@@ -110,7 +110,7 @@ public class SysUserEntity implements Serializable {
 	 * 获取：
 	 * @return Long
 	 */
-	public Long getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 	

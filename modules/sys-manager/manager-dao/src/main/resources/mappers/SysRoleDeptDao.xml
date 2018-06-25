@@ -11,7 +11,7 @@
 	</select>
 
 	<delete id="deleteBatch">
-		delete from sys_role_dept where roleId in
+		delete from sys_role_dept where role_id in
 		<foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
 			#{roleId}
 		</foreach>

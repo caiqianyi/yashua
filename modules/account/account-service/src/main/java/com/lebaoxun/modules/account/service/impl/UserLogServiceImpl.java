@@ -3,6 +3,7 @@ package com.lebaoxun.modules.account.service.impl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -34,4 +35,9 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogDao, UserLogEntity> i
         return new PageUtils(page);
     }
 
+    @Override
+    public List<Map<String, Object>> queryAllLogType() {
+    	// TODO Auto-generated method stub
+    	return this.baseMapper.queryAllLogType();
+    }
 }

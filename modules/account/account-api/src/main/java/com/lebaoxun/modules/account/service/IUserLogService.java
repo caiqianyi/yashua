@@ -34,5 +34,8 @@ public interface IUserLogService {
     @RequestMapping("/account/userlog/info/{id}")
     ResponseMessage info(@PathVariable("id") Integer id);
 
+    
+    @RequestMapping("/account/userlog/allLogType")
+    ResponseMessage allLogType();
 }
 

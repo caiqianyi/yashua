@@ -11,7 +11,9 @@ $.ajaxSetup({
     },
     complete:function(result){
     	var response = result.responseJSON;
-    	if(response.hasOwnProperty("errcode") && response.errcode == 10003){
+    	if(response 
+    			&& response.hasOwnProperty("errcode") 
+    			&& response.errcode == 10003){
     		isTokenAlert = true;
     		var nowTime = new Date().getTime();
     	    var expire = parseInt(window.storage.get('login.expire', false),10)

@@ -32,7 +32,7 @@ var vm = new Vue({
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-                ztree = $.fn.zTree.init($("#menuTree"), setting, r.menuList);
+                ztree = $.fn.zTree.init($("#menuTree"), setting, r.data.menuList);
                 var node = ztree.getNodeByParam("menuId", vm.menu.parentId);
                 ztree.selectNode(node);
 

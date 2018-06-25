@@ -34,7 +34,11 @@ public class UserLogController {
     ResponseMessage list(@RequestParam Map<String, Object> params){
         return userLogService.list(params);
     }
-
+    
+    @RequestMapping("/account/userlog/allLogType")
+    ResponseMessage allLogType(){
+        return userLogService.allLogType();
+    }
 
     /**
      * 信息

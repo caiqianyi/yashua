@@ -33,7 +33,7 @@ import java.io.Serializable;
 public class SysRoleDeptEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@TableId
-	private Long id;
+	private long id;
 
 	/**
 	 * 角色ID
@@ -49,7 +49,7 @@ public class SysRoleDeptEntity implements Serializable {
 	 * 设置：
 	 * @param id 
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -57,7 +57,7 @@ public class SysRoleDeptEntity implements Serializable {
 	 * 获取：
 	 * @return Long
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	

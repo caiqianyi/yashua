@@ -27,7 +27,7 @@ CREATE TABLE `qrtz_blob_triggers` (
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   KEY `SCHED_NAME` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_blob_triggers
@@ -42,7 +42,7 @@ CREATE TABLE `qrtz_calendars` (
   `CALENDAR_NAME` varchar(200) NOT NULL,
   `CALENDAR` blob NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`CALENDAR_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_calendars
@@ -60,7 +60,7 @@ CREATE TABLE `qrtz_cron_triggers` (
   `TIME_ZONE_ID` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_cron_triggers
@@ -91,7 +91,7 @@ CREATE TABLE `qrtz_fired_triggers` (
   KEY `IDX_QRTZ_FT_JG` (`SCHED_NAME`,`JOB_GROUP`),
   KEY `IDX_QRTZ_FT_T_G` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   KEY `IDX_QRTZ_FT_TG` (`SCHED_NAME`,`TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_fired_triggers
@@ -115,7 +115,7 @@ CREATE TABLE `qrtz_job_details` (
   PRIMARY KEY (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
   KEY `IDX_QRTZ_J_REQ_RECOVERY` (`SCHED_NAME`,`REQUESTS_RECOVERY`),
   KEY `IDX_QRTZ_J_GRP` (`SCHED_NAME`,`JOB_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_job_details
@@ -129,7 +129,7 @@ CREATE TABLE `qrtz_locks` (
   `SCHED_NAME` varchar(120) NOT NULL,
   `LOCK_NAME` varchar(40) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`LOCK_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_locks
@@ -143,7 +143,7 @@ CREATE TABLE `qrtz_paused_trigger_grps` (
   `SCHED_NAME` varchar(120) NOT NULL,
   `TRIGGER_GROUP` varchar(200) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_paused_trigger_grps
@@ -159,7 +159,7 @@ CREATE TABLE `qrtz_scheduler_state` (
   `LAST_CHECKIN_TIME` bigint(13) NOT NULL,
   `CHECKIN_INTERVAL` bigint(13) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`INSTANCE_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_scheduler_state
@@ -178,7 +178,7 @@ CREATE TABLE `qrtz_simple_triggers` (
   `TIMES_TRIGGERED` bigint(10) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_simple_triggers
@@ -205,7 +205,7 @@ CREATE TABLE `qrtz_simprop_triggers` (
   `BOOL_PROP_2` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_simprop_triggers
@@ -246,7 +246,7 @@ CREATE TABLE `qrtz_triggers` (
   KEY `IDX_QRTZ_T_NFT_ST_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_STATE`),
   KEY `IDX_QRTZ_T_NFT_ST_MISFIRE_GRP` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
   CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `qrtz_job_details` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qrtz_triggers
@@ -266,7 +266,7 @@ CREATE TABLE `schedule_job` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='定时任务';
+) ENGINE=InnoDB AUTO_INCREMENT=1 AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='定时任务';
 
 -- ----------------------------
 -- Records of schedule_job
@@ -290,7 +290,7 @@ CREATE TABLE `schedule_job_log` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`),
   KEY `job_id` (`job_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='定时任务日志';
 
 -- ----------------------------
 -- Records of schedule_job_log
@@ -308,7 +308,7 @@ CREATE TABLE `sys_config` (
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
   UNIQUE KEY `param_key` (`param_key`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统配置信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统配置信息表';
 
 -- ----------------------------
 -- Records of sys_config
@@ -326,7 +326,7 @@ CREATE TABLE `sys_dept` (
   `order_num` int(11) DEFAULT NULL COMMENT '排序',
   `del_flag` tinyint(4) DEFAULT '0' COMMENT '是否删除  -1：已删除  0：正常',
   PRIMARY KEY (`dept_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='部门管理';
+) ENGINE=InnoDB AUTO_INCREMENT=1 AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='部门管理';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -352,7 +352,7 @@ CREATE TABLE `sys_dict` (
   `del_flag` tinyint(4) DEFAULT '0' COMMENT '删除标记  -1：已删除  0：正常',
   PRIMARY KEY (`id`),
   UNIQUE KEY `type` (`type`,`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='数据字典表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='数据字典表';
 
 -- ----------------------------
 -- Records of sys_dict
@@ -375,7 +375,7 @@ CREATE TABLE `sys_log` (
   `ip` varchar(64) DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统日志';
 
 -- ----------------------------
 -- Records of sys_log
@@ -395,7 +395,7 @@ CREATE TABLE `sys_menu` (
   `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
   `order_num` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='菜单管理';
+) ENGINE=InnoDB AUTO_INCREMENT=1 AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='菜单管理';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -450,7 +450,7 @@ CREATE TABLE `sys_oss` (
   `url` varchar(200) DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件上传';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='文件上传';
 
 -- ----------------------------
 -- Records of sys_oss
@@ -467,7 +467,7 @@ CREATE TABLE `sys_role` (
   `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
@@ -482,7 +482,7 @@ CREATE TABLE `sys_role_dept` (
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色与部门对应关系';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='角色与部门对应关系';
 
 -- ----------------------------
 -- Records of sys_role_dept
@@ -497,7 +497,7 @@ CREATE TABLE `sys_role_menu` (
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色与菜单对应关系';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='角色与菜单对应关系';
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -519,12 +519,12 @@ CREATE TABLE `sys_user` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统用户';
+) ENGINE=InnoDB AUTO_INCREMENT=1 AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '18195A6E8A1F642AB29722733DF04581', 'YzcmCZNvbXocrsz9dm8e', '270852221@qq.com', '15010602819', '1', '1', '2016-11-11 11:11:11');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '2DEB76E3BE1778F8062DA5721AD656C5', 'YzcmCZNvbXocrsz9dm8e', '270852221@qq.com', '15010602819', '1', '1', '2016-11-11 11:11:11');
 INSERT INTO `sys_user` VALUES ('2', 'caiqianyi', '2356D32B4915D25E250922294CD3B647', 'ukXR8Lhd2BkoG3mw4QtJ', '270852221', '15010602819', '1', null, '2018-06-22 15:21:24');
 
 -- ----------------------------
@@ -536,7 +536,7 @@ CREATE TABLE `sys_user_role` (
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
 
 -- ----------------------------
 -- Records of sys_user_role

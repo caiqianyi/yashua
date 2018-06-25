@@ -40,7 +40,7 @@ public class SysRoleEntity implements Serializable {
 	 * 角色ID
 	 */
 	@TableId
-	private Long roleId;
+	private long roleId;
 
 	/**
 	 * 角色名称
@@ -78,7 +78,7 @@ public class SysRoleEntity implements Serializable {
 	 * 设置：
 	 * @param roleId 
 	 */
-	public void setRoleId(Long roleId) {
+	public void setRoleId(long roleId) {
 		this.roleId = roleId;
 	}
 
@@ -86,7 +86,7 @@ public class SysRoleEntity implements Serializable {
 	 * 获取：
 	 * @return Long
 	 */
-	public Long getRoleId() {
+	public long getRoleId() {
 		return roleId;
 	}
 	

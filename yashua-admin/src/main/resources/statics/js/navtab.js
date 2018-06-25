@@ -1,7 +1,7 @@
 layui.define(['element'], function(exports){
    var  element = layui.element(),
         $ = layui.jquery,
-		layer = parent.layer === undefined ? layui.layer : parent.layer,
+		layer = parent.layer == undefined ? layui.layer : parent.layer,
 		module_name = 'navtab',
 	globalTabIdIndex = 0,
 	LarryTab = function(){
@@ -30,18 +30,18 @@ layui.define(['element'], function(exports){
 		       layer.alert('Tab选项卡错误提示: elem参数未定义或设置出错，具体设置格式请参考文档API.');
 	     }
 	     var $container;
-	     if(typeof(_config.elem) === 'string') {
+	     if(typeof(_config.elem) == 'string') {
 		     $container = $('' + _config.elem + '');
 		     //console.log($container);
 	     }
-	     if(typeof(_config.elem) === 'object') {
+	     if(typeof(_config.elem) == 'object') {
 		     $container = _config.elem;
 	     }
-	     if($container.length === 0) {
+	     if($container.length == 0) {
 		     layer.alert('Tab选项卡错误提示:找不到elem参数配置的容器，请检查.');
 	     }
 	     var filter = $container.attr('lay-filter');
-	     if(filter === undefined || filter === '') {
+	     if(filter == undefined || filter == '') {
 		      layer.alert('Tab选项卡错误提示:请为elem容器设置一个lay-filter过滤器');
 	     }
 	     _config.elem = $container;
@@ -56,11 +56,11 @@ layui.define(['element'], function(exports){
      * @return {[type]}       [description]
      */
     LarryTab.prototype.exists = function(title){
-        var _this = ELEM.titleBox === undefined ? this.init() : this,
+        var _this = ELEM.titleBox == undefined ? this.init() : this,
 		    tabIndex = -1;
 		ELEM.titleBox.find('li').each(function(i, e) {
 		    var $em = $(this).children('em');
-		    if($em.text() === title) {
+		    if($em.text() == title) {
 			      tabIndex = i;
 		    };
 	    });
@@ -75,7 +75,7 @@ layui.define(['element'], function(exports){
         var _this = this;
 	    var tabIndex = _this.exists(data.title);
 	    // 若不存在
-	    if(tabIndex === -1){
+	    if(tabIndex == -1){
 	    	globalTabIdIndex++;
 	    	var content = '<iframe src="' + data.href + '" data-id="' + globalTabIdIndex + '" class="larry-iframe"></iframe>';
 		    var title = '';

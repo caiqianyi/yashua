@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.account.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,10 @@ public class UserLogController {
         PageUtils page = userLogService.queryPage(params);
         return ResponseMessage.ok(page);
     }
-
+    @RequestMapping("/account/userlog/allLogType")
+    ResponseMessage allLogType(){
+    	return ResponseMessage.ok(userLogService.queryAllLogType());
+    }
 
     /**
      * 信息

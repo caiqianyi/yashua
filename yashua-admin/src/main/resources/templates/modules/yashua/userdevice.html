@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户设备表</title>
+	<#include "/header.html">
+	<script src="/statics/libs/xlsx.full.min.js"></script>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+        
+        	<div class="form-group">
+				<div class="col-sm-2 control-label">方式</div>
+				<label class="radio-inline">
+					<input type="radio" v-model="addType" value="1"/> 单个
+				</label>
+				<label class="radio-inline">
+					<input type="radio" v-model="addType" value="2"/> 批量
+				</label>
+			</div>
+			<div v-show="addType == 1">
+				<div class="form-group">
+	                <div class="col-sm-2 control-label">绑定账号</div>
+	                <div class="col-sm-10">
+	                    <input type="text" class="form-control" v-model="userDevice.account" placeholder="用户手机号（可以不填）"/>
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <div class="col-sm-2 control-label">设备号</div>
+	                <div class="col-sm-10">
+	                    <input type="text" class="form-control" v-model="userDevice.identity" placeholder="设备号"/>
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <div class="col-sm-2 control-label">图片</div>
+	                <div class="col-sm-10">
+	                    <input type="text" class="form-control" v-model="userDevice.icon" placeholder="图片URL"/>
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <div class="col-sm-2 control-label">名称</div>
+	                <div class="col-sm-10">
+	                    <input type="text" class="form-control" v-model="userDevice.name" placeholder="名称"/>
+	                </div>
+	            </div>
+			</div>
+			<div v-show="addType == 2">
+				<div class="form-group">
+	                <div class="col-sm-2 control-label"><a href="/statics/upload/template/设备上传模板.xlsx">下载模板</a></div>
+	                <div class="col-sm-10"><span style="width: 100%;height: 34px;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;color: #555;background-color: #fff;transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;" >PS:请保证设备号唯一</span></div>
+	            </div>
+				<div class="form-group">
+	                <div class="col-sm-2 control-label">上传excel</div>
+	                <div class="col-sm-10">
+	                    <input type="file" class="form-control" @change="importf"/>
+	                </div>
+	            </div>
+			</div>
+            
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定" v-show="addType == 1"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/statics/js/modules/yashua/userdevice.js?_${.now?long}"></script>
+</body>
+</html>

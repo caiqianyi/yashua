@@ -33,7 +33,7 @@ public class SysDictEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@TableId
-	private Long id;
+	private long id;
 	/**
 	 * 字典名称
 	 */
@@ -67,13 +67,13 @@ public class SysDictEntity implements Serializable {
 	/**
 	 * 设置：
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**

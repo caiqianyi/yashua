@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Value("${security.md5.password}")
+	private String passwdSecret;
     /**
      * 列表
      */
@@ -83,7 +86,6 @@ public class UserController {
     @RedisLock(value="account:user:disabled:lock:#arg0:#arg1")
     ResponseMessage disabled(@RequestParam(value="adminId")Long adminId,
     		@RequestParam(value="userId")Long userId){
-    	 logger.debug("host={}",request.getHeader("oauth2.host"));
     	 userService.lock(userId, adminId);
     	 return ResponseMessage.ok();
     }
@@ -228,7 +230,7 @@ public class UserController {
      */
 	@RequestMapping("/account/user/login")
 	UserEntity login(@RequestParam("username") String username,@RequestParam("password") String password){
-		return userService.selectOne(new EntityWrapper<UserEntity>().eq("username", username).eq("password", PwdUtil.getMd5Password(username, password)));
+		return userService.selectOne(new EntityWrapper<UserEntity>().eq("username", username).eq("password", PwdUtil.getMd5Password(passwdSecret, username, password)));
 	}
 
 	/**

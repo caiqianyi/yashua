@@ -38,7 +38,7 @@ public class SysDeptEntity implements Serializable {
 	
 	//部门ID
 	@TableId
-	private Long deptId;
+	private long deptId;
 	//上级部门ID，一级部门为0
 	private Long parentId;
 	//部门名称
@@ -60,11 +60,11 @@ public class SysDeptEntity implements Serializable {
 	private List<?> list;
 
 
-	public void setDeptId(Long deptId) {
+	public void setDeptId(long deptId) {
 		this.deptId = deptId;
 	}
 
-	public Long getDeptId() {
+	public long getDeptId() {
 		return deptId;
 	}
 	/**

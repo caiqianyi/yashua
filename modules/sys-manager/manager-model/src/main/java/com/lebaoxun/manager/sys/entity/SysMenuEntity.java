@@ -39,7 +39,7 @@ public class SysMenuEntity implements Serializable {
 	 * 菜单ID
 	 */
 	@TableId
-	private Long menuId;
+	private long menuId;
 
 	/**
 	 * 父菜单ID，一级菜单为0
@@ -91,11 +91,11 @@ public class SysMenuEntity implements Serializable {
 	@TableField(exist=false)
 	private List<?> list;
 
-	public void setMenuId(Long menuId) {
+	public void setMenuId(long menuId) {
 		this.menuId = menuId;
 	}
 
-	public Long getMenuId() {
+	public long getMenuId() {
 		return menuId;
 	}
 	

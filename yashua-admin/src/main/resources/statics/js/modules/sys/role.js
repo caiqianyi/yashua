@@ -199,6 +199,7 @@ var vm = new Vue({
                 deptIdList.push(nodes[i].deptId);
             }
             vm.role.deptIdList = deptIdList;
+            vm.role.createTime = null;
 
             var url = vm.role.roleId == null ? "sys/role/save" : "sys/role/update";
             $.ajax({

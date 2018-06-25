@@ -35,7 +35,7 @@ import java.util.Date;
 public class SysLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@TableId
-	private Long id;
+	private long id;
 	//用户名
 	private String username;
 	//用户操作
@@ -55,13 +55,13 @@ public class SysLogEntity implements Serializable {
 	/**
 	 * 设置：
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**

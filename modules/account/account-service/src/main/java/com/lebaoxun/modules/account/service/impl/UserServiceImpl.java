@@ -6,12 +6,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.gson.Gson;
@@ -33,6 +33,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
 	@Resource
 	private UserLogDao userLogDao;
+	
+	@Value("${security.md5.password}")
+	private String passwdSecret;
 	
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -68,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 				throw new I18nMessageException("-1","手机号已存在！");
 			}
 		}
-		String passwd = PwdUtil.getMd5Password(user.getAccount(), user.getPassword());
+		String passwd = PwdUtil.getMd5Password(passwdSecret,user.getAccount(), user.getPassword());
 		
     	user.setCreateTime(new Date());
     	user.setBalance(0);
@@ -117,7 +120,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		}
 		insertLog(user, logType, 0, logType.getDescr(), adjunctInfo);
 		
-		String passwd = PwdUtil.getMd5Password(user.getAccount(), newPasswd);
+		String passwd = PwdUtil.getMd5Password(passwdSecret,user.getAccount(), newPasswd);
 		UserEntity entity = new UserEntity();
 		entity.setId(user.getId());
 		entity.setPassword(passwd);
@@ -203,7 +206,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		UserLogAction logType = UserLogAction.U_BIND_MOBILE;
 		insertLog(user, logType, logType.getDescr());
 		
-		String passwd = PwdUtil.getMd5Password(mobile, password);
+		String passwd = PwdUtil.getMd5Password(passwdSecret,mobile, password);
 		
 		UserEntity entity = new UserEntity();
 		entity.setId(user.getId());
