@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
+<link rel="stylesheet" href="css/css.css" type="text/css">
+<title>注册</title>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/Font.js"></script>
+<script type="text/javascript">
+	//密码可视设置
+	function OpenEye(){
+		 $('#seeEye').addClass('hid');
+		 $('#closeEye').removeClass('hid');
+		 $('#password').attr('type','password');
+	}
+	function ShutEye(){
+		 $('#closeEye').addClass('hid');
+		 $('#seeEye').removeClass('hid');
+		$('#password').attr('type','text');
+	}
+	//
+	function st_OpenEye(){
+		 $('#st-seeEye').addClass('hid');
+		 $('#st-closeEye').removeClass('hid');
+		 $('#st-password').attr('type','password');
+	}
+	function st_ShutEye(){
+		 $('#st-closeEye').addClass('hid');
+		 $('#st-seeEye').removeClass('hid');
+		$('#st-password').attr('type','text');
+	}
+	
+</script>
+</head>
+<body class="bg-white">
+<div class="Top"><span>&nbsp;</span>注册</div>
+<section class="zhuce">
+    <div class="login">
+        
+        <div class="tel sent">
+            <em></em>
+            <input type="text" placeholder="请输入手机号" maxlength="11"/>
+            <span>发送验证码</span>
+        </div>
+        <div class="tel bh">
+            <em></em>
+            <input type="text" placeholder="请输入验证码"  />
+        </div>
+        <div class="tel psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="password" value="" placeholder="请输入密码">
+            <i id="closeEye" class="hid" onclick="ShutEye()"></i><i id="seeEye" onclick="OpenEye()"></i>
+        </div>
+       <div class="tel psd st-psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="st-password" value="" placeholder="请输入确认密码">
+            <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
+        </div>
+      	<div class="cl"></div>
+        <a href="" class="denglu font-36" style="margin-top:1rem;">注 册</a>
+        
+    </div>
+</section>
+</body>
+</html>
+

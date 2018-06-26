@@ -119,17 +119,17 @@ public class LoginController extends BaseController{
 	 * @param openid
 	 * @return
 	 */
-	@RequestMapping(value = "/oauth2/token", method = RequestMethod.GET)
+	@RequestMapping(value = "/oauth2/token", method = RequestMethod.POST)
 	ResponseMessage oauthToken(String username,String password,
 			String platform,
-			String kaptcha,String openid){
+			String captcha,String openid){
 		Boolean isCorrectPwd = null; 
 		if(StringUtils.isBlank(openid)){
 			if(!"app".equals(platform)
 					&& !"wechatOA".equals(platform)){
 				String verifycode = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-				logger.debug("verifycode={},kaptcha={}",verifycode,kaptcha);
-				if(verifycode == null || !verifycode.equalsIgnoreCase(kaptcha)){
+				logger.debug("verifycode={},captcha={}",verifycode,captcha);
+				if(verifycode == null || !verifycode.equalsIgnoreCase(captcha)){
 					throw new I18nMessageException("10001", "验证码不正确");
 				}
 				request.getSession().removeAttribute(Constants.KAPTCHA_SESSION_KEY);

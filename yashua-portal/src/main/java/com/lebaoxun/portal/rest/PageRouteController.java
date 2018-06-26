@@ -30,23 +30,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageRouteController extends BaseController{
 	
-	@RequestMapping("/pages/{module}/{url}.html")
-	public String pages(@PathVariable("module") String module, @PathVariable("url") String url){
-		return "pages/" + module + "/" + url;
-	}
-
 	@RequestMapping(value="/")
 	public String redirect(){
 		return "redirect:/login.html";
 	}
-	@RequestMapping(value="index.html")
-	public String index(){
-		return "index";
+	
+	@RequestMapping("/{path}.html")
+	public String route(@PathVariable("path") String path){
+		return path;
 	}
-
-	@RequestMapping("login.html")
-	public String login(){
-		return "login";
+	
+	@RequestMapping("/{path}/{url}.html")
+	public String pages(@PathVariable("path") String path, @PathVariable("url") String url){
+		return path + "/" + url;
 	}
 
 	@RequestMapping("404.html")
