@@ -5,7 +5,6 @@ $(function () {
     	selected: [0,0,0],
 		title: "请选择地区",
 		onSelected: function(selected,text){
-			console.info("setup="+selected,text);
 			vm.pcikerTextShow = text.toString().replace(new RegExp(",","gm")," ");
 			vm.userAddress.areaCode = selected.toString();
 		},
@@ -140,7 +139,6 @@ var vm = new Vue({
             	}
                 vm.userAddress = r.data.userAddress;
                 var s = r.data.userAddress.areaCode.split(",");
-                console.info(s);
                 pickerSetup.setSelected(s);
             });
 		},

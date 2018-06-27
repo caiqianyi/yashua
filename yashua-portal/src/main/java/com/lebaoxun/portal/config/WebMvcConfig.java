@@ -27,8 +27,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authorityInterceptor())
         	.excludePathPatterns("/*.html")
+        	.excludePathPatterns("/**/*.html")
+        	.excludePathPatterns("/**/**/*.html")
         	.excludePathPatterns("/statics/**")
-        	.excludePathPatterns("/page/**")
         	.excludePathPatterns("/hystrix.stream")
         	.excludePathPatterns("/hystrix/**")
         	.excludePathPatterns("/turbine/**")

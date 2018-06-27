@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/setup.js"></script>
+<title>编辑收货地址</title>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:window.location.href='/account/address.html'"></span>编辑收货地址</div>
+<form>
+	<div class="new-dizhi bg-white">
+		<p><i>收货人</i><input type="text" name="consignee"/></p>
+	    <p><i>联系电话</i><input type="text" name="mobile"/></p>
+	    <p><i>所在地区</i><span class="addressSelected">请选择</span></p>
+	    <p><i>详细地址</i><textarea cols="30" rows="10" placeholder="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元室等" name="address"></textarea></p>
+	    <p><i>地址别名</i><input type="text" name="name"/></p>
+	    <p class="moren on">设置默认地址</p>
+	</div>
+	 <button type="submit" id="save-button" class="baocun font-28">保存</button>
+</form>
+<script type="text/javascript">
+var pickerSetup = null,areaCode = null,address=null;
+$(function () {
+	var id = url("id");
+	if(!id || isNaN(id)){
+		alert("参数错误！");
+		window.location.href = '/account/address.html';
+	}
+	pickerSetup = new PickerSetup({
+    	selected: [0,0,0],
+		title: "请选择地区",
+		onSelected: function(selected,text){
+			$(".addressSelected").html(text.toString().replace(new RegExp(",","gm")," "));
+			areaCode = selected.toString();
+		}
+	});
+	
+	$.ajax({
+		type: "GET",
+	    url: "/account/address/info/"+id,
+	    success: function(r){
+	    	if(r.errcode == 0){
+	    		address = r.data.userAddress;
+	    		$("input[name=consignee]").val(address.consignee);
+                pickerSetup.setSelected(address.areaCode.split(","));
+	    		$("textarea[name=address]").val(address.address);
+	    		$("input[name=name]").val(address.name);
+	    		$("input[name=mobile]").val(address.mobile);
+	    		if(address.defaultFlag == 0){
+	    			$(".moren").addClass("on");
+	    		}else{
+	    			$(".moren").removeClass("on");
+	    		}
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
+	$(".addressSelected").click(function(){
+		pickerSetup.show();
+	});
+	
+	$(".moren").click(function(){
+		$(this).toggleClass("on");
+	});
+	
+	$('#save-button').click(function(event) {
+		event.preventDefault();
+		address.consignee = $("input[name=consignee]").val();
+		address.areaCode = areaCode;
+		address.address = $("textarea[name=address]").val();
+		address.name = $("input[name=name]").val();
+		address.mobile = $("input[name=mobile]").val();
+		address.defaultFlag = $(".moren").hasClass("on")? 0: 1;
+		
+		if(!address.consignee || address.consignee == '' || address.consignee.length == 0){
+			alert("请您填写收货人姓名");
+			return;
+		}
+		if(!address.areaCode || address.areaCode == '' || address.areaCode.length == 0){
+			alert("请您填写完整的地区信息");
+			return;
+		}
+		if(!address.address || address.address == '' || address.address.length == 0){
+			alert("请您填写收货人详细地址");
+			return;
+		}
+		if(!address.mobile || address.mobile == '' || address.mobile.length == 0){
+			alert("请您填写收货人手机号码");
+			return;
+		}
+		$.ajax({
+			type : "POST",
+			url : "/account/address/update",
+			contentType: "application/json",
+		    data: JSON.stringify(address),
+			dataType : "json",
+			success : function(result) {
+				if (result.errcode == 0) {//添加成功
+					alert("保存成功！");
+					window.location.href = '/account/address.html';
+				} else {
+					alert(result.errmsg);
+				}
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>
+

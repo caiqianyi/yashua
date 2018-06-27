@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="format-detection" content="telephone=no">
-<link rel="shortcut icon" href="/statics/images/logo_bank_gfyh.png" type="image/x-icon"/>
-<link rel="stylesheet" href="/statics/css/css.css" type="text/css">
-<script type="text/javascript" src="/statics/js/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="/statics/js/Font.js"></script>
-<script type="text/javascript" src="/statics/js/libs/storge.js"></script>
-<script type="text/javascript" src="/statics/js/libs/common.js"></script>
-<script type="text/javascript" src="/statics/js/libs/set.js"></script>
 <script type="text/javascript" src="/oauth2/secret.js"></script>
-<script type="text/javascript" src="/statics/js/libs/oauth2.js"></script>
+<#include "/header.html">
 <title>登录</title>
 <script type="text/javascript">
 	//密码可视设置
@@ -31,7 +19,7 @@
 </script>
 </head>
 <body class="bg-white">
-<div class="Top">登录<a href="zhuce.html">注册</a></div>
+<div class="Top">登录<a href="/register.html">注册</a></div>
 <section class="zhuce">
 	<div class="logo"><!--请放入logo图片--></div>
     <div class="login">
@@ -51,7 +39,7 @@
                     <img src="" style="width: 100px;" class="captchaImg">
                 </div>
 	        </div> 
-	        <a href="wangjimima.html" class="forget">忘记密码？</a>     	
+	        <a href="/signin/accountrecovery.html" class="forget">忘记密码？</a>     	
 	        <button type="submit" id="login-button" class="denglu font-36">登录</button>
 	        <div class="opt">
 	        	<p><span>其他方式登录</span></p>

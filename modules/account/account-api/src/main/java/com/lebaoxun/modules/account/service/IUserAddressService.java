@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.lebaoxun.modules.account.entity.UserAddressEntity;
 import com.lebaoxun.modules.account.service.hystrix.UserAddressServiceHystrix;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -32,7 +33,8 @@ public interface IUserAddressService {
      * 信息
      */
     @RequestMapping("/account/useraddress/info/{id}")
-    ResponseMessage info(@PathVariable("id") Integer id);
+    ResponseMessage info(@PathVariable("id") Integer id,
+    		@RequestParam(value="userId",required=false) Long userId);
 
     /**
      * 保存
@@ -50,7 +52,7 @@ public interface IUserAddressService {
      * 删除
      */
     @RequestMapping("/account/useraddress/delete")
-    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Integer[] ids);
+    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Long[] ids);
     
 }
 

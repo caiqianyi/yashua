@@ -25,7 +25,7 @@ public class UserAddressServiceHystrix implements IUserAddressService {
 	}
 
 	@Override
-	public ResponseMessage info(Integer id) {
+	public ResponseMessage info(Integer id, Long userId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
@@ -40,7 +40,7 @@ public class UserAddressServiceHystrix implements IUserAddressService {
 	}
 
 	@Override
-	public ResponseMessage delete(Long adminId,Integer[] ids) {
+	public ResponseMessage delete(Long adminId,Long[] ids) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
     

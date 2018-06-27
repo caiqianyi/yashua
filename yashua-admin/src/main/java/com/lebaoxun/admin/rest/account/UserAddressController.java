@@ -47,7 +47,7 @@ public class UserAddressController {
      */
     @RequestMapping("/account/useraddress/info/{id}")
     ResponseMessage info(@PathVariable("id") Integer id){
-        return userAddressService.info(id);
+        return userAddressService.info(id, null);
     }
 
     /**
@@ -70,7 +70,7 @@ public class UserAddressController {
      * 删除
      */
     @RequestMapping("/account/useraddress/delete")
-    ResponseMessage delete(@RequestBody Integer[] ids){
+    ResponseMessage delete(@RequestBody Long[] ids){
         return userAddressService.delete(oauth2SecuritySubject.getCurrentUser(),ids);
     }
 

@@ -37,12 +37,20 @@ public class PageRouteController extends BaseController{
 	
 	@RequestMapping("/{path}.html")
 	public String route(@PathVariable("path") String path){
+		logger.debug("path={}",path);
 		return path;
 	}
 	
 	@RequestMapping("/{path}/{url}.html")
 	public String pages(@PathVariable("path") String path, @PathVariable("url") String url){
+		logger.debug("path={},url={}",path,url);
 		return path + "/" + url;
+	}
+	@RequestMapping("/{path1}/{path2}/{path3}.html")
+	public String pages(@PathVariable("path1") String path1, @PathVariable("path2") String path2,
+			@PathVariable("path3") String path3){
+		logger.debug("path1={},path2={},path3={}",path1,path2,path3);
+		return path1 + "/" + path2 +"/" + path3;
 	}
 
 	@RequestMapping("404.html")

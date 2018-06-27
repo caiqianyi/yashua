@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/setup.js"></script>
+<title>地址管理</title>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:window.location.href='/account.html'"></span>地址管理</div>
+<div class="addressList">
+</div>
+<a class="add-dizhi" href="/account/address/add.html">添加新地址</a>
+<script type="text/javascript">
+var pickerSetup = null;
+$(function () {
+	pickerSetup = new PickerSetup({
+    	selected: [0,0,0],
+		title: "请选择地区",
+		onSelected: function(selected,text){
+			$(".addressSelected").html(text.toString().replace(new RegExp(",","gm")," "));
+			areaCode = selected.toString();
+		}
+	});
+	$.ajax({
+		type: "GET",
+	    url: "/account/address/list",
+	    success: function(r){
+	    	if(r.errcode == 0){
+	    		var html = "";
+	    		for(var i=0;i<r.data.list.length;i++){
+	    			var address = r.data.list[i];
+	    			html += '<div class="dizhi bg-white">';
+    				html += '	<div class="up">';
+   					html += '        <p class="p1"><span class="fl">'+address.consignee+'</span><span class="fr">'+address.mobile+'</span></p>';
+ 					html += '        <p class="p2">'+pickerSetup.getCityByCode(address.areaCode.split(",")).toString().replace(new RegExp(",","gm"),"")+address.address+'</p>';
+					html += '    </div>';
+					html += '    <div class="down">';
+					html += '    	<p class="fl p1 '+(address.defaultFlag==0?'on':'')+'">设为默认</p>';
+					html += '        <p class="fr p2" data='+address.id+'><span class="edit">编辑</span><span class="shanchu">删除</span></p>';
+					html += '    </div>';
+					html += '</div>';
+	    		}
+	    		$(".addressList").html(html);
+	    		$(".edit").unbind("click");
+	    		$(".edit").click(function(){
+	    			var id = $(this).parent().attr("data");
+	    			window.location.href="/account/address/edit.html?id="+id;
+	    		});
+	    		
+	    		$(".shanchu").unbind("click");
+	    		$(".shanchu").click(function(){
+	    			var id = $(this).parent().attr("data");
+	    			$.ajax({
+	    				type: "GET",
+	    			    url: "/account/address/delete",
+	    			    data: {id:id},
+	    			    success: function(r){
+	    			    	if(r.errcode == 0){
+	    			    		alert("删除成功");
+	    			    		window.location.reload();
+	    			    		return;
+	    			    	}
+    			    		alert(r.errmsg);
+	    			    }
+	    			});
+	    		});
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+})
+</script>
+</body>
+</html>
+

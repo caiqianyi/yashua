@@ -199,7 +199,7 @@ public class UserController {
      */
     @RequestMapping("/account/user/findByUserId")
     UserEntity findByUserId(@RequestParam("userId") Long userId){
-		return userService.selectOne( new EntityWrapper<UserEntity>().eq("userId", userId));
+		return userService.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 	}
 	
     /**
@@ -230,7 +230,7 @@ public class UserController {
      */
 	@RequestMapping("/account/user/login")
 	UserEntity login(@RequestParam("username") String username,@RequestParam("password") String password){
-		return userService.selectOne(new EntityWrapper<UserEntity>().eq("username", username).eq("password", PwdUtil.getMd5Password(passwdSecret, username, password)));
+		return userService.selectOne(new EntityWrapper<UserEntity>().eq("account", username).eq("password", PwdUtil.getMd5Password(passwdSecret, username, password)));
 	}
 
 	/**

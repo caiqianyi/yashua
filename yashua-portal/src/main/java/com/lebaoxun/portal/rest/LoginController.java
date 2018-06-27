@@ -11,8 +11,6 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,8 +42,6 @@ import com.lebaoxun.wechat.vo.AccessToken;
  */
 @RestController
 public class LoginController extends BaseController{
-	
-	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Resource
 	private Oauth2SecuritySubject oauth2SecuritySubject;

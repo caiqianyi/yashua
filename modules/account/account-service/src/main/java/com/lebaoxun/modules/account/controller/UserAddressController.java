@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lebaoxun.modules.account.entity.UserAddressEntity;
+import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.UserAddressService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -43,8 +45,14 @@ public class UserAddressController {
      * 信息
      */
     @RequestMapping("/account/useraddress/info/{id}")
-    ResponseMessage info(@PathVariable("id") Integer id){
-		UserAddressEntity userAddress = userAddressService.selectById(id);
+    ResponseMessage info(@PathVariable("id") Integer id,
+    		@RequestParam(value="userId",required=false) Long userId){
+		UserAddressEntity userAddress = null;
+		if(userId == null){
+			userAddress = userAddressService.selectById(id);
+		}else{
+			userAddress = userAddressService.selectOne( new EntityWrapper<UserAddressEntity>().eq("user_id", userId).eq("id", id));
+		}
         return ResponseMessage.ok().put("userAddress", userAddress);
     }
 
@@ -73,7 +81,7 @@ public class UserAddressController {
      */
     @RequestMapping("/account/useraddress/delete")
     @RedisLock(value="account:useraddress:delete:lock:#arg0")
-    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Integer[] ids){
+    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Long[] ids){
 		userAddressService.deleteBatchIds(Arrays.asList(ids));
         return ResponseMessage.ok();
     }
