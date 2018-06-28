@@ -60,7 +60,7 @@ public class UserController {
      * 信息
      */
     @RequestMapping("/account/user/info/{id}")
-    ResponseMessage info(@PathVariable("id") String id){
+    ResponseMessage info(@PathVariable("id") Long id){
 		UserEntity user = userService.selectById(id);
         return ResponseMessage.ok().put("user", user);
     }
@@ -120,6 +120,20 @@ public class UserController {
     		@RequestParam(value="adminId",required=false) Long adminId,
     		@RequestParam(value="descr",required=false) String descr){
     	userService.modifyBalance(userId, amount, descr, adminId);
+    	return ResponseMessage.ok();
+    }
+    
+    /**
+     * 修改头像
+     * @param userId 用户ID
+     * @param headimgurl 用户头像地址
+     * @return
+     */
+    @RequestMapping("/account/user/modifyHeadimgurl")
+    @RedisLock(value="account:user:modifyHeadimgurl:lock:#arg0")
+    ResponseMessage modifyHeadimgurl(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="headimgurl") String headimgurl){
+    	userService.modifyHeadimgurl(userId, headimgurl);
     	return ResponseMessage.ok();
     }
     
@@ -245,8 +259,8 @@ public class UserController {
     @RedisLock(value="account:user:loginLog:lock:#arg0")
 	ResponseMessage loginLog(@RequestParam("userId") Long userId,
 			@RequestParam(value="logType") UserLogAction logType,
-			@RequestParam(value="adjunctInfo") String adjunctInfo,
-			@RequestParam(value="descr") String descr){
+			@RequestParam(value="adjunctInfo",required=false) String adjunctInfo,
+			@RequestParam(value="descr",required=false) String descr){
 		userService.loginLog(userId, logType, adjunctInfo, descr);
 		return ResponseMessage.ok();
     }

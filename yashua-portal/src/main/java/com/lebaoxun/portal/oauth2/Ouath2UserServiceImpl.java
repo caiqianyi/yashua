@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.lebaoxun.modules.account.em.UserLogAction;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
 import com.lebaoxun.portal.config.AccountConstant;
@@ -36,7 +37,7 @@ public class Ouath2UserServiceImpl implements IOuath2UserService {
 		// TODO Auto-generated method stub
 		logger.debug("login log={}",new Gson().toJson(log));
 		
-		//userService.loginLog(userId, scope, logType, adjunctInfo, descr);
+		userService.loginLog(log.getUserId(), UserLogAction.valueOf("U_"+log.getLogType()), log.getHost() , null);
 	}
 
 	@Override

@@ -63,6 +63,18 @@ public class UserEntity implements Serializable {
 	 */
 	private Integer balance;
 	/**
+	 * 真实姓名
+	 */
+	private String realname;
+	/**
+	 * 生日
+	 */
+	private Date birthday;
+	/**
+	 * 身份证号
+	 */
+	private String identity;
+	/**
 	 * 用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息
 	 */
 	private String subscribe;
@@ -466,5 +478,23 @@ public class UserEntity implements Serializable {
 	 */
 	public Date getLastUpdateTime() {
 		return lastUpdateTime;
+	}
+	public String getRealname() {
+		return realname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+	public String getIdentity() {
+		return identity;
+	}
+	public void setIdentity(String identity) {
+		this.identity = identity;
 	}
 }

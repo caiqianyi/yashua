@@ -62,7 +62,7 @@ public class UserAddressController {
     @RequestMapping("/account/useraddress/save")
     @RedisLock(value="account:useraddress:save:lock:#arg0")
     ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody UserAddressEntity userAddress){
-		userAddressService.insert(userAddress);
+		userAddressService.addAddress(userAddress);
         return ResponseMessage.ok();
     }
 
@@ -72,7 +72,7 @@ public class UserAddressController {
     @RequestMapping("/account/useraddress/update")
     @RedisLock(value="account:useraddress:update:lock:#arg0")
     ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody UserAddressEntity userAddress){
-		userAddressService.updateById(userAddress);
+		userAddressService.modifyAddress(userAddress);
         return ResponseMessage.ok();
     }
 

@@ -48,7 +48,7 @@ public class UserController {
      * 信息
      */
     @RequestMapping("/account/user/info/{id}")
-    ResponseMessage info(@PathVariable("id") String id){
+    ResponseMessage info(@PathVariable("id") Long id){
         return userService.info(id);
     }
 

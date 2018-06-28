@@ -3,18 +3,17 @@
 <head>
 <#include "/header.html">
 <script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
-<title>个人信息</title>
 </head>
 <body>
 <div class="Top"><span>&nbsp;</span>个人信息<a href="">编辑</a></div>
 <ul class="xinxi font-30">
-	<li class="toux"><p>头像</p><span><img src="images/touxiang.png" alt=""/><em></em></span></li>
-    <li><p>昵称</p><span>王小丫<em></em></span></li>
+	<li class="toux"><p>头像</p><span class="photo"><img src="/statics/images/touxiang.png" alt=""/><em></em></span></li>
+    <li><p>昵称</p><span class="name"><em></em></span></li>
     <li>
     	<p>性别</p>
         <span>
-        <input type="radio" id="Mr" name="radio" value="男" checked><label for="Mr"> 男</label>
-		<input type="radio" id="Miss" name="radio" value="女"><label for="Miss"> 女</label>
+        <input type="radio" id="Mr" name="sex" value="1" checked><label for="Mr">男</label>
+		<input type="radio" id="Miss" name="sex" value="2"><label for="Miss"> 女</label>
         </span>
     </li>
     <li><p>生日</p><span>1998年12月12日<em></em></span></li>
@@ -24,5 +23,31 @@
 </ul>
 <div class="tuichu">退出登录</div>
 </body>
+
+<script type="text/javascript">
+$(function(){
+	$.ajax({
+		type: "GET",
+	    url: "/account/user/info",
+	    success: function(r){
+	    	if(r.errcode == 0){
+	    		var user = r.data;
+	    		var headimgurl = user.headimgurl && user.headimgurl.length>0 ? user.headimgurl : "/statics/images/touxiang.png";
+	    		$(".photo img").attr("src",headimgurl);
+	    		$(".name").text(user.nickname);
+	    		
+	    		$("input[name=sex]").removeAttr("checked",'checked');
+	    		$("input[name=sex][value="+user.sex+"]").prop('checked', true)
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
+	$(".tuichu").click(function(){
+		window.location.href="/logout.html";
+	});
+})
+</script>
 </html>
 

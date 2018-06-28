@@ -34,7 +34,7 @@ public interface IUserService {
      * 信息
      */
     @RequestMapping("/account/user/info/{id}")
-    ResponseMessage info(@PathVariable("id") String id);
+    ResponseMessage info(@PathVariable("id") Long id);
 
     /**
      * 保存
@@ -91,6 +91,16 @@ public interface IUserService {
     		@RequestBody UserEntity user, 
     		@RequestParam(value="adminId",required=false) Long adminId,
     		@RequestParam(value="descr",required=false) String descr);
+    
+    /**
+     * 修改头像
+     * @param userId 用户ID
+     * @param headimgurl 用户头像地址
+     * @return
+     */
+    @RequestMapping("/account/user/modifyHeadimgurl")
+    ResponseMessage modifyHeadimgurl(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="headimgurl") String headimgurl);
     
     /**
      * 绑定账号
@@ -171,7 +181,7 @@ public interface IUserService {
 	@RequestMapping("/account/user/loginLog")
 	ResponseMessage loginLog(@RequestParam("userId") Long userId,
 			@RequestParam(value="logType") UserLogAction logType,
-			@RequestParam(value="adjunctInfo") String adjunctInfo,
-			@RequestParam(value="descr") String descr);
+			@RequestParam(value="adjunctInfo",required=false) String adjunctInfo,
+			@RequestParam(value="descr",required=false) String descr);
 }
 

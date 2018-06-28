@@ -3,14 +3,29 @@
 <head>
 <#include "/header.html">
 <script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<link rel="stylesheet" href="/statics/plugins/jcrop/jquery.Jcrop.css" type="text/css">
+<script type="text/javascript" src="/statics/plugins/jcrop/jquery.Jcrop.min.js"></script>
 <title>我的</title>
+<style type="text/css">
+#uploadJcrop {width: 100%;height: 100%;position: fixed;top: 0;left: 0;z-index: 999;display: none;}
+#uploadJcrop .shadow {width: 100%;height: 100%;position: absolute;top: 0;left: 0;background-color: #000;}
+#uploadJcrop .headImgBox {width: 100%;height: 100%;position: absolute;top: 0;left: 0;}
+#uploadJcrop .headImgBox .headImg {margin-top: 10px;margin-top: 1rem;}
+#uploadJcrop .headImgBox .appearBtns {width: 100%;position: absolute;right: 5%;bottom: 5%;}
+#uploadJcrop .headImgBox .appearBtns a {display: inline-block;width: 35%;margin-left: 13%;height: 33px;background-color: #f93741;color: #ffffff;border-radius: 5px;border-radius: 0.5rem;text-align: center;font-size: 16px;line-height: 30px;}
+</style>
 </head>
 <body>
 <div class="my-top font-30">
 	<a href="/account/info.html" class="bianji"><img src="/statics/images/zx-bj.png" alt=""/></a>
-    <span class="photo"><img src="/statics/images/touxiang.png" alt=""/></span>
-    <h3>请叫我小美</h3>
-    <p>已绑定：ABC889655</p>
+    <span class="photo">
+    	<img src="/statics/images/touxiang.png" alt=""/>
+    	<form class="img_form" action="">
+        	<input id="xFile" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" name="xFile" style="display: none;">
+        </form>
+    </span>
+    <h3 class="name">请叫我小美</h3>
+    <p class="bindYashua">已绑定：ABC889655</p>
 </div>
 <div class="my-txt bg-white">
 	<ul>
@@ -23,9 +38,144 @@
 	</ul>
 </div>
 
+<div id="uploadJcrop">
+            
+    <div class="shadow"></div>
+
+    <div class="headImgBox">
+
+        <div class="headImg">
+        </div>
+
+        <div class="appearBtns">    
+            <a class="sureBtn">确认</a>
+            <a class="cancelBtn">取消</a>
+        </div>
+    </div>
+
+</div>
+
 <!--公用底部-->
 <#assign footerflag=3/>
 <#include "/footer.html">
+
+<script type="text/javascript">
+function headImgUpload(){
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        //加载图片完成，取得图片的base64                
+        imgObj = e.target.result;
+        var image = new Image();
+        image.src = imgObj;
+        image.onload = function () {  //创建一个image对象，给canvas绘制使用  
+            var cvs = document.createElement('canvas');
+            var scale = 1;
+            if (this.width > 320 || this.height > 320) {  //1000只是示例，可以根据具体的要求去设定    
+                if (this.width > this.height) {
+                    scale = 320 / this.width;
+                } else {
+                    scale = 320 / this.height;
+                }
+            }
+            cvs.width = this.width * scale;
+            cvs.height = this.height * scale;     //计算等比缩小后图片宽高  
+            var ctx = cvs.getContext('2d');
+            ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+            var newImageData = cvs.toDataURL('image/png');  
+            
+            var headImg = new Image();
+            headImg.src = newImageData;
+            headImg.id = 'cropImg';
+            $('.headImg').append(headImg);
+            $('#uploadJcrop').css('display','block');
+
+            $('#cropImg').Jcrop({
+                allowSelect:false, //允许新选框
+                allowResize:false,
+                aspectRatio:1,
+                maxSize:[256,256],  
+                minSize:[128,128]  
+            },function(){
+                jcropApi = this;
+                jcropApi.setSelect([0,0,128,128]);
+                var width = jcropApi.getBounds()[0];
+                $('.jcrop-holder').css({
+                    'left':'50%',
+                    'margin-left':-width/2
+                })
+            });
+        }    
+        
+    }
+    reader.readAsDataURL(xFile.files[0]);
+}
+
+$(function(){
+	$.ajax({
+		type: "GET",
+	    url: "/account/user/info",
+	    success: function(r){
+	    	if(r.errcode == 0){
+	    		var headimgurl = r.data.headimgurl && r.data.headimgurl.length>0 ? r.data.headimgurl : "/statics/images/touxiang.png";
+	    		$(".photo img").attr("src",headimgurl);
+	    		$(".name").text(r.data.nickname);
+	    		$(".bindYashua").text("");
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
+	$(".photo img").click(function(){
+		$("#xFile").click();
+	});
+	
+	$('#xFile').bind('change',headImgUpload);
+	
+	$('.cancelBtn').bind('click',function(){
+        $('.img_form')[0].reset();
+        $('#uploadJcrop').css('display','none');
+        $('.headImg').empty();
+        jcropApi.destroy();
+    })
+    // 确定
+    $('.sureBtn').bind('click',function(){
+        var corpW = jcropApi.tellSelect().w;
+        var corpH = jcropApi.tellSelect().h;
+        var corpX = jcropApi.tellSelect().x;
+        var corpY = jcropApi.tellSelect().y;
+        var width = jcropApi.getBounds()[0];
+        var height = jcropApi.getBounds()[1];
+        var imgObj = document.getElementById('cropImg');
+        var cjcanvas = document.createElement('canvas');
+        var ctx = cjcanvas.getContext("2d");
+        cjcanvas.width = corpW;
+        cjcanvas.height = corpH;
+        ctx.drawImage(imgObj,corpX,corpY,corpW,corpH,0,0,corpW,corpH);
+        var image = cjcanvas.toDataURL('image/png');
+        
+        var data = {imgStr: image};
+        
+        $.ajax({
+    		type: "POST",
+    	    url: "/account/user/modifyHeadimgurl",
+    	    data: data,
+    	    success: function(r){
+   	            $('.img_form')[0].reset();
+   	            $('#uploadJcrop').css('display','none');
+   	            $('.headImg').empty();
+   	            jcropApi.destroy();
+   	            
+    	    	if(r.errcode == 0){
+    	    		$('.photo img').attr('src',r.data); 
+    			}else{
+    				alert(r.errmsg);
+    			}
+    		}
+    	});
+    })
+})
+</script>
 </body>
 </html>
 

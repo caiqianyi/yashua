@@ -49,6 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     }
     
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void save(Long adminId,UserEntity user) {
     	// TODO Auto-generated method stub
     	
@@ -160,6 +161,23 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		entity.setBalance(user.getBalance()+amount);
 		this.updateById(entity);
 	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void modifyHeadimgurl(Long userId, String headimgurl) {
+		// TODO Auto-generated method stub
+		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
+		if(user == null){
+			throw new I18nMessageException("500");
+		}
+		UserLogAction logType = UserLogAction.U_MODIFY_INFO;
+		insertLog(user, logType, 0, logType.getDescr(), headimgurl);
+		
+		UserEntity entity = new UserEntity();
+		entity.setId(user.getId());
+		entity.setHeadimgurl(headimgurl);
+		this.updateById(entity);
+	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
@@ -262,7 +280,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		entity.setStatus("Y");
 		
 		UserLogAction logType = UserLogAction.U_WECHATOA_REGISTER;
-		insertLog(entity, logType, new Gson().toJson(q));
+		insertLog(entity, logType, 0, null, new Gson().toJson(q));
 		
 		this.insert(entity);
 	}
@@ -273,7 +291,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 			String descr) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
-		if(user != null){
+		if(user == null){
 			throw new I18nMessageException("500");
 		}
 		insertLog(user, logType, 0, descr, adjunctInfo);
@@ -283,6 +301,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		UserLogEntity log = new UserLogEntity();
 		if(adjunctInfo != null){
 			log.setAdjunctInfo(adjunctInfo);
+		}
+		if(StringUtils.isBlank(descr)){
+			descr = logType.getDescr();
 		}
 		log.setAccount(user.getAccount());
 		log.setCreateTime(new Date());

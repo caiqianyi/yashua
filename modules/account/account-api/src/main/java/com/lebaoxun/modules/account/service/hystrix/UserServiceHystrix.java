@@ -26,7 +26,7 @@ public class UserServiceHystrix implements IUserService {
 	}
 
 	@Override
-	public ResponseMessage info(String id) {
+	public ResponseMessage info(Long id) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
@@ -55,6 +55,11 @@ public class UserServiceHystrix implements IUserService {
 	@Override
 	public ResponseMessage modifyInfo(Long userId, UserEntity user,
 			Long adminId, String descr) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
+	public ResponseMessage modifyHeadimgurl(Long userId, String headimgurl) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 

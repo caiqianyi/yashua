@@ -2,6 +2,8 @@ package com.lebaoxun.modules.account.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -30,4 +32,29 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressDao, UserAddr
         return new PageUtils(page);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public void addAddress(UserAddressEntity userAddress) {
+    	// TODO Auto-generated method stub
+    	if("0".equals(userAddress.getDefaultFlag())){
+    		UserAddressEntity uae = new UserAddressEntity();
+    		uae.setDefaultFlag("1");
+    		this.baseMapper.update(uae, new EntityWrapper<UserAddressEntity>()
+    				.eq(true, "user_id", userAddress.getUserId()));
+    	}
+    	this.baseMapper.insert(userAddress);
+    }
+    
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public void modifyAddress(UserAddressEntity userAddress) {
+    	// TODO Auto-generated method stub
+    	if("0".equals(userAddress.getDefaultFlag())){
+    		UserAddressEntity uae = new UserAddressEntity();
+    		uae.setDefaultFlag("1");
+    		this.baseMapper.update(uae, new EntityWrapper<UserAddressEntity>()
+    				.eq(true, "user_id", userAddress.getUserId()).eq(false, "id", userAddress.getId()));
+    	}
+    	this.baseMapper.updateById(userAddress);
+    }
 }

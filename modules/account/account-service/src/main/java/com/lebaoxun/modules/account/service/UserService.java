@@ -46,6 +46,13 @@ public interface UserService extends IService<UserEntity> {
     void modifyBalance(Long userId,Integer amount, String descr, Long adminId);
     
     /**
+     * 修改用户头像
+     * @param userId
+     * @param headimgurl
+     */
+    void modifyHeadimgurl(Long userId,String headimgurl);
+    
+    /**
      * 修改用户信息
      * @param userId
      * @param user

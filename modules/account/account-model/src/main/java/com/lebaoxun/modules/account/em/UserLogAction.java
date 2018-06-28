@@ -4,7 +4,7 @@ public enum UserLogAction {
 	/**
 	 * 带字母U开头，为用户本人操作产生的日志
 	 */
-	U_REGISTER("注册"),U_WECHATOA_REGISTER("公众号注册"),U_LOGIN("登录"), U_LOGOUT("登出"),U_MODIFY_INFO("修改个人资料"),U_BACK_PASSWD("找回密码"),U_MODIFY_PASSWD("修改密码"),
+	U_REGISTER("注册"),U_WECHATOA_REGISTER("公众号注册"),U_LOGIN("登录"), U_LOGIN_KICK_OUT("强制登录"), U_LOGOUT("登出"),U_MODIFY_INFO("修改个人资料"),U_BACK_PASSWD("找回密码"),U_MODIFY_PASSWD("修改密码"),
 	U_BIND_OPENID("绑定微信公众号openid"),U_UNBIND_WECHATOA("解除绑定微信公众号"),U_BIND_MOBILE("绑定手机号"),U_PAY("支付"),
 	U_BALANCE_ADD("账户交易（增加）"),U_BALANCE_REDUCE("账户交易（扣除）"),
 	

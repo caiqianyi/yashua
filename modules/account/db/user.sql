@@ -1,5 +1,5 @@
-CREATE TABLE `user` (
-  `id` bigint(36) NOT NULL AUTO_INCREMENT COMMENT '主键',
+﻿CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `account` varchar(20) DEFAULT NULL COMMENT '用户账号',
   `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
@@ -10,6 +10,9 @@ CREATE TABLE `user` (
   `host` varchar(50) DEFAULT NULL COMMENT '登录信息',
   `level` int(11) DEFAULT '0' COMMENT '账户等级',
   `balance` int(11) DEFAULT '0' COMMENT '账户金额',
+	`realname` varchar(50) DEFAULT NULL COMMENT '真实姓名',
+	`birthday` datetime DEFAULT NULL COMMENT '生日',
+	`identity` varchar(50) DEFAULT NULL COMMENT '身份证号',
   `subscribe` varchar(50) DEFAULT NULL COMMENT '用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息',
   `openid` varchar(200) DEFAULT NULL COMMENT '微信openid',
   `unionid` varchar(200) DEFAULT NULL COMMENT '只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段',
@@ -38,7 +41,9 @@ CREATE TABLE `user` (
   KEY `create_time_index` (`create_time`),
   KEY `last_login_time_index` (`last_login_time`),
   KEY `last_buy_time_index` (`last_buy_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+INSERT INTO `yashua_db`.`user` (`id`, `user_id`, `account`, `mobile`, `password`, `source`, `type`, `status`, `host`, `level`, `balance`, `subscribe`, `openid`, `unionid`, `nickname`, `sex`, `city`, `country`, `province`, `language`, `headimgurl`, `subscribe_time`, `remark`, `groupid`, `create_time`, `last_login_time`, `last_buy_time`, `last_update_time`) VALUES ('1', '88731584', '15010602819', '15010602819', '59DF46BDE95A7A04DDA2222592BCC3E6', 'wechatOA', '0', 'Y', NULL, '0', '1101', '0', 'oI9MD0mwrw-V2nt94K-uk7X5q2Hw', NULL, '一蓑烟雨', '1', '海淀', '中国', '北京', 'zh_CN', 'http://localhost:81/user/88731584/1530177008495.png', NULL, NULL, NULL, '2017-12-25 13:50:20', NULL, NULL, '2018-06-28 17:10:10');
 
 
 
