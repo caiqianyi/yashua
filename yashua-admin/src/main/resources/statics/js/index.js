@@ -98,7 +98,7 @@ var vm = new Vue({
 		},
 		logout: function(){
 			window.storage.clear();
-			parent.location.href ='/login.html';
+			parent.location.href ='/logout.html';
 		}
 	},
 	created: function(){

@@ -26,7 +26,7 @@ public class UserDeviceServiceHystrix implements IUserDeviceService {
 	}
 
 	@Override
-	public ResponseMessage info(Integer id) {
+	public ResponseMessage info(Integer id, Long userId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
@@ -48,6 +48,17 @@ public class UserDeviceServiceHystrix implements IUserDeviceService {
 
 	@Override
 	public ResponseMessage delete(Long adminId,Integer[] ids) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage bind(String account, String identity,
+			Integer maxBindNum) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage unbind(String account, String identity) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
     

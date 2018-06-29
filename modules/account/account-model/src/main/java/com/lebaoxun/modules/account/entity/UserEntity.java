@@ -69,7 +69,7 @@ public class UserEntity implements Serializable {
 	/**
 	 * 生日
 	 */
-	private Date birthday;
+	private String birthday;
 	/**
 	 * 身份证号
 	 */
@@ -485,10 +485,10 @@ public class UserEntity implements Serializable {
 	public void setRealname(String realname) {
 		this.realname = realname;
 	}
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 	public String getIdentity() {

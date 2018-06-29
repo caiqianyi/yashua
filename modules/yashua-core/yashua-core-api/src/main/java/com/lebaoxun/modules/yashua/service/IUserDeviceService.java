@@ -34,7 +34,8 @@ public interface IUserDeviceService {
      * 信息
      */
     @RequestMapping("/yashua/userdevice/info/{id}")
-    ResponseMessage info(@PathVariable("id") Integer id);
+    ResponseMessage info(@PathVariable("id") Integer id,
+    		@RequestParam(value="userId",required=false) Long userId);
 
     /**
      * 保存
@@ -56,6 +57,28 @@ public interface IUserDeviceService {
      */
     @RequestMapping("/yashua/userdevice/delete")
     ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Integer[] ids);
+    
+    /**
+     * 绑定设备
+     * @param account 用户ID
+     * @param identity 设备ID
+     * @param maxBindNum 最多绑定设备数
+     * @return
+     */
+    @RequestMapping("/yashua/userdevice/bind")
+    ResponseMessage bind(@RequestParam("account")String account,
+    		@RequestParam("identity") String identity,
+    		@RequestParam(value="maxBindNum",required=false) Integer maxBindNum);
+    
+    /**
+     * 解除绑定
+     * @param account 用户ID
+     * @param identity 设备ID
+     * @return
+     */
+    @RequestMapping("/yashua/userdevice/unbind")
+    ResponseMessage unbind(@RequestParam("account")String account,
+    		@RequestParam("identity") String identity);
     
 }
 

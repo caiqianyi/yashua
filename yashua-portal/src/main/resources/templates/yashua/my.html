@@ -8,30 +8,79 @@
 <body>
 <div class="Top"><span></span>我的设备</div>
 <div class="list">
-    <div class="binding">
-        <img src="/statics/images/yashua1.png" alt=""/>
-        <p>朱莉<i></i>E17120059</p>
-        <em>解绑</em>
+	<div class="items">
     </div>
-    <div class="binding">
-        <img src="/statics/images/yashua2.png" alt=""/>
-        <p>牙科队长<i></i>E17120059</p>
-        <em>解绑</em>
-    </div>
-    <div class="binding">
-        <img src="/statics/images/yashua3.png" alt=""/>
-        <p>马克<i></i>E17120059</p>
-        <em>解绑</em>
-    </div>
-    <div class="binding">
-        <img src="/statics/images/yashua4.png" alt=""/>
-        <p>小新<i></i>E17120059</p>
-        <em>解绑</em>
-    </div>
-    
-     <input type="button" value="添加绑定设备" class="font-30" />    
-   
+	<input type="button" value="添加绑定设备" class="font-30" />
 </div>
+
+<div class="font-28" style="display: block;">
+	<div style="width: 100%;height: 100%;position: fixed;top: 0;left: 0;background: rgba(0,0,0,0.5);display: none;"></div>
+	<div style="width: 4.7rem;height: 3.15rem;padding-top: .7rem;background: #fff;border-radius: .15rem;position: absolute;margin: auto;top: 0;left: 0;bottom: 0;right: 0;">
+		<input type="text" name="identity" maxlength="20" placeholder="请输入设备ID"/>
+		<a href="javascript:void(0);" class="font-36" id="bindBtn">确定</a>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$.ajax({
+		type: "GET",
+	    url: "/yashua/device/mylist",
+	    success: function(r){
+	    	if(r.errcode == 0){
+	    		var html = "";
+	    		var datas = r.data;
+	    		for(var i=0;i<datas.list.length;i++){
+	    			var device = datas.list[i];
+	    			html += '<div class="binding">';
+	    			html += '	<img src="'+device.icon+'" alt=""/>';
+    				html += '	<p>'+device.name+'<i></i>'+device.identity+'</p>';
+   					html += '	<em class="unbindBtn" data="'+device.identity+'">解绑</em>';
+ 					html += '</div>';
+	    		}
+	    		$(".items").html(html);
+	    		
+	    		$(".items .unbindBtn").unbind("click");
+	    		$(".items .unbindBtn").click(function(){
+	    			var identity = $(this).attr("data");
+	    			$.ajax({
+	    				type: "POST",
+	    			    url: "/yashua/device/unbind",
+	    			    data: {identity:identity},
+	    			    success: function(r1){
+	    			    	if(r1.errcode == 0){
+	    			    		alert("解绑成功");
+	    			    		window.location.reload();
+	    			    		return;
+	    			    	}
+	    			    	alert(r1.errmsg);
+	    			    }
+	    			});
+	    			
+	    		});
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
+	$("#bindBtn").click(function(){
+		var identity = $("#identity").val();
+		$.ajax({
+			type: "POST",
+		    url: "/yashua/device/bind",
+		    data: {identity:identity},
+		    success: function(r){
+		    	if(r.errcode == 0){
+		    		alert("绑成功成功");
+		    		window.location.reload();
+		    		return;
+		    	}
+		    	alert(r.errmsg);
+		    }
+		});
+	});
+});
+</script>
 </body>
 </html>
 

@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -80,4 +81,19 @@ public class UserController {
     	r.setData(headimgurl);
     	return r;
     }
+    
+    @RequestMapping("/account/user/modifyInfo")
+    ResponseMessage modifyInfo(@RequestBody UserEntity user){
+    	long userId = oauth2SecuritySubject.getCurrentUser();
+    	return userService.modifyInfo(userId, user, userId, null);
+    }
+    
+	/**
+	 * 退出
+	 */
+	@RequestMapping(value = "/account/logout", method = RequestMethod.GET)
+	public String logout() {
+		oauth2SecuritySubject.logout();
+		return "redirect:/login.html";
+	}
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.yashua.entity.UserDeviceEntity;
@@ -44,8 +45,14 @@ public class UserDeviceController {
      * 信息
      */
     @RequestMapping("/yashua/userdevice/info/{id}")
-    ResponseMessage info(@PathVariable("id") Integer id){
-		UserDeviceEntity userDevice = userDeviceService.selectById(id);
+    ResponseMessage info(@PathVariable("id") Integer id,
+    		@RequestParam(value="userId",required=false) Long userId){
+    	UserDeviceEntity userDevice = null;
+		if(userId == null){
+			userDevice = userDeviceService.selectById(id);
+		}else{
+			userDevice = userDeviceService.selectOne( new EntityWrapper<UserDeviceEntity>().eq("user_id", userId).eq("id", id));
+		}
         return ResponseMessage.ok().put("userDevice", userDevice);
     }
 
@@ -87,6 +94,36 @@ public class UserDeviceController {
     ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Integer[] ids){
 		userDeviceService.deleteBatchIds(Arrays.asList(ids));
         return ResponseMessage.ok();
+    }
+    
+    /**
+     * 绑定设备
+     * @param account 用户ID
+     * @param identity 设备ID
+     * @param maxBindNum 最多绑定设备数
+     * @return
+     */
+    @RequestMapping("/yashua/userdevice/bind")
+    @RedisLock(value="yashua:userdevice:bind:lock:#arg0")
+    ResponseMessage bind(@RequestParam("account")String account,
+    		@RequestParam("identity") String identity,
+    		@RequestParam(value="maxBindNum",required=false) Integer maxBindNum){
+    	userDeviceService.bind(account, identity, maxBindNum);
+    	return ResponseMessage.ok();
+    }
+    
+    /**
+     * 解除绑定
+     * @param account 用户ID
+     * @param identity 设备ID
+     * @return
+     */
+    @RequestMapping("/yashua/userdevice/unbind")
+    @RedisLock(value="yashua:userdevice:unbind:lock:#arg0")
+    ResponseMessage unbind(@RequestParam("account")String account,
+    		@RequestParam("identity") String identity){
+    	userDeviceService.unbind(account, identity);
+    	return ResponseMessage.ok();
     }
 
 }

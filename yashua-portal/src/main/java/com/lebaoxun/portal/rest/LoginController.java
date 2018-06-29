@@ -235,13 +235,4 @@ public class LoginController extends BaseController{
 		}
 	}
 	
-	/**
-	 * 退出
-	 */
-	@RequestMapping(value = "/oauth2/logout", method = RequestMethod.GET)
-	public String logout() {
-		oauth2SecuritySubject.logout();
-		return "redirect:/login.html";
-	}
-	
 }

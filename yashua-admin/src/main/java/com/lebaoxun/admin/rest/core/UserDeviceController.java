@@ -48,7 +48,7 @@ public class UserDeviceController {
      */
     @RequestMapping("/yashua/userdevice/info/{id}")
     ResponseMessage info(@PathVariable("id") Integer id){
-        return userDeviceService.info(id);
+        return userDeviceService.info(id,null);
     }
 
     /**

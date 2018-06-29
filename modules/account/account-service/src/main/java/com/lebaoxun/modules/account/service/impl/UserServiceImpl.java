@@ -200,12 +200,16 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		entity.setCity(q.getCity());
 		entity.setCountry(q.getCountry());
 		entity.setGroupid(q.getGroupid());
-		entity.setHeadimgurl(q.getHeadimgurl());
+		entity.setHeadimgurl(user.getHeadimgurl());
 		entity.setLanguage(q.getLanguage());
 		entity.setNickname(q.getNickname());
 		entity.setProvince(q.getProvince());
 		entity.setRemark(q.getRemark());
 		entity.setSex(q.getSex());
+		entity.setMobile(q.getMobile());
+		entity.setRealname(q.getRealname());
+		entity.setIdentity(q.getIdentity());
+		entity.setBirthday(q.getBirthday());
 		this.updateById(entity);
 	}
 
