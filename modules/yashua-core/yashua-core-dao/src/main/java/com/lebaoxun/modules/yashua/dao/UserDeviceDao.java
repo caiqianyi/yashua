@@ -1,7 +1,10 @@
 package com.lebaoxun.modules.yashua.dao;
 
 import com.lebaoxun.modules.yashua.entity.UserDeviceEntity;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -13,5 +16,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface UserDeviceDao extends BaseMapper<UserDeviceEntity> {
-	
+	void unbind(@Param("account") String account,
+			@Param("identity") String identity);
 }

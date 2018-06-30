@@ -39,7 +39,7 @@ public class UserDeviceServiceImpl extends ServiceImpl<UserDeviceDao, UserDevice
 		// TODO Auto-generated method stub
 		if(maxBindNum != null){
 			int total = this.baseMapper.selectCount(new EntityWrapper<UserDeviceEntity>().eq("account", account));
-			if(maxBindNum >= total){
+			if(total >= maxBindNum){
 				throw new I18nMessageException("-1","设备已达上限值："+maxBindNum);
 			}
 		}
@@ -63,8 +63,7 @@ public class UserDeviceServiceImpl extends ServiceImpl<UserDeviceDao, UserDevice
 		if(device == null){
 			throw new I18nMessageException("-1","设备ID‘"+identity+"’不存在！");
 		}
-		device.setAccount(null);
-		baseMapper.update(device, ew);
+		baseMapper.unbind(account, identity);
 	}
 
 }

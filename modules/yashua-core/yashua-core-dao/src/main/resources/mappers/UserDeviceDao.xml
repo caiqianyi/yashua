@@ -13,5 +13,7 @@
         <result property="name" column="name"/>
     </resultMap>
 
-
+	<update id="unbind">
+	    UPDATE user_device SET account=null WHERE (identity = #{identity} AND account = #{account}) 
+	</update>
 </mapper>
