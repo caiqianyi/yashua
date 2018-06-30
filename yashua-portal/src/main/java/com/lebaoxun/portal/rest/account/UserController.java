@@ -72,6 +72,9 @@ public class UserController {
     	if(!"0".equals(r.getErrcode())){
     		return r;
     	}
+    	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+    	String durl = ue.getHeadimgurl();
+    	uploadLocalService.deleteFile("yashua", durl);
     	Map<String,String> data = (Map<String, String>) r.getData();
     	String headimgurl = data.get("uri");
     	r = userService.modifyHeadimgurl(userId, headimgurl);

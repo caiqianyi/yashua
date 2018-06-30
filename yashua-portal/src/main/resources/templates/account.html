@@ -157,12 +157,13 @@ $(function(){
         var image = cjcanvas.toDataURL('image/png');
         
         var data = {imgStr: image};
-        
+        var l2 = $.loading({content:"头像上传中..."}).show();
         $.ajax({
     		type: "POST",
     	    url: "/account/user/modifyHeadimgurl",
     	    data: data,
     	    success: function(r){
+    	    	l2.hide();
    	            $('.img_form')[0].reset();
    	            $('#uploadJcrop').css('display','none');
    	            $('.headImg').empty();
