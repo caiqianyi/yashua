@@ -87,8 +87,11 @@
 				//改变验证码
 				return false;
 			}
+			var l1 = $.loading({content:"登录中..."}).show();
 			//验证登录
-		    login.action(username,password,captcha);
+		    login.action(username,password,captcha,function(){
+		    	l1.hide();
+		    });
 		});
 
 		/* document.onkeydown = function(event){

@@ -40,7 +40,7 @@ var login = {
 		refreshCode : function(obj) {
 			$(login.el).attr("src","/captcha.jpg?t=" + $.now());
 		},
-		action : function(username,password,captcha) {
+		action : function(username,password,captcha,fn) {
 			if(username == '' || password == '' || captcha == '') {
 				//均不能为空
 				alert('账号、密码和验证码不能为空!');
@@ -57,6 +57,9 @@ var login = {
 				},
 				dataType : "json",
 				success : function(response) {
+					if(typeof fn == 'function'){
+						fn(response);
+					}
 					var data = {};
 					if (response.errcode == 0) {
 						data.username = response.data[0];

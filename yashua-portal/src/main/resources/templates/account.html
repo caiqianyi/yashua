@@ -111,10 +111,12 @@ function headImgUpload(){
 }
 
 $(function(){
+	var l1 = $.loading().show();
 	$.ajax({
 		type: "GET",
 	    url: "/account/user/info",
 	    success: function(r){
+	    	l1.hide();
 	    	if(r.errcode == 0){
 	    		var headimgurl = r.data.headimgurl && r.data.headimgurl.length>0 ? r.data.headimgurl : "/statics/images/touxiang.png";
 	    		$(".photo img").attr("src",headimgurl);

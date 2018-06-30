@@ -24,10 +24,12 @@ $(function () {
 			areaCode = selected.toString();
 		}
 	});
+	var l1 = $.loading().show();
 	$.ajax({
 		type: "GET",
 	    url: "/account/address/list",
 	    success: function(r){
+	    	l1.hide();
 	    	if(r.errcode == 0){
 	    		var html = "";
 	    		for(var i=0;i<r.data.list.length;i++){
