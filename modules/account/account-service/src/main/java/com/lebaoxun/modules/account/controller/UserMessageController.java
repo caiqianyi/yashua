@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.account.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
+import com.lebaoxun.modules.account.entity.UserAddressEntity;
 import com.lebaoxun.modules.account.entity.UserMessageEntity;
 import com.lebaoxun.modules.account.service.UserMessageService;
 import com.lebaoxun.soa.core.redis.lock.RedisLock;
@@ -48,10 +51,30 @@ public class UserMessageController {
      * 信息
      */
     @RequestMapping("/account/usermessage/info/{id}")
-    ResponseMessage info(@PathVariable("id") Integer id){
+    ResponseMessage info(@PathVariable("id") Integer id,
+    		@RequestParam(value="userId",required=false) Long userId){
 		UserMessageEntity userMessage = userMessageService.selectById(id);
+		
+		if(userId == null){
+			userMessage = userMessageService.selectById(id);
+		}else{
+			userMessage = userMessageService.selectOne( new EntityWrapper<UserMessageEntity>().eq("user_id", userId).eq("id", id));
+		}
         return ResponseMessage.ok().put("userMessage", userMessage);
     }
+    
+    @RequestMapping("/account/usermessage/findInformByUserId")
+    ResponseMessage findInformByUserId(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="size",required=false) Integer size, 
+    		@RequestParam(value="offset",required=false) Integer offset){
+    	return ResponseMessage.ok(userMessageService.findInformByUserId(userId, size, offset));
+    }
+
+    @RequestMapping("/account/usermessage/findOneInformByUserId")
+    ResponseMessage findOneInformByUserId(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="id") long id){
+    	return ResponseMessage.ok(userMessageService.findOneInformByUserId(userId, id));
+	}
 
     /**
      * 保存

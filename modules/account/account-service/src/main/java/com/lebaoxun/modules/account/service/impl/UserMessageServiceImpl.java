@@ -3,6 +3,7 @@ package com.lebaoxun.modules.account.service.impl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -20,7 +21,7 @@ public class UserMessageServiceImpl extends ServiceImpl<UserMessageDao, UserMess
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-    	String userId = (String)params.get("userId");
+    	String userId = (String)params.get("user_id");
     	String type = (String)params.get("type");
         Page<UserMessageEntity> page = this.selectPage(
                 new Query<UserMessageEntity>(params).getPage(),
@@ -31,5 +32,18 @@ public class UserMessageServiceImpl extends ServiceImpl<UserMessageDao, UserMess
 
         return new PageUtils(page);
     }
+
+	@Override
+	public List<UserMessageEntity> findInformByUserId(Long userId,
+			Integer size, Integer offset) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.findInformByUserId(userId, size, offset);
+	}
+
+	@Override
+	public UserMessageEntity findOneInformByUserId(Long userId, long id) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.findOneInformByUserId(userId, id);
+	}
 
 }

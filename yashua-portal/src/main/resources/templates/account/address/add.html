@@ -68,6 +68,7 @@ $(function () {
 			alert("请您填写收货人手机号码");
 			return;
 		}
+		var l1 = $.loading().show({content:"处理中..."});
 		$.ajax({
 			type : "POST",
 			url : "/account/address/save",
@@ -75,6 +76,7 @@ $(function () {
 		    data: JSON.stringify(address),
 			dataType : "json",
 			success : function(result) {
+				l1.hide();
 				if (result.errcode == 0) {//添加成功
 					alert("保存成功！");
 					window.location.href = '/account/address.html';

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+
+<link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
+<script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
+<title>我的金币</title>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:history.go(-1);"></span>我的积分</div>
+<div class="my-jinbi">
+	<div class="my-jb-top">
+        <p class="money">0</p>
+        <span><img src="/statics/images/jinbi.png" alt=""/>总积分</span>
+        <a href="jinbiduihuan.html">积分兑换</a>
+    </div>
+    <div class="my-jb-txt bg-white">
+    	<p><i>积分明细</i></p>
+	    <div id="wrapper">
+	    	<ul class="ul-list">
+	    		<li><span>绑定牙刷<i>2018-05-18</i></span><em>+10</em></li>
+	            <li><span>日常签到<i>2018-05-18</i></span><em>+10</em></li>
+	            <li><span>牙刷兑换<i>2018-05-18</i></span><em>-1000</em></li>
+	    	</ul>
+	    </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	var l1 = $.loading().show();
+	$.ajax({
+		type: "GET",
+	    url: "/account/user/info",
+	    success: function(r){
+	    	l1.hide();
+	    	if(r.errcode == 0){
+	    		var user = r.data;
+	    		$(".money").text(user.balance);
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
+    // dropload
+	var offset = 0;
+	$('.ul-list').html('');
+    $('#wrapper').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            // 拼接HTML
+        	$.ajax({
+                type: 'GET',
+                url: '/account/log/mylist',
+                data:{offset:offset,size:10},
+                success: function(response){
+                	if(response.errcode == 0){
+	                    var arrLen = response.data.length;
+	                    var html = "";
+	                    if(arrLen > 0){
+	                    	for(var i=0;i<response.data.length;i++){
+	                    		var item = response.data[i];
+	                    		html += '<li><span>'+item.descr+'<i>'+new Date(parseInt(item.createTime,10)).format("yyyy-MM-dd hh:mm:ss")+'</i></span><em>'+((item.tradeMoney>0?'+':'')+item.tradeMoney)+'</em></li>';
+	                    	}
+	                    	if(arrLen < 10){
+	                    		// 锁定
+	                            me.lock();
+	                            // 无数据
+	                            me.noData();
+	                    	}
+	                    	offset += arrLen;
+	                    // 如果没有数据
+	                    }else{
+	                        // 锁定
+	                        me.lock();
+	                        // 无数据
+	                        me.noData();
+	                    }
+	                    
+	                    // 为了测试，延迟1秒加载
+	                    // 插入数据到页面，放到最后面
+	                    $('.ul-list').append(html);
+	                    // 每次数据插入，必须重置
+	                    me.resetload();
+                	}else{
+        				alert(response.errmsg);
+        			}
+                }
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>
+

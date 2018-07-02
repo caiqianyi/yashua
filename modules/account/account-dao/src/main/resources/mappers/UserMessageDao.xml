@@ -17,5 +17,28 @@
         <result property="delFlag" column="del_flag"/>
     </resultMap>
 
-
+	<select id="findInformByUserId" resultMap="userMessageMap">
+	    SELECT id,title,content,create_time,type FROM user_message 
+  		WHERE del_flag = 0 
+  			and (user_id=#{user_id,jdbcType=BIGINT} OR user_id is null) 
+	    	and (start_time <![CDATA[<=]]> NOW() or start_time is null) 
+	    	and (end_time <![CDATA[>=]]> NOW() or end_time is null)
+  		ORDER BY create_time DESC 
+  		<if test="size != null" >
+  		  limit 
+	  		<if test="offset != null" >
+  		  		#{offset,jdbcType=INTEGER},
+  		  	</if>
+  		  #{size,jdbcType=INTEGER}
+        </if>
+	</select>
+	
+	<select id="findOneInformByUserId" resultMap="userMessageMap">
+	    SELECT id,title,content,create_time,type FROM user_message 
+  		WHERE del_flag = 0 
+  			and  id=#{id,jdbcType=BIGINT}
+  			and  user_id=#{user_id,jdbcType=BIGINT}
+	    	and (start_time <![CDATA[<=]]> NOW() or start_time is null) 
+	    	and (end_time <![CDATA[>=]]> NOW() or end_time is null)
+	</select>
 </mapper>

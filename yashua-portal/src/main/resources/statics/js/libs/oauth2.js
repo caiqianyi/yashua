@@ -57,9 +57,6 @@ var login = {
 				},
 				dataType : "json",
 				success : function(response) {
-					if(typeof fn == 'function'){
-						fn(response);
-					}
 					var data = {};
 					if (response.errcode == 0) {
 						data.username = response.data[0];
@@ -71,6 +68,9 @@ var login = {
 							data : data,
 							dataType : "json",
 							success : function(result) {
+								if(typeof fn == 'function'){
+									fn(response);
+								}
 								if (result.errcode == 0) {//登录成功
 									login.setup(result.data);
 									parent.location.href = '/index.html';

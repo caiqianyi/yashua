@@ -1,8 +1,12 @@
 package com.lebaoxun.modules.account.dao;
 
-import com.lebaoxun.modules.account.entity.UserMessageEntity;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lebaoxun.modules.account.entity.UserMessageEntity;
 
 /**
  * 用户消息
@@ -14,4 +18,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 @Mapper
 public interface UserMessageDao extends BaseMapper<UserMessageEntity> {
 	
+	List<UserMessageEntity> findInformByUserId(@Param("user_id")Long userId,
+			@Param("size")Integer size,
+			@Param("offset")Integer offset);
+	
+	UserMessageEntity findOneInformByUserId(@Param("user_id") Long userId,@Param("id") long id);
 }

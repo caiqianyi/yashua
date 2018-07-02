@@ -33,7 +33,17 @@ public interface IUserMessageService {
      * 信息
      */
     @RequestMapping("/account/usermessage/info/{id}")
-    ResponseMessage info(@PathVariable("id") Integer id);
+    ResponseMessage info(@PathVariable("id") Integer id,
+    		@RequestParam(value="userId",required=false) Long userId);
+    
+    @RequestMapping("/account/usermessage/findInformByUserId")
+    ResponseMessage findInformByUserId(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="size",required=false) Integer size, 
+    		@RequestParam(value="offset",required=false) Integer offset);
+
+    @RequestMapping("/account/usermessage/findOneInformByUserId")
+    ResponseMessage findOneInformByUserId(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="id") long id);
 
     /**
      * 保存

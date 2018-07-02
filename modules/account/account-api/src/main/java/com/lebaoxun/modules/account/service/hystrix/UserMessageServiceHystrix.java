@@ -25,7 +25,7 @@ public class UserMessageServiceHystrix implements IUserMessageService {
 	}
 
 	@Override
-	public ResponseMessage info(Integer id) {
+	public ResponseMessage info(Integer id,Long userId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
@@ -41,6 +41,17 @@ public class UserMessageServiceHystrix implements IUserMessageService {
 
 	@Override
 	public ResponseMessage delete(Long adminId, Integer[] ids) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage findInformByUserId(Long userId, Integer size,
+			Integer offset) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage findOneInformByUserId(Long userId, long id) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 

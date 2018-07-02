@@ -33,5 +33,11 @@ public class UserLogServiceHystrix implements IUserLogService {
 	public ResponseMessage allLogType() {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+	
+	@Override
+	public ResponseMessage findAccountLogByUserId(Long userId, Integer size,
+			Integer offset) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
 }
 

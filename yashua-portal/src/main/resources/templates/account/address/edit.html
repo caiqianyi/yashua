@@ -37,11 +37,12 @@ $(function () {
 			areaCode = selected.toString();
 		}
 	});
-	
+	var l1 = $.loading().show();
 	$.ajax({
 		type: "GET",
 	    url: "/account/address/info/"+id,
 	    success: function(r){
+	    	l1.hide();
 	    	if(r.errcode == 0){
 	    		address = r.data.userAddress;
 	    		$("input[name=consignee]").val(address.consignee);
@@ -93,6 +94,7 @@ $(function () {
 			alert("请您填写收货人手机号码");
 			return;
 		}
+		var l2 = $.loading({content:"处理中..."}).show();
 		$.ajax({
 			type : "POST",
 			url : "/account/address/update",
@@ -100,6 +102,7 @@ $(function () {
 		    data: JSON.stringify(address),
 			dataType : "json",
 			success : function(result) {
+				l2.hide();
 				if (result.errcode == 0) {//添加成功
 					alert("保存成功！");
 					window.location.href = '/account/address.html';

@@ -25,7 +25,7 @@
         </form>
     </span>
     <h3 class="name">请叫我小美</h3>
-    <p class="bindYashua">已绑定：ABC889655</p>
+    <p class="bindYashua"></p>
 </div>
 <div class="my-txt bg-white">
 	<ul>
@@ -112,16 +112,45 @@ function headImgUpload(){
 
 $(function(){
 	var l1 = $.loading().show();
+	var loadc = 0;
 	$.ajax({
 		type: "GET",
 	    url: "/account/user/info",
 	    success: function(r){
-	    	l1.hide();
+	    	loadc++;
+	    	if(loadc == 2){
+		    	l1.hide();
+	    	}
 	    	if(r.errcode == 0){
 	    		var headimgurl = r.data.headimgurl && r.data.headimgurl.length>0 ? r.data.headimgurl : "/statics/images/touxiang.png";
 	    		$(".photo img").attr("src",headimgurl);
+	    		$(".photo img").bind("error",function(e){
+	    			$(".photo img").attr("src","/statics/images/touxiang.png");
+	    		});
 	    		$(".name").text(r.data.nickname);
-	    		$(".bindYashua").text("");
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
+	$.ajax({
+		type: "GET",
+	    url: "/yashua/device/mylist",
+	    success: function(r){
+	    	loadc++;
+	    	if(loadc == 2){
+		    	l1.hide();
+	    	}
+	    	if(r.errcode == 0){
+	    		var html = "";
+	    		var datas = r.data;
+	    		if(datas.list.length>0){
+	    			var device = datas.list[0];
+		    		$(".bindYashua").text("已绑定："+device.identity);
+	    		}else{
+		    		$(".bindYashua").text("");
+	    		}
 			}else{
 				alert(r.errmsg);
 			}

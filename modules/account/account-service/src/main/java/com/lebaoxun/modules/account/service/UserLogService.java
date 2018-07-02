@@ -23,5 +23,8 @@ public interface UserLogService extends IService<UserLogEntity> {
      * @return
      */
     List<Map<String,Object>> queryAllLogType();
+    
+    List<UserLogEntity> queryAccountLogByUserId(Long userId,
+			Integer size, Integer offset);
 }
 

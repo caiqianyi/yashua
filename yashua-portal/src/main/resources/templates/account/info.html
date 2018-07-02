@@ -175,7 +175,9 @@ $(function(){
 	    		var user = r.data;
 	    		var headimgurl = user.headimgurl && user.headimgurl.length>0 ? user.headimgurl : "/statics/images/touxiang.png";
 	    		$(".photo img").attr("src",headimgurl);
-	    		
+	    		$(".photo img").bind("error",function(e){
+	    			$(".photo img").attr("src","/statics/images/touxiang.png");
+	    		});
 	    		
 	    		$("input[name=sex]").removeAttr("checked",'checked');
 	    		$("input[name=sex][value="+user.sex+"]").prop('checked', true)

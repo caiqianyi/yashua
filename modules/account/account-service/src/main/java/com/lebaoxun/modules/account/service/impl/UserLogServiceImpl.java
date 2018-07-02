@@ -40,4 +40,11 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogDao, UserLogEntity> i
     	// TODO Auto-generated method stub
     	return this.baseMapper.queryAllLogType();
     }
+
+	@Override
+	public List<UserLogEntity> queryAccountLogByUserId(Long userId,
+			Integer size, Integer offset) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.queryAccountLogByUserId(userId, size, offset);
+	}
 }

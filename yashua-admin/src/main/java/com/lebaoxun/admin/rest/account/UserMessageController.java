@@ -48,7 +48,7 @@ public class UserMessageController {
      */
     @RequestMapping("/account/usermessage/info/{id}")
     ResponseMessage info(@PathVariable("id") Integer id){
-        return userMessageService.info(id);
+        return userMessageService.info(id,null);
     }
 
     /**

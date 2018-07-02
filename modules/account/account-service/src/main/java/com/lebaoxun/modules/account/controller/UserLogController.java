@@ -43,6 +43,20 @@ public class UserLogController {
     ResponseMessage allLogType(){
     	return ResponseMessage.ok(userLogService.queryAllLogType());
     }
+    
+    /**
+     * 查询账户交易记录
+     * @param userId
+     * @param size
+     * @param offset
+     * @return
+     */
+    @RequestMapping("/account/userlog/findAccountLogByUserId")
+    ResponseMessage findAccountLogByUserId(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="size",required=false) Integer size, 
+    		@RequestParam(value="offset",required=false) Integer offset){
+    	return ResponseMessage.ok(userLogService.queryAccountLogByUserId(userId, size, offset));
+    }
 
     /**
      * 信息
