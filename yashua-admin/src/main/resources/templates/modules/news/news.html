@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>新闻表</title>
+	<#include "/header.html">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">作者ID</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.uId" placeholder="作者ID"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">作者</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.author" placeholder="作者"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">标题</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.title" placeholder="标题"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">内容</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.content" placeholder="内容"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">分类ID</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.classId" placeholder="分类ID"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">图片</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.picItems" placeholder="图片"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">点击数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.clicks" placeholder="点击数"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">点赞数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.praises" placeholder="点赞数"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">回复数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.replies" placeholder="回复数"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">最后回复</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.lastReplyId" placeholder="最后回复"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">是否置顶  0：否   1：是</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.isTop" placeholder="是否置顶  0：否   1：是"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">审核状态  0：未通过   1：已通过</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.checkStatus" placeholder="审核状态  0：未通过   1：已通过"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">创建时间</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="news.createTime" placeholder="创建时间"/>
+                        </div>
+                    </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/statics/js/modules/news/news.js?_${.now?long}"></script>
+</body>
+</html>
