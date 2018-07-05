@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,7 +32,9 @@ import com.lebaoxun.modules.account.service.UserService;
 
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements UserService {
-
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Resource
 	private UserLogDao userLogDao;
 	
@@ -72,6 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 				throw new I18nMessageException("-1","手机号已存在！");
 			}
 		}
+		logger.debug("passwdSecret={},account={},password={}",passwdSecret,user.getAccount(), user.getPassword());
 		String passwd = PwdUtil.getMd5Password(passwdSecret,user.getAccount(), user.getPassword());
 		
     	user.setCreateTime(new Date());

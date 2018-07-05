@@ -26,6 +26,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authorityInterceptor())
+        	.excludePathPatterns("/")
         	.excludePathPatterns("/*.html")
         	.excludePathPatterns("/**/*.html")
         	.excludePathPatterns("/**/**/*.html")
@@ -36,6 +37,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	        .excludePathPatterns("/favicon.ico")
 	        .excludePathPatterns("/captcha.jpg")
 	        .excludePathPatterns("/oauth2/**")
+	        .excludePathPatterns("/register/**")
+	        .excludePathPatterns("/sms/**")
         	;
     }
     

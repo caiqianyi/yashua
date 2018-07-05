@@ -127,7 +127,7 @@ $(function(){
 	    		$(".photo img").bind("error",function(e){
 	    			$(".photo img").attr("src","/statics/images/touxiang.png");
 	    		});
-	    		$(".name").text(r.data.nickname);
+	    		$(".name").text(r.data.nickname?r.data.nickname:"");
 			}else{
 				alert(r.errmsg);
 			}

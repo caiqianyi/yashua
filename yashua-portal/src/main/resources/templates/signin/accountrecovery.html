@@ -30,32 +30,147 @@
 	
 </script>
 </head>
-<body>
-<div class="Top"><span>&nbsp;</span>忘记密码</div>
+<body class="bg-white">
+<div class="Top"><span onclick="javascript:history.go(-1);">&nbsp;</span>忘记密码</div>
 <section class="zhuce">
-    <div class="login">
-        <div class="tel sent">
-            <em></em>
-            <input type="text" placeholder="请输入手机号" maxlength="11"/>
-            <span>发送验证码</span>
-        </div>
-        <div class="tel bh">
-            <em></em>
-            <input type="text" placeholder="请输入验证码"  />
-        </div>
-        <div class="tel psd">
-            <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="password" value="" placeholder="请输入密码">
-            <i id="closeEye" class="hid" onclick="ShutEye()"></i><i id="seeEye" onclick="OpenEye()"></i>
-        </div>
-       <div class="tel psd st-psd">
-            <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="st-password" value="" placeholder="请输入确认密码">
-            <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
-        </div>
-        <a href="" class="denglu font-36">确认更改</a>
-    </div>
+	<form>
+	    <div class="login">
+	        <div class="tel sent">
+	            <em></em>
+	            <input type="text" placeholder="请输入手机号" maxlength="11" id="username"/>
+	            <span id="sendVFCodeBtn">发送验证码</span>
+	        </div>
+	        <div class="tel bh">
+	            <em></em>
+	            <input type="text" placeholder="请输入验证码"  id="vfcode" />
+	        </div>
+	        <div class="tel psd">
+	            <em></em>
+	            <input class="loginPsd" type="text" maxlength="16" id="password" value="" placeholder="请输入密码">
+	            <i id="closeEye" class="hid" onclick="ShutEye()"></i><i id="seeEye" onclick="OpenEye()"></i>
+	        </div>
+	       <div class="tel psd st-psd">
+	            <em></em>
+	            <input class="loginPsd" type="text" maxlength="16" id="st-password" value="" placeholder="请输入确认密码">
+	            <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
+	        </div>
+	         <button type="submit" id="comfirm-button" class="denglu font-36">确认更改</button>
+	    </div>
+    </form>
 </section>
+
+<script type="text/javascript">
+$(function() {
+	function sendSMS(){
+		var _this = this;
+		var mobile = $("#username").val();
+		if( mobile == ''){
+			alert('请输入手机号');
+			return;
+		}
+		$.ajax({
+			url:"/sms/send",
+			data:{mobile:mobile,token:secret},
+			success: function(data){
+				if(data.errcode == '10012'){
+					var num = data.data;
+					$(_this).text(num+'秒');
+					$(_this).unbind('click');
+					timer = setInterval(function(){
+						num--;
+						$(_this).text(num+'秒');
+						if(num <= 0 ){
+							$(_this).text("重新发送验证码");
+							$("#sendVFCodeBtn").bind('click',sendSMS);
+							clearInterval(timer);
+						}
+					},1000)
+					alert('短信发送频繁，请您于'+num+'秒后重试');
+					return
+				}else if(data.errcode == '0'){
+					var num = 60;
+					$(_this).text(num+'秒');
+					$(_this).unbind('click');
+					timer = setInterval(function(){
+						num--;
+						$(_this).text(num+'秒');
+						if(num <= 0 ){
+							$(_this).text("重新发送验证码");
+							$(_this).bind('click',sendSMS);
+							clearInterval(timer);
+						}
+					},1000)					
+				}else{
+					alert(data.errmsg);
+				}
+			} 
+		});	
+	}
+	$("#sendVFCodeBtn").click(sendSMS);
+	$('#comfirm-button').click(function(event) {
+		event.preventDefault();
+		var username = $("#username").val();
+		var password = $("#password").val();
+		var vfcode = $("#vfcode").val();
+		var stPassword = $("#st-password").val();
+		
+		if(username == '' || password == '' || vfcode == '') {
+			//均不能为空
+			alert('账号、密码和验证码不能为空!');
+			//改变验证码
+			return false;
+		}
+		if(password != stPassword){
+			//均不能为空
+			alert('前后密码不一致！');
+			//改变验证码
+			return false;
+		}
+		var l1 = $.loading({content:"处理中..."}).show();
+		$.ajax({
+			type : "GET",
+			url : "/oauth2/encrypt",
+			data : {
+				encrypts : username + "," + encodeURIComponent(password),
+				token : secret
+			},
+			dataType : "json",
+			success : function(response) {
+				l1.hide();
+				var data = {};
+				if (response.errcode == 0) {
+					data.username = response.data[0];
+					data.password = response.data[1];
+					data.vfcode = vfcode;
+					$.ajax({
+						type : "POST",
+						url : "/oauth2/modifyPassword",
+						data : data,
+						dataType : "json",
+						success : function(result) {
+							if (result.errcode == 0) {//注册成功成功
+								alert("修改成功!稍后请您重新登录");
+								parent.location.href = '/login.html';
+							} else {
+								alert(result.errmsg);
+							}
+						}
+					});
+				} else {
+					alert(result.errmsg);
+					if (response.errcode == 10015) {
+						setTimeout(function() {
+							parent.location.reload();
+						}, 1000);
+						return;
+					}
+				}
+			}
+		});
+	});
+
+});
+</script>
 </body>
 </html>
 

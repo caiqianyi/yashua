@@ -210,7 +210,19 @@ $(function(){
 		for(var pro in user){
 			user[pro] = $("input[name="+pro+"]").val();
 		}
-		console.info(user);
+		if(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(user.nickname) == false){
+			alert("昵称输入不符合规则");  
+	        return  false;
+		}
+		if(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(user.realname) == false){
+			alert("真实姓名输入不符合规则");  
+	        return  false;
+		}
+		var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+	    if(reg.test(user.identity) === false){
+	    	alert("身份证输入不合法");  
+	        return  false;
+	    }
 		$.ajax({
 			type: "POST",
 		    url: "/account/user/modifyInfo",

@@ -32,7 +32,7 @@ public class PageRouteController extends BaseController{
 	
 	@RequestMapping(value="/")
 	public String redirect(){
-		return "redirect:/login.html";
+		return "redirect:/index.html";
 	}
 	
 	@RequestMapping("/{path}.html")

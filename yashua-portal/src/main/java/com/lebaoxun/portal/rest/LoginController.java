@@ -235,4 +235,41 @@ public class LoginController extends BaseController{
 		}
 	}
 	
+	/**
+     * 修改密码
+     * @param userId 用户ID
+     * @param newPasswd 新密码（非加密）
+     * @param adminId 操作人
+     */
+    @RequestMapping("/oauth2/modifyPassword")
+    ResponseMessage modifyPassword(@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("vfcode") String vfcode){
+		String account = username,passwd = null;
+		String secret = (String) request.getSession().getAttribute("app.secret");
+		if(StringUtils.isBlank(secret)){
+			throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");
+		}
+		try {
+			logger.debug("secret={}",secret);
+			DesUtils desUtils = new DesUtils(secret);
+			account = desUtils.decrypt(username);
+			passwd = desUtils.decrypt(password);
+		} catch (Exception e) {
+			throw new I18nMessageException("10015", "密钥不对");
+		}
+		logger.info("username={},password={}",account,passwd);
+		String verifycode = (String) redisCache.get(String.format(AccountConstant.SMS_VFCODE, account));
+		logger.debug("verifycode={},vfcode={}",verifycode,vfcode);
+		if(verifycode == null || !verifycode.equalsIgnoreCase(vfcode)){
+			throw new I18nMessageException("10001", "验证码不正确");
+		}
+		redisCache.del(String.format(AccountConstant.SMS_VFCODE, account));
+		UserEntity user = userService.findByAccount(account);
+		if(user == null){
+			throw new I18nMessageException("-1", "帐号不存在！");
+		}
+    	return userService.modifyPassword(user.getUserId(), passwd, user.getUserId());
+    }
+	
 }

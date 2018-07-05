@@ -7,7 +7,6 @@ $.ajaxSetup({
         "Authorization": window.storage.get('login.access_token',false) 
     },
     success: function(r){
-    	console.info(r);
     },
     complete:function(result){
     	var response = result.responseJSON;
@@ -39,6 +38,7 @@ var login = {
 		},
 		refreshCode : function(obj) {
 			$(login.el).attr("src","/captcha.jpg?t=" + $.now());
+			$("#captcha").val("");
 		},
 		action : function(username,password,captcha,fn) {
 			if(username == '' || password == '' || captcha == '') {
