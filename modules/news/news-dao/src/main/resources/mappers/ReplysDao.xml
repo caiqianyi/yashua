@@ -17,9 +17,9 @@
 
 
     <update id="addReplys">
-	    update ${tbs} where set replies = replies - 1 where id = #{recordId}
+	    update ${tbs} set replies = replies + 1 where id = #{recordId}
 	</update>
 	<update id="deductReplys">
-	     update ${tbs} where set replies = replies + 1 where id = #{recordId}
+	     update ${tbs} set replies = replies - 1 where id = #{recordId}
 	</update>
 </mapper>

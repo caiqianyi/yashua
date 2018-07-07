@@ -2,11 +2,19 @@
 <html>
 <head>
 <#include "/header.html">
-<title>详情</title>
+<title>
+<#if news??>
+	<#if news.title??>  
+	   ${news.title}
+	</#if>
+<#else>
+详情
+</#if>
+</title>
 </head>
 <body class="bg-white">
-<div class="Top"><span onclick="javascript:history.go(-1);"></span>详情</div>
 <#if news??>
+<div class="Top"><span onclick="javascript:window.location.href='/news/list.html'"></span>详情</div>
 <div class="zixun">
 	<span class="time">
 		${news.createTime?string('yyyy-MM-dd HH:mm:ss')}
@@ -59,6 +67,61 @@
     </div>
     
 </div>
+<div style="height:50px;width:100%;">
+
+</div>
+<div class="headroom headroom--unfixed" style="height: 45px;bottom: -45px;top: auto;left: 0px;right: 0px;z-index: 6;position: fixed;transform: translateY(-100%);transition: transform 200ms ease-in-out;">
+	<div class="comment-form"
+		style="transform: translateZ(0px);padding-bottom: 0px;display: flex;background-color: #f7f7f7;padding: 6px 12px;overflow: auto;z-index: 10;">
+		<textarea class="autosize-textarea" placeholder="评论"
+			data-boss="p_text" style="height: 32px;display: block;width: 0%;-webkit-box-flex: 1;-webkit-flex: 1;-ms-flex: 1;flex: 1;padding: 5px 10px;font-size: 16px;line-height: 20px;border: 1px solid #d5dde6;outline: none;-webkit-overflow-scrolling: touch -webkit-appearance:none;border-radius: 3px;"></textarea>
+		<button class="replyRepulish" style="display: block;font-size: 16px;color: #fff;background-color: #448aff;border: 0 none;padding: 0 15px;margin-left: 4px;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;">发表</button>
+	</div>
+</div>
+<script type="text/javascript">
+var id = ${news.id!};
+$(function(){
+	var uuid = login.isLogin() ? login.visitor().getID() : parent.window.storage.get('login.openid',false);
+	$.ajax({
+		url:"/news/modify/clicks",
+		data:{id:id,uuid:uuid},
+		success:function(r){
+	    	if(r.errcode == 0){
+	    		return;
+	    	}
+	    	alert(r.errmsg);
+		}
+	});
+	
+	
+	$(".replyRepulish").click(function(){
+		var content = $(".autosize-textarea").val();
+		if(!content || content.length == 0){
+			alert("请输入评论内容");
+			return;
+		}
+		if(!login.isLogin()){
+			var calluri = encodeURIComponent(window.location.href);
+    	    parent.location.href = '/login.html?returnuri='+calluri;
+			return;
+		}
+		var l1 = $.loading({content:'发表中...'}).show();
+		$.ajax({
+			url:"/news/toReply",
+			data:{id:id,content:content},
+			success:function(){
+				l1.hide();
+		    	if(r.errcode == 0){
+		    		alert("发表成功");
+		    		window.location.reload();
+		    		return;
+		    	}
+		    	alert(r.errmsg);
+			}
+		});
+	});
+});
+</script>
 <#else>
 	<script type="text/javascript">window.location.href="/404.html"</script>
 </#if>

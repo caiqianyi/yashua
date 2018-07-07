@@ -44,8 +44,8 @@
 	        <div class="opt">
 	        	<p><span>其他方式登录</span></p>
 	            <ul>
-	            	<li><img src="/statics/images/weixin.png" alt=""/></li>
-	                <li><img src="/statics/images/qq.png" alt=""/></li>
+	            	<li><img src="/statics/images/weixin.png" alt="" id="ruc-use-wechat"/></li>
+	                <li><img src="/statics/images/qq.png" alt="" id="ruc-use-qq"/></li>
 	            </ul>
 	        </div>
         </form>
@@ -102,6 +102,19 @@
 			}  
 		} */
 		login.refreshCode();
+		
+		$("#ruc-use-wechat").click(function(){
+			var callback = encodeURIComponent("http://" + window.location.host + "/oauth2/login/wechatOa");
+			var oauth2_uri = "https://open.weixin.qq.com/connect/qrconnect?appid=wxc4f02ed5d185d6b1&redirect_uri="+callback+"&response_type=code&scope=snsapi_login";
+			window.location.href = oauth2_uri;
+		})
+		
+		$("#ruc-use-qq").click(function(){
+			var callback = encodeURIComponent("http://" + window.location.host + "/oauth2/login/wechatOa");
+			var oauth2_uri = "https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101343674&redirect_uri="+callback+"&scope=get_user_info";
+			window.location.href = oauth2_uri;
+		})
+		
 	});
 </script>
 </body>

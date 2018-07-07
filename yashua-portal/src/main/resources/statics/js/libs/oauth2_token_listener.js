@@ -19,7 +19,8 @@ function tokenListener(){
     if(isLogout == true){
     	isTokenAlert = true;
     	window.storage.clear();
-    	parent.location.href = '/login.html';
+    	var calluri = encodeURIComponent(window.location.href);
+    	parent.location.href = '/login.html?returnuri='+calluri;
     }
 }
 tokenListener();

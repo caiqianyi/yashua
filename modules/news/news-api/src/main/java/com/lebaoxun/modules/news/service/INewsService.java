@@ -94,5 +94,11 @@ public interface INewsService {
      */
     @RequestMapping("/news/release/info/{id}")
     NewsEntity releaseInfo(@PathVariable("id") Long id);
+    
+    /**
+     * 修改点击数 flag=true 增加
+     */
+    @RequestMapping("/news/modify/clicks")
+    ResponseMessage modifyClicks(@RequestParam("id") Long id,@RequestParam("flag") boolean flag);
 }
 

@@ -39,6 +39,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	        .excludePathPatterns("/oauth2/**")
 	        .excludePathPatterns("/register/**")
 	        .excludePathPatterns("/sms/**")
+	        .excludePathPatterns("/news/modify/clicks")
         	;
     }
     

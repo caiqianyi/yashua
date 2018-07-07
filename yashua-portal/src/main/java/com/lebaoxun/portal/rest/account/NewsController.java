@@ -1,14 +1,15 @@
 package com.lebaoxun.portal.rest.account;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -16,6 +17,7 @@ import com.lebaoxun.modules.news.service.INewsService;
 import com.lebaoxun.portal.rest.BaseController;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 import com.lebaoxun.security.oauth2.entity.Oauth2UserLog;
+import com.lebaoxun.soa.core.redis.IRedisHash;
 
 @Controller
 public class NewsController extends BaseController{
@@ -25,6 +27,9 @@ public class NewsController extends BaseController{
 	
 	@Resource
 	private Oauth2SecuritySubject oauth2SecuritySubject;
+	
+	@Resource
+	private IRedisHash redisHash;
 	
 	@RequestMapping("/news/list.html")
 	public String list(@RequestParam(value="size",required=false)Integer size,
@@ -48,6 +53,7 @@ public class NewsController extends BaseController{
      * 文章点赞
      */
     @RequestMapping("/news/praise")
+    @ResponseBody
     ResponseMessage praise(@RequestParam("id") Long id){
     	Oauth2UserLog log = oauth2SecuritySubject.getCurrentUserLog();
     	return newsService.praise(id, oauth2SecuritySubject.getCurrentUser(), log.getHost());
@@ -57,10 +63,25 @@ public class NewsController extends BaseController{
      * 评论
      */
     @RequestMapping("/news/toReply")
+    @ResponseBody
     ResponseMessage toReply(@RequestParam("id") Long id,
     		@RequestParam("content") String content,
     		@RequestParam(value="toReplyId",required=false) Integer toReplyId){
     	Oauth2UserLog log = oauth2SecuritySubject.getCurrentUserLog();
     	return newsService.toReply(id, oauth2SecuritySubject.getCurrentUser(), content, toReplyId, log.getHost());
+    }
+    
+    /**
+     * 增加文章点击数
+     */
+    @RequestMapping("/news/modify/clicks")
+    @ResponseBody
+    ResponseMessage modifyClicks(@RequestParam("id") Long id,@RequestParam("uuid") String uuid){
+    	String k = "news:clicks:"+id;
+    	if(redisHash.hExists(k, uuid)){
+    		return ResponseMessage.ok();
+    	}
+    	redisHash.hSet(k, uuid, new Date().getTime());
+    	return newsService.modifyClicks(id, true);
     }
 }

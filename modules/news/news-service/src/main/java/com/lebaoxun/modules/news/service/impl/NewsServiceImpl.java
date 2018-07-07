@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -49,5 +51,12 @@ public class NewsServiceImpl extends ServiceImpl<NewsDao, NewsEntity> implements
 	public NewsEntity queryReleaseNewsInfo(Long id) {
 		// TODO Auto-generated method stub
 		return this.baseMapper.queryReleaseNewsInfo(id);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void modifyClicks(Long id, boolean flag) {
+		// TODO Auto-generated method stub
+		this.baseMapper.modifyClicks(id, flag);
 	}
 }

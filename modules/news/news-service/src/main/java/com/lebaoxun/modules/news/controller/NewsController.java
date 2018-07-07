@@ -142,6 +142,16 @@ public class NewsController {
 		newsService.updateById(news);
         return ResponseMessage.ok();
     }
+    
+    /**
+     * 修改点击数 flag=true 增加
+     */
+    @RequestMapping("/news/modify/clicks")
+    @RedisLock(value="news:modify:clicks:lock:#arg0")
+    ResponseMessage modifyClicks(@RequestParam("id") Long id,@RequestParam("flag") boolean flag){
+		newsService.modifyClicks(id, flag);
+        return ResponseMessage.ok();
+    }
 
     /**
      * 删除

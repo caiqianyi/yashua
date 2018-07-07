@@ -22,5 +22,7 @@ public interface NewsService extends IService<NewsEntity> {
 			Integer offset,Integer class_id);
     
     NewsEntity queryReleaseNewsInfo(Long id);
+    
+    void modifyClicks(Long id,boolean flag);
 }
 

@@ -47,4 +47,15 @@
 		lastReplyId,is_top AS isTop,check_status AS checkStatus,create_time AS
 		createTime FROM news WHERE (check_status = 1) and id=#{id}
 	</select>
+	
+	<update id="modifyClicks">
+		update news set 
+         <if test="flag == true">
+            clicks = clicks + 1
+         </if>
+         <if test="flag == false">
+           clicks = clicks - 1
+         </if>
+		where id = #{id}
+	</update>
 </mapper>
