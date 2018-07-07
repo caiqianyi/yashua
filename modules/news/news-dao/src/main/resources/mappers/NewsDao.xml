@@ -4,22 +4,47 @@
 <mapper namespace="com.lebaoxun.modules.news.dao.NewsDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.news.entity.NewsEntity" id="newsMap">
-        <result property="id" column="id"/>
-        <result property="uId" column="u_id"/>
-        <result property="author" column="author"/>
-        <result property="title" column="title"/>
-        <result property="content" column="content"/>
-        <result property="classId" column="class_id"/>
-        <result property="picItems" column="pic_items"/>
-        <result property="clicks" column="clicks"/>
-        <result property="praises" column="praises"/>
-        <result property="replies" column="replies"/>
-        <result property="lastReplyId" column="last_reply_id"/>
-        <result property="isTop" column="is_top"/>
-        <result property="checkStatus" column="check_status"/>
-        <result property="createTime" column="create_time"/>
-    </resultMap>
+	<resultMap type="com.lebaoxun.modules.news.entity.NewsEntity"
+		id="newsMap">
+		<result property="id" column="id" />
+		<result property="uId" column="u_id" />
+		<result property="author" column="author" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="classId" column="class_id" />
+		<result property="picItems" column="pic_items" />
+		<result property="clicks" column="clicks" />
+		<result property="praises" column="praises" />
+		<result property="replies" column="replies" />
+		<result property="lastReplyId" column="last_reply_id" />
+		<result property="isTop" column="is_top" />
+		<result property="checkStatus" column="check_status" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
 
+	<select id="queryReleaseNews" resultMap="newsMap">
+		SELECT id AS id,u_id AS `uId`,author,title,content,class_id AS
+		classId,pic_items AS picItems,clicks,praises,replies,last_reply_id AS
+		lastReplyId,is_top AS isTop,check_status AS checkStatus,create_time AS
+		createTime FROM news WHERE (check_status = 1)
+		<if test="class_id != null">
+			and class_id = #{class_id}
+		</if>
+		ORDER BY is_top DESC,
+		create_time DESC, check_status ASC
+		<if test="size != null">
+			limit
+			<if test="offset != null">
+				#{offset,jdbcType=INTEGER},
+			</if>
+			#{size,jdbcType=INTEGER}
+		</if>
+	</select>
 
+	<select id="queryReleaseNewsInfo" resultMap="newsMap">
+		SELECT id AS id,u_id AS `uId`,author,title,content,class_id AS
+		classId,pic_items AS picItems,clicks,praises,replies,last_reply_id AS
+		lastReplyId,is_top AS isTop,check_status AS checkStatus,create_time AS
+		createTime FROM news WHERE (check_status = 1) and id=#{id}
+	</select>
 </mapper>

@@ -40,6 +40,14 @@ public class NewsController {
     ResponseMessage list(@RequestParam Map<String, Object> params){
         return newsService.list(params);
     }
+    /**
+     * 列表
+     */
+    @RequestMapping("/news/news/mylist")
+    ResponseMessage mylist(@RequestParam Map<String, Object> params){
+    	params.put("u_id", oauth2SecuritySubject.getCurrentUser());
+    	return newsService.list(params);
+    }
 
 
     /**
@@ -55,6 +63,7 @@ public class NewsController {
      */
     @RequestMapping("/news/news/save")
     ResponseMessage save(@RequestBody NewsEntity news){
+    	news.setUId(oauth2SecuritySubject.getCurrentUser());
         return newsService.save(oauth2SecuritySubject.getCurrentUser(),news);
     }
 

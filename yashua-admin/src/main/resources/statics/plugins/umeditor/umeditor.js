@@ -8031,6 +8031,9 @@ UM.plugins['autoupload'] = function () {
         var xhr = new XMLHttpRequest();
         xhr.open("post", me.options.imageUrl, true);
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        if(typeof window.storage != 'undefined'){
+        	xhr.setRequestHeader("Authorization", window.storage.get('login.access_token',false));
+        }
         xhr.addEventListener('load', function (e) {
             try {
                 var json = eval('('+e.target.response+')'),

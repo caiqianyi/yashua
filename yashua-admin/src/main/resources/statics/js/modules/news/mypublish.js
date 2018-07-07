@@ -1,46 +1,32 @@
 var um;
 $(function () {
 	
-	jeDate({
-        dateCell:"#datestart",
-        format:"YYYY-MM-DD hh:mm:ss",
-        isinitVal:true,
-        isTime:true, //isClear:false,
-        //isClear:false,
-        //minDate:"2014-09-19 00:00:00"
-    })
-    
-    jeDate({
-    	dateCell:"#dateend",
-    	format:"YYYY-MM-DD hh:mm:ss",
-    	isinitVal:true,
-    	isTime:true, //isClear:false,
-    	//isClear:false,
-    	//minDate:"2014-09-19 00:00:00"
-    })
-    
     um = UM.getEditor('myEditor');
     $("#jqGrid").jqGrid({
-        url: baseURL + 'account/usermessage/list',
+        url: baseURL + 'news/news/mylist',
         datatype: "json",
         colModel: [			
-			{ label: '消息标题', name: 'title', index: 'title', width: 80 }, 			
-			{ label: '开始时间', name: 'startTime', index: 'start_time', width: 80 }, 			
-			{ label: '结束时间', name: 'endTime', index: 'end_time', width: 80 }, 			
-			{ label: '内容', name: 'content', index: 'content', width: 80 }, 			
-			{ label: '消息时间', name: 'createTime', index: 'create_time', width: 80 }, 			
-			{ label: '发送人', name: 'createBy', index: 'create_by', width: 80 }, 			
-			{ label: '接收人', name: 'userId', index: 'user_id', width: 80 }, 			
-			{ label: '消息类型', name: 'type', index: 'type', width: 80, formatter: function(value, options, row){
+			{ label: '发布人', name: 'uId', index: 'u_id', width: 80 }, 			
+			{ label: '作者', name: 'author', index: 'author', width: 80 }, 			
+			{ label: '标题', name: 'title', index: 'title', width: 80 }, 			
+			{ label: '分类ID', name: 'classId', index: 'class_id', width: 80 }, 			
+			{ label: '图片', name: 'picItems', index: 'pic_items', width: 80 }, 			
+			{ label: '点击数', name: 'clicks', index: 'clicks', width: 80 }, 			
+			{ label: '点赞数', name: 'praises', index: 'praises', width: 80 }, 			
+			{ label: '回复数', name: 'replies', index: 'replies', width: 80 }, 			
+			{ label: '是否置顶', name: 'isTop', index: 'is_top', width: 80 , formatter: function(value, options, row){
 				return value == 0 ? 
-						'<span class="label label-danger">通知</span>' : 
-						'<span class="label label-success">系统</span>';
+						'<span class="label label-danger">否</span>' : 
+						'<span class="label label-success">是</span>';
 			}}, 			
-			{ label: '是否生效', name: 'delFlag', index: 'del_flag', width: 80, formatter: function(value, options, row){
+			{ label: '审核状态', name: 'checkStatus', index: 'check_status', width: 80 , formatter: function(value, options, row){
 				return value == 0 ? 
-						'<span class="label label-danger">生效</span>' : 
-						'<span class="label label-success">失效</span>';
+						'<span class="label label-danger">未通过 </span>' : 
+						'<span class="label label-success">已通过</span>';
 			}}, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -64,15 +50,6 @@ $(function () {
         },
         gridComplete:function(){
         	//隐藏grid底部滚动条
-        	if((!vm.q.userId || vm.q.userId.length == 0)
-        			&& (!vm.selected || vm.selected.length == 0) ){
-        		var types = new Set($("#jqGrid").jqGrid('getCol',"logType"));
-        		var d = vm.types.slice(0,1);
-        		for(var i=0;i<types.size();i++){
-        			d[d.length] = {text: types.get(i), value: types.get(i)};
-        		}
-        		vm.types = d;
-        	}
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
@@ -83,14 +60,7 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		userMessage: {},
-		q:{
-			userId: null
-		},
-		selected: '',
-		types: [
-		    { text: '消息类型', value: '' },
-		]
+		news: {}
 	},
 	methods: {
 		query: function () {
@@ -99,7 +69,7 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.userMessage = {};
+			vm.news = {};
 		},
 		update: function (event) {
 			var id = getSelectedRow();
@@ -112,14 +82,24 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.userMessage.id == null ? "account/usermessage/save" : "account/usermessage/update";
+			var url = vm.news.id == null ? "news/news/save" : "news/news/update";
 			var content = um.getContent();
-			vm.userMessage.content = content;
+			
+			var pic_items = "";
+			$("img",um.getContent()).each(function(){
+				pic_items += $(this).attr("src")+",";
+			})
+			if(pic_items.length > 0){
+				pic_items.substring(0,pic_items.length-1);
+			}
+			
+			vm.news.content = content;
+			vm.news.picItems = pic_items;
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
                 contentType: "application/json",
-			    data: JSON.stringify(vm.userMessage),
+			    data: JSON.stringify(vm.news),
 			    success: function(r){
 			    	if(r.errcode == 0){
 						alert('操作成功', function(index){
@@ -140,7 +120,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
-				    url: baseURL + "account/usermessage/delete",
+				    url: baseURL + "news/news/delete",
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
@@ -156,19 +136,18 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get(baseURL + "account/usermessage/info/"+id, function(r){
+			$.get(baseURL + "news/news/info/"+id, function(r){
 				if(r.errcode && r.errcode != 0){
             		return;
             	}
-                vm.userMessage = r.data.userMessage;
-                um.setContent(vm.userMessage.content);
+                vm.news = r.data.news;
+                um.setContent(vm.news.content);
             });
 		},
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
-				postData:{'user_id': vm.q.userId, "type": vm.selected},
                 page:page
             }).trigger("reloadGrid");
 		}

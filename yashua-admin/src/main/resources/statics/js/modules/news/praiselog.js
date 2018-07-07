@@ -8,7 +8,9 @@ $(function () {
 			{ label: '赞类型', name: 'type', index: 'type', width: 80 }, 			
 			{ label: 'host', name: 'host', index: 'host', width: 80 }, 			
 			{ label: '点赞记录ID', name: 'recordId', index: 'record_id', width: 80 }, 			
-			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}}			
         ],
 		viewrecords: true,
         height: 385,
@@ -48,39 +50,6 @@ var vm = new Vue({
 		query: function () {
 			vm.reload();
 		},
-		add: function(){
-			vm.showList = false;
-			vm.title = "新增";
-			vm.praiseLog = {};
-		},
-		update: function (event) {
-			var id = getSelectedRow();
-			if(id == null){
-				return ;
-			}
-			vm.showList = false;
-            vm.title = "修改";
-            
-            vm.getInfo(id)
-		},
-		saveOrUpdate: function (event) {
-			var url = vm.praiseLog.id == null ? "news/praiselog/save" : "news/praiselog/update";
-			$.ajax({
-				type: "POST",
-			    url: baseURL + url,
-                contentType: "application/json",
-			    data: JSON.stringify(vm.praiseLog),
-			    success: function(r){
-			    	if(r.errcode == 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.errmsg);
-					}
-				}
-			});
-		},
 		del: function (event) {
 			var ids = getSelectedRows();
 			if(ids == null){
@@ -104,14 +73,6 @@ var vm = new Vue({
 					}
 				});
 			});
-		},
-		getInfo: function(id){
-			$.get(baseURL + "news/praiselog/info/"+id, function(r){
-				if(r.errcode && r.errcode != 0){
-            		return;
-            	}
-                vm.praiseLog = r.data.praiseLog;
-            });
 		},
 		reload: function (event) {
 			vm.showList = true;

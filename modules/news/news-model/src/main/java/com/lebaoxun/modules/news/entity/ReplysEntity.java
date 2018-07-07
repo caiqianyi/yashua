@@ -20,8 +20,8 @@ public class ReplysEntity implements Serializable {
 	/**
 	 * 主键
 	 */
-@TableId
-	private Integer id;
+	@TableId
+	private long id;
 	/**
 	 * 内容
 	 */
@@ -37,7 +37,7 @@ public class ReplysEntity implements Serializable {
 	/**
 	 * 回帖ID
 	 */
-	private Integer recordId;
+	private String recordId;
 	/**
 	 * 给谁回复
 	 */
@@ -54,13 +54,13 @@ public class ReplysEntity implements Serializable {
 	/**
 	 * 设置：主键
 	 */
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：主键
 	 */
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 	/**
@@ -102,13 +102,13 @@ public class ReplysEntity implements Serializable {
 	/**
 	 * 设置：回帖ID
 	 */
-	public void setRecordId(Integer recordId) {
+	public void setRecordId(String recordId) {
 		this.recordId = recordId;
 	}
 	/**
 	 * 获取：回帖ID
 	 */
-	public Integer getRecordId() {
+	public String getRecordId() {
 		return recordId;
 	}
 	/**

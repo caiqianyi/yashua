@@ -178,6 +178,10 @@
                 url=me.editor.options.imageUrl;
 
             url=url + (url.indexOf("?") == -1 ? "?" : "&") + "editorid="+me.editor.id;//初始form提交地址;
+            
+            if(typeof window.storage != 'undefined'){
+            	url=url + (url.indexOf("?") == -1 ? "?" : "&") + "token="+window.storage.get('login.access_token',false);//初始form提交地址;
+            }
 
             $("form", $(sel, me.dialog)).attr("action", url);
 
@@ -187,7 +191,12 @@
             var me = this;
             try{
                 var json = eval('('+r+')');
-                Base.callback(me.editor, me.dialog, json.url, json.state);
+                if(json.errcode == 0){
+                	var state = "SUCCESS";
+                	Base.callback(me.editor, me.dialog, json.data.uri, state);
+                	return;
+                }
+                Base.callback(me.editor, me.dialog, '', json.errmsg);
             }catch (e){
                 var lang = me.editor.getLang('image');
                 Base.callback(me.editor, me.dialog, '', (lang && lang.uploadError) || 'Error!');
@@ -206,7 +215,7 @@
                 }
 
                 $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
-                    var r = this.contentWindow.document.body.innerHTML;
+                    var r = this.contentWindow.document.body.innerText;
                     if(r == '')return;
                     me.uploadComplete(r);
                     $(this).unbind('load');
@@ -263,7 +272,9 @@
                             var xhr = new XMLHttpRequest();
                             xhr.open("post", me.editor.getOpt('imageUrl') + "?type=ajax", true);
                             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-
+                            if(typeof window.storage != 'undefined'){
+                            	xhr.setRequestHeader("Authorization", window.storage.get('login.access_token',false));
+                            }
                             //模拟数据
                             var fd = new FormData();
                             fd.append(me.editor.getOpt('imageFieldName'), f);

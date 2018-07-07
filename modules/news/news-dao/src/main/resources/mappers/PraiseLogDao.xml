@@ -13,5 +13,10 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
-
+	<update id="addPraises">
+	    update ${tbs} where set praises = praises - 1 where id = #{recordId}
+	</update>
+	<update id="deductPraises">
+	     update ${tbs} where set praises = praises + 1 where id = #{recordId}
+	</update>
 </mapper>

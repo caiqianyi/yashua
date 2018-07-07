@@ -10,7 +10,9 @@ $(function () {
 			{ label: '回帖ID', name: 'recordId', index: 'record_id', width: 80 }, 			
 			{ label: '给谁回复', name: 'toReplyId', index: 'to_reply_id', width: 80 }, 			
 			{ label: '点赞数', name: 'praises', index: 'praises', width: 80 }, 			
-			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}} 			
         ],
 		viewrecords: true,
         height: 385,

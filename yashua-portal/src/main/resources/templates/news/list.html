@@ -5,45 +5,33 @@
 <title>资讯列表</title>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:history.go(-1);"></span>牙科小知识</div>
-<div class="yachi bg-white" style="margin-top:.15rem;">
-	<p class="time">2015-07-03 17:58</p>
-    <h3>牙齿要当黄金使，牙周病的养生指南</h3>
-    <div class="txt">
-    	<img src="/statics/images/yaya-1.jpg" alt=""/>
-    	<p>牙周病是指发生在牙支持组织（牙周组织）的疾病，包括仅累及牙龈组织的牙龈病和波及深层牙周组织（牙周膜、牙槽骨、牙骨质）的牙周炎...</p>
-    </div>
-    <div class="all">
-    	<p class="fl"><a href="/news/info.html">阅读全文</a></p>
-        <p class="fr"><span>52</span><span class="sc">88</span></p>
-    </div>   
-</div>
-
-<div class="yachi bg-white">
-	<p class="time">2015-07-03 17:58</p>
-    <h3>孩子牙齿问题多？牙科专家来支招</h3>
-    <div class="txt">
-    	<img src="/statics/images/yaya-2.jpg" alt=""/>
-    	<p>龋齿俗称蛀牙，是危害儿童口腔健康最主要的疾病，由于儿童喜好甜食和饮料，又缺乏口腔疾病的预防保健意识，所以近年来我...</p>
-    </div>
-    <div class="all">
-    	<p class="fl"><a href="/news/info.html">阅读全文</a></p>
-        <p class="fr"><span>52</span><span class="sc">88</span></p>
-    </div>   
-</div>
-
-<div class="yachi bg-white">
-	<p class="time">2015-07-03 17:58</p>
-    <h3>夏季小心患“可乐牙”</h3>
-    <div class="txt">
-    	<img src="/statics/images/yaya-3.jpg" alt=""/>
-    	<p>所谓的“可乐牙”，并不是医学术语定义上的，只是大众对它起的名字。医学上应该叫“牙齿酸蚀症”。 “牙齿酸蚀症”就是我们通常...</p>
-    </div>
-    <div class="all">
-    	<p class="fl"><a href="/news/info.html">阅读全文</a></p>
-        <p class="fr"><span>52</span><span class="sc">88</span></p>
-    </div>   
-</div>
+<div class="Top"><span onclick="javascript:window.location.href='/found.html'"></span>牙科小知识</div>
+<#if release??>  
+	<#list release as news>
+		<div class="yachi bg-white">
+			<p class="time">${news.createTime?string('yyyy-MM-dd HH:mm:ss')}</p>
+		    <h3>
+		    	<#if news.title??>  
+				   ${news.title}
+				</#if>
+			</h3>
+		    <div class="txt">
+		    	<#if news.picItems??>
+		    		<img src="${news.picItems}" alt=""/>
+		    	</#if>
+				<#if news.content?length gt 60>
+					${news.content?substring(0,60)}...
+				<#else>
+					${news.content!} 
+				</#if>
+		    </div>
+		    <div class="all">
+		    	<p class="fl"><a href="/news/info/${news.id}.html">阅读全文</a></p>
+		        <p class="fr"><span>${news.replies}</span><span class="sc">${news.praises}</span></p>
+		    </div>   
+		</div>
+	</#list>
+</#if>
 
 
 </body>

@@ -1,8 +1,12 @@
 package com.lebaoxun.modules.news.dao;
 
-import com.lebaoxun.modules.news.entity.NewsEntity;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lebaoxun.modules.news.entity.NewsEntity;
 
 /**
  * 新闻表
@@ -13,5 +17,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface NewsDao extends BaseMapper<NewsEntity> {
+	List<NewsEntity> queryReleaseNews(@Param("size")Integer size,
+			@Param("offset")Integer offset, @Param("class_id")Integer class_id);
 	
+	NewsEntity queryReleaseNewsInfo(@Param("id") Long id);
 }

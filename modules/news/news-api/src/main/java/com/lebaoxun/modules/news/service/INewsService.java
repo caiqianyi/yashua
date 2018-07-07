@@ -1,15 +1,17 @@
 package com.lebaoxun.modules.news.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.news.entity.NewsEntity;
 import com.lebaoxun.modules.news.service.hystrix.NewsServiceHystrix;
-import com.lebaoxun.commons.exception.ResponseMessage;
-
-import java.util.Map;
 
 /**
  * 新闻表
@@ -52,5 +54,45 @@ public interface INewsService {
     @RequestMapping("/news/news/delete")
     ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Integer[] ids);
     
+    
+    /**
+     * 发布列表
+     */
+    @RequestMapping("/news/release/list")
+    List<NewsEntity> list(@RequestParam(value="size",required=false) Integer size, 
+    		@RequestParam(value="offset",required=false) Integer offset,
+    		@RequestParam(value="class_id",required=false) Integer class_id);
+    
+    /**
+     * 文章点赞
+     */
+    @RequestMapping("/news/release/praise")
+    ResponseMessage praise(@RequestParam("id") Long id,
+    		@RequestParam("userId") Long userId,
+    		@RequestParam(value="host",required=false) String host);
+    
+    /**
+     * 评论
+     */
+    @RequestMapping("/news/release/toReply")
+    ResponseMessage toReply(@RequestParam("id") Long id,
+    		@RequestParam("userId") Long userId,
+    		@RequestParam("content") String content,
+    		@RequestParam(value="toReplyId",required=false) Integer toReplyId,
+    		@RequestParam(value="host",required=false) String host);
+    
+    /**
+     * 回复列表
+     */
+    @RequestMapping("/news/release/replys")
+    ResponseMessage replys(@RequestParam Map<String, Object> params);
+    
+    /**
+     * 审核通过新闻查询
+     * @param id
+     * @return
+     */
+    @RequestMapping("/news/release/info/{id}")
+    NewsEntity releaseInfo(@PathVariable("id") Long id);
 }
 

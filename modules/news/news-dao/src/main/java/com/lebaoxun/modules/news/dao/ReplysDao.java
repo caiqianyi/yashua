@@ -1,7 +1,10 @@
 package com.lebaoxun.modules.news.dao;
 
 import com.lebaoxun.modules.news.entity.ReplysEntity;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -13,5 +16,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface ReplysDao extends BaseMapper<ReplysEntity> {
+	void addReplys(@Param("tbs")String tbs,@Param("recordId")String recordId);
 	
+	void deductReplys(@Param("tbs")String tbs,@Param("recordId")String recordId);
 }

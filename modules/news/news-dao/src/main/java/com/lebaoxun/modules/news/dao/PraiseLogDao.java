@@ -1,7 +1,10 @@
 package com.lebaoxun.modules.news.dao;
 
 import com.lebaoxun.modules.news.entity.PraiseLogEntity;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -14,4 +17,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 @Mapper
 public interface PraiseLogDao extends BaseMapper<PraiseLogEntity> {
 	
+	void addPraises(@Param("tbs")String tbs,@Param("recordId")String recordId);
+	
+	void deductPraises(@Param("tbs")String tbs,@Param("recordId")String recordId);
 }

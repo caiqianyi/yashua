@@ -6,19 +6,25 @@
 </head>
 <body class="bg-white">
 <div class="Top"><span onclick="javascript:history.go(-1);"></span>详情</div>
+<#if news??>
 <div class="zixun">
-	<span class="time">2015-07-03 15:35</span>	
-    <h3>牙齿要当黄金使牙周病的养生指南</h3>
-    <img src="/statics/images/yaya-1.jpg" alt=""/>
-    <p>牙周病是指发生在牙支持组织（牙周组织）的疾病，包括仅累及牙龈组织的牙龈病和波及深层牙周组织（牙周膜、牙槽骨、牙骨质）的牙周炎两大类。牙周疾病是常见的口腔疾病，是引起成年人牙齿丧失的主要原因之一，也是危害人类牙齿和全身健康的主要口腔疾病。</p>
-    <p>牙周病的早期症状不易引起重视，造成牙周组织长期慢性感染，炎症反复发作，不仅损害口腔咀嚼系统的功能，还会严重影响健康。</p>
-    <p>1.目前最有效的方法是每天坚持正确刷牙，按摩牙龈，促进牙龈血液循环，增强牙龈组织的抗病能力。注意锻炼身体，增强机体免疫力。
-2.除去局部刺激因素，清洁牙齿和刮除牙周的牙石、牙垢，矫正不良修复体及矫治食物嵌塞，基本可治愈。
-3.补充含有丰富维生素C的食品，可调节牙周组织的营养，有利于牙周炎的康复。
-4.牙周病发病后应积极治疗，初期疗效尚好，晚期疗效较差，可丧失牙齿。</p>   
+	<span class="time">
+		${news.createTime?string('yyyy-MM-dd HH:mm:ss')}
+	</span>	
+    <h3>
+	    <#if news.title??>  
+		   ${news.title}
+		</#if>
+	</h3>
+ 	<#if news.picItems??>
+   		<img src="${news.picItems}" alt=""/>
+   	</#if>
+	<#if news.content??>
+		${news.content!} 
+	</#if>
 	<div class="how">
-        <span class="fl">3125人看过</span>
-        <span class="fr"><i>52</i><i class="sc">88</i></span>
+        <span class="fl">${news.clicks}人看过</span>
+        <span class="fr"><i>${news.replies}</i><i class="sc">${news.praises}</i></span>
     </div> 
 </div>
 <div class="duzhe bg-white">
@@ -53,6 +59,8 @@
     </div>
     
 </div>
-
+<#else>
+	<script type="text/javascript">window.location.href="/404.html"</script>
+</#if>
 </body>
 </html>

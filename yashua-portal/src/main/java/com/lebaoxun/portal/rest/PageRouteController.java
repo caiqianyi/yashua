@@ -46,6 +46,7 @@ public class PageRouteController extends BaseController{
 		logger.debug("path={},url={}",path,url);
 		return path + "/" + url;
 	}
+	
 	@RequestMapping("/{path1}/{path2}/{path3}.html")
 	public String pages(@PathVariable("path1") String path1, @PathVariable("path2") String path2,
 			@PathVariable("path3") String path3){

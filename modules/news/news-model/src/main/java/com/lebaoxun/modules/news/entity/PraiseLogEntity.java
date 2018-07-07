@@ -20,8 +20,8 @@ public class PraiseLogEntity implements Serializable {
 	/**
 	 * 主键
 	 */
-@TableId
-	private Integer id;
+	@TableId
+	private long id;
 	/**
 	 * 用户ID
 	 */
@@ -46,13 +46,13 @@ public class PraiseLogEntity implements Serializable {
 	/**
 	 * 设置：主键
 	 */
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：主键
 	 */
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 	/**

@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.news.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lebaoxun.modules.news.entity.NewsEntity;
-import com.lebaoxun.modules.news.service.NewsService;
-import com.lebaoxun.commons.utils.PageUtils;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.commons.utils.PageUtils;
+import com.lebaoxun.modules.news.entity.NewsEntity;
+import com.lebaoxun.modules.news.entity.PraiseLogEntity;
+import com.lebaoxun.modules.news.entity.ReplysEntity;
+import com.lebaoxun.modules.news.service.NewsService;
+import com.lebaoxun.modules.news.service.PraiseLogService;
+import com.lebaoxun.modules.news.service.ReplysService;
 import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 
@@ -26,8 +32,15 @@ import com.lebaoxun.soa.core.redis.lock.RedisLock;
  */
 @RestController
 public class NewsController {
+	
     @Autowired
     private NewsService newsService;
+    
+    @Autowired
+    private PraiseLogService praiseLogService;
+    
+    @Autowired
+    private ReplysService replysService;
 
     /**
      * 列表
@@ -38,7 +51,64 @@ public class NewsController {
         return ResponseMessage.ok(page);
     }
 
-
+    /**
+     * 发布列表
+     */
+    @RequestMapping("/news/release/list")
+    List<NewsEntity> list(@RequestParam(value="size",required=false) Integer size, 
+    		@RequestParam(value="offset",required=false) Integer offset,
+    		@RequestParam(value="class_id",required=false) Integer class_id){
+        return newsService.queryReleaseNews(size, offset, class_id);
+    }
+    
+    /**
+     * 文章点赞
+     */
+    @RequestMapping("/news/release/praise")
+    @RedisLock(value="news:release:praise:lock:#arg0")
+    ResponseMessage praise(@RequestParam("id") Long id,
+    		@RequestParam("userId") Long userId,
+    		@RequestParam(value="host",required=false) String host){
+    	PraiseLogEntity praiseLog = new PraiseLogEntity();
+    	praiseLog.setHost(host);
+    	praiseLog.setRecordId(""+id);
+    	praiseLog.setType("news");
+    	praiseLog.setUserId(userId);
+		praiseLogService.insert(praiseLog);
+    	return ResponseMessage.ok();
+    }
+    
+    /**
+     * 评论
+     */
+    @RequestMapping("/news/release/toReply")
+    @RedisLock(value="news:release:toReply:lock:#arg0")
+    ResponseMessage toReply(@RequestParam("id") Long id,
+    		@RequestParam("userId") Long userId,
+    		@RequestParam("content") String content,
+    		@RequestParam(value="toReplyId",required=false) Integer toReplyId,
+    		@RequestParam(value="host",required=false) String host){
+    	ReplysEntity replys = new ReplysEntity();
+    	replys.setContent(content);
+    	replys.setPraises(0);
+    	replys.setType("news");
+    	replys.setRecordId(""+id);
+    	replys.setToReplyId(toReplyId);
+    	replys.setUserId(userId);
+    	replysService.insert(replys);
+    	return ResponseMessage.ok();
+    }
+    
+    /**
+     * 列表
+     */
+    @RequestMapping("/news/release/replys")
+    ResponseMessage replys(@RequestParam Map<String, Object> params){
+    	params.put("type", "news");
+        PageUtils page = replysService.queryPage(params);
+        return ResponseMessage.ok(page);
+    }
+    
     /**
      * 信息
      */
@@ -46,6 +116,11 @@ public class NewsController {
     ResponseMessage info(@PathVariable("id") Integer id){
 		NewsEntity news = newsService.selectById(id);
         return ResponseMessage.ok().put("news", news);
+    }
+    
+    @RequestMapping("/news/release/info/{id}")
+    NewsEntity releaseInfo(@PathVariable("id") Long id){
+        return newsService.queryReleaseNewsInfo(id);
     }
 
     /**

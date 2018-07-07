@@ -1,22 +1,50 @@
+var um;
 $(function () {
+	
+	/*jeDate({
+        dateCell:"#datestart",
+        format:"YYYY-MM-DD hh:mm:ss",
+        isinitVal:true,
+        isTime:true, //isClear:false,
+        //isClear:false,
+        //minDate:"2014-09-19 00:00:00"
+    })
+    
+    jeDate({
+    	dateCell:"#dateend",
+    	format:"YYYY-MM-DD hh:mm:ss",
+    	isinitVal:true,
+    	isTime:true, //isClear:false,
+    	//isClear:false,
+    	//minDate:"2014-09-19 00:00:00"
+    })*/
+    
+    um = UM.getEditor('myEditor');
     $("#jqGrid").jqGrid({
         url: baseURL + 'news/news/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '作者ID', name: 'uId', index: 'u_id', width: 80 }, 			
+			{ label: '发布人', name: 'uId', index: 'u_id', width: 80 }, 			
 			{ label: '作者', name: 'author', index: 'author', width: 80 }, 			
 			{ label: '标题', name: 'title', index: 'title', width: 80 }, 			
-			{ label: '内容', name: 'content', index: 'content', width: 80 }, 			
 			{ label: '分类ID', name: 'classId', index: 'class_id', width: 80 }, 			
 			{ label: '图片', name: 'picItems', index: 'pic_items', width: 80 }, 			
 			{ label: '点击数', name: 'clicks', index: 'clicks', width: 80 }, 			
 			{ label: '点赞数', name: 'praises', index: 'praises', width: 80 }, 			
 			{ label: '回复数', name: 'replies', index: 'replies', width: 80 }, 			
-			{ label: '最后回复', name: 'lastReplyId', index: 'last_reply_id', width: 80 }, 			
-			{ label: '是否置顶  0：否   1：是', name: 'isTop', index: 'is_top', width: 80 }, 			
-			{ label: '审核状态  0：未通过   1：已通过', name: 'checkStatus', index: 'check_status', width: 80 }, 			
-			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '是否置顶', name: 'isTop', index: 'is_top', width: 80 , formatter: function(value, options, row){
+				return value == 0 ? 
+						'<span class="label label-danger">否</span>' : 
+						'<span class="label label-success">是</span>';
+			}}, 			
+			{ label: '审核状态', name: 'checkStatus', index: 'check_status', width: 80 , formatter: function(value, options, row){
+				return value == 0 ? 
+						'<span class="label label-danger">未通过 </span>' : 
+						'<span class="label label-success">已通过</span>';
+			}}, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -56,11 +84,6 @@ var vm = new Vue({
 		query: function () {
 			vm.reload();
 		},
-		add: function(){
-			vm.showList = false;
-			vm.title = "新增";
-			vm.news = {};
-		},
 		update: function (event) {
 			var id = getSelectedRow();
 			if(id == null){
@@ -73,6 +96,18 @@ var vm = new Vue({
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.news.id == null ? "news/news/save" : "news/news/update";
+			var content = um.getContent();
+			
+			var pic_items = "";
+			$("img",um.getContent()).each(function(){
+				pic_items += $(this).attr("src")+",";
+			})
+			if(pic_items.length > 0){
+				pic_items.substring(0,pic_items.length-1);
+			}
+			
+			vm.news.content = content;
+			vm.news.picItems = pic_items;
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
@@ -119,6 +154,7 @@ var vm = new Vue({
             		return;
             	}
                 vm.news = r.data.news;
+                um.setContent(vm.news.content);
             });
 		},
 		reload: function (event) {
