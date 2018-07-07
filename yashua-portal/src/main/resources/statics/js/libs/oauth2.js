@@ -118,11 +118,14 @@ var login = {
 		var v = {
 			init: function(){
 				if(!_this.isLogin()){
-					parent.window.storage.set('visitor.id',Math.uuid(),true);
+					var id = this.getID();
+					if(!id){
+						window.storage.set('visitor.id',Math.uuid(),true);
+					}
 				}
 			},
 			getID: function(){
-				return parent.window.storage.get('visitor.id',true);
+				return window.storage.get('visitor.id',false,true);
 			}
 		};
 		return v;

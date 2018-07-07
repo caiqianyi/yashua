@@ -81,7 +81,7 @@
 <script type="text/javascript">
 var id = ${news.id!};
 $(function(){
-	var uuid = login.isLogin() ? login.visitor().getID() : parent.window.storage.get('login.openid',false);
+	var uuid = login.isLogin() ? parent.window.storage.get('login.openid',false) : login.visitor().getID();
 	$.ajax({
 		url:"/news/modify/clicks",
 		data:{id:id,uuid:uuid},
