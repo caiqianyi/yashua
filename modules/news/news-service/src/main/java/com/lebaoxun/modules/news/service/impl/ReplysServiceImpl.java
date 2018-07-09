@@ -66,4 +66,11 @@ public class ReplysServiceImpl extends ServiceImpl<ReplysDao, ReplysEntity> impl
     	this.baseMapper.addReplys(entity.getType(), entity.getRecordId()+"");
     	return super.insert(entity);
     }
+
+	@Override
+	public List<ReplysEntity> queryReplys(String userTbs, String type,
+			String recordId, Integer size, Integer offset) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.queryReplys(userTbs, type, recordId, size, offset);
+	}
 }

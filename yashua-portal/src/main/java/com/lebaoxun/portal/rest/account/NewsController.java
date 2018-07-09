@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.news.service.INewsService;
+import com.lebaoxun.modules.news.service.IReplysService;
 import com.lebaoxun.portal.rest.BaseController;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 import com.lebaoxun.security.oauth2.entity.Oauth2UserLog;
@@ -24,6 +25,9 @@ public class NewsController extends BaseController{
 	
 	@Resource
 	private INewsService newsService;
+	
+	@Resource
+	private IReplysService replysService;
 	
 	@Resource
 	private Oauth2SecuritySubject oauth2SecuritySubject;
@@ -48,7 +52,17 @@ public class NewsController extends BaseController{
 		return mav;
 	}
 	
-	
+	/**
+     * 评论
+     */
+    @RequestMapping("/news/replys")
+    @ResponseBody
+    ResponseMessage replys(@RequestParam("id") Long id,
+    		@RequestParam("size") Integer size,
+			@RequestParam("offset") Integer offset){
+    	return replysService.findReplys("user", "news", id+"", size, offset);
+    }
+    
 	/**
      * 文章点赞
      */

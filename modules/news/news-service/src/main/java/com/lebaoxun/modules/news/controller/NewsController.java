@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.news.entity.NewsEntity;
@@ -69,6 +70,11 @@ public class NewsController {
     ResponseMessage praise(@RequestParam("id") Long id,
     		@RequestParam("userId") Long userId,
     		@RequestParam(value="host",required=false) String host){
+    	
+    	int count = praiseLogService.selectCount(new EntityWrapper<PraiseLogEntity>().eq("type", "news").eq("record_id", id).eq("user_id", userId));
+    	if(count > 0){
+    		throw new I18nMessageException("-1","您已经点过赞了");
+    	}
     	PraiseLogEntity praiseLog = new PraiseLogEntity();
     	praiseLog.setHost(host);
     	praiseLog.setRecordId(""+id);

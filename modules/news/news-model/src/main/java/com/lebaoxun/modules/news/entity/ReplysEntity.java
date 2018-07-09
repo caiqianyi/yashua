@@ -1,10 +1,13 @@
 package com.lebaoxun.modules.news.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import org.springframework.stereotype.Component;
 
 /**
  * 回复表
@@ -30,6 +33,16 @@ public class ReplysEntity implements Serializable {
 	 * 回复人
 	 */
 	private Long userId;
+	/**
+	 * 昵称
+	 */
+	@TableField(exist=false)
+	private String nickname;
+	/**
+	 * 头像
+	 */
+	@TableField(exist=false)
+	private String headimgurl;
 	/**
 	 * 评论分类
 	 */
@@ -146,5 +159,17 @@ public class ReplysEntity implements Serializable {
 	 */
 	public Date getCreateTime() {
 		return createTime;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getHeadimgurl() {
+		return headimgurl;
+	}
+	public void setHeadimgurl(String headimgurl) {
+		this.headimgurl = headimgurl;
 	}
 }

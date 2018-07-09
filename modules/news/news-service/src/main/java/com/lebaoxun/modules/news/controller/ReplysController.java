@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.news.entity.ReplysEntity;
 import com.lebaoxun.modules.news.service.ReplysService;
-import com.lebaoxun.commons.utils.PageUtils;
-import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 
@@ -38,6 +38,14 @@ public class ReplysController {
         return ResponseMessage.ok(page);
     }
 
+    @RequestMapping("/news/findReplys")
+    ResponseMessage findReplys(@RequestParam(value="userTbs",required=false,defaultValue="user") String userTbs,
+			@RequestParam(value="type",required=false,defaultValue="news") String type, 
+			@RequestParam("recordId") String recordId,
+			@RequestParam("size") Integer size,
+			@RequestParam("offset") Integer offset){
+    	return ResponseMessage.ok(replysService.queryReplys(userTbs, type, recordId, size, offset));
+    }
 
     /**
      * 信息

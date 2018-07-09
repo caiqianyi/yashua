@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.lebaoxun.modules.news.entity.ReplysEntity;
 import com.lebaoxun.modules.news.service.hystrix.ReplysServiceHystrix;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -26,6 +27,13 @@ public interface IReplysService {
      */
     @RequestMapping("/news/replys/list")
     ResponseMessage list(@RequestParam Map<String, Object> params);
+    
+    @RequestMapping("/news/findReplys")
+    ResponseMessage findReplys(@RequestParam(value="userTbs",required=false,defaultValue="user") String userTbs,
+			@RequestParam(value="type",required=false,defaultValue="news") String type, 
+			@RequestParam("recordId") String recordId,
+			@RequestParam("size") Integer size,
+			@RequestParam("offset") Integer offset);
 
 
     /**

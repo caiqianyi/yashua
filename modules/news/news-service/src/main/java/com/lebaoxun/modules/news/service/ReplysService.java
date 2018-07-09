@@ -1,10 +1,11 @@
 package com.lebaoxun.modules.news.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.news.entity.ReplysEntity;
-
-import java.util.Map;
 
 /**
  * 回复表
@@ -16,5 +17,9 @@ import java.util.Map;
 public interface ReplysService extends IService<ReplysEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    
+    List<ReplysEntity> queryReplys(String userTbs,
+			String type, String recordId,
+			Integer size, Integer offset);
 }
 

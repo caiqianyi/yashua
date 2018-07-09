@@ -43,6 +43,12 @@ public class ReplysServiceHystrix implements IReplysService {
 	public ResponseMessage delete(Long adminId,Integer[] ids) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+
+	@Override
+	public ResponseMessage findReplys(String userTbs, String type,
+			String recordId, Integer size, Integer offset) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
     
 }
 

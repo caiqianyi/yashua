@@ -2,6 +2,8 @@
 <html>
 <head>
 <#include "/header.html">
+<link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
+<script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
 <title>
 <#if news??>
 	<#if news.title??>  
@@ -35,37 +37,19 @@
         <span class="fr"><i>${news.replies}</i><i class="sc">${news.praises}</i></span>
     </div> 
 </div>
-<div class="duzhe bg-white">
-	<div class="renwu">
-    	<img src="/statics/images/duzhe1.jpg" alt=""/>
-        <div class="txt">
-        	<p class="nic font-26">小雪</p>
-        	<p class="pl font-22 c-6">感觉很有用处，关注牙齿，关注健康，持续关注中</p>
-            <span class="font-20 c-9">2015-05-20 15:08</span>
-        </div>
-        <em></em>
-    </div>
-	
-    <div class="renwu">
-    	<img src="/statics/images/duzhe2.jpg" alt=""/>
-        <div class="txt">
-        	<p class="nic font-26">简爱</p>
-        	<p class="pl font-22 c-6">很赞</p>
-            <span class="font-20 c-9">2015-05-09 08:08</span>
-        </div>
-        <em></em>
-    </div>
-    
-    <div class="renwu">
-    	<img src="/statics/images/duzhe3.jpg" alt=""/>
-        <div class="txt">
-        	<p class="nic font-26">爱牙达人</p>
-        	<p class="pl font-22 c-6">写的很好，很详细，感觉很有用</p>
-            <span class="font-20 c-9">2015-05-08 16:39</span>
-        </div>
-        <em></em>
-    </div>
-    
+
+<div id="wrapper">
+	<div class="duzhe bg-white">
+		<div class="renwu">
+	    	<img src="/statics/images/duzhe1.jpg" alt=""/>
+	        <div class="txt">
+	        	<p class="nic font-26">小雪</p>
+	        	<p class="pl font-22 c-6">感觉很有用处，关注牙齿，关注健康，持续关注中</p>
+	            <span class="font-20 c-9">2015-05-20 15:08</span>
+	        </div>
+	        <em></em>
+	    </div>
+	</div>
 </div>
 <div style="height:50px;width:100%;">
 
@@ -81,11 +65,13 @@
 <script type="text/javascript">
 var id = ${news.id!};
 $(function(){
+	var l2 = $.loading({content:'加载中...'}).show();
 	var uuid = login.isLogin() ? parent.window.storage.get('login.openid',false) : login.visitor().getID();
 	$.ajax({
 		url:"/news/modify/clicks",
 		data:{id:id,uuid:uuid},
 		success:function(r){
+			l2.hide();
 	    	if(r.errcode == 0){
 	    		return;
 	    	}
@@ -93,6 +79,58 @@ $(function(){
 		}
 	});
 	
+	// dropload
+	var offset = 0;
+	$('.duzhe').html('');
+    $('#wrapper').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            // 拼接HTML
+        	$.ajax({
+                type: 'POST',
+                url: '/news/replys',
+                data:{id:id,offset:offset,size:10},
+                dataType: 'json',
+                success: function(response){
+                    var arrLen = response.data.length;
+                    var html = "";
+                    if(arrLen > 0){
+                    	for(var i=0;i<response.data.length;i++){
+                    		var item = response.data[i];
+                    		html += '<div class="renwu">';
+                    		html += '	<img src="'+item.headimgurl+'" alt=""/>';
+                    		html += '     <div class="txt">';
+                    		html += '    	<p class="nic font-26">'+item.nickname+'</p>';
+                    		html += '    	<p class="pl font-22 c-6">'+item.content+'</p>';
+                    		html += '        <span class="font-20 c-9">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd hh:mm:ss")+'</span>';
+                    		html += '    </div>';
+                    		html += '    <em></em>';
+                    		html += '</div>';
+                    	}
+                    	if(arrLen < 10){
+                    		// 锁定
+                            me.lock();
+                            // 无数据
+                            me.noData();
+                    	}
+                    	offset += arrLen;
+                    // 如果没有数据
+                    }else{
+                        // 锁定
+                        me.lock();
+                        // 无数据
+                        me.noData();
+                    }
+                    
+                    // 为了测试，延迟1秒加载
+                    // 插入数据到页面，放到最后面
+                    $('.duzhe').append(html);
+                    // 每次数据插入，必须重置
+                    me.resetload();
+                }
+            });
+        }
+    });
 	
 	$(".replyRepulish").click(function(){
 		var content = $(".autosize-textarea").val();
@@ -109,7 +147,7 @@ $(function(){
 		$.ajax({
 			url:"/news/toReply",
 			data:{id:id,content:content},
-			success:function(){
+			success:function(r){
 				l1.hide();
 		    	if(r.errcode == 0){
 		    		alert("发表成功");
@@ -120,6 +158,23 @@ $(function(){
 			}
 		});
 	});
+	$(".sc").click(function(){
+		var l3 = $.loading({content:'请求中...'}).show();
+		$.ajax({
+			url:"/news/praise",
+			data:{id:id},
+			success:function(r){
+				l3.hide();
+		    	if(r.errcode == 0){
+		    		alert("点赞成功");
+		    		window.location.reload();
+		    		return;
+		    	}
+		    	alert(r.errmsg);
+			}
+		});
+	});
+	
 });
 </script>
 <#else>

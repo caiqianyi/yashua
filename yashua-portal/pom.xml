@@ -115,14 +115,19 @@
 			<artifactId>yashua-core-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.lebaoxun</groupId>
 			<artifactId>sms-api</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency> -->
+		<dependency>
+			<groupId>com.lebaoxun</groupId>
+			<artifactId>news-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.lebaoxun</groupId>
-			<artifactId>news-api</artifactId>
+			<artifactId>sign-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
 	</dependencies>
