@@ -62,5 +62,9 @@ public interface ISignLogService {
     @RequestMapping("/sign/in")
     ResponseMessage signIn(@RequestParam("userId")Long userId,
     		@RequestParam("groupId")String groupId);
+    
+    @RequestMapping("/sign/findMonthInfoByUserId")
+    ResponseMessage findMonthInfoByUserId(@RequestParam("userId")Long userId,
+    		@RequestParam("time")String time);
 }
 

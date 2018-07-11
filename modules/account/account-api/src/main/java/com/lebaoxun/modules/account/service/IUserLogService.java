@@ -50,5 +50,15 @@ public interface IUserLogService {
     ResponseMessage findAccountLogByUserId(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="size",required=false) Integer size, 
     		@RequestParam(value="offset",required=false) Integer offset);
+    
+    @RequestMapping("/account/userlog/zRange")
+    ResponseMessage zRange(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="logType") String logType,
+    		@RequestParam(value="time") String time);
+    
+    @RequestMapping("/account/userlog/zRank")
+    ResponseMessage zRank(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="logType") String logType,
+    		@RequestParam(value="time") String time);
 }
 

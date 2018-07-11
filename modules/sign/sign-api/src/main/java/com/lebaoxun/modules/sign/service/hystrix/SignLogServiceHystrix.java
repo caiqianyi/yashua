@@ -48,6 +48,10 @@ public class SignLogServiceHystrix implements ISignLogService {
 	public ResponseMessage signIn(Long userId, String groupId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
-    
+
+	@Override
+	public ResponseMessage findMonthInfoByUserId(Long userId, String time) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
 }
 

@@ -2,82 +2,140 @@
 <html>
 <head>
 <#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/js/libs/signIn.js"></script>
 <title>签到</title>
 </head>
 <body class="bg-white">
-<div class="Top"><span></span>日常签到</div>
-<div class="qiandao">
-	<div class="time"><em class="left"></em>2018年5月<em class="right"></em></div>
+<div class="Top"><span onclick="javascript:window.location.href='/found.html'"></span>日常签到</div>
+<div class="qiandao"> 
+	<div class="time"><em class="left"></em><div class="showTime">2018年5月</div><em class="right"></em></div>
     <table cellpadding="0" cellspacing="0">
-      <tbody>
-        <tr class="head">
-          <td>日</td>
-          <td>一</td>
-          <td>二</td>
-          <td>三</td>
-          <td>四</td>
-          <td>五</td>
-          <td>六</td>
-        </tr>
-        <tr>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
-        </tr>
-        <tr class="bg-gray">
-          <td>6</td>
-          <td class="on">7</td>
-          <td class="on">8</td>
-          <td>9</td>
-          <td>10</td>
-          <td>11</td>
-          <td>12</td>
-        </tr>
-        <tr>
-          <td>13</td>
-          <td>14</td>
-          <td>15</td>
-          <td>16</td>
-          <td>17</td>
-          <td>18</td>
-          <td>19</td>
-        </tr>
-        <tr class="bg-gray">
-          <td>20</td>
-          <td class="on">21</td>
-          <td>22</td>
-          <td>23</td>
-          <td>24</td>
-          <td>25</td>
-          <td>26</td>
-        </tr>
-        <tr>
-          <td>27</td>
-          <td>28</td>
-          <td>29</td>
-          <td>30</td>
-          <td>31</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
+      <thead>
+	      <tr class="head">
+	        <td>日</td>
+	        <td>一</td> 
+	        <td>二</td>
+	        <td>三</td>
+	        <td>四</td>
+	        <td>五</td>
+	        <td>六</td>
+	      </tr>
+      </thead>
+      <tbody class="signTbody">
       </tbody>
     </table> 
     <div class="jibai font-26">	
-        <p><img src="images/jibai.png" alt=""/>本月共赚积分520</p>
-        <p>本月击败全国75%的用户</p>
+        <p><img src="/statics/images/jibai.png" alt=""/>本月共赚积分<span class="score">520</span></p>
+        <p class="rankInfo">本月击败全国75%的用户</p>
     </div>   
 </div>
+
+<div class="ui-dialog">
+    <div class="ui-dialog-cnt">
+	    <header class="ui-dialog-hd ui-border-b">
+           <h3>签到成功</h3>
+           <i class="ui-dialog-close" data-role="button"></i>
+       </header>
+        <div class="ui-dialog-bd" style=" text-align: center;">
+            <div>
+            	<p>恭喜您</p>
+            	<p>今日签到成功</p>
+			</div>
+        </div>
+    </div>        
+</div>
+
 <script type="text/javascript">
+var dia,signIn,l1;
+function drawCell(e){
+	var html = "";
+	for(var y=0;y<e.calendar.length;y++){
+		html += "<tr>";
+		for(var x=0;x<e.calendar[y].length;x++){
+			var cell = e.calendar[y][x];
+			var isSign = cell.isSign ? ' class="on"' : '';
+			var date = cell.date ? cell.date : "&nbsp;";
+			html += '<td'+isSign+'>'+date+'</td>';
+		}
+		html += "</tr>";
+	}
+	$(".showTime").text(e.show.iYear+"年"+e.show.iMonth+"月");
+	$(".signTbody").html(html);
+}
+
+function ajaxSign(date){
+	var time = date.format("yyyyMM");
+	l1.show();
+	$.ajax({
+		url:"/sign/findMonthInfoByUserId",
+		data:{time:time},
+		success:function(r){
+			l1.hide();
+			if(r.errcode == 0){
+				var signTimes = [];
+				if(r.data.uInfo){
+					var uSign = r.data.uInfo;
+					for(var i=0;i<uSign.logs.length;i++){
+						var log = uSign.logs[i];
+						signTimes[i] = new Date(parseInt(log.createTime));
+					}
+				}
+				var score,jibai ;
+				if(r.data.zRank){
+					var zRank = r.data.zRank;
+					var rank = zRank.rank;
+					score = zRank.score;
+					jibai = ((zRank.size - rank)/zRank.size).toFixed(2) * 100;
+				}else{
+					score = 0;
+					jibai = 0;
+				}
+				$(".score").text(score);
+				$(".rankInfo").text("本月击败全国"+jibai+"%的用户");
+				signIn._init({
+					iYear: date.getFullYear(),
+					iMonth: date.getMonth(),
+					signTimes:signTimes
+				});
+				signIn.load(function(e){
+					drawCell(e);
+				});
+			}
+		}
+	});
+}
 $(function(){
+	l1 = $.loading();
+	dia = $(".ui-dialog");
+	var time = new Date();
+	signIn = new SignIn();
+	
+	$(".time .left").click(function(){
+		signIn.prev(function(e) {
+			time = new Date(e.show.iYear,e.show.iMonth-1,1);
+			ajaxSign(time);
+		});
+	});
+	$(".time .right").click(function(){
+		signIn.next(function(e) {
+			time = new Date(e.show.iYear,e.show.iMonth-1,1);
+			ajaxSign(time);
+		});
+	});
+	
 	$.ajax({
 		url:"/sign/in",
 		success:function(r){
-			console.info(r);
-		}});
+			
+			ajaxSign(time);
+			
+			if(r.errcode == 0){
+				dia.dialog("show");
+			}
+		}
+	});
+
 });
 </script>
 </body>

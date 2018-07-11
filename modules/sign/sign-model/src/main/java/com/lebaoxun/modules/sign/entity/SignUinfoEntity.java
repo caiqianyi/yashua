@@ -1,10 +1,12 @@
 package com.lebaoxun.modules.sign.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 /**
  * 签到用户表
@@ -35,6 +37,14 @@ public class SignUinfoEntity implements Serializable {
 	 */
 	private Integer mKeepUpCount;
 	/**
+	 * 历史最大连签数
+	 */
+	private Integer maxKeepUpCount;
+	/**
+	 * 当月最大连签天数
+	 */
+	private Integer mMaxKeepUpCount;
+	/**
 	 * 总签到数
 	 */
 	private Integer totalSignNum;
@@ -46,6 +56,9 @@ public class SignUinfoEntity implements Serializable {
 	 * 最后签到时间
 	 */
 	private Date signTime;
+	
+	@TableField(exist=false)
+	private List<SignLogEntity> logs;
 
 	/**
 	 * 设置：主键
@@ -130,5 +143,23 @@ public class SignUinfoEntity implements Serializable {
 	 */
 	public Date getSignTime() {
 		return signTime;
+	}
+	public Integer getMaxKeepUpCount() {
+		return maxKeepUpCount;
+	}
+	public void setMaxKeepUpCount(Integer maxKeepUpCount) {
+		this.maxKeepUpCount = maxKeepUpCount;
+	}
+	public Integer getmMaxKeepUpCount() {
+		return mMaxKeepUpCount;
+	}
+	public void setmMaxKeepUpCount(Integer mMaxKeepUpCount) {
+		this.mMaxKeepUpCount = mMaxKeepUpCount;
+	}
+	public List<SignLogEntity> getLogs() {
+		return logs;
+	}
+	public void setLogs(List<SignLogEntity> logs) {
+		this.logs = logs;
 	}
 }

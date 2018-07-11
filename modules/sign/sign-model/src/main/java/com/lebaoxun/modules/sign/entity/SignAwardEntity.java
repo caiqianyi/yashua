@@ -23,10 +23,6 @@ public class SignAwardEntity implements Serializable {
 	@TableId
 	private long id;
 	/**
-	 * 用户ID
-	 */
-	private Long userId;
-	/**
 	 * 自定义条件值
 	 */
 	private String condition;
@@ -62,18 +58,6 @@ public class SignAwardEntity implements Serializable {
 	 */
 	public long getId() {
 		return id;
-	}
-	/**
-	 * 设置：用户ID
-	 */
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-	/**
-	 * 获取：用户ID
-	 */
-	public Long getUserId() {
-		return userId;
 	}
 	/**
 	 * 设置：自定义条件值

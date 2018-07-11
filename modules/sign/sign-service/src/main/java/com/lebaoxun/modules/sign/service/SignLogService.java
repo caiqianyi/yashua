@@ -1,11 +1,11 @@
 package com.lebaoxun.modules.sign.service;
 
+import java.util.Map;
+
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.sign.entity.SignLogEntity;
 import com.lebaoxun.modules.sign.entity.SignUinfoEntity;
-
-import java.util.Map;
 
 /**
  * 签到记录表
@@ -19,5 +19,7 @@ public interface SignLogService extends IService<SignLogEntity> {
     PageUtils queryPage(Map<String, Object> params);
     
     SignUinfoEntity signIn(Long userId,String groupId);
+    
+    SignUinfoEntity findMonthSignLog(Long userId,String time);
 }
 

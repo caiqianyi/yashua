@@ -9,10 +9,24 @@
         <result property="userId" column="user_id"/>
         <result property="keepUpCount" column="keep_up_count"/>
         <result property="mKeepUpCount" column="m_keep_up_count"/>
+        <result property="maxKeepUpCount" column="max_keep_up_count"/>
+        <result property="mMaxKeepUpCount" column="m_max_keep_up_count"/>
         <result property="totalSignNum" column="total_sign_num"/>
         <result property="totalResignNum" column="total_resign_num"/>
         <result property="signTime" column="sign_time"/>
+        <collection property="logs" ofType="com.lebaoxun.modules.sign.entity.SignLogEntity" javaType="java.util.ArrayList">
+			<result property="createTime" column="logTime" />
+	    </collection>
     </resultMap>
 
-
+	<select id="findSignUinfoByUserId" resultMap="signUinfoMap">
+	    SELECT * FROM sign_uinfo WHERE user_id=#{userId}
+	</select>
+	
+	<select id="queryMonthSignLog" resultMap="signUinfoMap">
+		select uinfo.*,log.create_time as logTime from sign_uinfo as
+		uinfo left join sign_log as log on log.user_id = uinfo.user_id where
+		uinfo.user_id = #{userId} and DATE_FORMAT(log.create_time,"%Y%m") =
+		#{time};
+	</select>
 </mapper>

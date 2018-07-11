@@ -66,5 +66,20 @@ public class UserLogController {
 		UserLogEntity userLog = userLogService.selectById(id);
         return ResponseMessage.ok().put("userLog", userLog);
     }
+    
+    @RequestMapping("/account/userlog/zRange")
+    ResponseMessage zRange(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="logType") String logType,
+    		@RequestParam(value="time") String time){
+    	userLogService.zRange(userId, logType, time);
+    	return ResponseMessage.ok();
+    }
+    
+    @RequestMapping("/account/userlog/zRank")
+    ResponseMessage zRank(@RequestParam(value="userId") Long userId,
+    		@RequestParam(value="logType") String logType,
+    		@RequestParam(value="time") String time){
+    	return ResponseMessage.ok(userLogService.zRank(userId, logType, time));
+    }
 
 }

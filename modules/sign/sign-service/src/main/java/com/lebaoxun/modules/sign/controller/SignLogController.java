@@ -91,5 +91,11 @@ public class SignLogController {
     		@RequestParam("groupId")String groupId){
     	return ResponseMessage.ok(signLogService.signIn(userId, groupId));
     }
+    
+    @RequestMapping("/sign/findMonthInfoByUserId")
+    ResponseMessage findMonthInfoByUserId(@RequestParam("userId")Long userId,
+    		@RequestParam("time")String time){
+    	return ResponseMessage.ok(signLogService.findMonthSignLog(userId, time));
+    }
 
 }

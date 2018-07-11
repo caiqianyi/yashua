@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.sign.service.impl;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -64,9 +65,7 @@ public class SignLogServiceImpl extends ServiceImpl<SignLogDao, SignLogEntity> i
 		sle.setUserId(userId);
 		this.baseMapper.insert(sle);
 		
-		SignUinfoEntity sue = new SignUinfoEntity();
-		sue.setUserId(userId);
-		sue = signUinfoDao.selectOne(sue);
+		SignUinfoEntity sue = signUinfoDao.findSignUinfoByUserId(userId);
 		if(sue == null){
 			sue = new SignUinfoEntity();
 			sue.setKeepUpCount(1);
@@ -74,6 +73,8 @@ public class SignLogServiceImpl extends ServiceImpl<SignLogDao, SignLogEntity> i
 			sue.setSignTime(signTime);
 			sue.setTotalResignNum(0);
 			sue.setTotalSignNum(1);
+			sue.setMaxKeepUpCount(1);
+			sue.setmMaxKeepUpCount(1);
 			sue.setUserId(userId);
 			signUinfoDao.insert(sue);
 		}else{
@@ -83,26 +84,38 @@ public class SignLogServiceImpl extends ServiceImpl<SignLogDao, SignLogEntity> i
 			boolean isKeepup = signTimeStr.equals(prevSignTimeStr);
 			Integer keepUpCount = 0, 
 					mKeepUpCount = 0,//
-					resignNum = 0;//距上次漏签天数
+					resignNum = 0,//距上次漏签天数
+					maxKeepUpCount = sue.getMaxKeepUpCount(),//历史最大连签数
+					mMaxKeepUpCount = 0//当月最大连签数
+					;
 			if(isKeepup){//是否连续签到
 				keepUpCount = sue.getKeepUpCount()+1;
+				
+				if(keepUpCount > maxKeepUpCount){
+					maxKeepUpCount = keepUpCount;
+				}
+				
+				if(DateFormatUtils.format(prevSignTime, "yyyyMM").equals(DateFormatUtils.format(signTime, "yyyyMM"))){
+					mKeepUpCount = sue.getMKeepUpCount()+1;
+					if(mKeepUpCount>mMaxKeepUpCount){
+						mMaxKeepUpCount = mKeepUpCount;
+					}
+				}
 			}else{
 				Calendar aCalendar = Calendar.getInstance();
 		        aCalendar.setTime(signTime);
 		        int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
 		        aCalendar.setTime(prevSignTime);
 		        int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
-				resignNum = day1-day2;
+				resignNum = day1-day2-1;
 			}
-			if(isKeepup && 
-					DateFormatUtils.format(prevSignTime, "yyyyMM").equals(DateFormatUtils.format(signTime, "yyyyMM"))){
-				mKeepUpCount = sue.getMKeepUpCount()+1;
-			}
-			sue.setSignTime(prevSignTime);
+			sue.setSignTime(signTime);
 			sue.setTotalResignNum(sue.getTotalResignNum()+resignNum);
 			sue.setTotalSignNum(sue.getTotalSignNum() + 1);
 			sue.setKeepUpCount(keepUpCount);
 			sue.setMKeepUpCount(mKeepUpCount);
+			sue.setMaxKeepUpCount(maxKeepUpCount);
+			sue.setmMaxKeepUpCount(mMaxKeepUpCount);
 			signUinfoDao.updateById(sue);
 		}
 		
@@ -111,14 +124,17 @@ public class SignLogServiceImpl extends ServiceImpl<SignLogDao, SignLogEntity> i
 			for(SignAwardEntity sae: awards){
 				String lots[] = new String[]{
 						sue.getKeepUpCount()+"",sue.getMKeepUpCount()+"",
-						sue.getTotalResignNum()+"",sue.getTotalSignNum()+""};
+						sue.getTotalResignNum()+"",sue.getTotalSignNum()+"",
+						sue.getMKeepUpCount()+"",sue.getmMaxKeepUpCount()+""};
 				String line = sae.getCondition().replaceAll("#keep_up_count", "#N1")
 						.replaceAll("#m_keep_up_count", "#N2")
 						.replaceAll("#total_resign_num", "#N3")
-						.replaceAll("#total_sign_num", "#N4");
+						.replaceAll("#total_sign_num", "#N4")
+						.replaceAll("#m_keep_up_count", "#N5")
+						.replaceAll("#m_max_keep_up_count", "#N6");
 				boolean isAward = false;
 				try{
-					logger.debug("lots={},line={}",lots.toString(),line);
+					logger.debug("lots={},line={}",Arrays.asList(lots),line);
 					isAward = FormulaCalculate.check(lots, line);
 					logger.debug("isAward={}",isAward);
 				}catch(Exception e){
@@ -130,6 +146,12 @@ public class SignLogServiceImpl extends ServiceImpl<SignLogDao, SignLogEntity> i
 			}
 		}
 		return sue;
+	}
+	
+	@Override
+	public SignUinfoEntity findMonthSignLog(Long userId, String time) {
+		// TODO Auto-generated method stub
+		return signUinfoDao.queryMonthSignLog(userId, time);
 	}
 
 }
