@@ -67,6 +67,9 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogDao, UserLogEntity> i
 	public Map<String, Object> zRank(Long userId, String logType, String time) {
 		// TODO Auto-generated method stub
 		String key = "account:tradeMoney:"+logType+":ranks"+":"+time;
+		if(!redisSorted.exists(key)){
+			return null;
+		}
 		Long rank = redisSorted.zRank(key, userId),
 				size = redisSorted.zSize(key),
 					score = redisSorted.zScore(key,userId).longValue();
