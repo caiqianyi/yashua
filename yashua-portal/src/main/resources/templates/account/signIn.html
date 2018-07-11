@@ -86,7 +86,7 @@ function ajaxSign(date){
 					var zRank = r.data.zRank;
 					var rank = zRank.rank;
 					score = zRank.score;
-					jibai = ((zRank.size - rank)/zRank.size).toFixed(2) * 100;
+					jibai = rank> 0 ? ((zRank.size - (zRank.size - rank -1))/zRank.size).toFixed(2) * 100 : 0;
 				}else{
 					score = 0;
 					jibai = 0;
