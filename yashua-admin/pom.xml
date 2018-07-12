@@ -123,6 +123,11 @@
 			<artifactId>upload-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>com.lebaoxun</groupId>
+			<artifactId>mall-api</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lebaoxun.modules.mall.dao.MallProductDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lebaoxun.modules.mall.entity.MallProductEntity" id="mallProductMap">
+        <result property="id" column="id"/>
+        <result property="productNumber" column="product_number"/>
+        <result property="labelId" column="label_id"/>
+        <result property="name" column="name"/>
+        <result property="showScore" column="show_score"/>
+        <result property="showPrice" column="show_price"/>
+        <result property="showPic" column="show_pic"/>
+        <result property="introduce" column="introduce"/>
+        <result property="description" column="description"/>
+        <result property="showInTop" column="show_in_top"/>
+        <result property="showInHot" column="show_in_hot"/>
+        <result property="showInShelve" column="show_in_shelve"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="shelveTime" column="shelve_time"/>
+        <result property="shelveBy" column="shelve_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="searchKey" column="search_key"/>
+        <result property="shareTitle" column="share_title"/>
+        <result property="shareDescription" column="share_description"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+
+</mapper>

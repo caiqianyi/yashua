@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lebaoxun.modules.mall.dao.MallOrderDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lebaoxun.modules.mall.entity.MallOrderEntity" id="mallOrderMap">
+        <result property="id" column="id"/>
+        <result property="orderNumber" column="order_number"/>
+        <result property="userId" column="user_id"/>
+        <result property="payType" column="pay_type"/>
+        <result property="shipmentTime" column="shipment_time"/>
+        <result property="shipmentType" column="shipment_type"/>
+        <result property="shipmentAmount" column="shipment_amount"/>
+        <result property="invoiceType" column="invoice_type"/>
+        <result property="invoiceTitle" column="invoice_title"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="postid" column="postid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="orderAmount" column="order_amount"/>
+        <result property="orderScore" column="order_score"/>
+        <result property="payAmount" column="pay_amount"/>
+        <result property="buyNumber" column="buy_number"/>
+    </resultMap>
+
+
+</mapper>
