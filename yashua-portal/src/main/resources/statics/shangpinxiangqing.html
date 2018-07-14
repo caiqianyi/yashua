@@ -35,22 +35,58 @@
     <p class="free">快递 免运费<i>月销3597笔</i>上海</p>    
 </div>
 <!--选择宝贝-->
-<div class="thing-cho bg-white">
+<div class="thing-cho bg-white" id="st-color">
 	<span>选择 主要颜色</span>
     <em></em>
 </div>
 <!--宝贝评价-->
-<div class="thing-cho bg-white" style="margin-bottom:2rem;">
+<a href="pingjia-list.html" style="color:#333;">
+<div class="thing-cho bg-white" style="margin-bottom:0;">
 	<span>宝贝评价（55）</span>
     <em></em>
 </div>
+<div class="babytalk bg-white" style="margin-bottom:1.5rem;">
+	<div class="name font-24">
+    	<img src="images/touxiang.png" alt=""/>
+        <p>138****1234 <span>我的昵称</span></p>
+    </div>
+    <div class="time font-22 c-9">2018-07-13 颜色分类：蓝色 </div>
+    <div class="txt font-26">宝贝特别好用，支持！！</div>
+</div>
+</a>
 <!--购买-->
 <div class="thing-mai bg-white">
 	<span>客服</span>
     <ul>
-    	<li class="bg-gwc">购物车</li>
-        <li class="bg-mai">立即购买</li>
+    	<li class="bg-gwc"><a href="gouwuche.html">购物车</a></li>
+        <li class="bg-mai"><a href="jiesuan.html">立即购买</a></li>
     </ul>
+</div>
+
+<!--选择弹窗-->
+<div class="xzpop">
+	<div class="bg-black"></div>
+	<div class="txt bg-white font-26">
+    	<!--关闭按钮-->
+    	<em><img src="images/tousu-close.png" alt=""/></em>
+        <!--颜色分类-->
+    	<dl>
+        	<dt>颜色分类</dt>
+            <dd><span class="aLi">蓝色</span><span>粉色</span></dd>
+        </dl>
+        <!--购买数量-->
+        <div class="gmai">
+        	<p>购买数量</p>
+            <div class="Num" style="margin-top:0; margin-right:.15rem;">
+                <b class="less">-</b>
+                <input type="text" value="1">
+                <b class="add">+</b>
+            </div>
+        </div>
+        <!--加入购物车-->
+        <a href="gouwuche.html" class="jiaru">加入购物车</a>
+        
+    </div>
 </div>
 
 </body>
@@ -64,4 +100,34 @@
         autoPlay:true,//自动播放
         autoPage:true, //自动分页c" 
     });
+	
+	//商品数量点击事件
+	var nubs=$(".Num").find("input").val();
+	$("b.add").click("tap",function(){
+		nubs++;
+		$(".Num").find("input").val(nubs);
+	});
+	$("b.less").click("tap",function(){
+		nubs--;
+		$(".Num").find("input").val(nubs);
+		if(nubs<=0){
+			$(".Num").find("input").val(1);
+			alert("最少兑一件");
+		}
+	});
+	
+	//弹窗
+	$("#st-color").click(function(){
+		$(".xzpop .bg-black").show();
+		$(".xzpop .txt").slideDown();	
+	});
+	$(".xzpop .txt em").click(function(){
+		$(".xzpop .bg-black").hide();
+		$(".xzpop .txt").slideUp();	
+	});
+	
+	//选颜色
+	$(".xzpop .txt dl span").click(function(){
+		$(this).addClass("aLi").siblings().removeClass("aLi");	
+	});
 </script>

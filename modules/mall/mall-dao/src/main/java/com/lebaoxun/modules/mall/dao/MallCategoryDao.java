@@ -1,8 +1,12 @@
 package com.lebaoxun.modules.mall.dao;
 
-import com.lebaoxun.modules.mall.entity.MallCategoryEntity;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lebaoxun.modules.mall.entity.MallCategoryEntity;
 
 /**
  * 分类表
@@ -13,5 +17,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface MallCategoryDao extends BaseMapper<MallCategoryEntity> {
+	List<MallCategoryEntity> queryAllList();
 	
+	List<MallCategoryEntity> queryListParentId(@Param("parentId") Long parentId);
 }

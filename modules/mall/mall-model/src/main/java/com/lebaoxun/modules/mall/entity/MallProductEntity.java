@@ -21,8 +21,8 @@ public class MallProductEntity implements Serializable {
 	/**
 	 * 商品ID
 	 */
-@TableId
-	private Long id;
+	@TableId
+	private long id;
 	/**
 	 * 商品编号
 	 */
@@ -111,13 +111,13 @@ public class MallProductEntity implements Serializable {
 	/**
 	 * 设置：商品ID
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：商品ID
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**

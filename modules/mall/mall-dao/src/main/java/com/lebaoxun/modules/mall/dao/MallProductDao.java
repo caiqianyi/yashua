@@ -1,7 +1,12 @@
 package com.lebaoxun.modules.mall.dao;
 
+import java.util.List;
+
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -13,5 +18,14 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface MallProductDao extends BaseMapper<MallProductEntity> {
+	List<MallProductEntity> findProductByCategory(@Param("categoryId")Long categoryId,
+			@Param("productNumber") Long productNumber,
+			@Param("showInShelve")Integer showInShelve,@Param("size") Integer size
+			,@Param("offset") Integer offset);
 	
+	int countProductByCategory(@Param("categoryId")Long categoryId,
+			@Param("productNumber") Long productNumber,
+			@Param("showInShelve")Integer showInShelve);
+	
+	long addProduct(MallProductEntity mpe);
 }

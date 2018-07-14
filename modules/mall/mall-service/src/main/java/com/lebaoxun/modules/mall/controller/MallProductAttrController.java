@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.mall.entity.MallProductAttrEntity;
 import com.lebaoxun.modules.mall.service.MallProductAttrService;
-import com.lebaoxun.commons.utils.PageUtils;
-import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 
@@ -44,7 +45,7 @@ public class MallProductAttrController {
      */
     @RequestMapping("/mall/mallproductattr/info/{id}")
     ResponseMessage info(@PathVariable("id") Long id){
-		MallProductAttrEntity mallProductAttr = mallProductAttrService.selectById(id);
+		MallProductAttrEntity mallProductAttr = mallProductAttrService.selectOne(new EntityWrapper<MallProductAttrEntity>().eq("product_id", id));
         return ResponseMessage.ok().put("mallProductAttr", mallProductAttr);
     }
 

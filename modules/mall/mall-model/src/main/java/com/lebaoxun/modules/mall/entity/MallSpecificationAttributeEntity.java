@@ -20,8 +20,8 @@ public class MallSpecificationAttributeEntity implements Serializable {
 	/**
 	 * 规格属性ID
 	 */
-@TableId
-	private Long specAttrId;
+	@TableId
+	private long specAttrId;
 	/**
 	 * 规格ID
 	 */
@@ -42,13 +42,13 @@ public class MallSpecificationAttributeEntity implements Serializable {
 	/**
 	 * 设置：规格属性ID
 	 */
-	public void setSpecAttrId(Long specAttrId) {
+	public void setSpecAttrId(long specAttrId) {
 		this.specAttrId = specAttrId;
 	}
 	/**
 	 * 获取：规格属性ID
 	 */
-	public Long getSpecAttrId() {
+	public long getSpecAttrId() {
 		return specAttrId;
 	}
 	/**

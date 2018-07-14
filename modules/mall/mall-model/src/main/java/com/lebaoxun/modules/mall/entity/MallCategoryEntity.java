@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.mall.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -20,8 +21,13 @@ public class MallCategoryEntity implements Serializable {
 	/**
 	 * 分类ID
 	 */
-@TableId
-	private Long id;
+	@TableId
+	private long id;
+	/**
+	 * 父菜单名称
+	 */
+	@TableField(exist=false)
+	private String parentName;
 	/**
 	 * 父分类ID
 	 */
@@ -70,13 +76,13 @@ public class MallCategoryEntity implements Serializable {
 	/**
 	 * 设置：分类ID
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：分类ID
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**
@@ -210,5 +216,11 @@ public class MallCategoryEntity implements Serializable {
 	 */
 	public String getRemarks() {
 		return remarks;
+	}
+	public String getParentName() {
+		return parentName;
+	}
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 }

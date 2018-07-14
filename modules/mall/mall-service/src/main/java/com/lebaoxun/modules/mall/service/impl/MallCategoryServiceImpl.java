@@ -1,13 +1,15 @@
 package com.lebaoxun.modules.mall.service.impl;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.Query;
-
 import com.lebaoxun.modules.mall.dao.MallCategoryDao;
 import com.lebaoxun.modules.mall.entity.MallCategoryEntity;
 import com.lebaoxun.modules.mall.service.MallCategoryService;
@@ -25,5 +27,11 @@ public class MallCategoryServiceImpl extends ServiceImpl<MallCategoryDao, MallCa
 
         return new PageUtils(page);
     }
+
+	@Override
+	public List<MallCategoryEntity> queryAllList() {
+		// TODO Auto-generated method stub
+		return this.baseMapper.queryAllList();
+	}
 
 }

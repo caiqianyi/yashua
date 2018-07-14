@@ -16,5 +16,11 @@ import java.util.Map;
 public interface MallProductService extends IService<MallProductEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    
+    void create(MallProductEntity mallProduct);
+    
+    void update(MallProductEntity mallProduct);
+    
+    void delete(Long id);
 }
 

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
 import com.lebaoxun.modules.mall.service.hystrix.MallProductServiceHystrix;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -50,7 +51,7 @@ public interface IMallProductService {
      * 删除
      */
     @RequestMapping("/mall/mallproduct/delete")
-    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Long[] ids);
+    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestParam("id") Long id);
     
 }
 

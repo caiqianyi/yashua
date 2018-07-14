@@ -1,19 +1,19 @@
 package com.lebaoxun.admin.rest.mall;
 
-import java.util.Map;
+import java.util.Date;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallCategoryEntity;
 import com.lebaoxun.modules.mall.service.IMallCategoryService;
-import com.lebaoxun.commons.utils.PageUtils;
-import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 
 
@@ -37,10 +37,14 @@ public class MallCategoryController {
      * 列表
      */
     @RequestMapping("/mall/mallcategory/list")
-    ResponseMessage list(@RequestParam Map<String, Object> params){
-        return mallCategoryService.list(params);
+    List<MallCategoryEntity> list(){
+        return mallCategoryService.list();
     }
-
+    
+    @RequestMapping("/mall/mallcategory/select")
+    ResponseMessage select(){
+        return mallCategoryService.select();
+    }
 
     /**
      * 信息
@@ -55,6 +59,8 @@ public class MallCategoryController {
      */
     @RequestMapping("/mall/mallcategory/save")
     ResponseMessage save(@RequestBody MallCategoryEntity mallCategory){
+    	mallCategory.setCreateBy(oauth2SecuritySubject.getCurrentUser()+"");
+    	mallCategory.setCreateTime(new Date());
         return mallCategoryService.save(oauth2SecuritySubject.getCurrentUser(),mallCategory);
     }
 
@@ -63,6 +69,8 @@ public class MallCategoryController {
      */
     @RequestMapping("/mall/mallcategory/update")
     ResponseMessage update(@RequestBody MallCategoryEntity mallCategory){
+    	mallCategory.setUpdateBy(oauth2SecuritySubject.getCurrentUser()+"");
+    	mallCategory.setUpdateTime(new Date());
         return mallCategoryService.update(oauth2SecuritySubject.getCurrentUser(),mallCategory);
     }
 

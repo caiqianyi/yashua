@@ -21,8 +21,8 @@ public class MallSpecificationEntity implements Serializable {
 	/**
 	 * 规格ID
 	 */
-@TableId
-	private Long specificationId;
+	@TableId
+	private long specificationId;
 	/**
 	 * 分类ID
 	 */
@@ -59,13 +59,13 @@ public class MallSpecificationEntity implements Serializable {
 	/**
 	 * 设置：规格ID
 	 */
-	public void setSpecificationId(Long specificationId) {
+	public void setSpecificationId(long specificationId) {
 		this.specificationId = specificationId;
 	}
 	/**
 	 * 获取：规格ID
 	 */
-	public Long getSpecificationId() {
+	public long getSpecificationId() {
 		return specificationId;
 	}
 	/**

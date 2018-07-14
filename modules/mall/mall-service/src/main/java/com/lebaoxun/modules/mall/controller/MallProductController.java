@@ -54,7 +54,7 @@ public class MallProductController {
     @RequestMapping("/mall/mallproduct/save")
     @RedisLock(value="mall:mallproduct:save:lock:#arg0")
     ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody MallProductEntity mallProduct){
-		mallProductService.insert(mallProduct);
+		mallProductService.create(mallProduct);
         return ResponseMessage.ok();
     }
 
@@ -64,7 +64,7 @@ public class MallProductController {
     @RequestMapping("/mall/mallproduct/update")
     @RedisLock(value="mall:mallproduct:update:lock:#arg0")
     ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody MallProductEntity mallProduct){
-		mallProductService.updateById(mallProduct);
+		mallProductService.update(mallProduct);
         return ResponseMessage.ok();
     }
 
@@ -73,8 +73,8 @@ public class MallProductController {
      */
     @RequestMapping("/mall/mallproduct/delete")
     @RedisLock(value="mall:mallproduct:delete:lock:#arg0")
-    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Long[] ids){
-		mallProductService.deleteBatchIds(Arrays.asList(ids));
+    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestParam("id") Long id){
+		mallProductService.delete(id);
         return ResponseMessage.ok();
     }
 

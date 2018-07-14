@@ -21,8 +21,8 @@ public class MallOrderProductEntity implements Serializable {
 	/**
 	 * 订单商品ID
 	 */
-@TableId
-	private Long orderProductId;
+	@TableId
+	private long orderProductId;
 	/**
 	 * 订单ID
 	 */
@@ -75,13 +75,13 @@ public class MallOrderProductEntity implements Serializable {
 	/**
 	 * 设置：订单商品ID
 	 */
-	public void setOrderProductId(Long orderProductId) {
+	public void setOrderProductId(long orderProductId) {
 		this.orderProductId = orderProductId;
 	}
 	/**
 	 * 获取：订单商品ID
 	 */
-	public Long getOrderProductId() {
+	public long getOrderProductId() {
 		return orderProductId;
 	}
 	/**

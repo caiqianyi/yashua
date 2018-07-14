@@ -20,8 +20,8 @@ public class MallProductCommentImageEntity implements Serializable {
 	/**
 	 * 评价ID
 	 */
-@TableId
-	private Long id;
+	@TableId
+	private long id;
 	/**
 	 * 评价ID
 	 */
@@ -42,13 +42,13 @@ public class MallProductCommentImageEntity implements Serializable {
 	/**
 	 * 设置：评价ID
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：评价ID
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**

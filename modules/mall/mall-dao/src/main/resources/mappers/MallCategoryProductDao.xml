@@ -4,13 +4,31 @@
 <mapper namespace="com.lebaoxun.modules.mall.dao.MallCategoryProductDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.mall.entity.MallCategoryProductEntity" id="mallCategoryProductMap">
-        <result property="id" column="id"/>
-        <result property="categoryId" column="category_id"/>
-        <result property="productId" column="product_id"/>
-        <result property="createTime" column="create_time"/>
-        <result property="createBy" column="create_by"/>
-    </resultMap>
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallCategoryProductEntity"
+		id="mallCategoryProductMap">
+		<result property="id" column="id" />
+		<result property="categoryId" column="category_id" />
+		<result property="productId" column="product_id" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+	</resultMap>
+	<resultMap type="com.lebaoxun.modules.mall.pojo.MallCategoryProductVo"
+		id="MallCategoryProductVoMap">
+		<result property="id" column="id" />
+		<result property="categoryId" column="category_id" />
+		<result property="productId" column="product_id" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+	</resultMap>
 
-
+	<delete id="deleteByProduct">
+		DELETE FROM mall_category_product WHERE product_id = #{productId}
+	</delete>
+	
+	<select id="findByProduct" resultMap="MallCategoryProductVoMap">
+		select t1.id,t1.category_id categoryId,t1.product_id
+		productId,t2.`name`,t2.icon,t2.type from mall_category_product as t1
+		left join mall_category as t2 on t2.id = t1.category_id where
+		t1.product_id = #{productId};
+	</select>
 </mapper>

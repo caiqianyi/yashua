@@ -2,14 +2,11 @@ package com.lebaoxun.modules.mall.service;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.lebaoxun.modules.mall.entity.MallCategoryProductEntity;
-import com.lebaoxun.modules.mall.service.hystrix.MallCategoryProductServiceHystrix;
-import com.lebaoxun.commons.exception.ResponseMessage;
 
-import java.util.Map;
+import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.modules.mall.service.hystrix.MallCategoryProductServiceHystrix;
 
 /**
  * 商品分类关联表
@@ -21,36 +18,13 @@ import java.util.Map;
 
 @FeignClient(value="mall-service",fallback=MallCategoryProductServiceHystrix.class)
 public interface IMallCategoryProductService {
-	/**
-     * 列表
-     */
-    @RequestMapping("/mall/mallcategoryproduct/list")
-    ResponseMessage list(@RequestParam Map<String, Object> params);
 
+    @RequestMapping("/mall/mallcategoryproduct/tree/{productId}")
+    ResponseMessage tree(@PathVariable("productId") Long productId);
 
-    /**
-     * 信息
-     */
-    @RequestMapping("/mall/mallcategoryproduct/info/{id}")
-    ResponseMessage info(@PathVariable("id") Long id);
-
-    /**
-     * 保存
-     */
-    @RequestMapping("/mall/mallcategoryproduct/save")
-    ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody MallCategoryProductEntity mallCategoryProduct);
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/mall/mallcategoryproduct/update")
-    ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody MallCategoryProductEntity mallCategoryProduct);
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/mall/mallcategoryproduct/delete")
-    ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Long[] ids);
-    
+    @RequestMapping("/mall/mallcategoryproduct/edit")
+    ResponseMessage edit(@RequestParam("adminId")Long adminId,
+    		@RequestParam("productId")Long productId,
+    		@RequestParam("categoryIds")Long[] categoryIds);
 }
 

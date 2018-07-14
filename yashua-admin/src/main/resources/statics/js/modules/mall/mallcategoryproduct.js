@@ -3,11 +3,53 @@ $(function () {
         url: baseURL + 'mall/mallcategoryproduct/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '分类ID', name: 'categoryId', index: 'category_id', width: 80 }, 			
-			{ label: '商品ID', name: 'productId', index: 'product_id', width: 80 }, 			
-			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '商品编号', name: 'productNumber', index: 'product_number', width: 80 }, 			
+			{ label: '商品名称', name: 'name', index: 'name', width: 80 }, 			
+			{ label: '显示积分', name: 'showScore', index: 'show_score', width: 80 }, 			
+			{ label: '显示价格', name: 'showPrice', index: 'show_price', width: 80 }, 			
+			{ label: '展示图片', name: 'showPic', index: 'show_pic', width: 80 }, 			
+			{ label: '商品简介', name: 'introduce', index: 'introduce', width: 80 }, 			
+			{ label: '商品描述', name: 'description', index: 'description', width: 80 }, 			
+			{ label: '是否置顶', name: 'showInTop', index: 'show_in_top', width: 80 , formatter: function(value){
+			    if(value == 0){
+			        return '<span class="label label-primary">默认</span>';
+			    }
+			    if(value == 1){
+			        return '<span class="label label-success">置顶</span>';
+			    }
+			}}, 			
+			{ label: '是否热门', name: 'showInHot', index: 'show_in_hot', width: 80 , formatter: function(value){
+			    if(value == 0){
+			        return '<span class="label label-primary">默认</span>';
+			    }
+			    if(value == 1){
+			        return '<span class="label label-success">热门</span>';
+			    }
+			}}, 			
+			{ label: '是否上架', name: 'showInShelve', index: 'show_in_shelve', width: 80 , formatter: function(value){
+			    if(value == 0){
+			        return '<span class="label label-primary">下架</span>';
+			    }
+			    if(value == 1){
+			        return '<span class="label label-success">上架</span>';
+			    }
+			}}, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(value).format("yy-MM-dd hh:mm") : "";
+			}}, 			
 			{ label: '创建者', name: 'createBy', index: 'create_by', width: 80 }, 			
+			{ label: '上架时间', name: 'shelveTime', index: 'shelve_time', width: 80 , formatter: function(value){
+				return value ? new Date(value).format("yy-MM-dd hh:mm") : "";
+			}}, 			
+			{ label: '上架人', name: 'shelveBy', index: 'shelve_by', width: 80 }, 			
+			{ label: '更新时间', name: 'updateTime', index: 'update_time', width: 80 , formatter: function(value){
+				return value ? new Date(value).format("yy-MM-dd hh:mm") : "";
+			}}, 			
+			{ label: '更新者', name: 'updateBy', index: 'update_by', width: 80 }, 			
+			{ label: '搜索关键词', name: 'searchKey', index: 'search_key', width: 80 }, 			
+			{ label: '分享标题', name: 'shareTitle', index: 'share_title', width: 80 }, 			
+			{ label: '分享描述', name: 'shareDescription', index: 'share_description', width: 80 }, 			
+			{ label: '备注', name: 'remarks', index: 'remarks', width: 80 }, 			
         ],
 		viewrecords: true,
         height: 385,

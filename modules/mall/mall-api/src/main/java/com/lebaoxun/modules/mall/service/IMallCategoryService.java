@@ -1,15 +1,16 @@
 package com.lebaoxun.modules.mall.service;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallCategoryEntity;
 import com.lebaoxun.modules.mall.service.hystrix.MallCategoryServiceHystrix;
-import com.lebaoxun.commons.exception.ResponseMessage;
-
-import java.util.Map;
 
 /**
  * 分类表
@@ -24,10 +25,12 @@ public interface IMallCategoryService {
 	/**
      * 列表
      */
-    @RequestMapping("/mall/mallcategory/list")
-    ResponseMessage list(@RequestParam Map<String, Object> params);
+	@RequestMapping("/mall/mallcategory/list")
+    List<MallCategoryEntity> list();
 
-
+	@RequestMapping("/mall/mallcategory/select")
+    ResponseMessage select();
+    
     /**
      * 信息
      */

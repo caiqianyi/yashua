@@ -20,8 +20,8 @@ public class MallProductParameterEntity implements Serializable {
 	/**
 	 * 参数ID
 	 */
-@TableId
-	private Long productParameterId;
+	@TableId
+	private long productParameterId;
 	/**
 	 * 商品ID
 	 */
@@ -62,13 +62,13 @@ public class MallProductParameterEntity implements Serializable {
 	/**
 	 * 设置：参数ID
 	 */
-	public void setProductParameterId(Long productParameterId) {
+	public void setProductParameterId(long productParameterId) {
 		this.productParameterId = productParameterId;
 	}
 	/**
 	 * 获取：参数ID
 	 */
-	public Long getProductParameterId() {
+	public long getProductParameterId() {
 		return productParameterId;
 	}
 	/**

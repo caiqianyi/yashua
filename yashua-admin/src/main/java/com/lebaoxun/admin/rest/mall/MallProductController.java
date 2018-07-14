@@ -1,6 +1,8 @@
 package com.lebaoxun.admin.rest.mall;
 
+import java.util.Date;
 import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
 import com.lebaoxun.modules.mall.service.IMallProductService;
-import com.lebaoxun.commons.utils.PageUtils;
-import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 
 
@@ -55,6 +56,8 @@ public class MallProductController {
      */
     @RequestMapping("/mall/mallproduct/save")
     ResponseMessage save(@RequestBody MallProductEntity mallProduct){
+    	mallProduct.setCreateBy(oauth2SecuritySubject.getCurrentUser()+"");
+    	mallProduct.setCreateTime(new Date());
         return mallProductService.save(oauth2SecuritySubject.getCurrentUser(),mallProduct);
     }
 
@@ -63,15 +66,17 @@ public class MallProductController {
      */
     @RequestMapping("/mall/mallproduct/update")
     ResponseMessage update(@RequestBody MallProductEntity mallProduct){
-        return mallProductService.update(oauth2SecuritySubject.getCurrentUser(),mallProduct);
+    	Long userId = oauth2SecuritySubject.getCurrentUser();
+    	mallProduct.setUpdateBy(userId+"");
+        return mallProductService.update(userId,mallProduct);
     }
 
     /**
      * 删除
      */
     @RequestMapping("/mall/mallproduct/delete")
-    ResponseMessage delete(@RequestBody Long[] ids){
-        return mallProductService.delete(oauth2SecuritySubject.getCurrentUser(),ids);
+    ResponseMessage delete(@RequestParam("id") Long id){
+        return mallProductService.delete(oauth2SecuritySubject.getCurrentUser(),id);
     }
 
 }

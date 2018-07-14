@@ -1,11 +1,10 @@
 package com.lebaoxun.modules.mall.entity;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 商品属性表
@@ -21,8 +20,8 @@ public class MallProductAttrEntity implements Serializable {
 	/**
 	 * 属性ID
 	 */
-@TableId
-	private Long id;
+	@TableId
+	private long id;
 	/**
 	 * 商品ID
 	 */
@@ -63,13 +62,13 @@ public class MallProductAttrEntity implements Serializable {
 	/**
 	 * 设置：属性ID
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：属性ID
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**

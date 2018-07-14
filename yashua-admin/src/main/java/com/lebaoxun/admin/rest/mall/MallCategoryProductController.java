@@ -1,6 +1,7 @@
 package com.lebaoxun.admin.rest.mall;
 
 import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,45 +34,17 @@ public class MallCategoryProductController {
     @Resource
 	private Oauth2SecuritySubject oauth2SecuritySubject;
 
-    /**
-     * 列表
-     */
-    @RequestMapping("/mall/mallcategoryproduct/list")
-    ResponseMessage list(@RequestParam Map<String, Object> params){
-        return mallCategoryProductService.list(params);
-    }
-
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/mall/mallcategoryproduct/info/{id}")
-    ResponseMessage info(@PathVariable("id") Long id){
-        return mallCategoryProductService.info(id);
-    }
-
-    /**
-     * 保存
-     */
-    @RequestMapping("/mall/mallcategoryproduct/save")
-    ResponseMessage save(@RequestBody MallCategoryProductEntity mallCategoryProduct){
-        return mallCategoryProductService.save(oauth2SecuritySubject.getCurrentUser(),mallCategoryProduct);
+    @RequestMapping("/mall/mallcategoryproduct/tree/{productId}")
+    ResponseMessage tree(@PathVariable("productId") Long productId){
+    	return mallCategoryProductService.tree(productId);
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/mall/mallcategoryproduct/update")
-    ResponseMessage update(@RequestBody MallCategoryProductEntity mallCategoryProduct){
-        return mallCategoryProductService.update(oauth2SecuritySubject.getCurrentUser(),mallCategoryProduct);
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/mall/mallcategoryproduct/delete")
-    ResponseMessage delete(@RequestBody Long[] ids){
-        return mallCategoryProductService.delete(oauth2SecuritySubject.getCurrentUser(),ids);
+    @RequestMapping("/mall/mallcategoryproduct/edit")
+    ResponseMessage edit(@RequestParam("productId")Long productId,@RequestParam("categoryIds")Long[] categoryIds){
+        return mallCategoryProductService.edit(oauth2SecuritySubject.getCurrentUser(), productId, categoryIds);
     }
 
 }

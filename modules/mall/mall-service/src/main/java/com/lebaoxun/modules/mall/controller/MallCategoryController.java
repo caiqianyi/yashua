@@ -1,7 +1,7 @@
 package com.lebaoxun.modules.mall.controller;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallCategoryEntity;
 import com.lebaoxun.modules.mall.service.MallCategoryService;
-import com.lebaoxun.commons.utils.PageUtils;
-import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 
@@ -33,11 +32,22 @@ public class MallCategoryController {
      * 列表
      */
     @RequestMapping("/mall/mallcategory/list")
-    ResponseMessage list(@RequestParam Map<String, Object> params){
-        PageUtils page = mallCategoryService.queryPage(params);
-        return ResponseMessage.ok(page);
-    }
+    List<MallCategoryEntity> list(){
+    	List<MallCategoryEntity> list = mallCategoryService.selectList(null);
+    	for(MallCategoryEntity mallCategory : list){
+    		MallCategoryEntity parentMallCategory = mallCategoryService.selectById(mallCategory.getParentId());
+			if(parentMallCategory != null){
+				mallCategory.setParentName(parentMallCategory.getName());
+			}
+		}
 
+		return list;
+    }
+    
+    @RequestMapping("/mall/mallcategory/select")
+    ResponseMessage select(){
+		return ResponseMessage.ok(mallCategoryService.queryAllList());
+    }
 
     /**
      * 信息

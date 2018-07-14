@@ -1,7 +1,10 @@
 package com.lebaoxun.modules.mall.dao;
 
 import com.lebaoxun.modules.mall.entity.MallProductAttrEntity;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -13,5 +16,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface MallProductAttrDao extends BaseMapper<MallProductAttrEntity> {
-	
+	void deleteByProduct(@Param("productId") Long productId);
 }

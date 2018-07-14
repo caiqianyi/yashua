@@ -1,159 +1,216 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>商品表</title>
-	<#include "/header.html">
+<title>商品表</title> 
+<#include "/header.html">
+<script src="/statics/libs/ajaxupload.js"></script>
 </head>
 <body>
-<div id="rrapp" v-cloak>
-    <div v-show="showList">
-        <div class="grid-btn">
-            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
-            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
-            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
-        </div>
-        <table id="jqGrid"></table>
-        <div id="jqGridPager"></div>
-    </div>
+	<div id="rrapp" v-cloak>
+		<div v-show="showList">
+			<div class="grid-btn">
+	            <div class="form-group col-sm-2">
+					<input type="text" class="form-control" v-model="q.productNumber" @keyup.enter="query" placeholder="商品编号">
+				</div>
+				<div class="form-group col-sm-2">
+					<select v-model="selected">
+					  <option v-for="option in types" v-bind:value="option.value">  
+					    {{ option.text }}  
+					  </option>  
+					</select>
+				</div>
+				<a class="btn btn-default" @click="query">查询</a>
+				<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+				<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a> 
+				<a class="btn btn-primary" @click="updateAttr"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑属性</a> 
+				<a class="btn btn-primary" @click="selectCategory"><i class="fa fa-pencil-square-o"></i>&nbsp;设置分类</a> 
+				<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</div>
+			<table id="jqGrid"></table>
+			<div id="jqGridPager"></div>
+		</div>
 
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading">{{title}}</div>
-        <form class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">商品编号</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.productNumber" placeholder="商品编号"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">标签ID</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.labelId" placeholder="标签ID"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">商品名称</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.name" placeholder="商品名称"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">显示积分</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.showScore" placeholder="显示积分"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">显示价格</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.showPrice" placeholder="显示价格"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">展示图片</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.showPic" placeholder="展示图片"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">商品简介</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.introduce" placeholder="商品简介"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">商品描述</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.description" placeholder="商品描述"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">是否置顶 1=置顶/0=默认</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.showInTop" placeholder="是否置顶 1=置顶/0=默认"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">是否热门 1=热门/0=默认</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.showInHot" placeholder="是否热门 1=热门/0=默认"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">是否上架：1=上架/0=下架</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.showInShelve" placeholder="是否上架：1=上架/0=下架"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">创建时间</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.createTime" placeholder="创建时间"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">创建者</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.createBy" placeholder="创建者"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">上架时间</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.shelveTime" placeholder="上架时间"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">上架人</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.shelveBy" placeholder="上架人"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">更新时间</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.updateTime" placeholder="更新时间"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">更新者</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.updateBy" placeholder="更新者"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">搜索关键词</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.searchKey" placeholder="搜索关键词"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">页面标题</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.shareTitle" placeholder="页面标题"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">页面描述</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.shareDescription" placeholder="页面描述"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">备注</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProduct.remarks" placeholder="备注"/>
-                        </div>
-                    </div>
-            <div class="form-group">
-                <div class="col-sm-2 control-label"></div>
-                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
-                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script src="/statics/js/modules/mall/mallproduct.js?_${.now?long}"></script>
+		<div v-show="!showList" class="panel panel-default">
+			<div class="panel-heading">{{title}}</div>
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-2 control-label">商品编号</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.productNumber" placeholder="商品编号" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">商品名称</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" v-model="mallProduct.name"
+							placeholder="商品名称" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">显示积分</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.showScore" placeholder="显示积分" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">显示价格</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.showPrice" placeholder="显示价格" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">是否置顶</div>
+					<label class="radio-inline"> <input type="radio"
+						name="showInTop" value="0" v-model="mallProduct.showInTop" /> 默认
+					</label> <label class="radio-inline"> <input type="radio"
+						name="showInTop" value="1" v-model="mallProduct.showInTop" /> 置顶
+					</label>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">是否热门</div>
+					<label class="radio-inline"> <input type="radio"
+						name="showInHot" value="0" v-model="mallProduct.showInHot" /> 默认
+					</label> <label class="radio-inline"> <input type="radio"
+						name="showInHot" value="1" v-model="mallProduct.showInHot" /> 热门
+					</label>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">是否上架</div>
+					<label class="radio-inline"> <input type="radio"
+						name="showInShelve" value="0" v-model="mallProduct.showInShelve" /> 下架
+					</label> <label class="radio-inline"> <input type="radio"
+						name="showInShelve" value="1" v-model="mallProduct.showInShelve" /> 上架
+					</label>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">展示图片</div>
+					<div class="col-sm-10">
+						<img alt="" :src="mallProduct.showPic" id="upload" class="fa fa-plus" style="width: 150px;height: 150px">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">商品简介</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.introduce" placeholder="商品简介" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">商品描述</div>
+					<div class="col-sm-10">
+						<textarea rows="20" cols="20" class="form-control"
+							v-model="mallProduct.description" placeholder="商品描述"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">搜索关键词</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.searchKey" placeholder="搜索关键词" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">页面标题</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.shareTitle" placeholder="页面标题" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">页面描述</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.shareDescription" placeholder="页面描述" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">备注</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							v-model="mallProduct.remarks" placeholder="备注" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label"></div>
+					<input type="button" class="btn btn-primary" @click="saveOrUpdate"
+						value="确定" /> &nbsp;&nbsp;<input type="button"
+						class="btn btn-warning" @click="reload" value="返回" />
+				</div>
+			</form>
+		</div>
+		
+		<div v-show="!attrShowList" class="panel panel-default">
+	        <div class="panel-heading">{{attrTitle}}</div>
+	        <form class="form-horizontal">
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">商品ID</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.productId" placeholder="商品ID"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">总库存</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.stock" placeholder="总库存"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">销售量</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.salesVolume" placeholder="销售量"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">游览量</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.clicks" placeholder="游览量"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">评论数量</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.replies" placeholder="评论数量"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">晒单评价数量</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.showReplies" placeholder="晒单评价数量"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">平均评价</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.commentAverage" placeholder="平均评价"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">收藏数</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.favoriteNumber" placeholder="收藏数"/>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="col-sm-2 control-label">提问数</div>
+                     <div class="col-sm-10">
+                         <input type="text" class="form-control" v-model="mallProductAttr.questionNumber" placeholder="提问数"/>
+                     </div>
+                 </div>
+	            <div class="form-group">
+	                <div class="col-sm-2 control-label"></div>
+	                <input type="button" class="btn btn-primary" @click="attrSaveOrUpdate" value="确定"/>
+	                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="attrReload" value="收起"/>
+	            </div>
+	        </form>
+	    </div>
+	</div>
+	<!-- 选择分类 -->
+	<div id="categoryLayer" style="display: none;padding:10px;">
+		<ul id="categoryTree" class="ztree"></ul>
+	</div>
+	<script src="/statics/js/modules/mall/mallproduct.js?_${.now?long}"></script>
 </body>
 </html>

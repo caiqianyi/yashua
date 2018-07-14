@@ -40,7 +40,7 @@ public class MallProductServiceHystrix implements IMallProductService {
 	}
 
 	@Override
-	public ResponseMessage delete(Long adminId,Long[] ids) {
+	public ResponseMessage delete(Long adminId,Long id) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
     

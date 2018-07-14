@@ -1,12 +1,9 @@
 package com.lebaoxun.modules.mall.service.hystrix;
-import java.util.Map;
-
 import org.springframework.stereotype.Component;
 
-import com.lebaoxun.modules.mall.entity.MallCategoryProductEntity;
-import com.lebaoxun.modules.mall.service.IMallCategoryProductService;
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.modules.mall.service.IMallCategoryProductService;
 
 /**
  * 商品分类关联表
@@ -18,31 +15,16 @@ import com.lebaoxun.commons.exception.ResponseMessage;
 
 @Component
 public class MallCategoryProductServiceHystrix implements IMallCategoryProductService {
-
+	
 	@Override
-	public ResponseMessage list(Map<String, Object> params) {
+	public ResponseMessage tree(Long productId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
 	@Override
-	public ResponseMessage info(Long id) {
+	public ResponseMessage edit(Long adminId, Long productId, Long[] categoryIds) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
-	@Override
-	public ResponseMessage save(Long adminId,MallCategoryProductEntity mallCategoryProduct) {
-		throw new I18nMessageException("502","服务器异常，请稍后重试");
-	}
-
-	@Override
-	public ResponseMessage update(Long adminId,MallCategoryProductEntity mallCategoryProduct) {
-		throw new I18nMessageException("502","服务器异常，请稍后重试");
-	}
-
-	@Override
-	public ResponseMessage delete(Long adminId,Long[] ids) {
-		throw new I18nMessageException("502","服务器异常，请稍后重试");
-	}
-    
 }
 

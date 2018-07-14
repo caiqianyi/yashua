@@ -21,8 +21,8 @@ public class MallOrderEntity implements Serializable {
 	/**
 	 * 订单ID
 	 */
-@TableId
-	private Long id;
+	@TableId
+	private long id;
 	/**
 	 * 订单编号,系统生成
 	 */
@@ -91,13 +91,13 @@ public class MallOrderEntity implements Serializable {
 	/**
 	 * 设置：订单ID
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：订单ID
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	/**

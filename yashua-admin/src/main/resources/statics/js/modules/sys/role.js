@@ -251,8 +251,9 @@ var vm = new Vue({
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-                dept_ztree = $.fn.zTree.init($("#deptTree"), dept_setting, r.data);
+                dept_ztree = $.fn.zTree.init($("#deptTree"), dept_setting, r);
                 var node = dept_ztree.getNodeByParam("deptId", vm.role.deptId);
+                
                 if(node != null){
                     dept_ztree.selectNode(node);
 

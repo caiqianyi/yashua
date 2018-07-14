@@ -521,9 +521,8 @@
             // form.setAttribute('enctype', 'multipart/form-data');
             // Because in this case file won't be attached to request                    
             var form = toElement('<form method="post" enctype="multipart/form-data"></form>');
-                        
             form.setAttribute('action', settings.action);
-            form.setAttribute('target', iframe.name);                                   
+            form.setAttribute('target', iframe.name);                     
             form.style.display = 'none';
             document.body.appendChild(form);
             

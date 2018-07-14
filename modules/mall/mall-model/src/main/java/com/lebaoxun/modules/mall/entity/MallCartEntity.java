@@ -20,8 +20,8 @@ public class MallCartEntity implements Serializable {
 	/**
 	 * 购物车ID
 	 */
-@TableId
-	private Long cartId;
+	@TableId
+	private long cartId;
 	/**
 	 * 商品规格编号
 	 */
@@ -50,13 +50,13 @@ public class MallCartEntity implements Serializable {
 	/**
 	 * 设置：购物车ID
 	 */
-	public void setCartId(Long cartId) {
+	public void setCartId(long cartId) {
 		this.cartId = cartId;
 	}
 	/**
 	 * 获取：购物车ID
 	 */
-	public Long getCartId() {
+	public long getCartId() {
 		return cartId;
 	}
 	/**

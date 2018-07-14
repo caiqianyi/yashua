@@ -20,8 +20,8 @@ public class MallProductImageEntity implements Serializable {
 	/**
 	 * 商品图片ID
 	 */
-@TableId
-	private Long picImgId;
+	@TableId
+	private long picImgId;
 	/**
 	 * 商品ID
 	 */
@@ -50,13 +50,13 @@ public class MallProductImageEntity implements Serializable {
 	/**
 	 * 设置：商品图片ID
 	 */
-	public void setPicImgId(Long picImgId) {
+	public void setPicImgId(long picImgId) {
 		this.picImgId = picImgId;
 	}
 	/**
 	 * 获取：商品图片ID
 	 */
-	public Long getPicImgId() {
+	public long getPicImgId() {
 		return picImgId;
 	}
 	/**

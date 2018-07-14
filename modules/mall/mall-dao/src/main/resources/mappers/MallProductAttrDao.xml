@@ -16,6 +16,8 @@
         <result property="favoriteNumber" column="favorite_number"/>
         <result property="questionNumber" column="question_number"/>
     </resultMap>
-
-
+	
+    <delete id="deleteByProduct">  
+	    DELETE FROM mall_product_attr WHERE product_id = #{productId}  
+	</delete>
 </mapper>
