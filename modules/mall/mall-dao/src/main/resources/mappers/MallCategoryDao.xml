@@ -26,4 +26,8 @@
 	<select id="queryAllList" resultMap="mallCategoryMap">
 		select * from mall_category order by sort asc 
 	</select>
+	
+	<select id="queryAllShowList" resultMap="mallCategoryMap">
+	    select * from mall_category where status = 1 order by sort;
+	</select>
 </mapper>

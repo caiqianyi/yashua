@@ -20,6 +20,11 @@ import com.lebaoxun.modules.mall.service.IMallCategoryService;
 public class MallCategoryServiceHystrix implements IMallCategoryService {
 
 	@Override
+	public List<MallCategoryEntity> release() {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
 	public List<MallCategoryEntity> list(){
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}

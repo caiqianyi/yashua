@@ -27,7 +27,9 @@ public interface IMallSpecificationService {
      */
     @RequestMapping("/mall/mallspecification/list")
     ResponseMessage list(@RequestParam Map<String, Object> params);
-
+    
+    @RequestMapping("/mall/mallspecification/select")
+    ResponseMessage select();
 
     /**
      * 信息

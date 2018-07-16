@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.mall.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -26,6 +27,11 @@ public class MallSpecificationAttributeEntity implements Serializable {
 	 * 规格ID
 	 */
 	private Long specificationId;
+	/**
+	 * 规格名称
+	 */
+	@TableField(exist=false)
+	private String specificationName;
 	/**
 	 * 规格属性名称
 	 */
@@ -98,5 +104,11 @@ public class MallSpecificationAttributeEntity implements Serializable {
 	 */
 	public String getCreateBy() {
 		return createBy;
+	}
+	public String getSpecificationName() {
+		return specificationName;
+	}
+	public void setSpecificationName(String specificationName) {
+		this.specificationName = specificationName;
 	}
 }

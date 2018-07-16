@@ -142,10 +142,11 @@ input{font-size:.26rem;outline:none;line-height:normal;color:#7a7a7a;}
 /*------------------------------商城------------------------------*/
 .shop-top{height: .8rem;line-height: .8rem;margin:.06rem 0 .1rem;}
 .shop-top li{float: left;width: 33.33%;text-align: center;}
-.shop-top li span{line-height: .78rem;padding-left:.5rem;display:inline-block;background:url(../images/sc-tit1.png) no-repeat left center;-webkit-background-size:.22rem .48rem;background-size:.22rem .48rem;}
+/* .shop-top li span{line-height: .78rem;padding-left:.5rem;display:inline-block;background:url(../images/sc-tit1.png) no-repeat left center;-webkit-background-size:.22rem .48rem;background-size:.22rem .48rem;} */
+.shop-top li span{line-height: .78rem;padding-left:.5rem;display:inline-block;-webkit-background-size:.22rem .48rem;background-size:.22rem .48rem;}
 .shop-top li.on span{color:#14dbfa;border-bottom:.02rem solid #14dbfa;}
-.shop-top li:nth-child(2) span{background-image: url(../images/sc-tit2.png);}
-.shop-top li:nth-child(3) span{background-image: url(../images/sc-tit3.png);}
+/* .shop-top li:nth-child(2) span{background-image: url(../images/sc-tit2.png);}
+.shop-top li:nth-child(3) span{background-image: url(../images/sc-tit3.png);} */
 .shop-list{}
 .shop-list .box{display: block;width: 100%;margin-bottom:.2rem;overflow: hidden;color:#333;position: relative;}
 .shop-list .box img{float: left;border:1px solid #eee;width: 2.6rem;height: 2.6rem;}

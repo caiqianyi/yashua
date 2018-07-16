@@ -19,5 +19,7 @@ public interface MallCategoryService extends IService<MallCategoryEntity> {
     PageUtils queryPage(Map<String, Object> params);
     
     List<MallCategoryEntity> queryAllList();
+    
+    List<MallCategoryEntity> queryAllShowList();
 }
 

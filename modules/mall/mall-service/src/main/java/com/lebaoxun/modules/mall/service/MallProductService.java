@@ -1,10 +1,11 @@
 package com.lebaoxun.modules.mall.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
-
-import java.util.Map;
 
 /**
  * 商品表
@@ -16,6 +17,9 @@ import java.util.Map;
 public interface MallProductService extends IService<MallProductEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    
+    List<MallProductEntity> findShowProdcutByCategory(Long categoryId, 
+    		Integer size, Integer offset);
     
     void create(MallProductEntity mallProduct);
     

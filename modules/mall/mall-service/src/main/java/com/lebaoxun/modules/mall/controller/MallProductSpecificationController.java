@@ -54,7 +54,7 @@ public class MallProductSpecificationController {
     @RequestMapping("/mall/mallproductspecification/save")
     @RedisLock(value="mall:mallproductspecification:save:lock:#arg0")
     ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody MallProductSpecificationEntity mallProductSpecification){
-		mallProductSpecificationService.insert(mallProductSpecification);
+		mallProductSpecificationService.save(mallProductSpecification);
         return ResponseMessage.ok();
     }
 
@@ -64,7 +64,7 @@ public class MallProductSpecificationController {
     @RequestMapping("/mall/mallproductspecification/update")
     @RedisLock(value="mall:mallproductspecification:update:lock:#arg0")
     ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody MallProductSpecificationEntity mallProductSpecification){
-		mallProductSpecificationService.updateById(mallProductSpecification);
+		mallProductSpecificationService.update(mallProductSpecification);
         return ResponseMessage.ok();
     }
 

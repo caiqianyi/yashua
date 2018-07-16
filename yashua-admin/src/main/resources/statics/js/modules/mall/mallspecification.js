@@ -3,14 +3,25 @@ $(function () {
         url: baseURL + 'mall/mallspecification/list',
         datatype: "json",
         colModel: [			
-			{ label: 'specificationId', name: 'specificationId', index: 'specification_id', width: 50, key: true },
-			{ label: '分类ID', name: 'categoryId', index: 'category_id', width: 80 }, 			
+			{ label: '规格ID', name: 'specificationId', index: 'specification_id', width: 50, key: true },
+			{ label: '分类', name: 'categoryName', index: 'category_name', width: 80 }, 			
 			{ label: '规格名称', name: 'name', index: 'name', width: 80 }, 			
-			{ label: '状态：1.显示；0.隐藏', name: 'status', index: 'status', width: 80 }, 			
+			{ label: '状态', name: 'status', index: 'status', width: 80 , formatter: function(value){
+	            if(value == 0){
+	                return '<span class="label label-primary">隐藏</span>';
+	            }
+	            if(value == 1){
+	                return '<span class="label label-success">显示</span>';
+	            }
+	        }}, 			
 			{ label: '排序', name: 'sort', index: 'sort', width: 80 }, 			
-			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}}, 			
 			{ label: '创建者', name: 'createBy', index: 'create_by', width: 80 }, 			
-			{ label: '更新时间', name: 'updateTime', index: 'update_time', width: 80 }, 			
+			{ label: '更新时间', name: 'updateTime', index: 'update_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}}, 			
 			{ label: '更新者', name: 'updateBy', index: 'update_by', width: 80 }, 			
         ],
 		viewrecords: true,
@@ -39,7 +50,21 @@ $(function () {
         }
     });
 });
-
+//分类树
+var category_ztree;
+var category_setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            url:"nourl"
+        }
+    }
+};
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
@@ -54,7 +79,14 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.mallSpecification = {};
+			vm.mallSpecification = {
+				categoryName: "",
+				categoryId: 0,
+				name: "",
+				status: 0,
+				sort: 0
+			};
+			vm.getCategory();
 		},
 		update: function (event) {
 			var specificationId = getSelectedRow();
@@ -114,6 +146,7 @@ var vm = new Vue({
             		return;
             	}
                 vm.mallSpecification = r.data.mallSpecification;
+                vm.getCategory();
             });
 		},
 		reload: function (event) {
@@ -122,6 +155,40 @@ var vm = new Vue({
 			$("#jqGrid").jqGrid('setGridParam',{ 
                 page:page
             }).trigger("reloadGrid");
-		}
+		},
+		selectCategory: function(){
+			layer.open({
+                type: 1,
+                offset: '50px',
+                skin: 'layui-layer-molv',
+                title: "选择分类",
+                area: ['300px', '450px'],
+                shade: 0,
+                shadeClose: false,
+                content: jQuery("#categoryLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var node = category_ztree.getSelectedNodes();
+                    //选择上级部门
+                    vm.mallSpecification.categoryId = node[0].id;
+                    vm.mallSpecification.categoryName = node[0].name;
+                    layer.close(index);
+                }
+            });
+		},
+		getCategory: function(){
+            //加载菜单树
+            $.get(baseURL + "mall/mallcategory/select", function(r){
+            	if(r.errcode && r.errcode != 0){
+            		return;
+            	}
+            	var categorys = r.data;
+            	category_ztree = $.fn.zTree.init($("#categoryTree"), category_setting, categorys);
+                var node = category_ztree.getNodeByParam("id", vm.mallSpecification.categoryId);
+                category_ztree.selectNode(node);
+                console.info(node);
+                vm.mallSpecification.categoryName = node.name;
+            })
+        }
 	}
 });

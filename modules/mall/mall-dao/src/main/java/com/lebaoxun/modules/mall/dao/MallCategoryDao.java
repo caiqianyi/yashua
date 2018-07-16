@@ -19,5 +19,7 @@ import com.lebaoxun.modules.mall.entity.MallCategoryEntity;
 public interface MallCategoryDao extends BaseMapper<MallCategoryEntity> {
 	List<MallCategoryEntity> queryAllList();
 	
+	List<MallCategoryEntity> queryAllShowList();
+	
 	List<MallCategoryEntity> queryListParentId(@Param("parentId") Long parentId);
 }

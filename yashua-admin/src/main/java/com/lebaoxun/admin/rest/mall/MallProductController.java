@@ -1,6 +1,7 @@
 package com.lebaoxun.admin.rest.mall;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.admin.rest.BaseController;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
 import com.lebaoxun.modules.mall.service.IMallProductService;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
+import com.lebaoxun.upload.service.IUploadLocalService;
 
 
 
@@ -27,12 +30,15 @@ import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
  * @date 2018-07-12 19:57:12
  */
 @RestController
-public class MallProductController {
+public class MallProductController extends BaseController {
     @Autowired
     private IMallProductService mallProductService;
     
     @Resource
 	private Oauth2SecuritySubject oauth2SecuritySubject;
+    
+    @Resource
+	private IUploadLocalService uploadLocalService;
 
     /**
      * 列表
@@ -76,7 +82,15 @@ public class MallProductController {
      */
     @RequestMapping("/mall/mallproduct/delete")
     ResponseMessage delete(@RequestParam("id") Long id){
-        return mallProductService.delete(oauth2SecuritySubject.getCurrentUser(),id);
+    	ResponseMessage rm = mallProductService.info(id);
+    	LinkedHashMap<String,Object> map = (LinkedHashMap) rm.getData();
+    	logger.debug("rm.data.class={}",rm.getData().getClass());
+    	logger.debug("showPic={}",((LinkedHashMap<String,Object> )map.get("mallProduct")).get("showPic"));
+    	rm = mallProductService.delete(oauth2SecuritySubject.getCurrentUser(),id);
+    	if("0".equals(rm.getErrcode())){
+    		uploadLocalService.deleteFile("yashua", ((LinkedHashMap<String,Object> )map.get("mallProduct")).get("showPic").toString());
+    	}
+        return rm;
     }
 
 }

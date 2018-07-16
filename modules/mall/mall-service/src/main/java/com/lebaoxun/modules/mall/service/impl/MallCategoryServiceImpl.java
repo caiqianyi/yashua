@@ -34,4 +34,10 @@ public class MallCategoryServiceImpl extends ServiceImpl<MallCategoryDao, MallCa
 		return this.baseMapper.queryAllList();
 	}
 
+	@Override
+	public List<MallCategoryEntity> queryAllShowList() {
+		// TODO Auto-generated method stub
+		return this.baseMapper.queryAllShowList();
+	}
+
 }

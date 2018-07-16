@@ -19,84 +19,69 @@
     <div v-show="!showList" class="panel panel-default">
         <div class="panel-heading">{{title}}</div>
         <form class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">商品规格编号</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.productSpecNumber" placeholder="商品规格编号"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">商品ID</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.productId" placeholder="商品ID"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">规格：规格ID，以“,”相隔</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.spec" placeholder="规格：规格ID，以“,”相隔"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">库存</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.stock" placeholder="库存"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">销售量</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.salesVolume" placeholder="销售量"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">价格</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.price" placeholder="价格"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">积分</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.score" placeholder="积分"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">是否默认状态：0,不默认；1,默认</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.defaultStatus" placeholder="是否默认状态：0,不默认；1,默认"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">商品状态：0,新增；1,上架；2,下架</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.status" placeholder="商品状态：0,新增；1,上架；2,下架"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">创建时间</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.createTime" placeholder="创建时间"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">创建者</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.createBy" placeholder="创建者"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">更新时间</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.updateTime" placeholder="更新时间"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2 control-label">更新者</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="mallProductSpecification.updateBy" placeholder="更新者"/>
-                        </div>
-                    </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">商品规格编号</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="mallProductSpecification.productSpecNumber" placeholder="商品规格编号"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">商品ID</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="mallProductSpecification.productId" placeholder="商品ID"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">规格</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="mallProductSpecification.specName" @click="selectSpecification" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">库存</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="mallProductSpecification.stock" placeholder="库存"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">销售量</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="mallProductSpecification.salesVolume" placeholder="销售量"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">价格</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="mallProductSpecification.price" placeholder="价格"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">积分</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="mallProductSpecification.score" placeholder="积分"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">是否默认状态</div>
+                <label class="radio-inline"> <input type="radio"
+					name="defaultStatus" value="0" v-model="mallProductSpecification.defaultStatus" /> 不默认
+				</label> 
+				<label class="radio-inline"> <input type="radio"
+					name="defaultStatus" value="1" v-model=mallProductSpecification.defaultStatus /> 默认
+				</label>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">商品状态</div>
+                <label class="radio-inline"> <input type="radio"
+					name="status" value="0" v-model="mallProductSpecification.status" /> 新增
+				</label> 
+				<label class="radio-inline"> <input type="radio"
+					name="status" value="1" v-model="mallProductSpecification.status" /> 上架
+				</label>
+				<label class="radio-inline"> <input type="radio"
+					name="status" value="2" v-model="mallProductSpecification.status" /> 下架
+				</label>
+            </div>
             <div class="form-group">
                 <div class="col-sm-2 control-label"></div>
                 <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
@@ -105,7 +90,10 @@
         </form>
     </div>
 </div>
-
+<!-- 选择规格-->
+<div id="specificationLayer" style="display: none;padding:10px;">
+	<ul id="specificationTree" class="ztree"></ul>
+</div>
 <script src="/statics/js/modules/mall/mallproductspecification.js?_${.now?long}"></script>
 </body>
 </html>

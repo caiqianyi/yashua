@@ -3,6 +3,7 @@ $(function () {
         url: baseURL + 'mall/mallproduct/list',
         datatype: "json",
         colModel: [			
+            { label: '商品ID', name: 'id', index: 'id', width: 80 }, 			
 			{ label: '商品编号', name: 'productNumber', index: 'product_number', width: 80 }, 			
 			{ label: '商品名称', name: 'name', index: 'name', width: 80 }, 			
 			{ label: '显示积分', name: 'showScore', index: 'show_score', width: 80 }, 			

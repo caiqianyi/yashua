@@ -3,12 +3,14 @@ $(function () {
         url: baseURL + 'mall/mallproductimage/list',
         datatype: "json",
         colModel: [			
-			{ label: 'picImgId', name: 'picImgId', index: 'pic_img_id', width: 50, key: true },
+            { label: 'ID', name: 'picImgId', index: 'pic_img_id', width: 80, key:true }, 			
 			{ label: '商品ID', name: 'productId', index: 'product_id', width: 80 }, 			
 			{ label: '展示图片', name: 'picImg', index: 'pic_img', width: 80 }, 			
 			{ label: '排序', name: 'sort', index: 'sort', width: 80 }, 			
-			{ label: '状态：1.显示；0.隐藏', name: 'status', index: 'status', width: 80 }, 			
-			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '状态', name: 'status', index: 'status', width: 80 }, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 , formatter: function(value){
+				return value ? new Date(parseInt(value,10)).format("yy-MM-dd hh:mm") : "";
+			}}, 			
 			{ label: '创建者', name: 'createBy', index: 'create_by', width: 80 }, 			
         ],
 		viewrecords: true,
@@ -36,6 +38,27 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+    
+    new AjaxUpload('#upload', {
+        action: baseURL + "/upload/imageUp?token="+window.storage.get('login.access_token',false),
+        name: 'upfile',
+        autoSubmit:true,
+        responseType:"json",
+        onSubmit:function(file, extension){
+            if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))){
+                alert('只支持jpg、png、gif格式的图片！');
+                return false;
+            }
+        },
+        onComplete : function(file, r){
+            if(r.errcode == 0){
+            	vm.mallProductImage.picImg = r.data.uri;
+            	$("#upload").attr("src",r.data.uri);
+            }else{
+                alert(r.errmsg);
+            }
+        }
+    });
 });
 
 var vm = new Vue({
@@ -43,6 +66,9 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
+		q:{
+			productId: null
+		},
 		mallProductImage: {}
 	},
 	methods: {
@@ -83,8 +109,8 @@ var vm = new Vue({
 			});
 		},
 		del: function (event) {
-			var picImgIds = getSelectedRows();
-			if(picImgIds == null){
+			var picImgId = getSelectedRow();
+			if(picImgId == null){
 				return ;
 			}
 			
@@ -92,8 +118,7 @@ var vm = new Vue({
 				$.ajax({
 					type: "POST",
 				    url: baseURL + "mall/mallproductimage/delete",
-                    contentType: "application/json",
-				    data: JSON.stringify(picImgIds),
+				    data: {picImgId:picImgId},
 				    success: function(r){
 						if(r.errcode == 0){
 							alert('操作成功', function(index){
@@ -117,7 +142,8 @@ var vm = new Vue({
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
-			$("#jqGrid").jqGrid('setGridParam',{ 
+			$("#jqGrid").jqGrid('setGridParam',{
+				postData:{"productId": vm.q.productId},
                 page:page
             }).trigger("reloadGrid");
 		}

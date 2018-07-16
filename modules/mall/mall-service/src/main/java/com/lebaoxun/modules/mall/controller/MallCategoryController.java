@@ -27,6 +27,11 @@ import com.lebaoxun.soa.core.redis.lock.RedisLock;
 public class MallCategoryController {
     @Autowired
     private MallCategoryService mallCategoryService;
+    
+    @RequestMapping("/mall/mallcategory/release")
+    List<MallCategoryEntity> release(){
+    	return mallCategoryService.queryAllShowList();
+    }
 
     /**
      * 列表

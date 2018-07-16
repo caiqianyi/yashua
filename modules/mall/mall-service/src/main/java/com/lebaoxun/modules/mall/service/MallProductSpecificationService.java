@@ -16,5 +16,9 @@ import java.util.Map;
 public interface MallProductSpecificationService extends IService<MallProductSpecificationEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    
+    void save(MallProductSpecificationEntity specification);
+    
+    void update(MallProductSpecificationEntity specification);
 }
 

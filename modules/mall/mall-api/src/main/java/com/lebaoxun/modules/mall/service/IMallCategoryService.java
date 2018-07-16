@@ -22,6 +22,8 @@ import com.lebaoxun.modules.mall.service.hystrix.MallCategoryServiceHystrix;
 
 @FeignClient(value="mall-service",fallback=MallCategoryServiceHystrix.class)
 public interface IMallCategoryService {
+	@RequestMapping("/mall/mallcategory/release")
+    List<MallCategoryEntity> release();
 	/**
      * 列表
      */

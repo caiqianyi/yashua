@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.mall.entity.MallSpecificationEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,5 +18,7 @@ import java.util.Map;
 public interface MallSpecificationService extends IService<MallSpecificationEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    
+    List<MallSpecificationEntity> queryAllList();
 }
 

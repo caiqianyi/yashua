@@ -1,8 +1,11 @@
 package com.lebaoxun.modules.mall.dao;
 
-import com.lebaoxun.modules.mall.entity.MallSpecificationEntity;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lebaoxun.modules.mall.entity.MallSpecificationEntity;
 
 /**
  * 规格表
@@ -14,5 +17,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface MallSpecificationDao extends BaseMapper<MallSpecificationEntity> {
-	
+	List<MallSpecificationEntity> queryAllList();
 }

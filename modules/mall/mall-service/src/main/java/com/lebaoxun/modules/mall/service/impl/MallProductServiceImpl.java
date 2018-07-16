@@ -2,6 +2,7 @@ package com.lebaoxun.modules.mall.service.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -58,6 +59,13 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductDao, MallProd
     				);
     	}
         return new PageUtils(page);
+    }
+    
+    @Override
+    public List<MallProductEntity> findShowProdcutByCategory(Long categoryId,
+    		Integer size, Integer offset) {
+    	// TODO Auto-generated method stub
+    	return this.baseMapper.findShowProdcutByCategory(categoryId, size, offset);
     }
 
 	@Override

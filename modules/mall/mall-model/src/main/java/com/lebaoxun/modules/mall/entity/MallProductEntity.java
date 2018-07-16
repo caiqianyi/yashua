@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.mall.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -107,6 +108,8 @@ public class MallProductEntity implements Serializable {
 	 * 备注
 	 */
 	private String remarks;
+	@TableField(exist=false)
+	private MallProductAttrEntity attrs;
 
 	/**
 	 * 设置：商品ID
@@ -371,5 +374,11 @@ public class MallProductEntity implements Serializable {
 	 */
 	public String getRemarks() {
 		return remarks;
+	}
+	public MallProductAttrEntity getAttrs() {
+		return attrs;
+	}
+	public void setAttrs(MallProductAttrEntity attrs) {
+		this.attrs = attrs;
 	}
 }

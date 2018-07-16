@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.mall.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,13 @@ import com.lebaoxun.soa.core.redis.lock.RedisLock;
 public class MallProductController {
     @Autowired
     private MallProductService mallProductService;
+    
+    @RequestMapping("/mall/product/show/list")
+    ResponseMessage findShowProdcutByCategory(@RequestParam("categoryId")Long categoryId, 
+    		@RequestParam("size")Integer size, 
+    		@RequestParam("offset")Integer offset){
+    	return ResponseMessage.ok(mallProductService.findShowProdcutByCategory(categoryId, size, offset));
+    };
 
     /**
      * 列表

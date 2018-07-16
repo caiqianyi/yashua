@@ -16,5 +16,7 @@
         <result property="updateBy" column="update_by"/>
     </resultMap>
 
-
+	<select id="queryAllList" resultMap="mallSpecificationMap">
+	    select * from mall_specification order by sort
+	</select>
 </mapper>

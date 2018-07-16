@@ -22,6 +22,12 @@ import java.util.Map;
 
 @FeignClient(value="mall-service",fallback=MallProductServiceHystrix.class)
 public interface IMallProductService {
+	
+	@RequestMapping("/mall/product/show/list")
+    ResponseMessage findShowProdcutByCategory(@RequestParam("categoryId")Long categoryId, 
+    		@RequestParam("size")Integer size, 
+    		@RequestParam("offset")Integer offset);
+    		
 	/**
      * 列表
      */

@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.mall.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,11 @@ public class MallSpecificationController {
         PageUtils page = mallSpecificationService.queryPage(params);
         return ResponseMessage.ok(page);
     }
-
+    
+    @RequestMapping("/mall/mallspecification/select")
+    ResponseMessage select(){
+		return ResponseMessage.ok(mallSpecificationService.queryAllList());
+    }
 
     /**
      * 信息

@@ -1,6 +1,8 @@
 package com.lebaoxun.admin.rest.mall;
 
+import java.util.Date;
 import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,8 @@ public class MallProductSpecificationController {
      */
     @RequestMapping("/mall/mallproductspecification/save")
     ResponseMessage save(@RequestBody MallProductSpecificationEntity mallProductSpecification){
+    	mallProductSpecification.setCreateBy(oauth2SecuritySubject.getCurrentUser()+"");
+    	mallProductSpecification.setCreateTime(new Date());
         return mallProductSpecificationService.save(oauth2SecuritySubject.getCurrentUser(),mallProductSpecification);
     }
 
@@ -63,6 +67,9 @@ public class MallProductSpecificationController {
      */
     @RequestMapping("/mall/mallproductspecification/update")
     ResponseMessage update(@RequestBody MallProductSpecificationEntity mallProductSpecification){
+    	Long userId = oauth2SecuritySubject.getCurrentUser();
+    	mallProductSpecification.setUpdateBy(userId+"");
+    	mallProductSpecification.setUpdateTime(new Date());
         return mallProductSpecificationService.update(oauth2SecuritySubject.getCurrentUser(),mallProductSpecification);
     }
 
