@@ -32,6 +32,50 @@
 			javaType="com.lebaoxun.modules.mall.entity.MallProductAttrEntity"
 			resultMap="mallProductAttrMap"></association>
 	</resultMap>
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductEntity"
+		id="mallProductInfoMap">
+		<result property="id" column="id" />
+		<result property="productNumber" column="product_number" />
+		<result property="labelId" column="label_id" />
+		<result property="name" column="name" />
+		<result property="showScore" column="show_score" />
+		<result property="showPrice" column="show_price" />
+		<result property="showPic" column="show_pic" />
+		<result property="introduce" column="introduce" />
+		<result property="description" column="description" />
+		<result property="showInTop" column="show_in_top" />
+		<result property="showInHot" column="show_in_hot" />
+		<result property="showInShelve" column="show_in_shelve" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+		<result property="shelveTime" column="shelve_time" />
+		<result property="shelveBy" column="shelve_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateBy" column="update_by" />
+		<result property="searchKey" column="search_key" />
+		<result property="shareTitle" column="share_title" />
+		<result property="shareDescription" column="share_description" />
+		<result property="remarks" column="remarks" />
+		<association property="attrs"
+			javaType="com.lebaoxun.modules.mall.entity.MallProductAttrEntity"
+			resultMap="mallProductAttrMap"></association>
+		<collection property="images"
+			javaType="java.util.List"
+			ofType="com.lebaoxun.modules.mall.entity.MallProductImageEntity"
+			resultMap="mallProductImageMap"></collection>
+	</resultMap>
+
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductImageEntity"
+		id="mallProductImageMap">
+		<result property="picImgId" column="pic_img_id" />
+		<result property="productId" column="product_id" />
+		<result property="picImg" column="pic_img" />
+		<result property="sort" column="sort" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+	</resultMap>
+
 
 	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductAttrEntity"
 		id="mallProductAttrMap">
@@ -48,14 +92,16 @@
 	</resultMap>
 
 	<select id="findShowProdcutByCategory" resultMap="mallProductMap">
-		select * from mall_product as a1,mall_product_attr as a2
-		left join mall_product as
+		select t1.* ,t2.*from mall_product as t1,mall_product_attr as t2
+		left
+		join mall_category_product as
 		t3 on
-		t3.id = t1.product_id
+		t2.product_id = t3.product_id
 		where
-		a1.category_id = #{categoryId}
-		and a1.show_in_shelve = 1 and a1.id = a2.product_id order by
-		a1.show_in_top desc,a1.create_time desc
+		t3.category_id = #{categoryId}
+		and t1.show_in_shelve = 1 and t1.id =
+		t2.product_id order by
+		t1.show_in_top desc,t1.create_time desc
 		<if test="size != null">
 			limit
 			<if test="offset != null">
@@ -63,6 +109,14 @@
 			</if>
 			#{size,jdbcType=INTEGER}
 		</if>
+	</select>
+
+	<select id="findShowProdcutInfo" resultMap="mallProductInfoMap">
+		select * from
+		mall_product as t1,mall_product_attr as t2
+		left join mall_product_image t3 on t3.product_id = t2.product_id
+		where
+		t1.id = t2.product_id and t1.id = #{id};
 	</select>
 
 	<select id="findProductByCategory" resultMap="mallProductMap">
@@ -110,7 +164,8 @@
 		( #{productNumber}, #{name}, #{showScore}, #{showPrice}, #{showPic},
 		#{introduce}, #{description}, #{showInTop}, #{showInHot},
 		#{showInShelve},
-		#{createTime}, #{createBy}, #{searchKey}, #{shareTitle}, #{shareDescription},
+		#{createTime}, #{createBy}, #{searchKey},
+		#{shareTitle}, #{shareDescription},
 		#{remarks} );
 	</insert>
 </mapper>

@@ -3,6 +3,8 @@ package com.lebaoxun.modules.mall.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
@@ -20,6 +22,8 @@ public interface MallProductService extends IService<MallProductEntity> {
     
     List<MallProductEntity> findShowProdcutByCategory(Long categoryId, 
     		Integer size, Integer offset);
+    
+    MallProductEntity findShowProdcutInfo(Long id);
     
     void create(MallProductEntity mallProduct);
     

@@ -132,4 +132,10 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductDao, MallProd
 		mallProductAttr.setStock(0);
 		mallProductAttrDao.insert(mallProductAttr);
 	}
+
+	@Override
+	public MallProductEntity findShowProdcutInfo(Long id) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.findShowProdcutInfo(id);
+	}
 }

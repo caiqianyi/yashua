@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<title>购物车</title>
+</head>
+<body>
+<div class="Top"><span></span>购物车<a href="javascript:void(0)" onClick="edit()" id="edit">编辑</a></div>
+
+<div class="bg-white font-24 gouwuche">
+	
+    <div class="gouwuche-box">
+    	<em class="on"></em>
+        <a href="shangpinxiangqing.html">
+        <img src="images/yst-2.png" alt=""/>
+        </a>
+        <div class="txt">
+            <span>美牙智能纳米牙刷头牙刷头牙刷头牙刷头...</span>
+            <i>颜色：蓝色</i>
+        </div>
+        <div class="Num">
+            <b class="less"  onClick="change(1,1)">-</b>
+            <input type="text" value="1" id="goods1">
+            <b class="add" onClick="change(1,2)">+</b>
+        </div>
+        <p>129.00</p>
+    </div>
+   
+   
+   
+    <div class="gouwuche-box">
+    	<em></em>
+        <a href="shangpinxiangqing.html">
+        <img src="images/yst-1.png" alt=""/>
+        </a>
+        <div class="txt">
+            <span>美牙智能纳米牙刷头牙刷头牙刷头牙刷头...</span>
+            <i>颜色：蓝色</i>
+        </div>
+        <div class="Num">
+            <b class="less"   onClick="change(2,1)">-</b>
+            <input type="text" value="1"  id="goods2">
+            <b class="add"  onClick="change(2,2)">+</b>
+        </div>
+        <p>129.00</p>
+    </div>
+   
+   
+  
+    <div class="gouwuche-box">
+    	<em></em>
+         <a href="shangpinxiangqing.html">
+        <img src="images/yst-2.png" alt=""/>
+         </a>
+        <div class="txt">
+            <span>美牙智能纳米牙刷头牙刷头牙刷头牙刷头...</span>
+            <i>颜色：蓝色</i>
+        </div>
+        <div class="Num">
+            <b class="less"   onClick="change(3,1)">-</b>
+            <input type="text" value="1"  id="goods3">
+            <b class="add"  onClick="change(3,2)">+</b>
+        </div>
+        <p>129.00</p>
+    </div>
+  
+   
+</div>
+
+<!--结算-->
+<div id="jiesuan" style="display:block" class="gouwuche-buy bg-white font-26">
+	<span>全选</span><!--class='on'状态变为全选-->
+    <p>合计：<i>￥0</i></p>
+    <a href="jiesuan.html">去结算</a>
+</div>
+
+<!--删除-->
+<div class="gouwuche-buy bg-white font-26"  id="shanchu" style="display:none">
+	<span>全选</span><!--class='on'状态变为全选-->
+    <a href="javascript:void(0)">删除</a>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+ function edit(){
+	 var edit=document.getElementById("edit");
+	 if(edit.innerHTML=="编辑"){
+	  edit.innerHTML="完成";
+	  document.getElementById("jiesuan").style.display="none";
+	  document.getElementById("shanchu").style.display="block";
+	}else{
+	  edit.innerHTML="编辑";
+	  document.getElementById("jiesuan").style.display="block";
+	  document.getElementById("shanchu").style.display="none";
+			 }
+	
+	 };
+//商品数量点击事件
+ function change(id,type){
+
+	 var nubs=document.getElementById("goods"+id).value;
+	 if(type==1){
+		 nubs--;
+		 document.getElementById("goods"+id).value=nubs;
+		 if(nubs<=0){
+			document.getElementById("goods"+id).value=1;
+			alert("最少兑一件");
+		}
+		 }
+	  	 if(type==2){
+		 nubs++;
+		 document.getElementById("goods"+id).value=nubs;
+		 }	 
+	 }
+	 
+</script>

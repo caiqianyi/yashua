@@ -18,6 +18,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface MallProductDao extends BaseMapper<MallProductEntity> {
+	
+	MallProductEntity findShowProdcutInfo(@Param("id")Long id);
+	
 	List<MallProductEntity> findShowProdcutByCategory(@Param("categoryId")Long categoryId,
 			@Param("size") Integer size,
 			@Param("offset") Integer offset);

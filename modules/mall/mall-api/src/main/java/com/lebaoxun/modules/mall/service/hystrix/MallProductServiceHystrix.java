@@ -49,6 +49,11 @@ public class MallProductServiceHystrix implements IMallProductService {
 			Integer size, Integer offset) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+
+	@Override
+	public MallProductEntity findShowProdcutInfo(Long id) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
     
 }
 

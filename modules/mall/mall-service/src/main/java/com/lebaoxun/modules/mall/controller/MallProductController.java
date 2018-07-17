@@ -35,7 +35,12 @@ public class MallProductController {
     		@RequestParam("size")Integer size, 
     		@RequestParam("offset")Integer offset){
     	return ResponseMessage.ok(mallProductService.findShowProdcutByCategory(categoryId, size, offset));
-    };
+    }
+    
+    @RequestMapping("/mall/product/show/info")
+    MallProductEntity findShowProdcutInfo(@RequestParam("id")Long id){
+    	return mallProductService.findShowProdcutInfo(id);
+    }
 
     /**
      * 列表

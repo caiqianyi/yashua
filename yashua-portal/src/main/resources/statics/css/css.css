@@ -246,8 +246,10 @@ background-size:.38rem .38rem;}
 .thing-cho{line-height: .88rem;padding:0 .25rem;margin-bottom:.2rem;border-bottom:1px solid #f0f0f0;}
 .thing-cho em{float: right;width: .23rem;height:.88rem;background:url(../images/arr-big.png) no-repeat center;-webkit-background-size: contain;background-size: contain;}
 .thing-mai{width: 100%;max-width:7.5rem;height:1rem;line-height:1rem;text-align: center;position:fixed;bottom: 0;}
-.thing-mai span{font-size:.26rem;width: 1.5rem;height: 1rem;line-height:normal;float: left;background:url(../images/sp-kefu.png) no-repeat .52rem .12rem;-webkit-background-size:.4rem .4rem;background-size:.4rem .4rem;padding-top:.55rem;border-top:1px solid #8a8a8a;border-right:1px solid #8a8a8a;}
-.thing-mai li{float: left;width: 3rem;font-size:.3rem;}
+.thing-mai span{font-size:.26rem;width: 1.5rem;height: 1rem;line-height:normal;float: left;padding-top:.55rem;border-top:1px solid #8a8a8a;border-right:1px solid #8a8a8a;}
+.thing-mai .icon_kefu{background:url(../images/sp-kefu.png) no-repeat .52rem .12rem;-webkit-background-size:.4rem .4rem;background-size:.4rem .4rem;}
+.thing-mai .icon_cart{background:url(../images/sp-cart.png) no-repeat .52rem .12rem;-webkit-background-size:.4rem .4rem;background-size:.4rem .4rem;}
+.thing-mai li{float: left;width: 2.24rem;font-size:.3rem;}
 .thing-mai li a{color:#fff;}
 
 .xzpop .bg-black{width: 100%;height: 100%;max-width:750px;background:rgba(0,0,0,0.5);position:fixed;bottom: 0;display: none;}

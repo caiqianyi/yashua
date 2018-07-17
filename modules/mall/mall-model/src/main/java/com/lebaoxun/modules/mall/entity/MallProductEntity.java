@@ -1,12 +1,13 @@
 package com.lebaoxun.modules.mall.entity;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 商品表
@@ -110,7 +111,8 @@ public class MallProductEntity implements Serializable {
 	private String remarks;
 	@TableField(exist=false)
 	private MallProductAttrEntity attrs;
-
+	@TableField(exist=false)
+	private List<MallProductImageEntity> images;
 	/**
 	 * 设置：商品ID
 	 */
@@ -380,5 +382,11 @@ public class MallProductEntity implements Serializable {
 	}
 	public void setAttrs(MallProductAttrEntity attrs) {
 		this.attrs = attrs;
+	}
+	public List<MallProductImageEntity> getImages() {
+		return images;
+	}
+	public void setImages(List<MallProductImageEntity> images) {
+		this.images = images;
 	}
 }

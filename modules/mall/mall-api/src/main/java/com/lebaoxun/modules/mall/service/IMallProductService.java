@@ -27,7 +27,10 @@ public interface IMallProductService {
     ResponseMessage findShowProdcutByCategory(@RequestParam("categoryId")Long categoryId, 
     		@RequestParam("size")Integer size, 
     		@RequestParam("offset")Integer offset);
-    		
+	
+	@RequestMapping("/mall/product/show/info")
+    MallProductEntity findShowProdcutInfo(@RequestParam("id")Long id);
+    
 	/**
      * 列表
      */

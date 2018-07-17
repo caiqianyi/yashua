@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.mall.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -32,9 +33,20 @@ public class MallProductSpecificationEntity implements Serializable {
 	 */
 	private Long productId;
 	/**
-	 * 规格：规格ID，以“,”相隔
+	 * 规格：规格ID
 	 */
-	private String spec;
+	private Long specificationId;
+	@TableField(exist=false)
+	private String specName;
+	/**
+	 * 规格属性ID
+	 */
+	private Long specAttrId;
+	/**
+	 * 规格属性名
+	 */
+	@TableField(exist=false)
+	private String specAttrName;
 	/**
 	 * 库存
 	 */
@@ -111,18 +123,6 @@ public class MallProductSpecificationEntity implements Serializable {
 	 */
 	public Long getProductId() {
 		return productId;
-	}
-	/**
-	 * 设置：规格：规格ID，以“,”相隔
-	 */
-	public void setSpec(String spec) {
-		this.spec = spec;
-	}
-	/**
-	 * 获取：规格：规格ID，以“,”相隔
-	 */
-	public String getSpec() {
-		return spec;
 	}
 	/**
 	 * 设置：库存
@@ -243,5 +243,29 @@ public class MallProductSpecificationEntity implements Serializable {
 	 */
 	public String getUpdateBy() {
 		return updateBy;
+	}
+	public Long getSpecificationId() {
+		return specificationId;
+	}
+	public void setSpecificationId(Long specificationId) {
+		this.specificationId = specificationId;
+	}
+	public Long getSpecAttrId() {
+		return specAttrId;
+	}
+	public void setSpecAttrId(Long specAttrId) {
+		this.specAttrId = specAttrId;
+	}
+	public String getSpecName() {
+		return specName;
+	}
+	public void setSpecName(String specName) {
+		this.specName = specName;
+	}
+	public String getSpecAttrName() {
+		return specAttrName;
+	}
+	public void setSpecAttrName(String specAttrName) {
+		this.specAttrName = specAttrName;
 	}
 }

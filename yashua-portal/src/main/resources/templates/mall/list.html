@@ -7,7 +7,7 @@
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
 </head>
 <body>
-<div class="Top"><span></span>商城</div>
+<div class="Top"><span onclick="javascript:window.location.href='/found.html'"></span>商城</div>
 <#if categorys??>
 	<div class="shop-top bg-white font-30">
 		<ul>
@@ -89,7 +89,7 @@ $(function(){
 		                    		html += '	<img src="'+item.showPic+'" alt=""/>';
 		                    		html += '	<div class="txt">';
 		                    		html += '		<h3>'+item.name+'</h3>';
-		                    		html += '	    <span>包邮 &nbsp; 上海</span>';
+		                    		html += '	    <span>包邮 &nbsp; 北京</span>';
 		                    		html += '	    <p><i>￥'+item.showPrice+'</i>'+item.attrs.salesVolume+'人付款</p>';
 		                    		html += '	</div>';
 		                    		html += '	</a>';

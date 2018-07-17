@@ -4,22 +4,40 @@
 <mapper namespace="com.lebaoxun.modules.mall.dao.MallProductSpecificationDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity" id="mallProductSpecificationMap">
-        <result property="productSpecId" column="product_spec_id"/>
-        <result property="productSpecNumber" column="product_spec_number"/>
-        <result property="productId" column="product_id"/>
-        <result property="spec" column="spec"/>
-        <result property="stock" column="stock"/>
-        <result property="salesVolume" column="sales_volume"/>
-        <result property="price" column="price"/>
-        <result property="score" column="score"/>
-        <result property="defaultStatus" column="default_status"/>
-        <result property="status" column="status"/>
-        <result property="createTime" column="create_time"/>
-        <result property="createBy" column="create_by"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="updateBy" column="update_by"/>
-    </resultMap>
+	<resultMap
+		type="com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity"
+		id="mallProductSpecificationMap">
+		<result property="productSpecId" column="product_spec_id" />
+		<result property="productSpecNumber" column="product_spec_number" />
+		<result property="productId" column="product_id" />
+		<result property="specificationId" column="specification_id" />
+		<result property="specName" column="spec_name" />
+		<result property="specAttrId" column="spec_attr_id" />
+		<result property="specAttrName" column="spec_attr_name" />
+		<result property="stock" column="stock" />
+		<result property="salesVolume" column="sales_volume" />
+		<result property="price" column="price" />
+		<result property="score" column="score" />
+		<result property="defaultStatus" column="default_status" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateBy" column="update_by" />
+	</resultMap>
 
-
+	<select id="queryByProductId" resultMap="mallProductSpecificationMap">
+	    SELECT
+			t1.*,t2.name as spec_attr_name,t3.name as spec_name
+		FROM
+			mall_product_specification AS t1,
+			mall_specification_attribute AS t2,
+		  mall_specification AS t3
+		WHERE
+		t3.specification_id = t2.specification_id
+		AND	t1.spec_attr_id = t2.spec_attr_id
+		AND t1.product_id = #{productId}
+		order by t3.sort
+		;
+	</select>
 </mapper>

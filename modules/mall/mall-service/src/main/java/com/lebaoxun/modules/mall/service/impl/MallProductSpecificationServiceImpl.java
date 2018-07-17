@@ -107,4 +107,10 @@ public class MallProductSpecificationServiceImpl
 						specification.getProductSpecId()));
 	}
 
+	@Override
+	public List<MallProductSpecificationEntity> queryByProductId(Long productId) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.queryByProductId(productId);
+	}
+
 }

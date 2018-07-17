@@ -1,4 +1,5 @@
 package com.lebaoxun.modules.mall.service.hystrix;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -21,6 +22,11 @@ public class MallProductSpecificationServiceHystrix implements IMallProductSpeci
 
 	@Override
 	public ResponseMessage list(Map<String, Object> params) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
+	public List<MallProductSpecificationEntity> queryByProductId(Long productId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 

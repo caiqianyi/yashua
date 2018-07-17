@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity;
 import com.lebaoxun.modules.mall.service.hystrix.MallProductSpecificationServiceHystrix;
 import com.lebaoxun.commons.exception.ResponseMessage;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +29,8 @@ public interface IMallProductSpecificationService {
     @RequestMapping("/mall/mallproductspecification/list")
     ResponseMessage list(@RequestParam Map<String, Object> params);
 
-
+    @RequestMapping("/mall/mallproductspecification/queryByProductId")
+    List<MallProductSpecificationEntity> queryByProductId(@RequestParam("productId")Long productId);
     /**
      * 信息
      */
