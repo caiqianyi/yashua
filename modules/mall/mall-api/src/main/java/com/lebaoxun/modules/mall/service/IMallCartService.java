@@ -1,15 +1,17 @@
 package com.lebaoxun.modules.mall.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.service.hystrix.MallCartServiceHystrix;
-import com.lebaoxun.commons.exception.ResponseMessage;
-
-import java.util.Map;
 
 /**
  * 购物车表
@@ -52,5 +54,19 @@ public interface IMallCartService {
     @RequestMapping("/mall/mallcart/delete")
     ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Long[] cartIds);
     
+    /**
+     * 同步购物车
+     * @param userId
+     * @param list
+     * @return
+     */
+    @RequestMapping("/mall/mallcart/sync")
+    ResponseMessage sync(@RequestParam("userId")Long userId,@RequestBody List<MallCartEntity> list);
+    
+    @RequestMapping("/mall/mallcart/findByUser")
+    ResponseMessage findByUser(@RequestParam("userId") Long userId);
+    
+    @RequestMapping("/mall/mallcart/queryList")
+    ResponseMessage queryByProductSpecId(@RequestBody Long[] ids);
 }
 

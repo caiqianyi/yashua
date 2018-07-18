@@ -25,7 +25,7 @@ public class MallCartEntity implements Serializable {
 	/**
 	 * 商品规格编号
 	 */
-	private Long productSpecNumber;
+	private Long productSpecId;
 	/**
 	 * 用户ID
 	 */
@@ -58,18 +58,6 @@ public class MallCartEntity implements Serializable {
 	 */
 	public long getCartId() {
 		return cartId;
-	}
-	/**
-	 * 设置：商品规格编号
-	 */
-	public void setProductSpecNumber(Long productSpecNumber) {
-		this.productSpecNumber = productSpecNumber;
-	}
-	/**
-	 * 获取：商品规格编号
-	 */
-	public Long getProductSpecNumber() {
-		return productSpecNumber;
 	}
 	/**
 	 * 设置：用户ID
@@ -130,5 +118,11 @@ public class MallCartEntity implements Serializable {
 	 */
 	public Integer getCheckStatus() {
 		return checkStatus;
+	}
+	public Long getProductSpecId() {
+		return productSpecId;
+	}
+	public void setProductSpecId(Long productSpecId) {
+		this.productSpecId = productSpecId;
 	}
 }

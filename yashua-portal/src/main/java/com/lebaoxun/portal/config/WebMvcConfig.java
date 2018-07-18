@@ -43,6 +43,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	        .excludePathPatterns("/news/replys")
 	        .excludePathPatterns("/mall/product/list")
 	        .excludePathPatterns("/mall/product/info/specs")
+	        .excludePathPatterns("/mall/cart/product/list")
         	;
     }
     

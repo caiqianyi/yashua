@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/carts.js"></script>
 <title>
 <#if product??>
 	<#if product.shareTitle??>  
@@ -13,7 +14,10 @@
 </title>
 </head>
 <body>
-<div class="Top"><span
+<img alt="" src="${product.showPic}" style="display:none;">
+<div style="display:none;">${product.shareDescription}</div>
+<img alt="" src="/statics/images/good-or-tick.png" style="display: none;">
+<div class="Top"><span onclick="javascript:history.go(-1);"
 ></span>商品详情</div>
 <!--图片展示-->
 <#if product.images??>
@@ -75,19 +79,29 @@
 </div>
 
 <script type="text/javascript">
+	var id = ${product.id};
 	function buyOrder(){
 		window.location.href="/order/confirm.html";
 	}
 	function joinCart(specId){
-		console.info(specId);
-		
+		var productSpecIds = [];
+		$(".aLi").each(function(i,e){
+			productSpecId = $(e).attr("data");
+			productSpecIds[i] = productSpecId;
+		});
+		var num = $("input[name=amount]").not(":hidden").val();
+		if(!num){
+			num = 1;
+		}
+		carts.put(productSpecIds.toString(),num);
+		carts.syncServer();
 		$(".ui-loading-block").dialog("show");
 		setTimeout(function(){
 			$(".ui-loading-block").dialog("hide");
 		},2000);
 		$(".xzpop[id=xzpop-"+specId+"] .bg-black").click();
 	}
-    var id = ${product.id};
+    
     var specs;
     $.ajax({
     	url: "/mall/product/info/specs",
@@ -148,19 +162,21 @@
 		    		html += '           <dd>';
 		    		for(var j=0;j<spec.data.length;j++){
 		    			var att = spec.data[j];
-			    		html += '	            	<span '+(j==0?'class="aLi"': '')+' id="attr_'+att.specAttrId+'">'+att.specAttrName+'</span>';
+			    		html += '	            	<span '+(j==0?'class="aLi"': '')+' id="attr_'+att.specAttrId+'" data="'+att.productSpecId+'">'+att.specAttrName+'</span>';
 		    		}
 		    		html += '           </dd>';
 		    		html += '       </dl>';
 		    		html += '       <!--购买数量-->';
-		    		html += '       <div class="gmai">';
-		    		html += '       	<p>购买数量</p>';
-		    		html += '           <div class="Num" style="margin-top:0; margin-right:.15rem;">';
-		    		html += '               <b class="less">-</b>';
-		    		html += '               <input type="text" value="1" max="'+spec.data[0].stock+'" min="1">';
-		    		html += '               <b class="add">+</b>';
-		    		html += '           </div>';
-		    		html += '       </div>';
+		    		if(spec.data[0].stock > 0){
+			    		html += '       <div class="gmai">';
+			    		html += '       	<p>购买数量</p>';
+			    		html += '           <div class="Num" style="margin-top:0; margin-right:.15rem;">';
+			    		html += '               <b class="less">-</b>';
+			    		html += '               <input type="text" value="1" max="'+spec.data[0].stock+'" min="1" name="amount">';
+			    		html += '               <b class="add">+</b>';
+			    		html += '           </div>';
+			    		html += '       </div>';
+		    		}
 		    		html += '       <!--加入购物车-->';
 		    		html += '       <a href="javascript:joinCart('+spec.id+')" class="jiaru">加入购物车</a>';
 		    		html += '   </div>';
@@ -211,10 +227,11 @@
 	    			var e = $(this).parents(".xzpop");
 	    			$("input",e).attr("max",item.stock);
 	    			$(".showSelect","#st-spec-"+specs[pos.i].id).text(item.specAttrName);
-	    			$("#showPrice").text(item.price);
+	    			if(item.price > 0){
+		    			$("#showPrice").text(item.price);
+	    			}
 	    			$(this).addClass("aLi").siblings().removeClass("aLi");	
 	    		});
-	    		
 	    		$(".aLi").click();
     		}
     	}

@@ -4,15 +4,102 @@
 <mapper namespace="com.lebaoxun.modules.mall.dao.MallCartDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.mall.entity.MallCartEntity" id="mallCartMap">
-        <result property="cartId" column="cart_id"/>
-        <result property="productSpecNumber" column="product_spec_number"/>
-        <result property="userId" column="user_id"/>
-        <result property="buyNumber" column="buy_number"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="checkStatus" column="check_status"/>
-    </resultMap>
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallCartEntity"
+		id="mallCartMap">
+		<result property="cartId" column="cart_id" />
+		<result property="productSpecId" column="product_spec_id" />
+		<result property="userId" column="user_id" />
+		<result property="buyNumber" column="buy_number" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="checkStatus" column="check_status" />
+	</resultMap>
 
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductEntity"
+		id="mallProductMap">
+		<result property="id" column="id" />
+		<result property="productNumber" column="product_number" />
+		<result property="labelId" column="label_id" />
+		<result property="name" column="name" />
+		<result property="showScore" column="show_score" />
+		<result property="showPrice" column="show_price" />
+		<result property="showPic" column="show_pic" />
+		<result property="introduce" column="introduce" />
+		<result property="description" column="description" />
+		<result property="showInTop" column="show_in_top" />
+		<result property="showInHot" column="show_in_hot" />
+		<result property="showInShelve" column="show_in_shelve" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+		<result property="shelveTime" column="shelve_time" />
+		<result property="shelveBy" column="shelve_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateBy" column="update_by" />
+		<result property="searchKey" column="search_key" />
+		<result property="shareTitle" column="share_title" />
+		<result property="shareDescription" column="share_description" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
+
+	<resultMap
+		type="com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity"
+		id="mallProductSpecificationMap">
+		<result property="productSpecId" column="product_spec_id" />
+		<result property="productSpecNumber" column="product_spec_number" />
+		<result property="productId" column="product_id" />
+		<result property="specificationId" column="specification_id" />
+		<result property="specName" column="spec_name" />
+		<result property="specAttrId" column="spec_attr_id" />
+		<result property="specAttrName" column="spec_attr_name" />
+		<result property="stock" column="stock" />
+		<result property="salesVolume" column="sales_volume" />
+		<result property="price" column="price" />
+		<result property="score" column="score" />
+		<result property="defaultStatus" column="default_status" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateBy" column="update_by" />
+	</resultMap>
+
+	<resultMap type="com.lebaoxun.modules.mall.pojo.MallProductCartVo"
+		id="MallProductCartVoMap">
+		<result property="sepcAttrName" column="sepc_attr_name" />
+		<result property="specName" column="spec_name" />
+		<association property="cart"
+			javaType="com.lebaoxun.modules.mall.entity.MallCartEntity" resultMap="mallCartMap" />
+		<association property="product"
+			javaType="com.lebaoxun.modules.mall.entity.MallProductEntity"
+			resultMap="mallProductMap" />
+		<association property="spec"
+			javaType="com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity"
+			resultMap="mallProductSpecificationMap"></association>
+	</resultMap>
+
+	<select id="queryByUser" resultMap="MallProductCartVoMap">
+		select t1.*,t2.*,t3.`name` as sepc_attr_name,t4.`name` as
+		spec_name,t5.buy_number,t5.check_status,t5.product_spec_id from
+		mall_product as t1,mall_cart t5, mall_product_specification as t2
+		left join mall_specification_attribute as t3 on t3.spec_attr_id =
+		t2.spec_attr_id
+		left join mall_specification t4 on t4.specification_id = t2.specification_id
+		where t2.product_id = t1.id and t2.product_spec_id =
+		t5.product_spec_id;
+	</select>
+	
+	<select id="queryByProductSpecId" resultMap="MallProductCartVoMap">
+		select t1.*,t2.*,t3.`name` as sepc_attr_name,t4.`name` as
+		spec_name from
+		mall_product as t1, mall_product_specification as t2
+		left join mall_specification_attribute as t3 on t3.spec_attr_id =
+		t2.spec_attr_id
+		left join mall_specification t4 on t4.specification_id = t2.specification_id
+		where t2.product_id = t1.id and t2.product_spec_id in
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}       
+        </foreach>    
+		;
+	</select>
 
 </mapper>

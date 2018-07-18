@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.mall.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
+import com.lebaoxun.modules.mall.pojo.MallProductCartVo;
 import com.lebaoxun.modules.mall.service.MallCartService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -77,5 +79,21 @@ public class MallCartController {
 		mallCartService.deleteBatchIds(Arrays.asList(cartIds));
         return ResponseMessage.ok();
     }
+    
+    @RequestMapping("/mall/mallcart/sync")
+    @RedisLock(value="mall:mallcart:sync:lock:#arg0")
+    ResponseMessage sync(@RequestParam("userId")Long userId,@RequestBody List<MallCartEntity> list){
+    	mallCartService.sync(userId, list);
+    	return ResponseMessage.ok();
+    }
+    
+    @RequestMapping("/mall/mallcart/findByUser")
+    ResponseMessage findByUser(@RequestParam("userId") Long userId){
+    	return ResponseMessage.ok(mallCartService.findByUser(userId));
+    }
 
+    @RequestMapping("/mall/mallcart/queryList")
+    ResponseMessage queryByProductSpecId(@RequestBody Long[] ids){
+    	return ResponseMessage.ok(mallCartService.queryByProductSpecId(ids));
+    }
 }
