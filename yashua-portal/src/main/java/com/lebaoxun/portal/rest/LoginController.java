@@ -3,6 +3,7 @@ package com.lebaoxun.portal.rest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -82,6 +83,16 @@ public class LoginController extends BaseController{
 		String secret = UUID.randomUUID().toString().replaceAll("-", "");
 		request.getSession().setAttribute("app.secret", secret);
 		return "var secret = \""+secret+"\";";
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/oauth2/system.js",produces="application/javascript;charset=UTF-8")
+	String system(){
+		return "$.system = {loadTime: new Date("+new Date().getTime()+")};";
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/oauth2/now")
+	ResponseMessage now(){
+		return new ResponseMessage().put("now",new Date().getTime());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/oauth2/encrypt")

@@ -65,5 +65,11 @@ window.storage = {
 	clear : function() {
 		window.sessionStorage.clear();
 		window.localStorage.clear();
+	},
+	clearLocalSpace: function(space){
+		var key = null;
+		while(key = window.localStorage.key(space)){
+			window.localStorage.removeItem(key);
+		}
 	}
 };

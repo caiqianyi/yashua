@@ -1,11 +1,13 @@
 package com.lebaoxun.modules.mall.entity;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 订单表
@@ -26,7 +28,7 @@ public class MallOrderEntity implements Serializable {
 	/**
 	 * 订单编号,系统生成
 	 */
-	private Long orderNumber;
+	private String orderNo;
 	/**
 	 * 用户ID
 	 */
@@ -87,6 +89,9 @@ public class MallOrderEntity implements Serializable {
 	 * 商品总数量
 	 */
 	private Integer buyNumber;
+	
+	@TableField(exist=false)
+	private List<MallOrderProductEntity> childs;
 
 	/**
 	 * 设置：订单ID
@@ -103,14 +108,14 @@ public class MallOrderEntity implements Serializable {
 	/**
 	 * 设置：订单编号,系统生成
 	 */
-	public void setOrderNumber(Long orderNumber) {
-		this.orderNumber = orderNumber;
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 	/**
 	 * 获取：订单编号,系统生成
 	 */
-	public Long getOrderNumber() {
-		return orderNumber;
+	public String getOrderNo() {
+		return orderNo;
 	}
 	/**
 	 * 设置：用户ID
@@ -291,5 +296,11 @@ public class MallOrderEntity implements Serializable {
 	 */
 	public Integer getBuyNumber() {
 		return buyNumber;
+	}
+	public List<MallOrderProductEntity> getChilds() {
+		return childs;
+	}
+	public void setChilds(List<MallOrderProductEntity> childs) {
+		this.childs = childs;
 	}
 }

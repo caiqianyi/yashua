@@ -139,8 +139,7 @@ $(function(){
 			return;
 		}
 		if(!login.isLogin()){
-			var calluri = encodeURIComponent(window.location.href);
-    	    parent.location.href = '/login.html?returnuri='+calluri;
+    	    parent.location.href = loginCallUri();
 			return;
 		}
 		var l1 = $.loading({content:'发表中...'}).show();

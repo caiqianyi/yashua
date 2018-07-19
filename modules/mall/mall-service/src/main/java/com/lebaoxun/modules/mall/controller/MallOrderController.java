@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.mall.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
 import com.lebaoxun.modules.mall.service.MallOrderService;
 import com.lebaoxun.commons.utils.PageUtils;
@@ -28,6 +30,19 @@ import com.lebaoxun.soa.core.redis.lock.RedisLock;
 public class MallOrderController {
     @Autowired
     private MallOrderService mallOrderService;
+    
+    @RequestMapping("/mall/mallorder/create")
+    ResponseMessage create(@RequestParam("userId")Long userId,
+    		@RequestBody List<MallCartEntity> products){
+    	return new ResponseMessage().put("orderNo", mallOrderService.create(userId, products));
+    }
+    
+    @RequestMapping("/mall/mallorder/selectOrderByOrderNo")
+    MallOrderEntity selectOrderByOrderNo(@RequestParam("userId")Long userId,
+    		@RequestParam("orderNo")String orderNo,
+    		@RequestParam("status")Integer status){
+    	return mallOrderService.selectOrderByOrderNo(userId,orderNo, status);
+    }
 
     /**
      * 列表

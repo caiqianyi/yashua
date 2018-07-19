@@ -4,25 +4,75 @@
 <mapper namespace="com.lebaoxun.modules.mall.dao.MallOrderDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.mall.entity.MallOrderEntity" id="mallOrderMap">
-        <result property="id" column="id"/>
-        <result property="orderNumber" column="order_number"/>
-        <result property="userId" column="user_id"/>
-        <result property="payType" column="pay_type"/>
-        <result property="shipmentTime" column="shipment_time"/>
-        <result property="shipmentType" column="shipment_type"/>
-        <result property="shipmentAmount" column="shipment_amount"/>
-        <result property="invoiceType" column="invoice_type"/>
-        <result property="invoiceTitle" column="invoice_title"/>
-        <result property="orderStatus" column="order_status"/>
-        <result property="postid" column="postid"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="orderAmount" column="order_amount"/>
-        <result property="orderScore" column="order_score"/>
-        <result property="payAmount" column="pay_amount"/>
-        <result property="buyNumber" column="buy_number"/>
-    </resultMap>
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallOrderEntity"
+		id="mallOrderMap">
+		<result property="id" column="id" />
+		<result property="orderNumber" column="order_number" />
+		<result property="userId" column="user_id" />
+		<result property="payType" column="pay_type" />
+		<result property="shipmentTime" column="shipment_time" />
+		<result property="shipmentType" column="shipment_type" />
+		<result property="shipmentAmount" column="shipment_amount" />
+		<result property="invoiceType" column="invoice_type" />
+		<result property="invoiceTitle" column="invoice_title" />
+		<result property="orderStatus" column="order_status" />
+		<result property="postid" column="postid" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="orderAmount" column="order_amount" />
+		<result property="orderScore" column="order_score" />
+		<result property="payAmount" column="pay_amount" />
+		<result property="buyNumber" column="buy_number" />
+		<collection property="childs"
+			ofType="com.lebaoxun.modules.mall.entity.MallOrderProductEntity"
+			resultMap="mallOrderProductMap" />
+	</resultMap>
 
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallOrderProductEntity"
+		id="mallOrderProductMap">
+		<result property="orderProductId" column="order_product_id" />
+		<result property="orderId" column="order_id" />
+		<result property="productNumber" column="product_number" />
+		<result property="name" column="name" />
+		<result property="picImg" column="pic_img" />
+		<result property="productSpecId" column="product_spec_id" />
+		<result property="productSpecName" column="product_spec_name" />
+		<result property="price" column="price" />
+		<result property="score" column="score" />
+		<result property="buyNumber" column="p_buy_number" />
+		<result property="productScore" column="product_score" />
+		<result property="productAmount" column="product_amount" />
+		<result property="status" column="status" />
+	</resultMap>
 
+	<insert id="save" parameterType="com.lebaoxun.modules.mall.entity.MallOrderEntity"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO mall_order (
+		order_no,
+		user_id, pay_type,
+		shipment_time, shipment_type, shipment_amount,
+		invoice_type, invoice_title,
+		order_status, postid, create_time,
+		update_time, order_amount,
+		order_score, pay_amount, buy_number ) VALUES
+		( #{orderNo}, #{userId}, #{payType},
+		#{shipmentTime}, #{shipmentType}, #{shipmentAmount},
+		#{invoiceType}, #{invoiceTitle},
+		#{orderStatus}, #{postid}, #{createTime},
+		#{updateTime}, #{orderAmount},
+		#{orderScore},
+		#{payAmount}, #{buyNumber});
+	</insert>
+
+	<select id="selectOrderByOrderNo" resultMap="mallOrderMap">
+		select t1.*,
+		t2.order_product_id, t2.order_id, t2.product_number,
+		t2.name, t2.pic_img, t2.product_spec_id, t2.product_spec_name,
+		t2.price, t2.score, t2.buy_number as p_buy_number, t2.product_score,
+		t2.product_amount,t2.status
+		from mall_order as t1 left join mall_order_product t2 on
+		t2.order_id = t1.id where t1.user_id = #{userId} 
+		and t1.order_no = #{orderNo} 
+		and t1.order_status = #{status};
+	</select>
 </mapper>

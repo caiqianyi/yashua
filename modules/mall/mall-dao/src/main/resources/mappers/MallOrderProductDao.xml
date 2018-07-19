@@ -10,7 +10,7 @@
         <result property="productNumber" column="product_number"/>
         <result property="name" column="name"/>
         <result property="picImg" column="pic_img"/>
-        <result property="productSpecNumber" column="product_spec_number"/>
+        <result property="productSpecId" column="product_spec_id"/>
         <result property="productSpecName" column="product_spec_name"/>
         <result property="price" column="price"/>
         <result property="score" column="score"/>

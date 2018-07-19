@@ -1,5 +1,11 @@
 //全局配置
 var isTokenAlert = false;
+function loginCallUri(returnuri){
+	if(!returnuri){
+		returnuri = encodeURIComponent(window.location.href);
+	}
+    return '/login.html?returnuri='+returnuri;
+}
 $.ajaxSetup({
 	dataType: "json",
 	cache: false,
@@ -18,9 +24,8 @@ $.ajaxSetup({
     	        alert('您的账号在其它地方登录，如非您本人操作，请尽快修改密码！')
     	        parent.window.alert = function () { return false };
     	    }
-    	    parent.window.storage.clear();
-    	    var calluri = encodeURIComponent(window.location.href);
-    	    parent.location.href = '/login.html?returnuri='+calluri;
+    	    parent.window.storage.clearLocalSpace("login");
+    	    parent.location.href = loginCallUri();
     	}
     }
 });

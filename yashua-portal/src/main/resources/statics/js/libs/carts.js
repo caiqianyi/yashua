@@ -1,5 +1,7 @@
 var carts = {
 	localKey: "shopping.cart",
+	localTempKey: "shopping.cart.temp",
+	userId: '',
 	products: {
 		items: [],
 		put: function(productSpecId,buyNumber,checkStatus,flag){
@@ -13,7 +15,7 @@ var carts = {
 				}
 				len = idx;
 			}
-			this.items[len] = {productSpecId:productSpecId,buyNumber:inr,checkStatus:checkStatus};
+			this.items[len] = {productSpecId:productSpecId,buyNumber:inr,checkStatus:checkStatus,time: new Date().getTime()};
 		},
 		get: function(productSpecId){
 			var i = this.indexOf(productSpecId);
@@ -50,7 +52,8 @@ var carts = {
 			checkStatus = 0;
 		}
 		products.put(productSpecId,buyNumber,checkStatus,flag);
-		window.localStorage.setItem(this.localKey,JSON.stringify(products.items));
+		var key = this.userId && this.userId.length > 0 ? this.localKey+"."+userId : this.localKey;
+		window.localStorage.setItem(key,JSON.stringify(products.items));
 	},
 	remove: function(productSpecId){
 		var products = this.get(productSpecId);
@@ -65,11 +68,26 @@ var carts = {
 		return false;
 	},
 	clear: function(){
-		window.localStorage.remove(this.localKey);
-		return !(!window.localStorage.getItem(this.localKey));
+		var key = this.userId && this.userId.length > 0 ? this.localKey+"."+userId : this.localKey;
+		window.localStorage.removeItem(key);
+		return !(!window.localStorage.getItem(key));
+	},
+	clearTemp: function(){
+		window.localStorage.removeItem(this.localTempKey);
+		return !(!window.localStorage.getItem(this.localTempKey));
 	},
 	get: function(){
-		var items = window.localStorage.getItem(this.localKey);
+		var key = this.userId && this.userId.length > 0 ? this.localKey+"."+userId : this.localKey;
+		var items = window.localStorage.getItem(key);
+		if(items){
+			var p = $.extend({},this.products);
+			p.items = JSON.parse(items);
+			return p;
+		}
+		return null;
+	},
+	getTemp: function(){
+		var items = window.localStorage.getItem(this.localTempKey);
 		if(items){
 			var p = $.extend({},this.products);
 			p.items = JSON.parse(items);
@@ -78,10 +96,11 @@ var carts = {
 		return null;
 	},
 	syncServer: function(succuess){
+		var _this = this;
 		if(typeof login != 'undefined'){
-			if(login.isLogin()){
-				var products = this.get();
-				if(products){
+			var products = _this.get();
+			if(products){
+				if(login.isLogin()){
 					$.ajax({
 						type: "POST",
 					    url: "/mall/cart/sync",
@@ -94,14 +113,19 @@ var carts = {
 					    		}
 								console.info("购物车数据同步成功");
 							}else{
+								window.localStorage.setItem(this.localTempKey,JSON.stringify(products.items));
 								console.error(r.errmsg);
 							}
 						}
 					});
+					return;
 				}
-				return;
+				window.localStorage.setItem(this.localTempKey,JSON.stringify(products.items));
+				console.error("尚未登录");
 			}
-			console.error("尚未登录");
 		}
+	},
+	pull: function(){
+		
 	}
 };

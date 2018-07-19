@@ -175,17 +175,43 @@
 		});
 	}
 	
+	function loadCart(){
+		$.ajax({
+	    	url: "/mall/cart/mylist",
+	    	type: "get",
+	    	success: function(r){
+	    		if(r.errcode == 0){
+	    			if(r.data.length == 0){
+	    				carts.syncServer(function(){
+	    					loadCart();
+	    					carts.clearTemp();
+	    				});
+	    			}else{
+	    				var products = carts.getTemp();
+		    			if(products){
+		    				var result = confirm("您有尚未同步的商品，是否同步？");
+		    				if(result){
+		    					var l1 = $.loading().show({content:"数据同步中..."});
+		    					carts.syncServer(function(){
+		    						l1.hide();
+		    						carts.clearTemp();
+		    						loadCart();
+		    					});
+		    					return;
+		    				}else{
+		    					carts.clearTemp();
+		    				}
+		    			}
+		    			cartDraw(r.data);
+	    			}
+	    		}
+	    	}
+		});
+	}
+	
 	$(function(){
 		if(login.isLogin()){
-			$.ajax({
-		    	url: "/mall/cart/mylist",
-		    	type: "get",
-		    	success: function(r){
-		    		if(r.errcode == 0){
-		    			cartDraw(r.data);
-		    		}
-		    	}
-			});
+			loadCart();
 		}else{
 			var products = carts.get();
 			if(products){
@@ -194,12 +220,14 @@
 				for(var i=0;i<items.length;i++){
 					ids[i] = items[i].productSpecId;
 				}
+				var l1 = $.loading({content:"加载中..."}).show();
 				$.ajax({
 			    	url: "/mall/cart/product/list",
 			    	type: "POST",
 			    	contentType: "application/json",
 				    data: JSON.stringify(ids),
 			    	success: function(r){
+			    		l1.hide();
 			    		if(r.errcode == 0){
 			    			for(var i=0;i<r.data.length;i++){
 			    				var a = products.get(r.data[i].cart.productSpecId);
@@ -236,13 +264,31 @@
 				alert("请选结算的产品");
 				return;
 			}
-			var pids = [],amounts = [];
+			if(!login.isLogin()){
+				parent.location.href = loginCallUri();
+				return;
+			}
+			var pos = [];
 			checkboxs.each(function(i,e){
 				var box = $(e).parents(".gouwuche-box");
-				pids[i] = box.attr("pid");
-				amounts[i] = $("input[name=amount]",box).val();
+				pos[i] = {productSpecId:box.attr("pid"),buyNumber:$("input[name=amount]",box).val()};
 			});
-			window.location.href="/order/confirm.html?pid="+pids.toString()+"&amount="+amounts.toString();
+			var l2 = $.loading({content:"结算中..."}).show();
+			$.ajax({
+		    	url: "/mall/order/create",
+		    	type: "POST",
+		    	contentType: "application/json",
+			    data: JSON.stringify(pos),
+		    	success: function(r){
+		    		l2.hide();
+		    		if(r.errcode == 0){
+		    			window.location.href="/order/confirm.html?orderNo="+r.data.orderNo;
+		    			return;
+		    		}
+		    		alert(r.errmsg);
+		    	}
+			});
+			
 		});
 		
 		$(".checkAllBtn").click(function(){

@@ -5,10 +5,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
 import com.lebaoxun.modules.mall.service.hystrix.MallOrderServiceHystrix;
 import com.lebaoxun.commons.exception.ResponseMessage;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +24,16 @@ import java.util.Map;
 
 @FeignClient(value="mall-service",fallback=MallOrderServiceHystrix.class)
 public interface IMallOrderService {
+	
+	@RequestMapping("/mall/mallorder/create")
+    ResponseMessage create(@RequestParam("userId")Long userId,
+    		@RequestBody List<MallCartEntity> products);
+	
+	@RequestMapping("/mall/mallorder/selectOrderByOrderNo")
+    MallOrderEntity selectOrderByOrderNo(@RequestParam("userId")Long userId,
+    		@RequestParam("orderNo")String orderNo,
+    		@RequestParam("status")Integer status);
+
 	/**
      * 列表
      */

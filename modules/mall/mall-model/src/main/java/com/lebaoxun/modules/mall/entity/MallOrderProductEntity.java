@@ -1,11 +1,10 @@
 package com.lebaoxun.modules.mall.entity;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 订单明细表
@@ -42,7 +41,7 @@ public class MallOrderProductEntity implements Serializable {
 	/**
 	 * 商品规格编号
 	 */
-	private Long productSpecNumber;
+	private Long productSpecId;
 	/**
 	 * 商品规格名称
 	 */
@@ -132,17 +131,11 @@ public class MallOrderProductEntity implements Serializable {
 	public String getPicImg() {
 		return picImg;
 	}
-	/**
-	 * 设置：商品规格编号
-	 */
-	public void setProductSpecNumber(Long productSpecNumber) {
-		this.productSpecNumber = productSpecNumber;
+	public Long getProductSpecId() {
+		return productSpecId;
 	}
-	/**
-	 * 获取：商品规格编号
-	 */
-	public Long getProductSpecNumber() {
-		return productSpecNumber;
+	public void setProductSpecId(Long productSpecId) {
+		this.productSpecId = productSpecId;
 	}
 	/**
 	 * 设置：商品规格名称
