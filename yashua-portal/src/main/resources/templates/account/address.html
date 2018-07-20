@@ -9,7 +9,7 @@
 <title>地址管理</title>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:window.location.href='/account.html'"></span>地址管理</div>
+<div class="Top"><span onclick="javascript:$.goBack('/account.html');"></span>地址管理</div>
 <div class="addressList">
 </div>
 <a class="add-dizhi" href="/account/address/add.html">添加新地址</a>
@@ -49,7 +49,7 @@ $(function () {
 	    		$(".edit").unbind("click");
 	    		$(".edit").click(function(){
 	    			var id = $(this).parent().attr("data");
-	    			window.location.href="/account/address/edit.html?id="+id;
+	    			$.go("/account/address/edit.html?id="+id);
 	    		});
 	    		
 	    		$(".shanchu").unbind("click");

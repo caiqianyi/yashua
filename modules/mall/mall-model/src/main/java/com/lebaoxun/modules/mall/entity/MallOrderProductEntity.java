@@ -29,7 +29,7 @@ public class MallOrderProductEntity implements Serializable {
 	/**
 	 * 商品编号
 	 */
-	private Long productNumber;
+	private Long productId;
 	/**
 	 * 商品名称
 	 */
@@ -98,14 +98,14 @@ public class MallOrderProductEntity implements Serializable {
 	/**
 	 * 设置：商品编号
 	 */
-	public void setProductNumber(Long productNumber) {
-		this.productNumber = productNumber;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 	/**
 	 * 获取：商品编号
 	 */
-	public Long getProductNumber() {
-		return productNumber;
+	public Long getProductId() {
+		return productId;
 	}
 	/**
 	 * 设置：商品名称

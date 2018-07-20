@@ -17,11 +17,18 @@ import com.lebaoxun.modules.mall.entity.MallOrderEntity;
  */
 public interface MallOrderService extends IService<MallOrderEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
-    
-    String create(Long userId,List<MallCartEntity> products);
-    
-    MallOrderEntity selectOrderByOrderNo(Long userId,String orderNo,
-			Integer status);
-}
+	PageUtils queryPage(Map<String, Object> params);
 
+	String create(Long userId, List<MallCartEntity> products);
+
+	MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,
+			Integer status);
+
+	List<MallOrderEntity> mylist(Long userId, Integer status, Integer payType,
+			Integer size, Integer offset);
+
+	void confirmOrder(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String address, String consignee, String mobile);
+	
+	void delete(Long userId, String orderNo);
+}

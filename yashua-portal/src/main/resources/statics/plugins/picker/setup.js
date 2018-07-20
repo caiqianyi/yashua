@@ -164,22 +164,27 @@ PickerSetup.prototype = {
 	},
 	getCityByCode: function(code){
 		var _this = this;
-		var index0 = code[0];
+		var index0 = code[0],index1 = code[1],index2 = code[2];
 		var second = [];
 		var third = [];
 		var firstCity = city[index0];
-		if (firstCity.hasOwnProperty('sub')) {
-			_this.creatList(firstCity.sub, second);
-			
-			var secondCity = city[index0].sub[0]
-			if (secondCity.hasOwnProperty('sub')) {
-				_this.creatList(secondCity.sub, third);
-			} else {
-				third = [{text: '', value: 0}];
-			}
+		
+		if (city[index0].hasOwnProperty('sub')) {
+			_this.creatList(city[index0].sub, second);
 		} else {
-			second = [{text: '', value: 0}];
-			third = [{text: '', value: 0}];
+			second = [ {
+				text : '',
+				value : 0
+			}];
+		}
+
+		if (city[index0].sub[index1].hasOwnProperty('sub')) {
+			_this.creatList(city[index0].sub[index1].sub, third);
+		} else {
+			third = [ {
+				text : '',
+				value : 0
+			} ];
 		}
 		return [firstCity.name,second[code[1]].text,third[code[2]].text];
 	}

@@ -28,7 +28,8 @@ public interface IUserAddressService {
     @RequestMapping("/account/useraddress/list")
     ResponseMessage list(@RequestParam Map<String, Object> params);
 
-
+    @RequestMapping("/account/useraddress/defaultUse")
+    ResponseMessage defaultUse(@RequestParam(value="userId")Long userId);
     /**
      * 信息
      */

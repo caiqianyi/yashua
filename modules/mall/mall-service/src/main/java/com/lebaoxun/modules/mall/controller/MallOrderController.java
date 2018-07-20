@@ -32,9 +32,18 @@ public class MallOrderController {
     private MallOrderService mallOrderService;
     
     @RequestMapping("/mall/mallorder/create")
+    @RedisLock(value="mall:mallorder:save:create:#arg0")
     ResponseMessage create(@RequestParam("userId")Long userId,
     		@RequestBody List<MallCartEntity> products){
     	return new ResponseMessage().put("orderNo", mallOrderService.create(userId, products));
+    }
+    
+    @RequestMapping("/mall/mallorder/deleteByUser")
+    @RedisLock(value="mall:mallorder:deleteByUser:lock:#arg0")
+    ResponseMessage deleteByUser(@RequestParam("userId")Long userId,
+    		@RequestParam("orderNo")String orderNo){
+    	mallOrderService.delete(userId, orderNo);
+    	return ResponseMessage.ok();
     }
     
     @RequestMapping("/mall/mallorder/selectOrderByOrderNo")
@@ -44,6 +53,26 @@ public class MallOrderController {
     	return mallOrderService.selectOrderByOrderNo(userId,orderNo, status);
     }
 
+    @RequestMapping("/mall/mallorder/confirmOrder")
+    ResponseMessage confirmOrder(@RequestParam("userId") Long userId,
+    		@RequestParam("orderNo") String orderNo, 
+    		@RequestParam("invoiceType") Integer invoiceType,
+    		@RequestParam("invoiceTitle") String invoiceTitle, 
+    		@RequestParam("address") String address,
+    		@RequestParam("consignee") String consignee,
+    		@RequestParam("mobile") String mobile){
+    	mallOrderService.confirmOrder(userId, orderNo, invoiceType, invoiceTitle, address, consignee, mobile);
+    	return ResponseMessage.ok();
+    }
+    
+    @RequestMapping("/mall/mallorder/mylist")
+    ResponseMessage mylist(@RequestParam("userId") Long userId, 
+    		@RequestParam(value="status",required=false) Integer status, 
+    		@RequestParam("payType") Integer payType,
+    		@RequestParam("size") Integer size, 
+    		@RequestParam("offset") Integer offset){
+		return ResponseMessage.ok(mallOrderService.mylist(userId, status, payType, size, offset));
+    }
     /**
      * 列表
      */

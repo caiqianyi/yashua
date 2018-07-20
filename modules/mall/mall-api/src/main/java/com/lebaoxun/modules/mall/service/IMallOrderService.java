@@ -29,10 +29,30 @@ public interface IMallOrderService {
     ResponseMessage create(@RequestParam("userId")Long userId,
     		@RequestBody List<MallCartEntity> products);
 	
+	@RequestMapping("/mall/mallorder/deleteByUser")
+    ResponseMessage deleteByUser(@RequestParam("userId")Long userId,
+    		@RequestParam("orderNo")String orderNo);
+	
 	@RequestMapping("/mall/mallorder/selectOrderByOrderNo")
     MallOrderEntity selectOrderByOrderNo(@RequestParam("userId")Long userId,
     		@RequestParam("orderNo")String orderNo,
     		@RequestParam("status")Integer status);
+	
+	@RequestMapping("/mall/mallorder/confirmOrder")
+    ResponseMessage confirmOrder(@RequestParam("userId") Long userId,
+    		@RequestParam("orderNo") String orderNo, 
+    		@RequestParam("invoiceType") Integer invoiceType,
+    		@RequestParam("invoiceTitle") String invoiceTitle, 
+    		@RequestParam("address") String address,
+    		@RequestParam("consignee") String consignee,
+    		@RequestParam("mobile") String mobile);
+	
+	@RequestMapping("/mall/mallorder/mylist")
+    ResponseMessage mylist(@RequestParam("userId") Long userId, 
+    		@RequestParam(value="status",required=false) Integer status, 
+    		@RequestParam("payType") Integer payType,
+    		@RequestParam("size") Integer size, 
+    		@RequestParam("offset") Integer offset);
 
 	/**
      * 列表

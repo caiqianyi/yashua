@@ -31,13 +31,31 @@ Date.prototype.format = function (fmt) { //author: meizz
  return fmt;
 }
 
-$.go = function(url,flag){
+$.go = function(uri,flag){
 	if(flag){
+		if(flag == 3){
+			var returnuri = encodeURIComponent(window.location.href);
+			uri += uri.indexOf("?") > -1 ? "&returnuri="+returnuri : "?returnuri="+returnuri;
+			window.location.href=uri;
+			return;
+		}
 		if(typeof login != 'undefined'){
 			if(!login.isLogin()){
-				url = loginCallUri(url);
+				uri = loginCallUri(uri);
 			}
 		}
 	}
-	window.location.href=url;
+	var returnuri = url("returnuri");
+	if(returnuri && returnuri.length > 0){
+		returnuri = encodeURIComponent(returnuri);
+		uri += uri.indexOf("?") > -1 ? "&returnuri="+returnuri : "?returnuri="+returnuri;
+	}
+	window.location.href=uri;
+}
+$.goBack = function(uri){
+	var returnuri = url("returnuri");
+	if(returnuri && returnuri.length > 0){
+		uri = returnuri;
+	}
+	window.location.href=uri;
 }

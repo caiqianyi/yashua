@@ -33,6 +33,11 @@ public class AddressController extends BaseController{
     	params.put("user_id", oauth2SecuritySubject.getCurrentUser());
     	return userAddressService.list(params);
     }
+    
+    @RequestMapping("/account/address/defaultUse")
+    ResponseMessage defaultUse(){
+    	return userAddressService.defaultUse(oauth2SecuritySubject.getCurrentUser());
+    }
 
 
     /**

@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -71,6 +73,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
     }
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public String create(Long userId, List<MallCartEntity> products) {
 		List<Long> productSpecIds = new ArrayList<Long>();
 		for(MallCartEntity mope : products){
@@ -124,9 +127,10 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 			totalMoney = totalMoney.add(money);
 			
 			MallOrderProductEntity mope = new MallOrderProductEntity();
+			mope.setProductId(mpe.getId());
 			mope.setBuyNumber(cart.getBuyNumber());
 			mope.setName(mpe.getName());
-			mope.setPicImg(mope.getPicImg());
+			mope.setPicImg(mpe.getShowPic());
 			mope.setPrice(mpse.getPrice());
 			mope.setProductAmount(money);
 			mope.setProductScore(0);
@@ -148,6 +152,8 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 			mope.setOrderId(order.getId());
 			mallOrderProductDao.insert(mope);
 		}
+		
+		mallCartDao.delete(new EntityWrapper<MallCartEntity>().eq("user_id", userId).in("product_spec_id", productSpecIds));
 		return orderNo;
 	}
 	
@@ -168,5 +174,42 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 			String orderNo, Integer status) {
 		// TODO Auto-generated method stub
 		return this.baseMapper.selectOrderByOrderNo(userId,orderNo, status);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void confirmOrder(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String address, String consignee, String mobile) {
+		// TODO Auto-generated method stub
+		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(userId,orderNo, 0);
+		if(order == null){
+			throw new I18nMessageException("-1","此订单不存在或已支付");
+		}
+		order.setAddress(address);
+		order.setConsignee(consignee);
+		order.setMobile(mobile);
+		order.setInvoiceTitle(invoiceTitle);
+		order.setInvoiceType(invoiceType);
+		order.setUpdateTime(new Date());
+		this.baseMapper.updateById(order);
+	}
+	
+	@Override
+	public List<MallOrderEntity> mylist(Long userId, Integer status,
+			Integer payType, Integer size, Integer offset) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.mylist(userId, status, payType, size, offset);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void delete(Long userId, String orderNo) {
+		// TODO Auto-generated method stub
+		MallOrderEntity order = this.selectOne(new EntityWrapper<MallOrderEntity>().eq("user_id", userId).eq("order_no", orderNo));
+		if(order == null){
+			throw new I18nMessageException("-1","此订单不存在或已支付");
+		}
+		order.setOrderStatus(-1);
+		this.baseMapper.updateById(order);
 	}
 }

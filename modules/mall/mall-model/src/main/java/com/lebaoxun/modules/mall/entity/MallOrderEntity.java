@@ -90,6 +90,20 @@ public class MallOrderEntity implements Serializable {
 	 */
 	private Integer buyNumber;
 	
+	/**
+	 * 收货地址
+	 */
+	private String address;
+	
+	/**
+	 * 收货人
+	 */
+	private String consignee;
+	/**
+	 * 收货手机号
+	 */
+	private String mobile;
+	
 	@TableField(exist=false)
 	private List<MallOrderProductEntity> childs;
 
@@ -302,5 +316,23 @@ public class MallOrderEntity implements Serializable {
 	}
 	public void setChilds(List<MallOrderProductEntity> childs) {
 		this.childs = childs;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getConsignee() {
+		return consignee;
+	}
+	public void setConsignee(String consignee) {
+		this.consignee = consignee;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 }

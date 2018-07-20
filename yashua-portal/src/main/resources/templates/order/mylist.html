@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>我的订单</title>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
+<script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:$.goBack('/account.html');"></span>我的订单</div>
+<div class="dingdan bg-white">
+	<ul>
+		<li class="on" id="status_"><a href="javascript:void(0);">全部</a></li>
+        <li id="status_0"><a href="javascript:void(0);">待付款</a></li>
+        <li id="status_1"><a href="javascript:void(0);">待发货</a></li>
+        <li id="status_2"><a href="javascript:void(0);">已发货</a></li>
+        <li id="status_3"><a href="javascript:void(0);">待评价</a></li>
+	</ul>
+</div>
+<div id="wrapper">
+	<div class="order-list">
+		<div class="dingdan-txt bg-white font-24">
+			<p class="bianhao"><i>定单编号：</i>LV201805226135764900</p>
+		    <a href="dingdanxiangqing.html">
+		        <dl>
+		            <dt><img src="/statics/images/yst-2.png" alt=""/></dt>
+		            <dd>
+		                <span>美牙智能纳米牙刷头牙刷头牙刷头牙刷头...</span>
+		                <i>颜色：蓝色</i>
+		            </dd>
+		            <em>&times; 1</em>
+		        </dl>
+		    </a>
+		    <p class="money">共一件商品 合计：<span><i>123</i>.00</span></p>
+		    <ul>
+		    	<li><a href="">查看物流</a></li>
+		        <li><a href="">删除订单</a></li>
+		        <li class="once"><a href="">再次购买</a></li>
+		        <li class="pj"><a href="pingjia.html">评价</a></li>
+		    </ul>
+		    <p class="zhuangtai">已签收</p>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function deleteOrder(orderNo){
+	var result = confirm("您确定删除此订单？");
+	if(result){
+		$.ajax({
+	        type: 'GET',
+	        url: '/mall/order/delete',
+	        data:{
+	        	orderNo: orderNo
+	        },
+	        success: function(response){
+	        	if(response.errcode == 0){
+	        		alert("删除成功");
+	        		window.location.reload();
+	        		return;
+	        	}
+	       		alert(repsonse.errmsg);
+	        }
+	    });
+	}
+}
+$(function(){
+	var offset = 0;
+	$("li[id^=status_]").click(function(){
+		$("li[id^=status_]").removeClass("on");
+		$(this).addClass("on");
+		offset = 0;
+		$('.order-list').html('');
+		$('#wrapper').html('<div class="order-list"></div>');
+		var status = $(this).attr("id").replace("status_","");
+	    $('#wrapper').dropload({
+	        scrollArea : window,
+	        loadDownFn : function(me){
+	            // 拼接HTML
+	        	$.ajax({
+	                type: 'GET',
+	                url: '/mall/order/mylist',
+	                data:{
+	                	status: status,
+	                	offset:offset,
+	                	size:10
+	                },
+	                success: function(response){
+	                	if(response.errcode == 0){
+		                    var arrLen = response.data.length;
+		                    var html = "";
+		                    if(arrLen > 0){
+		                    	for(var i=0;i<response.data.length;i++){
+		                    		var item = response.data[i];
+		                    		for(var k=0;k<item.childs.length;k++){
+			                    		html += '<div class="dingdan-txt bg-white font-24">';
+			                    		html += '	<p class="bianhao"><i>订单编号：</i>'+item.orderNo+'</p>';
+		                    			var order = item.childs[k];
+			                    		html += '    <a href="/mall/info/'+order.productId+'.html">';
+			                    		html += '        <dl>';
+			                    		html += '            <dt><img src="'+order.picImg+'" alt=""/></dt>';
+			                    		html += '            <dd>';
+			                    		html += '                <span>'+order.name+'</span>';
+			                    		html += '                <i>'+order.productSpecName+'</i>';
+			                    		html += '            </dd>';
+			                    		html += '            <em>&times; '+order.buyNumber+'</em>';
+			                    		html += '        </dl>';
+			                    		html += '    </a>';
+			                    		console.info(order);
+			                    		html += '    <p class="money">共一件商品 合计：<span><i>'+order.productAmount.toFixed(2)+'</i></span></p>';
+			                    		html += '    <ul>';
+			                    		if(item.orderStatus == 2){
+				                    		html += '    	<li><a href="javascript:">查看物流</a></li>';
+			                    		}
+			                    		if(item.orderStatus == 3){
+			                    			html += '        <li class="pj"><a href="/comment/list.html">评价</a></li>';
+			                    		}
+			                    		if(item.orderStatus == 0){
+				                    		html += '    <li><a href="/order/confirm.html?orderNo='+item.orderNo+'">支付</a></li>';
+			                    		}
+			                    		if(item.orderStatus != 1){
+			                    			html += '    <li><a href="javascript:deleteOrder(\''+item.orderNo+'\');">删除订单</a></li>';
+			                    		}
+			                    		if(item.orderStatus != 0){
+				                    		html += '        <li class="once"><a href="/mall/info/'+order.productId+'.html">再次购买</a></li>';
+			                    		}
+			                    		html += '    </ul>';
+			                    		html += '</div>';
+		                    		}
+		                    	}
+		                    	if(arrLen < 10){
+		                    		// 锁定
+		                            me.lock();
+		                            // 无数据
+		                            me.noData();
+		                    	}
+		                    	offset += arrLen;
+		                    // 如果没有数据
+		                    }else{
+		                        // 锁定
+		                        me.lock();
+		                        // 无数据
+		                        me.noData();
+		                    }
+		                    // 为了测试，延迟1秒加载
+		                    // 插入数据到页面，放到最后面
+		                    $('.order-list').append(html);
+		                    // 每次数据插入，必须重置
+		                    me.resetload();
+	                	}else{
+	        				alert(response.errmsg);
+	        			}
+	                }
+	            });
+	        }
+	    });
+	});
+	$("li[id^=status_].on").click();
+});
+</script>
+</body>
+</html>
+

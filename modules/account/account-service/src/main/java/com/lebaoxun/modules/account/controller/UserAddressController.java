@@ -39,6 +39,10 @@ public class UserAddressController {
         PageUtils page = userAddressService.queryPage(params);
         return ResponseMessage.ok(page);
     }
+    @RequestMapping("/account/useraddress/defaultUse")
+    ResponseMessage defaultUse(@RequestParam(value="userId")Long userId){
+    	return ResponseMessage.ok(userAddressService.selectOne(new EntityWrapper<UserAddressEntity>().eq("user_id", userId).eq("default_flag",0)));
+    }
 
 
     /**

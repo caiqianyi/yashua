@@ -7,7 +7,7 @@
     <resultMap type="com.lebaoxun.modules.mall.entity.MallOrderProductEntity" id="mallOrderProductMap">
         <result property="orderProductId" column="order_product_id"/>
         <result property="orderId" column="order_id"/>
-        <result property="productNumber" column="product_number"/>
+        <result property="productId" column="product_id" />
         <result property="name" column="name"/>
         <result property="picImg" column="pic_img"/>
         <result property="productSpecId" column="product_spec_id"/>
