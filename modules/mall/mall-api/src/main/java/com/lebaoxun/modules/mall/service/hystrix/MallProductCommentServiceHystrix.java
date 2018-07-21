@@ -43,6 +43,22 @@ public class MallProductCommentServiceHystrix implements IMallProductCommentServ
 	public ResponseMessage delete(Long adminId,Long[] ids) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+
+	@Override
+	public ResponseMessage publish(Long userId, Long orderProductId,
+			MallProductCommentEntity comment) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage selectByProduct(Long productId) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public MallProductCommentEntity selectLastByProduct(Long productId) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
     
 }
 

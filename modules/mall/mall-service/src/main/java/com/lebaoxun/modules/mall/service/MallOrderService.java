@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
+import com.lebaoxun.modules.mall.entity.MallOrderProductEntity;
 
 /**
  * 订单表
@@ -31,4 +32,7 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 			String invoiceTitle, String address, String consignee, String mobile);
 	
 	void delete(Long userId, String orderNo);
+	
+	MallOrderProductEntity selectOrderProductByOrderProductId(Long userId,
+			Long orderProductId);
 }

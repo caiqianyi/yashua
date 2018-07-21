@@ -1,10 +1,9 @@
 package com.lebaoxun.modules.mall.entity;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 评价图片表

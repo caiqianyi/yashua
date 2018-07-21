@@ -28,10 +28,11 @@ public class MallOrderController extends BaseController {
 		return mallOrderService.create(oauth2SecuritySubject.getCurrentUser(),
 				products);
 	}
-	
+
 	@RequestMapping("/mall/order/delete")
-    ResponseMessage delete(@RequestParam("orderNo")String orderNo){
-		return mallOrderService.deleteByUser(oauth2SecuritySubject.getCurrentUser(), orderNo);
+	ResponseMessage delete(@RequestParam("orderNo") String orderNo) {
+		return mallOrderService.deleteByUser(
+				oauth2SecuritySubject.getCurrentUser(), orderNo);
 	}
 
 	@RequestMapping("/mall/order/nopay")
@@ -51,11 +52,19 @@ public class MallOrderController extends BaseController {
 				oauth2SecuritySubject.getCurrentUser(), orderNo, invoiceType,
 				invoiceTitle, address, consignee, mobile);
 	}
-	
+
 	@RequestMapping("/mall/order/mylist")
-    ResponseMessage mylist(@RequestParam(value="status",required=false) Integer status, 
-    		@RequestParam("size") Integer size, 
-    		@RequestParam("offset") Integer offset){
-		return mallOrderService.mylist(oauth2SecuritySubject.getCurrentUser(), status, 1, size, offset);
+	ResponseMessage mylist(
+			@RequestParam(value = "status", required = false) Integer status,
+			@RequestParam("size") Integer size,
+			@RequestParam("offset") Integer offset) {
+		return mallOrderService.mylist(oauth2SecuritySubject.getCurrentUser(),
+				status, 1, size, offset);
+	}
+
+	@RequestMapping("/mall/orderProduct/find")
+	ResponseMessage findByOrderProductId(@RequestParam("id") Long id) {
+		return mallOrderService.selectOrderProductByOrderProductId(
+				oauth2SecuritySubject.getCurrentUser(), id);
 	}
 }

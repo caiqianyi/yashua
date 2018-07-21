@@ -93,9 +93,12 @@ $(function(){
 		                    	for(var i=0;i<response.data.length;i++){
 		                    		var item = response.data[i];
 		                    		for(var k=0;k<item.childs.length;k++){
+		                    			var order = item.childs[k];
+		                    			if(status == 3 && order.status != 3){
+		                    				continue;
+		                    			}
 			                    		html += '<div class="dingdan-txt bg-white font-24">';
 			                    		html += '	<p class="bianhao"><i>订单编号：</i>'+item.orderNo+'</p>';
-		                    			var order = item.childs[k];
 			                    		html += '    <a href="/mall/info/'+order.productId+'.html">';
 			                    		html += '        <dl>';
 			                    		html += '            <dt><img src="'+order.picImg+'" alt=""/></dt>';
@@ -106,14 +109,13 @@ $(function(){
 			                    		html += '            <em>&times; '+order.buyNumber+'</em>';
 			                    		html += '        </dl>';
 			                    		html += '    </a>';
-			                    		console.info(order);
 			                    		html += '    <p class="money">共一件商品 合计：<span><i>'+order.productAmount.toFixed(2)+'</i></span></p>';
 			                    		html += '    <ul>';
 			                    		if(item.orderStatus == 2){
 				                    		html += '    	<li><a href="javascript:">查看物流</a></li>';
 			                    		}
-			                    		if(item.orderStatus == 3){
-			                    			html += '        <li class="pj"><a href="/comment/list.html">评价</a></li>';
+			                    		if(order.status == 3){
+			                    			html += '        <li class="pj"><a href="/comment/publish.html?order_product_id='+order.orderProductId+'">评价</a></li>';
 			                    		}
 			                    		if(item.orderStatus == 0){
 				                    		html += '    <li><a href="/order/confirm.html?orderNo='+item.orderNo+'">支付</a></li>';

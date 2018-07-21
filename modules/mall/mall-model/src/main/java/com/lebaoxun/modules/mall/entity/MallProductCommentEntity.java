@@ -1,10 +1,12 @@
 package com.lebaoxun.modules.mall.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 /**
  * 评价表
@@ -78,6 +80,9 @@ public class MallProductCommentEntity implements Serializable {
 	 * 更新者
 	 */
 	private String updateBy;
+	
+	@TableField(exist=false)
+	private List<MallProductCommentImageEntity> picImgs;
 
 	/**
 	 * 设置：评价ID
@@ -258,5 +263,11 @@ public class MallProductCommentEntity implements Serializable {
 	 */
 	public String getUpdateBy() {
 		return updateBy;
+	}
+	public List<MallProductCommentImageEntity> getPicImgs() {
+		return picImgs;
+	}
+	public void setPicImgs(List<MallProductCommentImageEntity> picImgs) {
+		this.picImgs = picImgs;
 	}
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
+import com.lebaoxun.modules.mall.entity.MallOrderProductEntity;
 
 /**
  * 订单表
@@ -25,4 +26,9 @@ public interface MallOrderDao extends BaseMapper<MallOrderEntity> {
 	List<MallOrderEntity> mylist(@Param("userId") Long userId, @Param("status") Integer status,
 			@Param("payType") Integer payType, @Param("size") Integer size,
 			@Param("offset") Integer offset);
+	
+	MallOrderProductEntity selectOrderProductByOrderProductId(@Param("userId") Long userId,
+			@Param("orderProductId") Long orderProductId);
+	
+	List<MallOrderProductEntity> selectOrderProductByOrderId(@Param("orderId") Long orderId);
 }

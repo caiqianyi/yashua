@@ -15,6 +15,7 @@ import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
 import com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity;
 import com.lebaoxun.modules.mall.service.IMallCategoryService;
+import com.lebaoxun.modules.mall.service.IMallProductCommentService;
 import com.lebaoxun.modules.mall.service.IMallProductService;
 import com.lebaoxun.modules.mall.service.IMallProductSpecificationService;
 import com.lebaoxun.portal.rest.BaseController;
@@ -30,6 +31,9 @@ public class MallController extends BaseController {
 	
 	@Resource
 	private IMallProductSpecificationService mallProductSpecification;
+	
+	@Resource
+	private IMallProductCommentService mallProductCommentService;
 
 	@RequestMapping("/mall/list.html")
 	public String list(Map<String,Object> map){
@@ -46,6 +50,7 @@ public class MallController extends BaseController {
 		List<MallProductSpecificationEntity> specs = mallProductSpecification.queryByProductId(id);
 		map.put("product", product);
 		map.put("specs", specs);
+		map.put("lastComment", mallProductCommentService.selectLastByProduct(id));
 		return "/mall/info";
 	}
 	

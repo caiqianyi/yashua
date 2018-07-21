@@ -38,6 +38,10 @@ public interface IMallOrderService {
     		@RequestParam("orderNo")String orderNo,
     		@RequestParam("status")Integer status);
 	
+	@RequestMapping("/mall/mallorder/selectOrderProductByOrderProductId")
+    ResponseMessage selectOrderProductByOrderProductId(@RequestParam("userId")Long userId,
+    		@RequestParam("orderProductId")Long orderProductId);
+	
 	@RequestMapping("/mall/mallorder/confirmOrder")
     ResponseMessage confirmOrder(@RequestParam("userId") Long userId,
     		@RequestParam("orderNo") String orderNo, 

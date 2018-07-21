@@ -212,4 +212,11 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 		order.setOrderStatus(-1);
 		this.baseMapper.updateById(order);
 	}
+	
+	@Override
+	public MallOrderProductEntity selectOrderProductByOrderProductId(
+			Long userId, Long orderProductId) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.selectOrderProductByOrderProductId(userId, orderProductId);
+	}
 }

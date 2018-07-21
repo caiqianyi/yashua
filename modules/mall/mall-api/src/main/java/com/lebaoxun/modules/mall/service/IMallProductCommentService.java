@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.lebaoxun.modules.mall.entity.MallProductCommentEntity;
 import com.lebaoxun.modules.mall.service.hystrix.MallProductCommentServiceHystrix;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -21,6 +22,19 @@ import java.util.Map;
 
 @FeignClient(value="mall-service",fallback=MallProductCommentServiceHystrix.class)
 public interface IMallProductCommentService {
+	
+	@RequestMapping("/mall/mallproductcomment/publish")
+	ResponseMessage publish(@RequestParam("userId") Long userId,
+			@RequestParam("orderProductId") Long orderProductId,
+			@RequestBody MallProductCommentEntity comment);
+
+	@RequestMapping("/mall/mallproductcomment/selectByProduct")
+	ResponseMessage selectByProduct(
+			@RequestParam("productId") Long productId);
+	
+	@RequestMapping("/mall/mallproductcomment/selectLastByProduct")
+	MallProductCommentEntity selectLastByProduct(@RequestParam("productId") Long productId);
+	
 	/**
      * 列表
      */

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
+import com.lebaoxun.modules.mall.entity.MallOrderProductEntity;
 import com.lebaoxun.modules.mall.service.MallOrderService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -51,6 +52,12 @@ public class MallOrderController {
     		@RequestParam("orderNo")String orderNo,
     		@RequestParam("status")Integer status){
     	return mallOrderService.selectOrderByOrderNo(userId,orderNo, status);
+    }
+    
+    @RequestMapping("/mall/mallorder/selectOrderProductByOrderProductId")
+    ResponseMessage selectOrderProductByOrderProductId(@RequestParam("userId")Long userId,
+    		@RequestParam("orderProductId")Long orderProductId){
+    	return ResponseMessage.ok(mallOrderService.selectOrderProductByOrderProductId(userId, orderProductId));
     }
 
     @RequestMapping("/mall/mallorder/confirmOrder")

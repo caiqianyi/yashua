@@ -32,6 +32,12 @@ public class MallOrderServiceHystrix implements IMallOrderService {
 	}
 	
 	@Override
+	public ResponseMessage selectOrderProductByOrderProductId(Long userId,
+			Long orderProductId) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
 	public ResponseMessage info(Long id) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}

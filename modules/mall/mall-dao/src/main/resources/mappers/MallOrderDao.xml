@@ -59,9 +59,11 @@
 		update_time, order_amount,
 		order_score, pay_amount, buy_number ) VALUES
 		( #{orderNo}, #{userId}, #{payType},
-		#{shipmentTime}, #{shipmentType}, #{shipmentAmount},
+		#{shipmentTime}, #{shipmentType},
+		#{shipmentAmount},
 		#{invoiceType}, #{invoiceTitle},
-		#{orderStatus}, #{postid}, #{createTime},
+		#{orderStatus},
+		#{postid}, #{createTime},
 		#{updateTime}, #{orderAmount},
 		#{orderScore},
 		#{payAmount}, #{buyNumber});
@@ -70,30 +72,38 @@
 	<select id="selectOrderByOrderNo" resultMap="mallOrderMap">
 		select t1.*,
 		t2.order_product_id, t2.order_id, t2.product_id,
-		t2.name, t2.pic_img, t2.product_spec_id, t2.product_spec_name,
-		t2.price, t2.score, t2.buy_number as p_buy_number, t2.product_score,
+		t2.name,
+		t2.pic_img, t2.product_spec_id, t2.product_spec_name,
+		t2.price,
+		t2.score, t2.buy_number as p_buy_number, t2.product_score,
 		t2.product_amount,t2.status
-		from mall_order as t1 left join mall_order_product t2 on
-		t2.order_id = t1.id where t1.user_id = #{userId} 
-		and t1.order_no = #{orderNo} 
+		from mall_order as t1 left join
+		mall_order_product t2 on
+		t2.order_id = t1.id where t1.user_id =
+		#{userId}
+		and t1.order_no = #{orderNo}
 		and t1.order_status != -1
 		<if test="status != null">
-			and t1.order_status = #{status} 
+			and t1.order_status = #{status}
 		</if>
 		and t1.pay_type = 1;
 	</select>
-	
+
 	<select id="mylist" resultMap="mallOrderMap">
-	    select t1.*,
+		select t1.*,
 		t2.order_product_id, t2.order_id, t2.product_id,
-		t2.name, t2.pic_img, t2.product_spec_id, t2.product_spec_name,
-		t2.price, t2.score, t2.buy_number as p_buy_number, t2.product_score,
+		t2.name,
+		t2.pic_img, t2.product_spec_id, t2.product_spec_name,
+		t2.price,
+		t2.score, t2.buy_number as p_buy_number, t2.product_score,
 		t2.product_amount,t2.status
-		from mall_order as t1 left join mall_order_product t2 on
-		t2.order_id = t1.id where t1.user_id = #{userId}
+		from mall_order as t1 left join
+		mall_order_product t2 on
+		t2.order_id = t1.id where t1.user_id =
+		#{userId}
 		and t1.order_status != -1
 		<if test="status != null">
-			and t1.order_status = #{status} 
+			and t1.order_status = #{status}
 		</if>
 		and t1.pay_type = #{payType}
 		order by t1.create_time desc
@@ -105,5 +115,15 @@
 			#{size,jdbcType=INTEGER}
 		</if>
 		;
+	</select>
+
+	<select id="selectOrderProductByOrderProductId" resultMap="mallOrderProductMap">
+		select t1.* from mall_order_product as t1,mall_order as t2 where t2.user_id
+		= #{userId} and t1.order_product_id = #{orderProductId} and t2.id = t1.order_id and
+		t2.order_status != -1;
+	</select>
+	
+	<select id="selectOrderProductByOrderId" resultMap="mallOrderProductMap">
+	    select * from mall_order_product as t1 where t1.order_id = #{orderId} and  t1.status != -1;
 	</select>
 </mapper>

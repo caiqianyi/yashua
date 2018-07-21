@@ -1,7 +1,12 @@
 package com.lebaoxun.modules.mall.dao;
 
+import java.util.List;
+
 import com.lebaoxun.modules.mall.entity.MallProductCommentEntity;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -13,5 +18,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface MallProductCommentDao extends BaseMapper<MallProductCommentEntity> {
+	void save(MallProductCommentEntity comment);
 	
+	List<MallProductCommentEntity> selectByProduct(@Param("productId") Long productId);
+	
+	MallProductCommentEntity selectLastByProduct(@Param("productId") Long productId);
 }

@@ -4,23 +4,77 @@
 <mapper namespace="com.lebaoxun.modules.mall.dao.MallProductCommentDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.mall.entity.MallProductCommentEntity" id="mallProductCommentMap">
-        <result property="id" column="id"/>
-        <result property="productId" column="product_id"/>
-        <result property="userId" column="user_id"/>
-        <result property="nickname" column="nickname"/>
-        <result property="headimgurl" column="headimgurl"/>
-        <result property="orderId" column="order_id"/>
-        <result property="star" column="star"/>
-        <result property="content" column="content"/>
-        <result property="praises" column="praises"/>
-        <result property="status" column="status"/>
-        <result property="type" column="type"/>
-        <result property="createTime" column="create_time"/>
-        <result property="createBy" column="create_by"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="updateBy" column="update_by"/>
-    </resultMap>
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductCommentEntity"
+		id="mallProductCommentMap">
+		<result property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="userId" column="user_id" />
+		<result property="nickname" column="nickname" />
+		<result property="headimgurl" column="headimgurl" />
+		<result property="orderId" column="order_id" />
+		<result property="star" column="star" />
+		<result property="content" column="content" />
+		<result property="praises" column="praises" />
+		<result property="status" column="status" />
+		<result property="type" column="type" />
+		<result property="createTime" column="create_time" />
+		<result property="createBy" column="create_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateBy" column="update_by" />
 
+		<collection property="picImgs"
+			ofType="com.lebaoxun.modules.mall.entity.MallProductCommentImageEntity"
+			resultMap="mallProductCommentImageMap"></collection>
+	</resultMap>
 
+	<resultMap
+		type="com.lebaoxun.modules.mall.entity.MallProductCommentImageEntity"
+		id="mallProductCommentImageMap">
+		<result property="id" column="id" />
+		<result property="productCommentId" column="product_comment_id" />
+		<result property="picImg" column="pic_img" />
+		<result property="sort" column="sort" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<insert id="save"
+		parameterType="com.lebaoxun.modules.mall.entity.MallProductCommentEntity"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO mall_product_comment (
+		product_id, user_id, nickname,
+		headimgurl, order_id, star,
+		content, praises, status, 
+		type, create_time, create_by,
+		update_time, update_by)
+		VALUES
+		( 
+		#{productId}, #{userId}, #{nickname},
+		#{headimgurl}, #{orderId}, #{star},
+		#{content},  #{praises}, #{status},
+		#{type}, #{createTime}, #{createBy},
+		#{updateTime},  #{updateBy});
+	</insert>
+
+	<select id="selectByProduct" resultMap="mallProductCommentMap">
+		select * from
+		mall_product_comment as t1 left join
+		mall_product_comment_image as t2
+		on t2.product_comment_id = t1.id
+		where t1.product_id = #{productId}
+	</select>
+
+	<select id="selectByProduct" resultMap="mallProductCommentMap">
+		select * from
+		mall_product_comment as t1 left join
+		mall_product_comment_image as t2
+		on t2.product_comment_id = t1.id
+		where t1.product_id = #{productId}
+	</select>
+	
+	<select id="selectLastByProduct" resultMap="mallProductCommentMap">
+	    select * from
+		mall_product_comment as t1
+		where t1.product_id = #{productId}
+		order by t1.create_time desc limit 1;
+	</select>
 </mapper>
