@@ -17,4 +17,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 @Mapper
 public interface MallProductAttrDao extends BaseMapper<MallProductAttrEntity> {
 	void deleteByProduct(@Param("productId") Long productId);
+	
+	MallProductAttrEntity queryByProduct(@Param("productId") Long productId);
 }

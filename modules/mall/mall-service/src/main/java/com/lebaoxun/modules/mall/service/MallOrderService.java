@@ -20,12 +20,15 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 
 	PageUtils queryPage(Map<String, Object> params);
 
-	String create(Long userId, List<MallCartEntity> products);
+	String create(Long userId, Integer maxOrderNum, List<MallCartEntity> products);
+	
+	void scoreExchange(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String address, String consignee, String mobile);
 
 	MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,
 			Integer status);
 
-	List<MallOrderEntity> mylist(Long userId, Integer status, Integer payType,
+	List<MallOrderEntity> mylist(Long userId, Integer status, 
 			Integer size, Integer offset);
 
 	void confirmOrder(Long userId, String orderNo, Integer invoiceType,

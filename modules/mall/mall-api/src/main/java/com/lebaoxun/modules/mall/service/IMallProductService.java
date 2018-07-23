@@ -28,6 +28,10 @@ public interface IMallProductService {
     		@RequestParam("size")Integer size, 
     		@RequestParam("offset")Integer offset);
 	
+	@RequestMapping("/mall/product/score/list")
+    ResponseMessage score(@RequestParam("size")Integer size, 
+    		@RequestParam("offset")Integer offset);
+	
 	@RequestMapping("/mall/product/show/info")
     MallProductEntity findShowProdcutInfo(@RequestParam("id")Long id);
     

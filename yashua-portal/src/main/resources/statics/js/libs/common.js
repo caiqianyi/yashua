@@ -57,5 +57,9 @@ $.goBack = function(uri){
 	if(returnuri && returnuri.length > 0){
 		uri = returnuri;
 	}
-	window.location.href=uri;
+	if(uri){
+		window.location.href=uri;
+	} else{
+		window.location.href=document.referrer;
+	}
 }

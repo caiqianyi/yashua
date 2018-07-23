@@ -21,6 +21,9 @@ public interface MallProductDao extends BaseMapper<MallProductEntity> {
 	
 	MallProductEntity findShowProdcutInfo(@Param("id")Long id);
 	
+	List<MallProductEntity> findShowProdcutByHaveScore(@Param("size") Integer size,
+			@Param("offset") Integer offset);
+	
 	List<MallProductEntity> findShowProdcutByCategory(@Param("categoryId")Long categoryId,
 			@Param("size") Integer size,
 			@Param("offset") Integer offset);

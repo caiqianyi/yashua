@@ -23,6 +23,11 @@ public class MallProductServiceHystrix implements IMallProductService {
 	public ResponseMessage list(Map<String, Object> params) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+	
+	@Override
+	public ResponseMessage score(Integer size, Integer offset) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
 
 	@Override
 	public ResponseMessage info(Long id) {

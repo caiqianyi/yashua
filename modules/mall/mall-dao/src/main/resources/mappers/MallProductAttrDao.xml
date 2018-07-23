@@ -20,4 +20,8 @@
     <delete id="deleteByProduct">  
 	    DELETE FROM mall_product_attr WHERE product_id = #{productId}  
 	</delete>
+	
+    <select id="queryByProduct" resultMap="mallProductAttrMap">
+        SELECT * FROM mall_product_attr WHERE product_id = #{productId}
+    </select>
 </mapper>

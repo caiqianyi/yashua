@@ -23,12 +23,18 @@ public interface MallOrderDao extends BaseMapper<MallOrderEntity> {
 	MallOrderEntity selectOrderByOrderNo(@Param("userId") Long userId,
 			@Param("orderNo") String orderNo, @Param("status") Integer status);
 
-	List<MallOrderEntity> mylist(@Param("userId") Long userId, @Param("status") Integer status,
-			@Param("payType") Integer payType, @Param("size") Integer size,
-			@Param("offset") Integer offset);
-	
-	MallOrderProductEntity selectOrderProductByOrderProductId(@Param("userId") Long userId,
+	List<MallOrderEntity> mylist(@Param("userId") Long userId,
+			@Param("status") Integer status,
+			@Param("size") Integer size, @Param("offset") Integer offset);
+
+	MallOrderProductEntity selectOrderProductByOrderProductId(
+			@Param("userId") Long userId,
 			@Param("orderProductId") Long orderProductId);
-	
-	List<MallOrderProductEntity> selectOrderProductByOrderId(@Param("orderId") Long orderId);
+
+	List<MallOrderProductEntity> selectOrderProductByOrderId(
+			@Param("orderId") Long orderId);
+
+	void balancePay(@Param("userId") Long userId, @Param("tradeAmount") Integer tradeAmount,
+			@Param("logType") String logType, @Param("descr") String descr, 
+			@Param("adjunctInfo") String adjunctInfo);
 }

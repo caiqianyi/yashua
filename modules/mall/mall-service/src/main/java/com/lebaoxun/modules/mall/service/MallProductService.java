@@ -23,6 +23,9 @@ public interface MallProductService extends IService<MallProductEntity> {
     List<MallProductEntity> findShowProdcutByCategory(Long categoryId, 
     		Integer size, Integer offset);
     
+    List<MallProductEntity> findShowProdcutByHaveScore(Integer size,
+			Integer offset);
+    
     MallProductEntity findShowProdcutInfo(Long id);
     
     void create(MallProductEntity mallProduct);

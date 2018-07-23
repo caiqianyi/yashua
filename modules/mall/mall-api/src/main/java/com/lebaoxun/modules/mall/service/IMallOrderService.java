@@ -1,18 +1,18 @@
 package com.lebaoxun.modules.mall.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
 import com.lebaoxun.modules.mall.service.hystrix.MallOrderServiceHystrix;
-import com.lebaoxun.commons.exception.ResponseMessage;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 订单表
@@ -27,6 +27,7 @@ public interface IMallOrderService {
 	
 	@RequestMapping("/mall/mallorder/create")
     ResponseMessage create(@RequestParam("userId")Long userId,
+    		@RequestParam("maxOrderNum") Integer maxOrderNum,
     		@RequestBody List<MallCartEntity> products);
 	
 	@RequestMapping("/mall/mallorder/deleteByUser")
@@ -51,10 +52,18 @@ public interface IMallOrderService {
     		@RequestParam("consignee") String consignee,
     		@RequestParam("mobile") String mobile);
 	
+	@RequestMapping("/mall/mallorder/scoreExchange")
+	ResponseMessage scoreExchange(@RequestParam("userId") Long userId,
+			@RequestParam("orderNo") String orderNo,
+			@RequestParam("invoiceType") Integer invoiceType,
+			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam("address") String address,
+			@RequestParam("consignee") String consignee,
+			@RequestParam("mobile") String mobile);
+	
 	@RequestMapping("/mall/mallorder/mylist")
     ResponseMessage mylist(@RequestParam("userId") Long userId, 
     		@RequestParam(value="status",required=false) Integer status, 
-    		@RequestParam("payType") Integer payType,
     		@RequestParam("size") Integer size, 
     		@RequestParam("offset") Integer offset);
 

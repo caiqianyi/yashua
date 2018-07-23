@@ -42,7 +42,7 @@ public class MallProductCommentController {
 	ResponseMessage selectByProduct(
 			@RequestParam("productId") Long productId) {
 		return ResponseMessage.ok(mallProductCommentService
-				.selectLastByProduct(productId));
+				.selectByProduct(productId));
 	}
 	
 	@RequestMapping("/mall/mallproductcomment/selectLastByProduct")

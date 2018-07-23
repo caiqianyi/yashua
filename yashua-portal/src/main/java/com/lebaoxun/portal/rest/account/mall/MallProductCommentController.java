@@ -46,6 +46,7 @@ public class MallProductCommentController extends BaseController {
 		comment.setCreateTime(new Date());
 		comment.setUserId(userId);
 		comment.setNickname(user.getNickname());
+		comment.setHeadimgurl(user.getHeadimgurl());
 		comment.setType(0);
 		comment.setPraises(0);
 		comment.setStar(5);

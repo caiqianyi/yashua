@@ -44,6 +44,7 @@ public class MallProductCommentEntity implements Serializable {
 	 * 订单ID
 	 */
 	private Long orderId;
+	private Long orderProductId;
 	/**
 	 * 评论星级：1,2,3,4,5
 	 */
@@ -83,6 +84,9 @@ public class MallProductCommentEntity implements Serializable {
 	
 	@TableField(exist=false)
 	private List<MallProductCommentImageEntity> picImgs;
+	
+	@TableField(exist=false)
+	private MallOrderProductEntity mallOrderProductEntity;
 
 	/**
 	 * 设置：评价ID
@@ -269,5 +273,18 @@ public class MallProductCommentEntity implements Serializable {
 	}
 	public void setPicImgs(List<MallProductCommentImageEntity> picImgs) {
 		this.picImgs = picImgs;
+	}
+	public Long getOrderProductId() {
+		return orderProductId;
+	}
+	public void setOrderProductId(Long orderProductId) {
+		this.orderProductId = orderProductId;
+	}
+	public MallOrderProductEntity getMallOrderProductEntity() {
+		return mallOrderProductEntity;
+	}
+	public void setMallOrderProductEntity(
+			MallOrderProductEntity mallOrderProductEntity) {
+		this.mallOrderProductEntity = mallOrderProductEntity;
 	}
 }

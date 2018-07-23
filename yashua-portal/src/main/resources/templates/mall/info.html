@@ -17,7 +17,7 @@
 <img alt="" src="${product.showPic}" style="display:none;">
 <div style="display:none;">${product.shareDescription}</div>
 <img alt="" src="/statics/images/good-or-tick.png" style="display: none;">
-<div class="Top"><span onclick="javascript:history.go(-1);"
+<div class="Top"><span onclick="javascript:$.goBack('/mall/list.html');"
 ></span>商品详情</div>
 <!--图片展示-->
 <#if product.images??>
@@ -47,19 +47,33 @@
 <div id="specs"></div>
 
 <!--宝贝评价-->
-<a href="/mall/comment-list.html" style="color:#333;">
+<a href="/mall/comment/${id}.html" style="color:#333;">
 <div class="thing-cho bg-white" style="margin-bottom:0;">
-	<span>宝贝评价（55）</span>
+	<span>宝贝评价（${product.attrs.replies}）</span>
     <em></em>
 </div>
+<#if lastComment??>
 <div class="babytalk bg-white" style="margin-bottom:1.5rem;">
 	<div class="name font-24">
-    	<img src="/statics/images/touxiang.png" alt=""/>
-        <p>138****1234 <span>我的昵称</span></p>
+		<#if lastComment.headimgurl??>
+    		<img src="${lastComment.headimgurl}" alt=""/>
+    	</#if>
+    	<#if lastComment.nickname??>
+        	<p>${lastComment.nickname}</p>
+        </#if>
     </div>
-    <div class="time font-22 c-9">2018-07-13 颜色分类：蓝色 </div>
-    <div class="txt font-26">宝贝特别好用，支持！！</div>
+    <div class="time font-22 c-9">${lastComment.createTime?string("yyyy-MM-dd")} 
+    <#if lastComment.mallOrderProductEntity??>
+    	<#if lastComment.mallOrderProductEntity.productSpecName??>
+    		${lastComment.mallOrderProductEntity.productSpecName}
+    	</#if> 
+    </#if> 
+    </div>
+    <#if lastComment.content??>
+    	<div class="txt font-26">${lastComment.content}</div>
+    </#if> 
 </div>
+</#if>
 </a>
 <!--购买-->
 <div class="thing-mai bg-white">
@@ -79,9 +93,35 @@
 </div>
 
 <script type="text/javascript">
+	var specs;
+	var productSpecs = {};
 	var id = ${product.id};
 	function buyOrder(){
-		window.location.href="/order/confirm.html";
+		if(!login.isLogin()){
+			parent.location.href = loginCallUri();
+			return;
+		}
+		var pos = [{productSpecId:$(".aLi").attr("data")
+			,buyNumber:$("input[name=amount]").val()}];
+		var l2 = $.loading({content:"请求中..."}).show();
+		$.ajax({
+	    	url: "/mall/order/create",
+	    	type: "POST",
+	    	contentType: "application/json",
+		    data: JSON.stringify(pos),
+	    	success: function(r){
+	    		l2.hide();
+	    		if(r.errcode == 0){
+	    			$.go("/order/confirm.html?orderNo="+r.data.orderNo);
+	    			return;
+	    		}else if(r.errcode == 20110){
+	    			alert(r.errmsg);
+	    			$.go("/order/mylist.html");
+	    			return;
+	    		}
+	    		alert(r.errmsg);
+	    	}
+		});
 	}
 	function joinCart(specId){
 		var productSpecIds = [];
@@ -102,7 +142,6 @@
 		$(".xzpop[id=xzpop-"+specId+"] .bg-black").click();
 	}
     
-    var specs;
     $.ajax({
     	url: "/mall/product/info/specs",
     	type: "get",
@@ -112,6 +151,7 @@
     	success: function(r){
     		if(r.errcode == 0){
     			var datas = r.data;
+    			productSpecs = datas;
     			specs = [];
     			function indexOf(id){
     				for(var i=0;i<specs.length;i++){

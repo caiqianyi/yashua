@@ -9,14 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.modules.account.entity.UserEntity;
+import com.lebaoxun.modules.account.service.IUserService;
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
+import com.lebaoxun.modules.mall.entity.MallOrderEntity;
 import com.lebaoxun.modules.mall.service.IMallOrderService;
 import com.lebaoxun.portal.rest.BaseController;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 
 @RestController
 public class MallOrderController extends BaseController {
+	
+	@Resource
+    private IUserService userService;
+	
 	@Resource
 	private IMallOrderService mallOrderService;
 
@@ -26,7 +34,7 @@ public class MallOrderController extends BaseController {
 	@RequestMapping("/mall/order/create")
 	ResponseMessage create(@RequestBody List<MallCartEntity> products) {
 		return mallOrderService.create(oauth2SecuritySubject.getCurrentUser(),
-				products);
+				5,products);
 	}
 
 	@RequestMapping("/mall/order/delete")
@@ -53,13 +61,30 @@ public class MallOrderController extends BaseController {
 				invoiceTitle, address, consignee, mobile);
 	}
 
+	@RequestMapping("/mall/order/scoreExchange")
+	ResponseMessage scoreExchange(@RequestParam("orderNo") String orderNo,
+			@RequestParam("invoiceType") Integer invoiceType,
+			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam("address") String address,
+			@RequestParam("consignee") String consignee,
+			@RequestParam("mobile") String mobile) {
+		Long userId = oauth2SecuritySubject.getCurrentUser();
+		UserEntity user = userService.findByUserId(userId);
+		MallOrderEntity order = mallOrderService.selectOrderByOrderNo(userId, orderNo, 0);
+		if(order.getOrderScore() > user.getBalance()){
+			throw new I18nMessageException("-1","账户余额不足");
+		}
+		return mallOrderService.scoreExchange(user.getUserId(), orderNo, invoiceType,
+				invoiceTitle, address, consignee, mobile);
+	}
+
 	@RequestMapping("/mall/order/mylist")
 	ResponseMessage mylist(
 			@RequestParam(value = "status", required = false) Integer status,
 			@RequestParam("size") Integer size,
 			@RequestParam("offset") Integer offset) {
 		return mallOrderService.mylist(oauth2SecuritySubject.getCurrentUser(),
-				status, 1, size, offset);
+				status, size, offset);
 	}
 
 	@RequestMapping("/mall/orderProduct/find")

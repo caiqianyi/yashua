@@ -12,6 +12,7 @@
 		<result property="nickname" column="nickname" />
 		<result property="headimgurl" column="headimgurl" />
 		<result property="orderId" column="order_id" />
+		<result property="orderProductId" column="order_product_id" />
 		<result property="star" column="star" />
 		<result property="content" column="content" />
 		<result property="praises" column="praises" />
@@ -22,6 +23,9 @@
 		<result property="updateTime" column="update_time" />
 		<result property="updateBy" column="update_by" />
 
+		<association property="mallOrderProductEntity"
+			javaType="com.lebaoxun.modules.mall.entity.MallOrderProductEntity"
+			resultMap="mallOrderProductMap"></association>
 		<collection property="picImgs"
 			ofType="com.lebaoxun.modules.mall.entity.MallProductCommentImageEntity"
 			resultMap="mallProductCommentImageMap"></collection>
@@ -37,43 +41,56 @@
 		<result property="status" column="status" />
 	</resultMap>
 
+	<!-- 可根据自己的需求，是否要使用 -->
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallOrderProductEntity"
+		id="mallOrderProductMap">
+		<result property="orderProductId" column="order_product_id" />
+		<result property="orderId" column="order_id" />
+		<result property="productId" column="product_id" />
+		<result property="name" column="name" />
+		<result property="picImg" column="pic_img" />
+		<result property="productSpecId" column="product_spec_id" />
+		<result property="productSpecName" column="product_spec_name" />
+		<result property="price" column="price" />
+		<result property="score" column="score" />
+		<result property="buyNumber" column="buy_number" />
+		<result property="productScore" column="product_score" />
+		<result property="productAmount" column="product_amount" />
+		<result property="status" column="status" />
+	</resultMap>
+
 	<insert id="save"
 		parameterType="com.lebaoxun.modules.mall.entity.MallProductCommentEntity"
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO mall_product_comment (
 		product_id, user_id, nickname,
 		headimgurl, order_id, star,
-		content, praises, status, 
+		content, praises, status,
 		type, create_time, create_by,
-		update_time, update_by)
+		update_time, update_by, order_product_id)
 		VALUES
-		( 
+		(
 		#{productId}, #{userId}, #{nickname},
 		#{headimgurl}, #{orderId}, #{star},
-		#{content},  #{praises}, #{status},
+		#{content}, #{praises}, #{status},
 		#{type}, #{createTime}, #{createBy},
-		#{updateTime},  #{updateBy});
+		#{updateTime}, #{updateBy}, #{orderProductId});
 	</insert>
 
 	<select id="selectByProduct" resultMap="mallProductCommentMap">
 		select * from
+		mall_order_product as t3,
 		mall_product_comment as t1 left join
 		mall_product_comment_image as t2
 		on t2.product_comment_id = t1.id
-		where t1.product_id = #{productId}
+		where t3.order_product_id = t1.order_product_id and t1.product_id = #{productId}
+		order by t1.create_time desc
 	</select>
 
-	<select id="selectByProduct" resultMap="mallProductCommentMap">
-		select * from
-		mall_product_comment as t1 left join
-		mall_product_comment_image as t2
-		on t2.product_comment_id = t1.id
-		where t1.product_id = #{productId}
-	</select>
-	
 	<select id="selectLastByProduct" resultMap="mallProductCommentMap">
-	    select * from
+		select * from
 		mall_product_comment as t1
+		left join mall_order_product as t2 on t2.order_product_id = t1.order_product_id
 		where t1.product_id = #{productId}
 		order by t1.create_time desc limit 1;
 	</select>

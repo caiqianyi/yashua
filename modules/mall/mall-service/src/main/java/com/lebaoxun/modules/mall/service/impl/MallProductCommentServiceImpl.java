@@ -17,10 +17,12 @@ import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.Query;
 import com.lebaoxun.modules.mall.dao.MallOrderDao;
 import com.lebaoxun.modules.mall.dao.MallOrderProductDao;
+import com.lebaoxun.modules.mall.dao.MallProductAttrDao;
 import com.lebaoxun.modules.mall.dao.MallProductCommentDao;
 import com.lebaoxun.modules.mall.dao.MallProductCommentImageDao;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderProductEntity;
+import com.lebaoxun.modules.mall.entity.MallProductAttrEntity;
 import com.lebaoxun.modules.mall.entity.MallProductCommentEntity;
 import com.lebaoxun.modules.mall.entity.MallProductCommentImageEntity;
 import com.lebaoxun.modules.mall.service.MallProductCommentService;
@@ -37,6 +39,9 @@ public class MallProductCommentServiceImpl extends ServiceImpl<MallProductCommen
 	
 	@Resource
 	private MallProductCommentImageDao mallProductCommentImageDao;
+	
+	@Resource
+	private MallProductAttrDao mallProductAttrDao;
 	
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -66,6 +71,10 @@ public class MallProductCommentServiceImpl extends ServiceImpl<MallProductCommen
 				break;
 			}
 		}
+		MallProductAttrEntity mpae = mallProductAttrDao.queryByProduct(mope.getProductId());
+		mpae.setReplies(mpae.getReplies()+1);
+		mallProductAttrDao.updateById(mpae);
+		
 		//修改订单状态为已评价
 		mope.setStatus(4);
 		mallOrderProductDao.updateById(mope);
@@ -75,6 +84,8 @@ public class MallProductCommentServiceImpl extends ServiceImpl<MallProductCommen
 			order.setOrderStatus(4);
 			mallOrderDao.updateById(order);
 		}
+		comment.setOrderId(mope.getOrderId());
+		comment.setOrderProductId(orderProductId);
 		comment.setProductId(mope.getProductId());
 		this.baseMapper.save(comment);
 		List<MallProductCommentImageEntity> images = comment.getPicImgs();

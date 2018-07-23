@@ -58,7 +58,8 @@ public class MallOrderServiceHystrix implements IMallOrderService {
 	}
 
 	@Override
-	public ResponseMessage create(Long userId, List<MallCartEntity> products) {
+	public ResponseMessage create(Long userId, 
+			Integer maxOrderNum, List<MallCartEntity> products) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
@@ -76,8 +77,15 @@ public class MallOrderServiceHystrix implements IMallOrderService {
 	}
 	
 	@Override
-	public ResponseMessage mylist(Long userId, Integer status, Integer payType,
+	public ResponseMessage mylist(Long userId, Integer status,
 			Integer size, Integer offset) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
+	public ResponseMessage scoreExchange(Long userId, String orderNo,
+			Integer invoiceType, String invoiceTitle, String address,
+			String consignee, String mobile) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 }

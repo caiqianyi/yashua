@@ -86,7 +86,7 @@
 		<if test="status != null">
 			and t1.order_status = #{status}
 		</if>
-		and t1.pay_type = 1;
+		;
 	</select>
 
 	<select id="mylist" resultMap="mallOrderMap">
@@ -105,7 +105,6 @@
 		<if test="status != null">
 			and t1.order_status = #{status}
 		</if>
-		and t1.pay_type = #{payType}
 		order by t1.create_time desc
 		<if test="size != null">
 			limit
@@ -126,4 +125,8 @@
 	<select id="selectOrderProductByOrderId" resultMap="mallOrderProductMap">
 	    select * from mall_order_product as t1 where t1.order_id = #{orderId} and  t1.status != -1;
 	</select>
+	
+	<update id="balancePay">
+	    call account_balance_deduct_proce(#{userId},#{tradeAmount},#{logType},#{descr},#{adjunctInfo});
+	</update>
 </mapper>

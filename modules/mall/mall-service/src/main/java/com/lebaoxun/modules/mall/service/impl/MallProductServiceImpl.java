@@ -138,4 +138,11 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductDao, MallProd
 		// TODO Auto-generated method stub
 		return this.baseMapper.findShowProdcutInfo(id);
 	}
+	
+	@Override
+	public List<MallProductEntity> findShowProdcutByHaveScore(Integer size,
+			Integer offset) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.findShowProdcutByHaveScore(size, offset);
+	}
 }

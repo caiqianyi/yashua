@@ -109,7 +109,11 @@ $(function(){
 			                    		html += '            <em>&times; '+order.buyNumber+'</em>';
 			                    		html += '        </dl>';
 			                    		html += '    </a>';
-			                    		html += '    <p class="money">共一件商品 合计：<span><i>'+order.productAmount.toFixed(2)+'</i></span></p>';
+			                    		if(item.payType == 1){
+				                    		html += '    <p class="money">金额：<span><i>￥'+order.price.toFixed(2)+'</i></span></p>';
+			                    		}else{
+				                    		html += '    <p class="money">积分：<span><i>'+order.score.toFixed(2)+'</i></span></p>';
+			                    		}
 			                    		html += '    <ul>';
 			                    		if(item.orderStatus == 2){
 				                    		html += '    	<li><a href="javascript:">查看物流</a></li>';

@@ -74,7 +74,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public String create(Long userId, List<MallCartEntity> products) {
+	public String create(Long userId, Integer maxOrderNum, List<MallCartEntity> products) {
 		List<Long> productSpecIds = new ArrayList<Long>();
 		for(MallCartEntity mope : products){
 			if(mope.getProductSpecId() != null){
@@ -85,6 +85,10 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 		List<MallProductCartVo> mpcvs = mallCartDao.queryByProductSpecId(productSpecIds.toArray(new Long[]{}));
 		if(mpcvs.size() != products.size()){
 			throw new I18nMessageException("-1","商品不存在或已下架");
+		}
+		int count = this.baseMapper.selectCount(new EntityWrapper<MallOrderEntity>().eq("user_id", userId).eq("order_status", 0));
+		if(count >= maxOrderNum){
+			throw new I18nMessageException("20110","订单创建失败，您还有"+count+"个未支付订单，立即去处理!");
 		}
 		String date = DateFormatUtils.format(now, "yyyyMMdd");
 		String key = "mall:orderNo:"+date;
@@ -102,10 +106,10 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 		order.setCreateTime(now);
 		order.setUserId(userId);
 		order.setOrderStatus(0);
-		order.setPayType(1);//在线支付
+		order.setPayType(0);//在线支付
 		order.setShipmentAmount(new BigDecimal(0));//快递费
 		order.setOrderNo(orderNo);
-		Integer totalBuyNumber = 0;
+		Integer totalBuyNumber = 0,orderScore = 0;
 		BigDecimal totalMoney = new BigDecimal(0);
 		List<MallOrderProductEntity> mopes = new ArrayList<MallOrderProductEntity>();
 		for(MallProductCartVo mpcv : mpcvs){
@@ -125,6 +129,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 			BigDecimal money = mpse.getPrice().multiply(new BigDecimal(cart.getBuyNumber()));
 			logger.debug("mpse.getPrice={},money={}",mpse.getPrice(),money);
 			totalMoney = totalMoney.add(money);
+			orderScore += mpse.getScore() * cart.getBuyNumber();
 			
 			MallOrderProductEntity mope = new MallOrderProductEntity();
 			mope.setProductId(mpe.getId());
@@ -146,6 +151,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 		order.setPayAmount(totalMoney);
 		order.setOrderAmount(totalMoney);
 		order.setBuyNumber(totalBuyNumber);
+		order.setOrderScore(orderScore);
 		this.baseMapper.save(order);
 		
 		for(MallOrderProductEntity mope: mopes){
@@ -191,14 +197,46 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderDao, MallOrderEnt
 		order.setInvoiceTitle(invoiceTitle);
 		order.setInvoiceType(invoiceType);
 		order.setUpdateTime(new Date());
+		order.setPayType(1);//现金支付
 		this.baseMapper.updateById(order);
 	}
 	
 	@Override
-	public List<MallOrderEntity> mylist(Long userId, Integer status,
-			Integer payType, Integer size, Integer offset) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void scoreExchange(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String address, String consignee, String mobile) {
 		// TODO Auto-generated method stub
-		return this.baseMapper.mylist(userId, status, payType, size, offset);
+		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(userId,orderNo, 0);
+		if(order == null){
+			throw new I18nMessageException("-1","此订单不存在或已支付");
+		}
+		
+		if(order.getOrderScore() <= 0){
+			throw new I18nMessageException("-1","此商品无法进行兑换");
+		}
+		
+		order.setAddress(address);
+		order.setConsignee(consignee);
+		order.setMobile(mobile);
+		order.setInvoiceTitle(invoiceTitle);
+		order.setInvoiceType(invoiceType);
+		order.setUpdateTime(new Date());
+		order.setPayType(0);//积分支付
+		order.setOrderStatus(1);//支付成功
+		
+		List<MallOrderProductEntity> list = this.baseMapper.selectOrderProductByOrderId(order.getId());
+		for(MallOrderProductEntity mope : list){
+			mope.setStatus(1);
+			mallOrderProductDao.updateById(mope);
+		}
+		this.baseMapper.balancePay(userId, order.getOrderScore(), "MALL_EXCHANGE", "商品兑换", orderNo);
+		this.baseMapper.updateById(order);
+	}
+	
+	@Override
+	public List<MallOrderEntity> mylist(Long userId, Integer status, Integer size, Integer offset) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.mylist(userId, status, size, offset);
 	}
 	
 	@Override

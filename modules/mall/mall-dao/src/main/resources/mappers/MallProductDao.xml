@@ -110,6 +110,19 @@
 			#{size,jdbcType=INTEGER}
 		</if>
 	</select>
+	
+	<select id="findShowProdcutByHaveScore" resultMap="mallProductMap">
+	    select t1.* ,t2.* from mall_product as t1,mall_product_attr as t2
+		left
+		join mall_product_specification as
+		t3 on
+		t2.product_id = t3.product_id
+		where
+		t3.score > 0
+		and t1.show_in_shelve = 1 and t1.id =
+		t2.product_id order by
+		t1.show_in_top desc,t1.create_time desc
+	</select>
 
 	<select id="findShowProdcutInfo" resultMap="mallProductInfoMap">
 		select * from

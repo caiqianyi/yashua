@@ -223,32 +223,3 @@ CREATE TABLE `mall_product_comment_image` (
   `status` tinyint(2) DEFAULT '1' COMMENT '状态：1.显示；0.隐藏',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='评价图片表';
-
-
-
-
-drop procedure IF EXISTS account_balance_deduct_proce;
-create procedure account_balance_deduct_proce(IN UID INT,IN V INT,IN LOGTYPE VARCHAR(100),IN DESCR VARCHAR(100))
-begin
-	 set @UID=UID;
-   set @V=V;
-   set @LOGTYPE=LOGTYPE;
-   set @DESCR=DESCR;
-   select user_id,account,balance into @userId,@account,@balance from user where user_id = @UID;
-   select @userId,@account,@balance;
-	 INSERT INTO `user_log` (`user_id`, `account`, `create_time`, `log_type`, `trade_money`, `money`, `descr`, `adjunct_info`) VALUES (@userId, @account, NOW(), @LOGTYPE, @V, @balance, @DESCR, @V);
-	 UPDATE `user` set balance = balance - @V where user_id = @userId;
-END;
-
-drop procedure IF EXISTS account_balance_add_proce;
-create procedure account_balance_add_proce(IN UID INT,IN V INT,IN LOGTYPE VARCHAR(100),IN DESCR VARCHAR(100))
-begin
-	 set @UID=UID;
-   set @V=V;
-   set @LOGTYPE=LOGTYPE;
-   set @DESCR=DESCR;
-   select user_id,account,balance into @userId,@account,@balance from user where user_id = @UID;
-   select @userId,@account,@balance;
-	 INSERT INTO `user_log` (`user_id`, `account`, `create_time`, `log_type`, `trade_money`, `money`, `descr`, `adjunct_info`) VALUES (@userId, @account, NOW(), @LOGTYPE, @V, @balance, @DESCR, @V);
-	 UPDATE `user` set balance = balance + @V where user_id = @userId;
-END

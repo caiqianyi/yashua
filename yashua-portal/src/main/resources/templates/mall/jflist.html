@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>金币兑换</title>
+<#include "/header.html">
+<link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
+<script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
+</head>
+<body>
+<div class="jinbi">
+   	<p>280 <img src="/statics/images/jinbi.png" alt=""/></p>
+    <a href="/account/signIn.html" class="huoqu">获取积分</a>
+</div>
+<div id="wrapper">
+	<div class="duihuan bg-white">
+		<ul>
+			<li><a href="">
+	        	<img src="images/yst-2.png" alt=""/>
+	            <dl>
+	            	<dt>舒适达（shushida）深度清洁牙刷头</dt>
+	            	<dd>
+	                	<p><i>20500</i>积分</p>
+	                    <span>参考价：269元</span>
+	                </dd>
+	            </dl>
+	        </a></li>
+	        <li><a href="">
+	        	<img src="images/yst-2.png" alt=""/>
+	            <dl>
+	            	<dt>深度清洁牙刷头</dt>
+	            	<dd><p><i>20500</i>积分</p></dd>
+	                <dd><span>参考价：269元</span></dd>
+	            </dl>
+	        </a></li>
+	        <li><a href="">
+	        	<img src="images/yst-2.png" alt=""/>
+	            <dl>
+	            	<dt>舒适达（shushida）深度清洁牙刷头</dt>
+	            	<dd>
+	                	<p><i>20500</i>积分</p>
+	                    <span>参考价：269元</span>
+	                </dd>
+	            </dl>
+	        </a></li>
+	        <li><a href="">
+	        	<img src="images/yst-2.png" alt=""/>
+	            <dl>
+	            	<dt>深度清洁牙刷头</dt>
+	            	<dd><p><i>20500</i>积分</p></dd>
+	                <dd><span>参考价：269元</span></dd>
+	            </dl>
+	        </a></li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	var offset = 0;
+	var categoryId = $(this).attr("id").replace("cat_","");
+	console.info(categoryId);
+    $('#wrapper').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            // 拼接HTML
+        	$.ajax({
+                type: 'GET',
+                url: '/mall/product/score/list',
+                data:{
+                	categoryId: categoryId,
+                	offset:offset,
+                	size:10
+                },
+                success: function(response){
+                	if(response.errcode == 0){
+	                    var arrLen = response.data.length;
+	                    var html = "";
+	                    if(arrLen > 0){
+	                    	for(var i=0;i<response.data.length;i++){
+	                    		var item = response.data[i];
+	                    		console.info(item);
+	                    		
+	                    		html += '<a href="/mall/info/'+item.id+'.html">';
+	                    		html += ' 	<img src="'+item.showPic+'" alt=""/>';
+	                    		html += '    <dl>';
+	                    		html += '    	<dt>'+item.name+'</dt>';
+	                    		html += '    	<dd><p><i>'+item.showScore+'</i>积分</p></dd>';
+	                    		html += '        <dd><span>参考价：'+item.showPrice.toFixed(2)+'元</span></dd>';
+	                    		html += '     </dl>';
+	                    		html += '</a>';
+	                    	}
+	                    	if(arrLen < 10){
+	                    		// 锁定
+	                            me.lock();
+	                            // 无数据
+	                            me.noData();
+	                    	}
+	                    	offset += arrLen;
+	                    // 如果没有数据
+	                    }else{
+	                        // 锁定
+	                        me.lock();
+	                        // 无数据
+	                        me.noData();
+	                    }
+	                    // 为了测试，延迟1秒加载
+	                    // 插入数据到页面，放到最后面
+	                    $('.duihuan ul').append(html);
+	                    // 每次数据插入，必须重置
+	                    me.resetload();
+                	}else{
+        				alert(response.errmsg);
+        			}
+                }
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>
+
