@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="jinbi">
-   	<p>280 <img src="/statics/images/jinbi.png" alt=""/></p>
+   	<p><span class="money">0</span> <img src="/statics/images/jinbi.png" alt=""/></p>
     <a href="/account/signIn.html" class="huoqu">获取积分</a>
 </div>
 <div id="wrapper">
@@ -55,18 +55,32 @@
 </div>
 <script type="text/javascript">
 $(function(){
+	
+	var l1 = $.loading().show();
+	$.ajax({
+		type: "GET",
+	    url: "/account/user/info",
+	    success: function(r){
+	    	l1.hide();
+	    	if(r.errcode == 0){
+	    		var user = r.data;
+	    		$(".money").text(user.balance);
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
 	var offset = 0;
-	var categoryId = $(this).attr("id").replace("cat_","");
-	console.info(categoryId);
+	$('.duihuan ul').html("");
     $('#wrapper').dropload({
         scrollArea : window,
-        loadDownFn : function(me){
+        loadDownFn : function(me){ 
             // 拼接HTML
-        	$.ajax({
+        	$.ajax({ 
                 type: 'GET',
                 url: '/mall/product/score/list',
                 data:{
-                	categoryId: categoryId,
                 	offset:offset,
                 	size:10
                 },
@@ -79,6 +93,7 @@ $(function(){
 	                    		var item = response.data[i];
 	                    		console.info(item);
 	                    		
+	                    		html += '<li>';
 	                    		html += '<a href="/mall/info/'+item.id+'.html">';
 	                    		html += ' 	<img src="'+item.showPic+'" alt=""/>';
 	                    		html += '    <dl>';
@@ -87,6 +102,7 @@ $(function(){
 	                    		html += '        <dd><span>参考价：'+item.showPrice.toFixed(2)+'元</span></dd>';
 	                    		html += '     </dl>';
 	                    		html += '</a>';
+	                    		html += '</li>';
 	                    	}
 	                    	if(arrLen < 10){
 	                    		// 锁定
