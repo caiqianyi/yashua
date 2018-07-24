@@ -22,6 +22,11 @@ import com.lebaoxun.commons.exception.ResponseMessage;
 public class MallOrderServiceHystrix implements IMallOrderService {
 
 	@Override
+	public ResponseMessage sendOut(Long adminId, Long orderId, String postid) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
 	public ResponseMessage list(Map<String, Object> params) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
@@ -86,6 +91,16 @@ public class MallOrderServiceHystrix implements IMallOrderService {
 	public ResponseMessage scoreExchange(Long userId, String orderNo,
 			Integer invoiceType, String invoiceTitle, String address,
 			String consignee, String mobile) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
+	public ResponseMessage kuaid100Query(String postid) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
+	public ResponseMessage confirmReceive(Long userId, String orderNo) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 }

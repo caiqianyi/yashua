@@ -29,6 +29,15 @@ import com.lebaoxun.soa.core.redis.lock.RedisLock;
 public class MallOrderController {
 	@Autowired
 	private MallOrderService mallOrderService;
+	
+	@RequestMapping("/mall/mallorder/sendOut")
+	@RedisLock(value = "mall:mallorder:save:sendOut:#arg0")
+	ResponseMessage sendOut(@RequestParam("adminId") Long adminId,
+			@RequestParam("orderId") Long orderId,
+			@RequestParam("postid") String postid){
+		mallOrderService.sendOut(orderId, postid);
+		return ResponseMessage.ok();
+	}
 
 	@RequestMapping("/mall/mallorder/create")
 	@RedisLock(value = "mall:mallorder:save:create:#arg0")
@@ -147,6 +156,19 @@ public class MallOrderController {
 	ResponseMessage delete(@RequestParam("adminId") Long adminId,
 			@RequestBody Long[] ids) {
 		mallOrderService.deleteBatchIds(Arrays.asList(ids));
+		return ResponseMessage.ok();
+	}
+	
+	@RequestMapping("/mall/mallorder/kuaid100Query")
+	ResponseMessage kuaid100Query(@RequestParam("postid")String postid){
+		return ResponseMessage.ok(mallOrderService.kuaid100Query(postid));
+	}
+	
+	@RequestMapping("/mall/mallorder/confirmReceive")
+	@RedisLock(value = "mall:mallorder:confirmReceive:lock:#arg0")
+	ResponseMessage confirmReceive(@RequestParam("userId") Long userId,
+			@RequestParam("orderNo") String orderNo){
+		mallOrderService.confirmReceive(userId, orderNo);
 		return ResponseMessage.ok();
 	}
 

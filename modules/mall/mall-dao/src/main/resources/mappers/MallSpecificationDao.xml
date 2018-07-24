@@ -14,9 +14,20 @@
         <result property="createBy" column="create_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="updateBy" column="update_by"/>
+        <collection property="attrs" ofType="com.lebaoxun.modules.mall.entity.MallSpecificationAttributeEntity" resultMap="mallSpecificationAttributeMap"></collection>
+    </resultMap>
+    
+    <resultMap type="com.lebaoxun.modules.mall.entity.MallSpecificationAttributeEntity" id="mallSpecificationAttributeMap">
+        <result property="specAttrId" column="spec_attr_id"/>
+        <result property="specificationId" column="specification_id"/>
+        <result property="name" column="attr_ame"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
     </resultMap>
 
 	<select id="queryAllList" resultMap="mallSpecificationMap">
-	    select * from mall_specification order by sort
+	    select t1.*,t2.spec_attr_id,t2.specification_id,t2.name attr_ame from mall_specification t1 
+	    left join mall_specification_attribute t2 on t2.specification_id = t1.specification_id
+	    order by t1.sort
 	</select>
 </mapper>

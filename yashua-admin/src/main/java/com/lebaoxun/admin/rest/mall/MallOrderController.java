@@ -1,6 +1,7 @@
 package com.lebaoxun.admin.rest.mall;
 
 import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,12 @@ public class MallOrderController {
     @RequestMapping("/mall/mallorder/delete")
     ResponseMessage delete(@RequestBody Long[] ids){
         return mallOrderService.delete(oauth2SecuritySubject.getCurrentUser(),ids);
+    }
+    
+    @RequestMapping("/mall/mallorder/sendOut")
+	ResponseMessage sendOut(@RequestParam("id") Long id,
+			@RequestParam("postid") String postid){
+    	return mallOrderService.sendOut(oauth2SecuritySubject.getCurrentUser(), id, postid);
     }
 
 }

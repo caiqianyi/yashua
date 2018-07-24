@@ -6,6 +6,30 @@
 <script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
 <link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
+<style type="text/css">
+.result-success{display: none;border-top: 1px solid #e6e6e6;}
+.result-success .result-top {border-bottom: none;height: 43px;line-height: 43px;font-size: 16px;color: #5a5a5a;}
+.result-success .result-top .col1-up {cursor: pointer;width: 100px;padding-left: 25px;display: inline-block;}
+.result-success .result-top .col2 {    padding-left: 25px;}
+.result-success ul, dl {list-style: none;}
+.result-success .result-list li.last {color: #ff7800;}
+.result-success .result-list li {display: -webkit-box;-webkit-box-align: center;overflow: hidden;color: #828282;border-bottom: 1px solid #e6e6e6;}
+.result-success .result-list li .col1 {text-align: center;font-weight: bold;font-family: Helvetica, Arial, sans-serif;padding: 10px;}
+.result-success .result-list li .col1, .result-list li .col2, .result-list li .col3 {position: relative;display: block;}
+.result-success .result-list li .col2 {width: 20px;position: relative;}
+.result-success .result-list .last.finish .col2 span {background: #ff0000;}
+.result-success .result-list .last .col2 span {border-color: #ff7800;color: #ff7800;}
+.result-success .result-list .col2 span {border: 1px solid #e6e6e6;border-radius: 50%;position: absolute;left: 0;top: 50%;margin-top: -8px;width: 16px;height: 16px;background: #FFF;z-index: 2;color: #e6e6e6;}
+
+.result-success .result-list .last.finish .col2 span:before {width: 8px;height: 4px;margin-top: -2px;border: none;border-left: 1px solid #fff;border-bottom: 1px solid #fff;-webkit-transform: translate(-50%, -50%) rotate(-45deg);transform: translate(-50%, -50%) rotate(-45deg);}
+.result-success .result-list.sortup .col2 span:before {border: none;border-right: 1px solid;border-top: 1px solid;margin-top: 2px;}
+.result-success .result-list .col2 span:before {position: absolute;top: 50%;left: 50%;content: '';width: 6px;height: 6px;margin-top: -2px;border-left: 1px solid;border-bottom: 1px solid;-webkit-transform: translate(-50%, -50%) rotate(-45deg);transform: translate(-50%, -50%) rotate(-45deg);}
+
+.result-success .result-list li .col3 {-webkit-box-flex: 1;}
+.result-success .result-list li .col1, .result-list li .col2, .result-list li .col3 {position: relative;display: block;}
+.result-success .result-list li:first-child .col3:before {top: 50%;}
+.result-success .result-list .col3:before {content: '';position: absolute;top: -2rem;bottom: -2rem;left: -12px;border-left: 1px solid #e6e6e6;}
+</style>
 </head>
 <body>
 <div class="Top"><span onclick="javascript:$.goBack('/account.html');"></span>我的订单</div>
@@ -43,7 +67,50 @@
 		</div>
 	</div>
 </div>
+<div class="ui-dialog" style="overflow:scroll; ">
+	<div class="ui-dialog-cnt" style="width: 90%;top: 5%;">
+		<header class="ui-dialog-hd ui-border-b">
+			<h3>查看物流</h3>
+			<i class="ui-dialog-close" data-role="button"></i>
+		</header>
+		<div class="ui-dialog-bd">
+			<div class="result-success" id="success" style="display: block;">
+				<div class="result-top" id="resultTop">
+					<span id="sortSpan" class="col1-up" title="切换排序">时间</span> <span
+						class="col2">地点和跟踪进度</span>
+				</div>
+				<ul id="result" class="result-list sortup">
+					<li class="last finish">
+						<div class="col1">
+							<dl>
+								<dt>2018.06.25</dt>
+								<dd>08:53</dd>
+							</dl>
+						</div>
+						<div class="col2">
+							<span></span>
+						</div>
+						<div class="col3">货物已交付京东物流</div>
+					</li>
+					<li>
+						<div class="col1">
+							<dl>
+								<dt>2018.06.25</dt>
+								<dd>08:53</dd>
+							</dl>
+						</div>
+						<div class="col2">
+							<span></span>
+						</div>
+						<div class="col3">订单已由本人签收，感谢您在京东购物，欢迎您再次光临！</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
 <script type="text/javascript">
+var l1 = $.loading({content:'请求中...'}).hide();
 function deleteOrder(orderNo){
 	var result = confirm("您确定删除此订单？");
 	if(result){
@@ -64,104 +131,175 @@ function deleteOrder(orderNo){
 	    });
 	}
 }
+
+function kuaidiQuery(postid){
+	l1.show();
+	$.ajax({
+        type: 'GET',
+        url: '/mall/order/kuaid100Query',
+        data:{
+        	postid: postid
+        },
+        success: function(response){
+			l1.hide();
+        	if(response.errcode == 0){
+        		var datas = response.data.list;
+        		datas.sort(function(o1,o2){
+        			return o1.time - o2.time;
+        		});
+        		var html = '';
+        		for(var i=datas.length-1;i>-1;i--){
+        			var item = datas[i];
+        			if(i == datas.length - 1){
+        				html += '<li class="last finish">';
+        			}else{
+        				html += '<li>';
+        			}
+        			
+        			var date = new Date(parseInt(item.time));
+        			html += '	<div class="col1">';
+        			html += '		<dl>';
+        			html += '			<dt>'+date.format("yyyy-MM-dd")+'</dt>';
+        			html += '			<dd>'+date.format("hh:ss")+'</dd>';
+        			html += '		</dl>';
+        			html += '	</div>';
+        			html += '	<div class="col2">';
+        			html += '		<span></span>';
+        			html += '	</div>';
+        			html += '	<div class="col3">'+item.context+'</div>';
+        			html += '</li>';
+        		}
+        		$(".ui-dialog").dialog("show");
+        		$("#result").html(html);
+        		return;
+        	}
+       		alert(repsonse.errmsg);
+        }
+    });
+}
+
+function confirmReceive(orderNo){
+	l1.show();
+	$.ajax({
+        type: 'GET',
+        url: '/mall/order/confirmReceive',
+        data:{
+        	orderNo: orderNo
+        },
+        success: function(response){
+        	l1.hide();
+        	if(response.errcode == 0){
+        		window.location.reload();
+        		return;
+        	}
+       		alert(repsonse.errmsg);
+        }
+    });
+}
 $(function(){
-	var offset = 0;
 	$("li[id^=status_]").click(function(){
-		$("li[id^=status_]").removeClass("on");
-		$(this).addClass("on");
-		offset = 0;
-		$('.order-list').html('');
-		$('#wrapper').html('<div class="order-list"></div>');
 		var status = $(this).attr("id").replace("status_","");
-	    $('#wrapper').dropload({
-	        scrollArea : window,
-	        loadDownFn : function(me){
-	            // 拼接HTML
-	        	$.ajax({
-	                type: 'GET',
-	                url: '/mall/order/mylist',
-	                data:{
-	                	status: status,
-	                	offset:offset,
-	                	size:10
-	                },
-	                success: function(response){
-	                	if(response.errcode == 0){
-		                    var arrLen = response.data.length;
-		                    var html = "";
-		                    if(arrLen > 0){
-		                    	for(var i=0;i<response.data.length;i++){
-		                    		var item = response.data[i];
-		                    		for(var k=0;k<item.childs.length;k++){
-		                    			var order = item.childs[k];
-		                    			if(status == 3 && order.status != 3){
-		                    				continue;
-		                    			}
-			                    		html += '<div class="dingdan-txt bg-white font-24">';
-			                    		html += '	<p class="bianhao"><i>订单编号：</i>'+item.orderNo+'</p>';
-			                    		html += '    <a href="/mall/info/'+order.productId+'.html">';
-			                    		html += '        <dl>';
-			                    		html += '            <dt><img src="'+order.picImg+'" alt=""/></dt>';
-			                    		html += '            <dd>';
-			                    		html += '                <span>'+order.name+'</span>';
-			                    		html += '                <i>'+order.productSpecName+'</i>';
-			                    		html += '            </dd>';
-			                    		html += '            <em>&times; '+order.buyNumber+'</em>';
-			                    		html += '        </dl>';
-			                    		html += '    </a>';
-			                    		if(item.payType == 1){
-				                    		html += '    <p class="money">金额：<span><i>￥'+order.price.toFixed(2)+'</i></span></p>';
-			                    		}else{
-				                    		html += '    <p class="money">积分：<span><i>'+order.score.toFixed(2)+'</i></span></p>';
-			                    		}
-			                    		html += '    <ul>';
-			                    		if(item.orderStatus == 2){
-				                    		html += '    	<li><a href="javascript:">查看物流</a></li>';
-			                    		}
-			                    		if(order.status == 3){
-			                    			html += '        <li class="pj"><a href="/comment/publish.html?order_product_id='+order.orderProductId+'">评价</a></li>';
-			                    		}
-			                    		if(item.orderStatus == 0){
-				                    		html += '    <li><a href="/order/confirm.html?orderNo='+item.orderNo+'">支付</a></li>';
-			                    		}
-			                    		if(item.orderStatus != 1){
-			                    			html += '    <li><a href="javascript:deleteOrder(\''+item.orderNo+'\');">删除订单</a></li>';
-			                    		}
-			                    		if(item.orderStatus != 0){
-				                    		html += '        <li class="once"><a href="/mall/info/'+order.productId+'.html">再次购买</a></li>';
-			                    		}
-			                    		html += '    </ul>';
-			                    		html += '</div>';
-		                    		}
-		                    	}
-		                    	if(arrLen < 10){
-		                    		// 锁定
-		                            me.lock();
-		                            // 无数据
-		                            me.noData();
-		                    	}
-		                    	offset += arrLen;
-		                    // 如果没有数据
-		                    }else{
-		                        // 锁定
-		                        me.lock();
-		                        // 无数据
-		                        me.noData();
-		                    }
-		                    // 为了测试，延迟1秒加载
-		                    // 插入数据到页面，放到最后面
-		                    $('.order-list').append(html);
-		                    // 每次数据插入，必须重置
-		                    me.resetload();
-	                	}else{
-	        				alert(response.errmsg);
-	        			}
-	                }
-	            });
-	        }
-	    });
+		$.go("/order/mylist.html?status="+status);
 	});
-	$("li[id^=status_].on").click();
+	
+	var status = url("status");
+	if(!status){
+		status = '';
+	}
+	$("li[id^=status_]").removeClass("on");
+    $("#status_"+status).addClass("on");
+    
+	var offset = 0;
+	$('.order-list').html('');
+	$('#wrapper').html('<div class="order-list"></div>');
+    $('#wrapper').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            // 拼接HTML
+        	$.ajax({
+                type: 'GET',
+                url: '/mall/order/mylist',
+                data:{
+                	status: status,
+                	offset:offset,
+                	size:10
+                },
+                success: function(response){
+                	if(response.errcode == 0){
+	                    var arrLen = response.data.length;
+	                    var html = "";
+	                    if(arrLen > 0){
+	                    	for(var i=0;i<response.data.length;i++){
+	                    		var item = response.data[i];
+	                    		for(var k=0;k<item.childs.length;k++){
+	                    			var order = item.childs[k];
+	                    			if(status == 3 && order.status != 3){
+	                    				continue;
+	                    			}
+		                    		html += '<div class="dingdan-txt bg-white font-24">';
+		                    		html += '	<p class="bianhao"><i>订单编号：</i>'+item.orderNo+'</p>';
+		                    		html += '    <a href="/mall/info/'+order.productId+'.html">';
+		                    		html += '        <dl>';
+		                    		html += '            <dt><img src="'+order.picImg+'" alt=""/></dt>';
+		                    		html += '            <dd>';
+		                    		html += '                <span>'+order.name+'</span>';
+		                    		html += '                <i>'+order.productSpecName+'</i>';
+		                    		html += '            </dd>';
+		                    		html += '            <em>&times; '+order.buyNumber+'</em>';
+		                    		html += '        </dl>';
+		                    		html += '    </a>';
+		                    		if(item.payType == 1){
+			                    		html += '    <p class="money">金额：<span><i>￥'+order.price.toFixed(2)+'</i></span></p>';
+		                    		}else{
+			                    		html += '    <p class="money">积分：<span><i>'+order.score.toFixed(2)+'</i></span></p>';
+		                    		}
+		                    		html += '    <ul>';
+		                    		if(item.orderStatus == 2){
+			                    		html += '    	<li><a href="javascript:kuaidiQuery(\''+item.postid+'\');">查看物流</a></li>';
+			                    		html += '    	<li><a href="javascript:confirmReceive(\''+item.orderNo+'\');">确认收货</a></li>';
+		                    		}
+		                    		if(order.status == 3){
+		                    			html += '        <li class="pj"><a href="/comment/publish.html?order_product_id='+order.orderProductId+'">评价</a></li>';
+		                    		}
+		                    		if(item.orderStatus == 0){
+			                    		html += '    <li><a href="/order/confirm.html?orderNo='+item.orderNo+'">支付</a></li>';
+		                    		}
+		                    		if(item.orderStatus != 1 && item.orderStatus != 2){
+		                    			html += '    <li><a href="javascript:deleteOrder(\''+item.orderNo+'\');">删除订单</a></li>';
+		                    		}
+		                    		if(item.orderStatus != 0){
+			                    		html += '        <li class="once"><a href="/mall/info/'+order.productId+'.html">再次购买</a></li>';
+		                    		}
+		                    		html += '    </ul>';
+		                    		html += '</div>';
+	                    		}
+	                    	}
+	                    	if(arrLen < 10){
+	                    		// 锁定
+	                            me.lock();
+	                            // 无数据
+	                            me.noData();
+	                    	}
+	                    	offset += arrLen;
+	                    // 如果没有数据
+	                    }else{
+	                        // 锁定
+	                        me.lock();
+	                        // 无数据
+	                        me.noData();
+	                    }
+	                    // 为了测试，延迟1秒加载
+	                    // 插入数据到页面，放到最后面
+	                    $('.order-list').append(html);
+	                    // 每次数据插入，必须重置
+	                    me.resetload();
+                	}else{
+        				alert(response.errmsg);
+        			}
+                }
+            });
+        }
+    });
 });
 </script>
 </body>

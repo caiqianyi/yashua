@@ -25,6 +25,11 @@ import com.lebaoxun.modules.mall.service.hystrix.MallOrderServiceHystrix;
 @FeignClient(value="mall-service",fallback=MallOrderServiceHystrix.class)
 public interface IMallOrderService {
 	
+	@RequestMapping("/mall/mallorder/sendOut")
+	ResponseMessage sendOut(@RequestParam("adminId") Long adminId,
+			@RequestParam("orderId") Long orderId,
+			@RequestParam("postid") String postid);
+	
 	@RequestMapping("/mall/mallorder/create")
     ResponseMessage create(@RequestParam("userId")Long userId,
     		@RequestParam("maxOrderNum") Integer maxOrderNum,
@@ -98,5 +103,11 @@ public interface IMallOrderService {
     @RequestMapping("/mall/mallorder/delete")
     ResponseMessage delete(@RequestParam("adminId")Long adminId,@RequestBody Long[] ids);
     
+    @RequestMapping("/mall/mallorder/kuaid100Query")
+	ResponseMessage kuaid100Query(@RequestParam("postid")String postid);
+    
+    @RequestMapping("/mall/mallorder/confirmReceive")
+	ResponseMessage confirmReceive(@RequestParam("userId") Long userId,
+			@RequestParam("orderNo") String orderNo);
 }
 

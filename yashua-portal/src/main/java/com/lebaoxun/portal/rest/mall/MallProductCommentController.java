@@ -1,4 +1,4 @@
-package com.lebaoxun.portal.rest.account.mall;
+package com.lebaoxun.portal.rest.mall;
 
 import java.util.Date;
 import java.util.List;

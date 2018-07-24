@@ -157,7 +157,7 @@ var vm = new Vue({
                 btn1: function (index) {
                     var node = ztree.getSelectedNodes();
                     //选择上级部门
-                    vm.mallSpecificationAttribute.specificationId = node[0].id;
+                    vm.mallSpecificationAttribute.specificationId = node[0].specificationId;
                     vm.mallSpecificationAttribute.specificationName = node[0].name;
                     layer.close(index);
                 }

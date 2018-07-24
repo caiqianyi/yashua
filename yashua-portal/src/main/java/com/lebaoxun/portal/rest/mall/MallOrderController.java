@@ -1,4 +1,4 @@
-package com.lebaoxun.portal.rest.account.mall;
+package com.lebaoxun.portal.rest.mall;
 
 import java.util.List;
 
@@ -91,5 +91,15 @@ public class MallOrderController extends BaseController {
 	ResponseMessage findByOrderProductId(@RequestParam("id") Long id) {
 		return mallOrderService.selectOrderProductByOrderProductId(
 				oauth2SecuritySubject.getCurrentUser(), id);
+	}
+	
+	@RequestMapping("/mall/order/kuaid100Query")
+	ResponseMessage kuaid100Query(@RequestParam("postid")String postid){
+		return mallOrderService.kuaid100Query(postid);
+	}
+	
+	@RequestMapping("/mall/order/confirmReceive")
+	ResponseMessage confirmReceive(@RequestParam("orderNo") String orderNo){
+		return mallOrderService.confirmReceive(oauth2SecuritySubject.getCurrentUser(), orderNo);
 	}
 }

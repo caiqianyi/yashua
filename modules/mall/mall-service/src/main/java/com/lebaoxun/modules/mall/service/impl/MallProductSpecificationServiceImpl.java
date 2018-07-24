@@ -50,10 +50,10 @@ public class MallProductSpecificationServiceImpl
 	public void save(MallProductSpecificationEntity specification) {
 		MallProductSpecificationEntity mps = this
 				.selectOne(new EntityWrapper<MallProductSpecificationEntity>()
-						.eq("product_spec_number",
-								specification.getProductSpecNumber()));
+						.eq("product_id",
+								specification.getProductId()).eq("spec_attr_id", specification.getSpecAttrId()));
 		if (mps != null) {
-			throw new I18nMessageException("-1", "规格编号已存在,请重新设置");
+			throw new I18nMessageException("-1", "规格已存在,请重新设置");
 		}
 		MallProductEntity product = mallProductDao.selectById(specification
 				.getProductId());

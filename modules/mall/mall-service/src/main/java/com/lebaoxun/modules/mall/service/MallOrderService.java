@@ -38,4 +38,10 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 	
 	MallOrderProductEntity selectOrderProductByOrderProductId(Long userId,
 			Long orderProductId);
+	
+	void sendOut(Long orderId,String postid);
+	
+	Map<String,Object> kuaid100Query(String postid);
+	
+	void confirmReceive(Long userId, String orderNo);
 }

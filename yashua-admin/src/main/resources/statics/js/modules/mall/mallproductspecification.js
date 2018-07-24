@@ -4,9 +4,9 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: 'ID', name: 'productSpecId', index: 'product_spec_id', width: 50, key: true },
-			{ label: '商品规格编号', name: 'productSpecNumber', index: 'product_spec_number', width: 80 }, 			
 			{ label: '商品ID', name: 'productId', index: 'product_id', width: 80 }, 			
-			{ label: '规格ID', name: 'spec', index: 'spec', width: 80 }, 			
+			{ label: '规格ID', name: 'specificationId', index: 'spec', width: 80 }, 			
+			{ label: '规格属性ID', name: 'specAttrId', index: 'spec', width: 80 }, 			
 			{ label: '库存', name: 'stock', index: 'stock', width: 80 }, 			
 			{ label: '销售量', name: 'salesVolume', index: 'sales_volume', width: 80 }, 			
 			{ label: '价格', name: 'price', index: 'price', width: 80 }, 			
@@ -70,7 +70,8 @@ var setting = {
     data: {
         simpleData: {
             enable: true,
-            idKey: "specificationId",
+            idKey: "id",
+            pIdKey: "parentId",
             rootPId: -1
         },
         key: {
@@ -83,7 +84,18 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		mallProductSpecification: {}
+		mallProductSpecification: {
+			productSpecNumber:0,
+			productId: 0,
+			spec: 0,
+			specName: "",
+			stock: 0,
+			salesVolume: 0,
+			price: 0,
+			score: 0,
+			defaultStatus: 0,
+			status: 0
+		}
 	},
 	methods: {
 		query: function () {
@@ -92,18 +104,6 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.mallProductSpecification = {
-				productSpecNumber:0,
-				productId: 0,
-				spec: 0,
-				specName: "",
-				stock: 0,
-				salesVolume: 0,
-				price: 0,
-				score: 0,
-				defaultStatus: 0,
-				status: 0
-			};
 			vm.getSpecification();
 		},
 		update: function (event) {
@@ -113,11 +113,14 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-            
             vm.getInfo(productSpecId)
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.mallProductSpecification.productSpecId == null ? "mall/mallproductspecification/save" : "mall/mallproductspecification/update";
+			if(!vm.mallProductSpecification.specAttrId){
+				alert("请选择商品规格!");
+				return;
+			}
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
@@ -163,8 +166,7 @@ var vm = new Vue({
 				if(r.errcode && r.errcode != 0){
             		return;
             	}
-                vm.mallProductSpecification = r.data.mallProductSpecification;
-                vm.getSpecification();
+                vm.getSpecification(r.data.mallProductSpecification);
             });
 		},
 		reload: function (event) {
@@ -187,24 +189,73 @@ var vm = new Vue({
                 btn: ['确定', '取消'],
                 btn1: function (index) {
                     var node = ztree.getSelectedNodes();
-                    //选择上级部门
-                    vm.mallProductSpecification.spec = node[0].id;
+                    if(!node[0].specAttrId){
+                    	alert("请选择二级规格！");
+                    	return;
+                    }
+                    vm.mallProductSpecification.specificationId = node[0].specificationId;
+                    vm.mallProductSpecification.specAttrId = node[0].specAttrId;
                     vm.mallProductSpecification.specName = node[0].name;
                     layer.close(index);
                 }
             });
 		},
-		getSpecification: function(){
+		getSpecification: function(specInfo){
             //加载菜单树
             $.get(baseURL + "mall/mallspecification/select", function(r){
             	if(r.errcode && r.errcode != 0){
             		return;
             	}
-            	var mallspecifications = r.data;
+            	var mallspecifications = [];
+            	var datas = r.data;
+            	for(var i=0;i<datas.length;i++){
+            		var item = datas[i];
+            		var parentId = mallspecifications.length;
+            		mallspecifications[parentId] = {
+            			id: parentId,
+        				specificationId: item.specificationId,
+        				specAttrId: null,
+        				parentName: null,
+            			name: item.name,
+            			sort: item.sort
+            		};
+            		var attrs = item.attrs;
+            		for(var k=0;k<attrs.length;k++){
+            			var attr = attrs[k];
+            			mallspecifications[mallspecifications.length] = {
+        					id: mallspecifications.length,
+            				specificationId: item.specificationId,
+            				specAttrId: attr.specAttrId,
+            				parentId: parentId,
+            				parentName: item.name,
+            				name: attr.name
+                		};
+            		}
+            	}
             	ztree = $.fn.zTree.init($("#specificationTree"), setting, mallspecifications);
-                var node = ztree.getNodeByParam("specificationId", vm.mallProductSpecification.spec);
-                if(node)
-                	vm.mallProductSpecification.specName = node.name;
+            	
+            	if(!specInfo){
+            		specInfo = {
+        				productSpecNumber:0,
+        				productId: 0,
+        				spec: 0,
+        				specName: "",
+        				stock: 0,
+        				salesVolume: 0,
+        				price: 0,
+        				score: 0,
+        				defaultStatus: 0,
+        				status: 0
+        			};
+            	}
+                if(vm.mallProductSpecification.specAttrId){
+                	var node = ztree.getNodeByParam("specAttrId", vm.mallProductSpecification.specAttrId);
+                	ztree.selectNode(node);
+                	specInfo.specificationId = node.specificationId;
+                	specInfo.specName = node.name;
+                }
+                
+                vm.mallProductSpecification = specInfo;
             })
         }
 	}

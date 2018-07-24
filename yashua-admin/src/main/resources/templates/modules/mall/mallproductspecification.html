@@ -20,12 +20,6 @@
         <div class="panel-heading">{{title}}</div>
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="col-sm-2 control-label">商品规格编号</div>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="mallProductSpecification.productSpecNumber" placeholder="商品规格编号"/>
-                </div>
-            </div>
-            <div class="form-group">
                 <div class="col-sm-2 control-label">商品ID</div>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" v-model="mallProductSpecification.productId" placeholder="商品ID"/>
@@ -34,7 +28,7 @@
             <div class="form-group">
                 <div class="col-sm-2 control-label">规格</div>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" v-model="mallProductSpecification.specName" @click="selectSpecification" readonly="readonly"/>
+                    <input type="text" class="form-control" v-model="mallProductSpecification.specName" @click="selectSpecification"/>
                 </div>
             </div>
             <div class="form-group">
