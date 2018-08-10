@@ -30,7 +30,7 @@ public class AddressController extends BaseController{
      */
     @RequestMapping("/account/address/list")
     ResponseMessage list(@RequestParam Map<String, Object> params){
-    	params.put("user_id", oauth2SecuritySubject.getCurrentUser());
+    	params.put("userId", oauth2SecuritySubject.getCurrentUser());
     	return userAddressService.list(params);
     }
     
