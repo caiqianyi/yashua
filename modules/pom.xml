@@ -15,6 +15,18 @@
   
   <name>service-parent</name>
   
+  <modules>
+	<module>mall</module>
+	<!-- <module>account</module>
+	<module>news</module>
+	<module>pay</module>
+	<module>sign</module>
+	<module>sys-manager</module>
+	<module>upload</module>
+	<module>wechat</module>
+	<module>yashua-core</module> -->
+  </modules>
+  
   <properties>
 	<spring.cloud.version>Brixton.RELEASE</spring.cloud.version>
   </properties>

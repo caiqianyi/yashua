@@ -1,6 +1,6 @@
 package com.lebaoxun.modules.mall.service.impl;
 
-import org.apache.commons.lang3.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
