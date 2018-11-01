@@ -18,5 +18,5 @@ public interface IPayOrderService extends IService<PayOrderEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
     
-    String notify(String out_trade_no, BigDecimal total_fee, String tradeNo, Long buyTime, String queue);
+    String notify(String out_trade_no, BigDecimal total_fee, String tradeNo, Long buyTime, String queue, String platform);
 }

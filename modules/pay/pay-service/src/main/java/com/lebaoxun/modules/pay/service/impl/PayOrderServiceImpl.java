@@ -44,15 +44,16 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderDao, PayOrderEntity
         return new PageUtils(page);
     }
 
-	@Override
+    @Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public String notify(String out_trade_no, BigDecimal total_fee, String tradeNo, Long buyTime, String queue){
+	public String notify(String out_trade_no, BigDecimal total_fee, String tradeNo, Long buyTime, String queue, String platform){
 		PayOrderEntity order = this.selectOne(new EntityWrapper<PayOrderEntity>().eq("out_order_no", out_trade_no));
 		if(order == null){
 			throw new I18nMessageException("-1","交易失败，订单号不存在-out_trade_no="+out_trade_no);
 		}
 		
-		if (order.getTotalFee().equals(total_fee)) {
+		if (order.getTotalFee().compareTo(total_fee) != 0) {
+			logger.error("订单金额不一致！-out_trade_no={},order.getTotalFee={},total_fee={}",out_trade_no,order.getTotalFee(),total_fee);
 			throw new I18nMessageException("-1","订单金额不一致！-out_trade_no="+out_trade_no);
 		}
 		
@@ -63,29 +64,34 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderDao, PayOrderEntity
 		if(StringUtils.isBlank(queue)){
 			queue = "pay.success.queue";
 		}
-		
 		order.setStatus(1);
 		order.setTradeNo(tradeNo);
 		order.setPayTime(buyTime);
 		order.setQueueKey(queue);
 		this.baseMapper.updateById(order);
-		sendNotify(queue, out_trade_no, total_fee.toString(), tradeNo, buyTime+"", order.getTradeType(), order.getMchId());
+		sendNotify(order.getCreateUser(), queue, order.getOrderNo(), out_trade_no, total_fee.toString(), tradeNo,
+				buyTime + "", order.getTradeType(), order.getMchId(), platform,
+				order.getGroup());
 		return "sucess";
 	}
 	
-	private void sendNotify(String queueKey,String out_trade_no,String total_fee,String rransaction_id,
-			String buyTime,String trade_type,String merc_no){
+	private void sendNotify(Long userId,String queueKey,String orderNo,String out_trade_no,String total_fee,String rransaction_id,
+			String buyTime,String trade_type,String merc_no,String platform,String group){
 		Map<String,String> message = new HashMap<String,String>();
+		message.put("group", group);
+		if(userId != null){
+			message.put("user_id", userId.toString());
+		}
+		message.put("order_no", orderNo);
 		message.put("out_trade_no", out_trade_no);
 		message.put("total_fee", total_fee);
 		message.put("trade_no", rransaction_id);
-		message.put("buyTime", ""+buyTime);
-		message.put("platform", "wxpay");
+		message.put("buy_time", ""+buyTime);
+		message.put("platform", platform);
 		message.put("trade_type", trade_type);
 		message.put("merc_no", merc_no);
-		logger.info("rabbit|sendContractDirect|message={}",message);
-		rabbitmqSender.sendContractDirect(queueKey,
-				new Gson().toJson(message));
+		logger.info("rabbit|sendContractDirect|queueKey={},message={}",queueKey,message);
+		rabbitmqSender.sendContractTopic(queueKey, new Gson().toJson(message));
 	}
 
 }

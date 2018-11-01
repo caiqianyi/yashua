@@ -143,6 +143,7 @@ $(function() {
 					data.username = response.data[0];
 					data.password = response.data[1];
 					data.vfcode = vfcode;
+					data.wxopenid = window.storage.get("login.wxopenid" , false, false);
 					$.ajax({
 						type : "POST",
 						url : "/register/add",
@@ -150,8 +151,13 @@ $(function() {
 						dataType : "json",
 						success : function(result) {
 							if (result.errcode == 0) {//注册成功成功
-								alert("恭喜您，注册成功!稍后请您重新登录");
-								parent.location.href = '/login.html';
+								login.setup(result.data);
+								alert("恭喜您，注册成功!");
+								var returnuri = url("returnuri");
+								if(!returnuri){
+									returnuri = '/index.html';
+								}
+								$(window).attr('location',returnuri);
 							} else {
 								alert(result.errmsg);
 							}

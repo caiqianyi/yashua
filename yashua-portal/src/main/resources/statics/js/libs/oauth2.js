@@ -46,8 +46,14 @@ var login = {
 		$(login.el).attr("src","/captcha.jpg?t=" + $.now());
 		$("#captcha").val("");
 	},
-	action : function(username,password,captcha,fn) {
-		if(username == '' || password == '' || captcha == '') {
+	action : function(a,fn) {
+		var data = $.extend({
+			username: null,
+			password: null,
+			captcha: null
+		},a);
+		
+		if(data.username == '' || data.password == '' || data.captcha == '') {
 			//均不能为空
 			alert('账号、密码和验证码不能为空!');
 			//改变验证码
@@ -58,20 +64,21 @@ var login = {
 			type : "GET",
 			url : "/oauth2/encrypt",
 			data : {
-				encrypts : username + "," + encodeURIComponent(password),
+				encrypts : data.username + "," + encodeURIComponent(data.password),
 				token : secret
 			},
 			dataType : "json",
 			success : function(response) {
-				var data = {};
 				if (response.errcode == 0) {
-					data.username = response.data[0];
-					data.password = response.data[1];
-					data.captcha = captcha;
+					var login_data = $.extend(data,{
+						username: response.data[0],
+						password: response.data[1]
+					});
+					console.info(login_data);
 					$.ajax({
 						type : "POST",
 						url : "/oauth2/token",
-						data : data,
+						data : login_data,
 						dataType : "json",
 						success : function(result) {
 							if(typeof fn == 'function'){

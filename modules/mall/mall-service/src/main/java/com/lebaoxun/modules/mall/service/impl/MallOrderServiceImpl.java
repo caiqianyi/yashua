@@ -16,7 +16,6 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
-import com.lebaoxun.commons.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,8 +30,10 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lebaoxun.commons.exception.I18nMessageException;
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.Query;
+import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.modules.mall.dao.MallCartDao;
 import com.lebaoxun.modules.mall.dao.MallOrderDao;
 import com.lebaoxun.modules.mall.dao.MallOrderProductDao;
@@ -46,6 +47,7 @@ import com.lebaoxun.modules.mall.entity.MallProductEntity;
 import com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity;
 import com.lebaoxun.modules.mall.pojo.MallProductCartVo;
 import com.lebaoxun.modules.mall.service.MallOrderService;
+import com.lebaoxun.modules.pay.service.IWxPayService;
 
 @Service("mallOrderService")
 public class MallOrderServiceImpl extends
@@ -70,6 +72,9 @@ public class MallOrderServiceImpl extends
 
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
+	
+	@Resource
+	private IWxPayService wxPayService;
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -214,8 +219,9 @@ public class MallOrderServiceImpl extends
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void confirmOrder(Long userId, String orderNo, Integer invoiceType,
-			String invoiceTitle, String address, String consignee, String mobile) {
+	public ResponseMessage confirmOrder(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String address, String consignee, String mobile,
+			String wxopenid,String spbill_create_ip) {
 		// TODO Auto-generated method stub
 		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(userId,
 				orderNo, 0);
@@ -230,6 +236,7 @@ public class MallOrderServiceImpl extends
 		order.setUpdateTime(new Date());
 		order.setPayType(1);// 现金支付
 		this.baseMapper.updateById(order);
+		return wxPayService.payment(spbill_create_ip, orderNo, "购买魔牙产品", order.getPayAmount().setScale(2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal("100")).intValue(), "", "yashua", wxopenid, userId);
 	}
 
 	@Override
@@ -265,6 +272,23 @@ public class MallOrderServiceImpl extends
 		this.baseMapper.balancePay(userId, -order.getOrderScore(),
 				"MALL_EXCHANGE", "商品兑换", orderNo);
 		this.baseMapper.updateById(order);
+	}
+	
+	@Override
+	public MallOrderEntity payMallOrder(String orderNo, String buyTime) {
+		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(null, orderNo, null);
+		if (order == null) {
+			throw new I18nMessageException("-1", "此订单不存在或已支付");
+		}
+
+		if (order.getOrderScore() <= 0) {
+			throw new I18nMessageException("-1", "此商品无法进行兑换");
+		}
+		order.setUpdateTime(new Date(Long.parseLong(buyTime)));
+		order.setPayType(1);//
+		order.setOrderStatus(1);// 支付成功
+		this.baseMapper.updateById(order);
+		return order;
 	}
 
 	@Override

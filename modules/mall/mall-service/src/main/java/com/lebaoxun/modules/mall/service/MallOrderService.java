@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
@@ -24,6 +25,14 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 	
 	void scoreExchange(Long userId, String orderNo, Integer invoiceType,
 			String invoiceTitle, String address, String consignee, String mobile);
+	
+	/**
+	 * 支付订单成功接口
+	 * @param orderNo
+	 * @param buyTime
+	 * @return
+	 */
+	MallOrderEntity payMallOrder(String orderNo, String buyTime);
 
 	MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,
 			Integer status);
@@ -31,8 +40,9 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 	List<MallOrderEntity> mylist(Long userId, Integer status, 
 			Integer size, Integer offset);
 
-	void confirmOrder(Long userId, String orderNo, Integer invoiceType,
-			String invoiceTitle, String address, String consignee, String mobile);
+	ResponseMessage confirmOrder(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String address, String consignee, String mobile,
+			String wxopenid,String spbill_create_ip);
 	
 	void delete(Long userId, String orderNo);
 	

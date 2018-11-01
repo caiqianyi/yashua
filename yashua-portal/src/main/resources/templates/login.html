@@ -15,7 +15,7 @@
 		 $('#closeEye').addClass('hid');
 		 $('#seeEye').removeClass('hid');
 		 $('#password').attr('type','text');
-	}	
+	}
 </script>
 </head>
 <body class="bg-white">
@@ -39,6 +39,9 @@
                     <img src="" style="width: 100px;" class="captchaImg">
                 </div>
 	        </div> 
+	    	<div style="position: relative;width: 100%;height: .88rem;border-bottom: 1px solid #cfcfcf;padding: .24rem 0;margin-bottom: .3rem;">
+                <input type="checkbox" name="" id="ckBox" style="margin-right: 10px;-webkit-appearance: checkbox;">勾选可绑定微信
+	        </div>
 	        <a href="/signin/accountrecovery.html" class="forget">忘记密码？</a>     	
 	        <button type="submit" id="login-button" class="denglu font-36">登录</button>
 	        <div class="opt">
@@ -75,6 +78,14 @@
 	}
 	login.el = ".captchaImg";
 	$(function() {
+		
+		var openid = url("openid");
+		if(openid){
+			$("#ckBox").prop("checked","checked").parent().show();
+		}else{
+			$("#ckBox").parent().hide();
+		}
+		
 		$('#login-button').click(function(event) {
 			event.preventDefault();
 			var username = $("#username").val();
@@ -88,10 +99,18 @@
 				return false;
 			}
 			var l1 = $.loading({content:"登录中..."}).show();
+			var wxopenid = $("#ckBox").is(":checked") && openid ? openid: '' ;
 			//验证登录
-		    login.action(username,password,captcha,function(){
-		    	l1.hide();
-		    });
+		    login.action(
+		    	{
+		    		username:username,
+		    		password:password,
+		    		captcha:captcha,
+		    		wxopenid:wxopenid
+		    	},function(){
+		    		l1.hide();
+		    	}
+		    );
 		});
 
 		/* document.onkeydown = function(event){
@@ -104,8 +123,8 @@
 		login.refreshCode();
 		
 		$("#ruc-use-wechat").click(function(){
-			var callback = encodeURIComponent("http://" + window.location.host + "/oauth2/login/wechatOa");
-			var oauth2_uri = "https://open.weixin.qq.com/connect/qrconnect?appid=wxc4f02ed5d185d6b1&redirect_uri="+callback+"&response_type=code&scope=snsapi_login";
+			var callback = encodeURIComponent("http://" + window.location.host + "/wechatOA.html");
+			var oauth2_uri = "https://open.weixin.qq.com/connect/qrconnect?appid=wx3916e075f64cf1b5&redirect_uri="+callback+"&response_type=code&scope=snsapi_login";
 			window.location.href = oauth2_uri;
 		})
 		

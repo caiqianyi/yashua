@@ -228,7 +228,7 @@ public class AlipayController {
 			long buyTime = datetimeFormat.parse(
 					new String(params.get("gmt_payment").getBytes(
 							"ISO-8859-1"), "UTF-8")).getTime();
-			return payOrderService.notify(out_trade_no, totalFee, tradeNo, buyTime, config.getQueueName());
+			return payOrderService.notify(out_trade_no, totalFee, tradeNo, buyTime, config.getQueueName(), "alipay");
 		} catch (Exception e) {
 			logger.debug("notify:{}", e);
 		}

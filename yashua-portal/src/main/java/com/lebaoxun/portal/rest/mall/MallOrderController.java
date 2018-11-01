@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.commons.utils.CommonUtil;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
@@ -55,10 +57,22 @@ public class MallOrderController extends BaseController {
 			@RequestParam("invoiceTitle") String invoiceTitle,
 			@RequestParam("address") String address,
 			@RequestParam("consignee") String consignee,
-			@RequestParam("mobile") String mobile) {
+			@RequestParam("mobile") String mobile,
+			@RequestParam(name="wxopenid",required=false) String wxopenid) {
+		Long userId = oauth2SecuritySubject.getCurrentUser();
+		UserEntity user = userService.findByUserId(userId);
+		
+		if(StringUtils.isBlank(wxopenid)){
+			wxopenid = user.getOpenid();
+		}
+		
+		if(StringUtils.isBlank(wxopenid)){
+			throw new I18nMessageException("-1","请在微信公众号菜单进入支付");
+		}
+		String spbill_create_ip = CommonUtil.getIp2(request);
 		return mallOrderService.confirmOrder(
-				oauth2SecuritySubject.getCurrentUser(), orderNo, invoiceType,
-				invoiceTitle, address, consignee, mobile);
+				userId, orderNo, invoiceType,
+				invoiceTitle, address, consignee, mobile, wxopenid, spbill_create_ip);
 	}
 
 	@RequestMapping("/mall/order/scoreExchange")
