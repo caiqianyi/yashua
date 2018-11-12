@@ -12,7 +12,7 @@ import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.MD5;
 import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.commons.utils.ValidatorUtils;
-import com.lebaoxun.modules.pay.service.ISMSGatewayService;
+import com.lebaoxun.modules.sms.service.ISMSGatewayService;
 import com.lebaoxun.soa.core.redis.IRedisCache;
 
 @RestController
