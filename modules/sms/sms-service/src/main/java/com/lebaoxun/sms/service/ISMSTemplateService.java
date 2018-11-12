@@ -5,9 +5,11 @@ import java.util.Map;
 
 public interface ISMSTemplateService {
 	
-	void add(String temapleId, String content);
+	void saveOrUpdate(String templateId, String content);
 	
 	void remove(String templateId);
+	
+	String find(String templateId);
 	
 	List<Map<String,String>> list();
 	

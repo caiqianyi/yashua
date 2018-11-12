@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +17,12 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.lebaoxun.commons.utils.Assert;
 import com.lebaoxun.commons.utils.MD5;
 import com.lebaoxun.sms.core.AbstractSMSGatewayClient;
+import com.lebaoxun.sms.core.SMSGateway;
+import com.lebaoxun.sms.service.ISMSClientService;
+import com.lebaoxun.sms.service.ISMSTemplateService;
 /**
  * 容联 云通信 短信发送
  * @author caiqianyi 2017.9.25
@@ -27,6 +33,11 @@ public class RlyunSMSGatewayClient extends AbstractSMSGatewayClient {
 	
 	private Logger logger = LoggerFactory.getLogger(RlyunSMSGatewayClient.class);
 	
+	@Resource
+	private ISMSClientService smsClientService;
+	
+	@Resource
+	private ISMSTemplateService smsTemplateService;
 	@Override
 	public boolean doSend(String mobile, String template_id,
 			String cst_id,String ...datas) {
@@ -44,7 +55,7 @@ public class RlyunSMSGatewayClient extends AbstractSMSGatewayClient {
 		}
 		
 		if("207283".equals(template_id)){
-			String vfCode = refreshVfCode(mobile);
+			String vfCode = smsClientService.refreshVfCode(cst_id, mobile);
 			args.add(vfCode);
 			args.add("10分钟");
 		}else{
@@ -89,6 +100,11 @@ public class RlyunSMSGatewayClient extends AbstractSMSGatewayClient {
         if(result.contains("{\"statusCode\":\"000000\"")){
         	return true;
         }
+		return false;
+	}
+	
+	@Override
+	public boolean doSend(String appid, String mobile, String content) {
 		return false;
 	}
 

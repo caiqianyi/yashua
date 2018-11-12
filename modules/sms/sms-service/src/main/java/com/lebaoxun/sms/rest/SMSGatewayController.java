@@ -1,4 +1,4 @@
-package com.lebaoxun.sms.rest;
+/*package com.lebaoxun.sms.rest;
 
 import javax.annotation.Resource;
 
@@ -41,3 +41,4 @@ public class SMSGatewayController {
 		return new ResponseMessage();
 	}
 }
+*/

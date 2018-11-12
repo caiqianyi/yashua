@@ -8,11 +8,11 @@ public class RedisKeyConstant {
 	 *  | field mobile
 	 *  | value reason 原因
 	 */
-	public final static String HASH_SMS_BLACKLIST_MOBILES = "sms:blacklist:mobiles";//永久黑名单key
+	public final static String HASH_SMS_BLACKLIST_MOBILES = "sms:%s:blacklist:mobiles";//永久黑名单key
 	
-	public final static String HASH_SMS_FREEZE_RECORDS_MOBILES = "sms:freeze:records:%s";//冻结记录
+	public final static String HASH_SMS_FREEZE_RECORDS_MOBILES = "sms:%s:freeze:records:%s";//冻结记录
 	
-	public final static String SMS_FREEZE_LIST_MOBILES = "sms:freeze:list:%s";//当前冻结手机号
+	public final static String SMS_FREEZE_LIST_MOBILES = "sms:%s:freeze:list";//当前冻结手机号
 	
 	/**
 	 * 当前使用短信网关名称 
@@ -49,14 +49,14 @@ public class RedisKeyConstant {
 	 * 手机号秒单位限制记录 second mobile
 	 * value 发送次数 Integer
 	 */
-	public final static String SMS_SEND_COUNT_SECOND_MOBILE = "sms:send:count:second(%s):%s";
+	public final static String SMS_SEND_COUNT_SECOND_MOBILE = "sms:%s:send:count:second(%s)";
 	
 	/**
 	 * 年月日单元限制 格式为 yyyyMMdd yyyyMM yyyy 日期值
 	 * field mobile
 	 * value 发送次数 Integer
 	 */
-	public final static String HASH_SMS_SEND_COUNT_DATE = "sms:send:count:date(%s)";
+	public final static String HASH_SMS_SEND_COUNT_DATE = "sms:%s:send:count:date(%s)";
 	
 	/**
 	 * 短信发送机记录　%s 日期　yyyyMMdd
@@ -67,6 +67,8 @@ public class RedisKeyConstant {
 	
 	public final static String SMS_SEND_GATEWAYNAME_FAIL_MIN_COUNT = "sms:send:%s:fail:min:count";
 	
-	public final static String SMS_SEND_VFCODE_MOBILE = "sms:send:vfcode:%s";
+	public final static String SMS_SEND_VFCODE_MOBILE = "sms:%s:send:vfcode";
+	
+	public final static String HASH_SMS_EARLY_WARNING = "sms:early:warning:%s";
 	
 }

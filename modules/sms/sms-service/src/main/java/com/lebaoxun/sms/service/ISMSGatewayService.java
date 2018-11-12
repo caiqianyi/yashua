@@ -1,15 +1,21 @@
 package com.lebaoxun.sms.service;
 
-import java.util.Map;
+import java.util.List;
 
 import com.lebaoxun.sms.core.SMSGateway;
 
 public interface ISMSGatewayService {
 	
-	void set(String name,SMSGateway gateway);
+	void set(SMSGateway gateway);
 	
-	void delete(String name);
+	SMSGateway find(String gatewayName);
 	
-	Map<String,SMSGateway> list();
+	SMSGateway getCurrentGateway();
+	
+	void setGatewayModel(String model);
+	
+	void delete(String gatewayName);
+	
+	List<SMSGateway> list();
 	
 }

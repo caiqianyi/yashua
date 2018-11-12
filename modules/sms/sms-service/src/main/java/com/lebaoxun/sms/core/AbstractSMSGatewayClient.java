@@ -5,40 +5,25 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import javax.annotation.Resource;
-
-import com.lebaoxun.commons.utils.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.lebaoxun.commons.beans.BeanFactoryUtils;
 import com.lebaoxun.commons.utils.Assert;
-import com.lebaoxun.commons.utils.DateUtil;
-import com.lebaoxun.commons.utils.GenerateCode;
 import com.lebaoxun.commons.utils.MD5;
-import com.lebaoxun.sms.utils.MapKeyComparator;
-import com.lebaoxun.soa.core.redis.IRedisCache;
-import com.lebaoxun.soa.core.redis.IRedisHash;
+import com.lebaoxun.sms.service.ISMSClientService;
+import com.lebaoxun.sms.vo.SMSClientVo;
 
 public abstract class AbstractSMSGatewayClient {
 	
-	@Resource
-	private IRedisHash redisHash;
-	
-	@Resource
-	private IRedisCache redisCache;
-	
 	private Logger logger = LoggerFactory.getLogger(AbstractSMSGatewayClient.class);
 	
-	public String refreshVfCode(String tel){
+	/*public String refreshVfCode(String tel){
 		String vfcode = GenerateCode.gen(5)+"";
+		logger.info("refreshVfCode vfcode={}",vfcode);
 		redisCache.set(String.format(RedisKeyConstant.SMS_SEND_VFCODE_MOBILE, tel), vfcode, 10 * 60l);
 		return vfcode;
 	}
@@ -46,32 +31,82 @@ public abstract class AbstractSMSGatewayClient {
 	public boolean checkVfCode(String tel,String vfCode){
 		String vfcode = (String) redisCache.get(String.format(RedisKeyConstant.SMS_SEND_VFCODE_MOBILE, tel));
 		return vfcode == null || !vfcode.equalsIgnoreCase(vfCode) ? false : true;
-	}
+	}*/
 	
 	public boolean send(String cst_id,String mobile, String template_id, String sign,String ...args){
 		
+		ISMSClientService clientService = (ISMSClientService) BeanFactoryUtils.getBean("smsClientService");
 		Assert.notEmpty(mobile, "10401" , "手机号不能为空");
 		Assert.notEmpty(template_id, "10401" , "短信模板不能为空");
 		Assert.notEmpty(cst_id, "10401" , "系统编号不能为空");
 		Assert.notEmpty(sign, "10401" , "数据签名不能为空");
 		
-		String secret = (String) redisHash.hGet(RedisKeyConstant.HASH_SMS_SECRET_CSTID, cst_id);
-		Assert.notNull(secret, "10401");//系统编号不正确
-		
+		SMSClientVo clientVo = clientService.find(cst_id);
+		Assert.notNull(clientVo, "10401");//系统编号不正确
+		String secret = clientVo.getSecret();
 		String signback = MD5.md5(mobile + cst_id + secret);
 		
 		logger.debug("signback={},secret={}",signback,secret);
 		
 		Assert.equals(signback, sign, "10402", "签名错误");
 		
-		Assert.isTrue(!redisHash.hExists(RedisKeyConstant.HASH_SMS_BLACKLIST_MOBILES, mobile), "10405" , "黑名单无法发送");
+		//Assert.isTrue(!redisHash.hExists(RedisKeyConstant.HASH_SMS_BLACKLIST_MOBILES, mobile), "10405" , "黑名单无法发送");
+		Assert.isTrue(!clientService.isInBlackList(cst_id, mobile), "10405" , "黑名单无法发送");
 		
-		Assert.isTrue(!redisCache.exists(String.format(RedisKeyConstant.SMS_FREEZE_LIST_MOBILES, mobile)), "10403" , "该手机号已被冻结！");
+		//Assert.isTrue(!redisCache.exists(String.format(RedisKeyConstant.SMS_FREEZE_LIST_MOBILES, mobile)), "10403" , "该手机号已被冻结！");
+		Assert.isTrue(!clientService.isFreeze(cst_id, mobile), "10403" , "该手机号已被冻结！");
 		
 		boolean result = doSend(mobile, template_id, cst_id, args);
 		
 		if(result){//发送成功
-			smsRestrict(mobile, cst_id);
+			clientService.addSendLog(cst_id, mobile);
+			return true;
+		}
+		
+		/*SMSGateway config = this.getCurrentGateway();
+		
+		String cstFailKey = String.format(RedisKeyConstant.SMS_SEND_GATEWAYNAME_FAIL_MIN_COUNT, config.getCode());
+		Integer failCount = (Integer) redisCache.get(cstFailKey);
+		failCount = failCount == null ? 1 : failCount + 1;
+		if(redisCache.exists(cstFailKey)){
+			redisCache.update(RedisKeyConstant.SMS_SEND_GATEWAYNAME_FAIL_MIN_COUNT, failCount);
+		}else{
+			redisCache.set(RedisKeyConstant.SMS_SEND_GATEWAYNAME_FAIL_MIN_COUNT, failCount, 60l);
+		}
+		if(failCount > 5){//一分钟内，该短信通道失败次数超过5次。则删除该通道连接，熔断机制
+			redisHash.hDel(RedisKeyConstant.HASH_SMS_GATEWAY_CONFIGS, config.getCode());
+		}*/
+		
+		return result;
+	}
+	public boolean doSend(String cst_id,String mobile, String content, String sign){
+		
+		ISMSClientService clientService = (ISMSClientService) BeanFactoryUtils.getBean("smsClientService");
+		Assert.notEmpty(mobile, "10401" , "手机号不能为空");
+		Assert.notEmpty(content, "10401" , "短信内容不能为空");
+		Assert.notEmpty(cst_id, "10401" , "系统编号不能为空");
+		Assert.notEmpty(sign, "10401" , "数据签名不能为空");
+		
+		SMSClientVo clientVo = clientService.find(cst_id);
+		Assert.notNull(clientVo, "10401");//系统编号不正确
+		String secret = clientVo.getSecret();
+		String signback = MD5.md5(mobile + cst_id + secret);
+		
+		logger.debug("signback={},secret={}",signback,secret);
+		
+		Assert.equals(signback, sign, "10402", "签名错误");
+		
+		//Assert.isTrue(!redisHash.hExists(RedisKeyConstant.HASH_SMS_BLACKLIST_MOBILES, mobile), "10405" , "黑名单无法发送");
+		Assert.isTrue(!clientService.isInBlackList(cst_id, mobile), "10405" , "黑名单无法发送");
+		
+		//Assert.isTrue(!redisCache.exists(String.format(RedisKeyConstant.SMS_FREEZE_LIST_MOBILES, mobile)), "10403" , "该手机号已被冻结！");
+		Assert.isTrue(!clientService.isFreeze(cst_id, mobile), "10403" , "该手机号已被冻结！");
+		
+		boolean result = doSend(mobile, content, cst_id);
+		
+		if(result){//发送成功
+			//smsRestrict(mobile, cst_id);
+			clientService.addSendLog(cst_id, mobile);
 			return true;
 		}
 		
@@ -94,7 +129,9 @@ public abstract class AbstractSMSGatewayClient {
 	
 	public abstract boolean doSend(String mobile,String template_id,String cst_id,String ...datas);
 	
-	public SMSGateway getCurrentGateway(){
+	public abstract boolean doSend(String appid,String mobile,String content);
+	
+	/*public SMSGateway getCurrentGateway(){
 		String code = (String) redisCache.get(RedisKeyConstant.SMS_GATEWAY_USE_CURRENT);
 		Assert.notEmpty(code, "500" , null);
 		
@@ -116,14 +153,14 @@ public abstract class AbstractSMSGatewayClient {
 		SMSGateway sgc = JSON.parseObject(config,SMSGateway.class);
 		sgc.setCode(code);
 		return sgc;
-	}
+	}*/
 	
 	/**
 	 * 记录发送次数，发送场景，比对限制，拉入黑名单
 	 * @param mobile
 	 * @param cst_id
 	 */
-	public void smsRestrict(String mobile,String cst_id){
+	/*public void smsRestrict(String mobile,String cst_id){
 		Map<String,Object>  smsAstrict = redisHash.hGetAll(String.format(RedisKeyConstant.HASH_SMS_SEND_TIME_ASTRICT_CSTID, cst_id));//短信限制配置
   		if(smsAstrict != null){
   			for(String key : smsAstrict.keySet()){
@@ -201,7 +238,7 @@ public abstract class AbstractSMSGatewayClient {
 		if(freezeRecord != null && freezeRecord.size() > 4){//冻结次数超过5次则永久拉黑
 			redisHash.hSet(RedisKeyConstant.HASH_SMS_BLACKLIST_MOBILES, mobile, "time="+time);
 		}
-	}
+	}*/
 	
 	public String get(String smsGateWayUrl) {
 		String result = "error";

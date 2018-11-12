@@ -95,7 +95,7 @@ public class SMSGateway {
 	public String getCode() {
 		return code;
 	}
-	void setCode(String code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 	public Integer getWeight() {
