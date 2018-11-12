@@ -18,9 +18,9 @@ spring:
     config:
       name: yashua
       profile: dev
-      username: guess
-      password: 123123
-      uri: http://47.95.7.11:7369/
+      username: yashua
+      password: yashua0921
+      uri: http://47.95.192.172:7369/
       label: master
       
 # Define the port where the API gateway server would be running

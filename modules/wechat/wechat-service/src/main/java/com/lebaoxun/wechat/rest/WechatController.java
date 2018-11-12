@@ -2,7 +2,7 @@ package com.lebaoxun.wechat.rest;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;

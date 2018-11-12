@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: yashua-core-service
+  session:
+    store-type: none
+  cloud:
+    config:
+      name: yashua
+      profile: dev
+      username: yashua
+      password: yashua0921
+      uri: http://47.95.192.172:7369/
+      label: master
+    http:
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 100MB
+            enabled: true
+# Define the port where the Widget Foundry server would be running
+server:
+  port: 8084

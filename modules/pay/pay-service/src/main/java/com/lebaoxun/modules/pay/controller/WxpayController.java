@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -626,7 +626,8 @@ public class WxpayController {
 		return new ResponseMessage(ret);
 	}
 	
-	String notify(String body) {
+	@RequestMapping(value="/wxpay/notify")
+	String notify(@RequestBody String body) {
 		PayOrderEntity order = null;
 		try{
 			// 微信异步通知 信息为空
@@ -656,24 +657,26 @@ public class WxpayController {
 				BigDecimal total_fee = new BigDecimal((String)wxPayResult.get("total_fee")).divide(new BigDecimal("100"));
 				String tradeNo = (String)wxPayResult.get("transaction_id");
 				
-				order = payOrderService.selectOne(new EntityWrapper<PayOrderEntity>().eq("out_trade_no", out_trade_no));
+				order = payOrderService.selectOne(new EntityWrapper<PayOrderEntity>().eq("out_order_no", out_trade_no));
 				
 				String queue = null;
 				if(StringUtils.isNotBlank(config.getQueueName())){
 					queue = config.getQueueName();
 				}
-				return payOrderService.notify(out_trade_no, total_fee, tradeNo, buyTime, queue);
+				return payOrderService.notify(out_trade_no, total_fee, tradeNo, buyTime, queue , "wxpay");
 			}
 			logger.error("[wxpay] notify.error {}","sign failure");
 			query(out_trade_no, account, "1");
 			return "success";
 		}catch(I18nMessageException e){
+			e.printStackTrace();
 			if(order == null){
 				logger.error("[wxpay] notify.error {}",e.getInfo());
 			}else{
 				logger.error("[wxpay] notify.error {} order={}",e.getInfo(),new Gson().toJson(order));
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			if(order == null){
 				logger.error("[wxpay] notify.error {}",e.getMessage());
 			}else{
@@ -755,7 +758,7 @@ public class WxpayController {
 				BigDecimal totalFee = new BigDecimal(total_fee).divide(new BigDecimal("100"));
 				Long buyTime = DateUtils.parseDate(time_end, new String[]{"yyyyMMddHHmmss"}).getTime();
 				
-				payOrderService.notify(out_trade_no, totalFee, tradeNo, buyTime, config.getQueueName());
+				payOrderService.notify(out_trade_no, totalFee, tradeNo, buyTime, config.getQueueName(), "wxpay");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

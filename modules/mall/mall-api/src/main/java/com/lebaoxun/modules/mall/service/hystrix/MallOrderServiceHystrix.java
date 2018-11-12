@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lebaoxun.modules.mall.entity.MallCartEntity;
 import com.lebaoxun.modules.mall.entity.MallOrderEntity;
@@ -77,7 +78,7 @@ public class MallOrderServiceHystrix implements IMallOrderService {
 	@Override
 	public ResponseMessage confirmOrder(Long userId, String orderNo,
 			Integer invoiceType, String invoiceTitle, String address,
-			String consignee,String mobile) {
+			String consignee,String mobile,String wxopenid,String spbill_create_ip) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 	

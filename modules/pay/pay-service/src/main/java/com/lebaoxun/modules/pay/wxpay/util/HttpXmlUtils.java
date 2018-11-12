@@ -17,7 +17,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

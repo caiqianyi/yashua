@@ -11,7 +11,8 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.CommonUtil;
 import com.lebaoxun.commons.utils.DesUtils;
+import com.lebaoxun.commons.utils.GenerateCode;
 import com.lebaoxun.commons.utils.PwdUtil;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
@@ -129,7 +131,8 @@ public class LoginController extends BaseController{
 	@RequestMapping(value = "/oauth2/token", method = RequestMethod.POST)
 	ResponseMessage oauthToken(String username,String password,
 			String platform,
-			String captcha,String openid){
+			String captcha,String openid,
+			String wxopenid){
 		Boolean isCorrectPwd = null; 
 		if(StringUtils.isBlank(openid)){
 			if(!"app".equals(platform)
@@ -155,7 +158,10 @@ public class LoginController extends BaseController{
 			}
 			
 			String account = username,passwd = null;
-			if(!"wechatOA".equals(platform)){
+			UserEntity a = null;
+			if("wechatOA".equals(platform)){
+				a = userService.findByAccount(account);
+			}else{
 				String secret = (String) request.getSession().getAttribute("app.secret");
 				if(StringUtils.isBlank(secret)){
 					throw new I18nMessageException("10015", "密钥不对");
@@ -169,9 +175,8 @@ public class LoginController extends BaseController{
 					throw new I18nMessageException("10015", "密钥不对");
 				}
 				logger.info("username={},password={}",account,passwd);
+				a = userService.login(account, passwd);
 			}
-			
-			UserEntity a = userService.login(account, passwd);
 			if(a == null){
 				IncrErrorCount(username, value);
 				throw new I18nMessageException("10002", new String[]{AccountConstant.ACCOUNT_ERROR_COUNT+"",AccountConstant.ACCOUNT_ERROR_LOCK_TIME/3600+"",(AccountConstant.ACCOUNT_ERROR_COUNT-errorCount-1)+""});
@@ -181,6 +186,12 @@ public class LoginController extends BaseController{
 				throw new I18nMessageException("10014","账户已被禁用，请联系管理员");
 			}
 			
+			if(StringUtils.isNotBlank(wxopenid)){
+				ResponseMessage sm = userService.bindOpenid(a.getUserId(), wxopenid);
+				if(!"0".equals(sm.getErrcode())){
+					return sm;
+				}
+			}
 			if(passwd != null){
 				isCorrectPwd = !PwdUtil.isCorrectPwd(passwd);
 			}
@@ -205,27 +216,30 @@ public class LoginController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/oauth2/token/wechatOA", method = RequestMethod.GET)
-	ResponseMessage oauthTokenForWechatOA(String code) throws Exception{
+	ResponseMessage oauthTokenForWechatOA(String code,
+			String openid) throws Exception{
 		logger.info("wechatOA|code={}",code);
-		AccessToken accessToken = wechatService.getAccessToken(code, "yashua");
-		if(accessToken == null || StringUtils.isBlank(accessToken.getOpenid())){
-			throw new I18nMessageException("40001","微信授权失败");
+		if(StringUtils.isNotBlank(code)){
+			AccessToken accessToken = wechatService.getAccessToken(code, "yashua");
+			if(accessToken == null || StringUtils.isBlank(accessToken.getOpenid())){
+				throw new I18nMessageException("40001","微信授权失败");
+			}
+			openid = accessToken.getOpenid();
 		}
-		String openid = accessToken.getOpenid();
 		UserEntity user = userService.findByOpenid(openid,null);
 		if(user == null){
 			ResponseMessage error = new ResponseMessage();
 			error.setErrcode("40004");
 			error.setErrmsg("当前微信号未绑定代理帐号，无法登录");
-			error.setData(accessToken);
+			error.setData(openid);
 			return error;
 		}
 		if("N".equals(user.getStatus())){
 			throw new I18nMessageException("10014","账户已被禁用，请联系管理员");
 		}
-		ResponseMessage success = oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null);
+		ResponseMessage success = oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null, null);
 		Map<String,Object> json = (Map<String, Object>) success.getData();
-		json.put("wechat", accessToken);
+		json.put("wxappid", openid);
 		return success;
 	}
 	
@@ -282,5 +296,48 @@ public class LoginController extends BaseController{
 		}
     	return userService.modifyPassword(user.getUserId(), passwd, user.getUserId());
     }
+    
+    @RequestMapping(value = "/register/add")
+	ResponseMessage register(@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("vfcode") String vfcode,
+			@RequestParam(name="wxopenid",required = false) String wxopenid){
+		String account = username,passwd = null;
+		String secret = (String) request.getSession().getAttribute("app.secret");
+		if(StringUtils.isBlank(secret)){
+			throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");
+		}
+		try {
+			logger.debug("secret={}",secret);
+			DesUtils desUtils = new DesUtils(secret);
+			account = desUtils.decrypt(username);
+			passwd = desUtils.decrypt(password);
+		} catch (Exception e) {
+			throw new I18nMessageException("10015", "密钥不对");
+		}
+		logger.info("username={},password={}",account,passwd);
+		String verifycode = (String) redisCache.get(String.format(AccountConstant.SMS_VFCODE, account));
+		logger.debug("verifycode={},vfcode={}",verifycode,vfcode);
+		if(verifycode == null || !verifycode.equalsIgnoreCase(vfcode)){
+			throw new I18nMessageException("10001", "验证码不正确");
+		}
+		redisCache.del(String.format(AccountConstant.SMS_VFCODE, account));;
+		UserEntity user = new UserEntity();
+		Long userId = GenerateCode.gen16(9);
+		user.setBalance(0);
+    	user.setLevel(0);
+    	user.setSource("SELF");
+    	user.setType("A");
+    	user.setUserId(userId);
+    	user.setMobile(account);
+    	user.setPassword(passwd);
+    	user.setAccount(account);
+    	user.setOpenid(wxopenid);
+    	ResponseMessage success = userService.save(userId, user);
+    	if(!"0".equals(success.getErrcode())){
+    		return success;
+    	}
+		return oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null, null);
+	}
 	
 }

@@ -2,16 +2,17 @@ package com.lebaoxun.portal.rest;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
-import com.lebaoxun.commons.utils.GenerateCode;
+import com.lebaoxun.commons.utils.MD5;
+import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.commons.utils.ValidatorUtils;
-import com.lebaoxun.portal.config.AccountConstant;
+import com.lebaoxun.modules.pay.service.ISMSGatewayService;
 import com.lebaoxun.soa.core.redis.IRedisCache;
 
 @RestController
@@ -19,6 +20,18 @@ public class SMSController extends BaseController{
 	
 	@Resource
 	private IRedisCache redisCache;
+	
+	@Resource
+	private ISMSGatewayService smsGatewayService;
+	
+	@Value("${sms.cst_id}")
+	private String smsCstid;
+	
+	@Value("${sms.secret}")
+	private String smsSecret;
+	
+	@Value("${sms.template.register}")
+	private String smsTemplateForRegister;
 
 	@RequestMapping(value = "/sms/send")
 	ResponseMessage sendSMS(@RequestParam("mobile") String mobile,
@@ -41,10 +54,11 @@ public class SMSController extends BaseController{
 			sm.setData(ttl);
 			return sm;
 		}
-		String vfcode = GenerateCode.gen(5)+"";
-		logger.debug("vfcode={}",vfcode);
-		redisCache.set(String.format(AccountConstant.SMS_VFCODE, mobile), vfcode, 10 * 60l);
-		redisCache.set(key, "success", 60l);
-		return ResponseMessage.ok();
+		String sign = MD5.md5(mobile + smsCstid + smsSecret);//生成签名数据
+		ResponseMessage sm = smsGatewayService.send(mobile, smsTemplateForRegister, smsCstid, sign, null);
+		if("0".equals(sm.getErrcode())){
+			redisCache.set(key, "success", 60l);
+		}
+		return sm;
 	}
 }
