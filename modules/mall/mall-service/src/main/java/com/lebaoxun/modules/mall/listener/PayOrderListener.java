@@ -1,5 +1,9 @@
 package com.lebaoxun.modules.mall.listener;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -16,7 +20,10 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.lebaoxun.modules.mall.entity.MallOrderEntity;
 import com.lebaoxun.modules.mall.service.MallOrderService;
+import com.lebaoxun.soa.amqp.core.sender.IRabbitmqSender;
 
 /**
  * 充值回调
@@ -31,6 +38,9 @@ public class PayOrderListener {
 	
 	@Resource
 	private MallOrderService mallOrderService;
+	
+	@Resource
+	private IRabbitmqSender rabbitmqSender;
 	
 	@Bean
     public Queue queuePayShopping() {
@@ -54,7 +64,23 @@ public class PayOrderListener {
 			if("shopping".equals(scene)){
 				String orderNo = message.getString("order_no");
 				Long buy_time = message.getLong("buy_time");
-				mallOrderService.payMallOrder(orderNo, buy_time+"");
+				
+				MallOrderEntity order = mallOrderService.payMallOrder(orderNo, buy_time+"");
+				
+				if(order != null){
+					Map<String,String> msg = new HashMap<String,String>();
+					String timestamp = buy_time+"";
+					
+					msg.put("userId", order.getUserId()+"");
+					msg.put("logTime", timestamp);
+					msg.put("logType", "MALL_PRO_SHARE_PAY_AWARD");
+					msg.put("rechargeFee", order.getOrderAmount().multiply(new BigDecimal("10")).intValue()+"");
+					msg.put("descr", "积分返利");
+					msg.put("adjunctInfo", order.getOrderNo());
+					
+					rabbitmqSender.sendContractDirect("account.balance.queue.rechage",
+							new Gson().toJson(msg));
+				}
 			}
 		}  catch (Exception e) {
 			logger.error("error|body={}",body);

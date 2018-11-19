@@ -57,6 +57,7 @@
 <script type="text/javascript">
 $(function(){
 	var offset = 0;
+	var uid = '${uid}';
 	$("li[id^=cat_]").click(function(){
 		$("li[id^=cat_]").removeClass("on");
 		$(this).addClass("on");
@@ -85,7 +86,7 @@ $(function(){
 		                    	for(var i=0;i<response.data.length;i++){
 		                    		var item = response.data[i];
 		                    		console.info(item);
-		                    		html += '<a href="/mall/info/'+item.id+'.html" class="box">';
+		                    		html += '<a href="/mall/info/'+item.id+'.html?u='+uid+'" class="box">';
 		                    		html += '	<img src="'+item.showPic+'" alt=""/>';
 		                    		html += '	<div class="txt">';
 		                    		html += '		<h3>'+item.name+'</h3>';

@@ -57,7 +57,8 @@ public interface IMallOrderService {
     		@RequestParam("consignee") String consignee,
     		@RequestParam("mobile") String mobile,
     		@RequestParam("wxopenid") String wxopenid,
-			@RequestParam("spbill_create_ip") String spbill_create_ip);
+			@RequestParam("spbill_create_ip") String spbill_create_ip,
+			@RequestParam(name="fuid",required=false) Long fuid);
 	
 	@RequestMapping("/mall/mallorder/scoreExchange")
 	ResponseMessage scoreExchange(@RequestParam("userId") Long userId,

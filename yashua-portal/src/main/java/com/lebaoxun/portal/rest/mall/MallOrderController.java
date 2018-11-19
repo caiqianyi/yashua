@@ -58,7 +58,8 @@ public class MallOrderController extends BaseController {
 			@RequestParam("address") String address,
 			@RequestParam("consignee") String consignee,
 			@RequestParam("mobile") String mobile,
-			@RequestParam(name="wxopenid",required=false) String wxopenid) {
+			@RequestParam(name="wxopenid",required=false) String wxopenid,
+			@RequestParam(name="fuid",required=false) Long fuid) {
 		Long userId = oauth2SecuritySubject.getCurrentUser();
 		UserEntity user = userService.findByUserId(userId);
 		
@@ -72,7 +73,7 @@ public class MallOrderController extends BaseController {
 		String spbill_create_ip = CommonUtil.getIp2(request);
 		return mallOrderService.confirmOrder(
 				userId, orderNo, invoiceType,
-				invoiceTitle, address, consignee, mobile, wxopenid, spbill_create_ip);
+				invoiceTitle, address, consignee, mobile, wxopenid, spbill_create_ip, fuid);
 	}
 
 	@RequestMapping("/mall/order/scoreExchange")

@@ -34,6 +34,10 @@ public class MallOrderEntity implements Serializable {
 	 */
 	private Long userId;
 	/**
+	 * 分享用户ID
+	 */
+	private Long fuid;
+	/**
 	 * 支付方式 0=积分兑换，1=在线支付
 	 */
 	private Integer payType;
@@ -334,5 +338,11 @@ public class MallOrderEntity implements Serializable {
 	}
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+	public Long getFuid() {
+		return fuid;
+	}
+	public void setFuid(Long fuid) {
+		this.fuid = fuid;
 	}
 }

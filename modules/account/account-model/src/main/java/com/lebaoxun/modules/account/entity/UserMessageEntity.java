@@ -63,6 +63,10 @@ public class UserMessageEntity implements Serializable {
 	 * 消息只通知哪种性别
 	 */
 	private Integer sex;
+	/**
+	 * 所在地区
+	 */
+	private String areaCode;
 
 	/**
 	 * 设置：
@@ -190,5 +194,10 @@ public class UserMessageEntity implements Serializable {
 	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
-	
+	public String getAreaCode() {
+		return areaCode;
+	}
+	public void setAreaCode(String areaCode) {
+		this.areaCode = areaCode;
+	}
 }

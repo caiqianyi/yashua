@@ -1,5 +1,18 @@
 var um;
+var pickerSetup = null;
 $(function () {
+	
+	pickerSetup = new PickerSetup({
+    	selected: [0,0,0],
+		title: "请选择地区",
+		onSelected: function(selected,text){
+			vm.pcikerTextShow = text.toString().replace(new RegExp(",","gm")," ");
+			vm.userMessage.areaCode = selected.toString();
+		},
+		onChange: function(){
+			
+		}
+	});
 	
 	jeDate({
         dateCell:"#datestart",
@@ -83,6 +96,7 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
+		pcikerTextShow: "请选择所在地区",
 		userMessage: {
 			sex: 0,
 			status: 0
@@ -96,6 +110,9 @@ var vm = new Vue({
 		]
 	},
 	methods: {
+		showPicker: function(){
+			pickerSetup.show();
+		},
 		query: function () {
 			vm.reload();
 		},

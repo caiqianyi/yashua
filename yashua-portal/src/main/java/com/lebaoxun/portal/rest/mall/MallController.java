@@ -21,6 +21,7 @@ import com.lebaoxun.modules.mall.service.IMallProductCommentService;
 import com.lebaoxun.modules.mall.service.IMallProductService;
 import com.lebaoxun.modules.mall.service.IMallProductSpecificationService;
 import com.lebaoxun.portal.rest.BaseController;
+import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 
 @Controller
 public class MallController extends BaseController {
@@ -36,10 +37,14 @@ public class MallController extends BaseController {
 
 	@Resource
 	private IMallProductCommentService mallProductCommentService;
+	
+	@Resource
+	private Oauth2SecuritySubject oauth2SecuritySubject;
 
 	@RequestMapping("/mall/list.html")
 	public String list(Map<String, Object> map) {
 		map.put("categorys", mallCategoryService.release());
+		map.put("uid", oauth2SecuritySubject.getCurrentUser());
 		return "/mall/list";
 	}
 

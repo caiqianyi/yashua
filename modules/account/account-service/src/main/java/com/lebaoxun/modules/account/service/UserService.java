@@ -93,5 +93,9 @@ public interface UserService extends IService<UserEntity> {
      * @param descr
      */
     void loginLog(Long userId,UserLogAction logType,String adjunctInfo,String descr);
+    
+    UserEntity recharge(Long userId,String adjunct_info,Long buyTime,String total_fee);
+    
+    UserEntity rechargeForSys(Long userId, String logType, String adjunctInfo, String total_fee, Long logTime);
 }
 

@@ -1,11 +1,12 @@
 package com.lebaoxun.modules.account.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.lebaoxun.commons.utils.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.PwdUtil;
 import com.lebaoxun.commons.utils.Query;
+import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.commons.utils.ValidatorUtils;
 import com.lebaoxun.modules.account.dao.UserDao;
 import com.lebaoxun.modules.account.dao.UserLogDao;
@@ -304,6 +306,53 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 			throw new I18nMessageException("500");
 		}
 		insertLog(user, logType, 0, descr, adjunctInfo);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public UserEntity recharge(Long userId, String orderNo, Long buyTime,
+			String total_fee) {
+		// TODO Auto-generated method stub
+		BigDecimal fee = new BigDecimal(total_fee);
+		
+		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
+		if(user == null){
+			throw new I18nMessageException("500");
+		}
+//		int count = userLogDao.selectCount(new EntityWrapper<UserLogEntity>().eq("user_id", userId).eq("adjunct_info", orderNo));
+//		if(count > 0){//已完成充值
+//			return null;
+//		}
+		Date time = new Date(buyTime);
+		UserEntity entity = new UserEntity();
+		entity.setId(user.getId());
+		entity.setBalance(user.getBalance() + fee.intValue());
+		entity.setLastBuyTime(time);
+		this.updateById(entity);
+		return user;
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public UserEntity rechargeForSys(Long userId, String logType, String adjunctInfo, String total_fee, Long logTime) {
+		// TODO Auto-generated method stub
+		BigDecimal fee = new BigDecimal(total_fee);
+		
+		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
+		if(user == null){
+			throw new I18nMessageException("500");
+		}
+		int count = userLogDao.selectCount(new EntityWrapper<UserLogEntity>().eq("user_id", userId).eq("log_type", logType).eq("adjunct_info", adjunctInfo));
+		if(count > 0){//已完成充值
+			return null;
+		}
+		Date time = new Date(logTime);
+		UserEntity entity = new UserEntity();
+		entity.setId(user.getId());
+		entity.setBalance(user.getBalance() + fee.intValue());
+		entity.setLastBuyTime(time);
+		this.updateById(entity);
+		return user;
 	}
 	
 	void insertLog(UserEntity user,UserLogAction logType,Integer tradeMoney,String descr,String adjunctInfo){

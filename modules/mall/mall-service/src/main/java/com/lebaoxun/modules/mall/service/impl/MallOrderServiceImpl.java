@@ -221,7 +221,7 @@ public class MallOrderServiceImpl extends
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public ResponseMessage confirmOrder(Long userId, String orderNo, Integer invoiceType,
 			String invoiceTitle, String address, String consignee, String mobile,
-			String wxopenid,String spbill_create_ip) {
+			String wxopenid,String spbill_create_ip, Long fuid) {
 		// TODO Auto-generated method stub
 		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(userId,
 				orderNo, 0);
@@ -235,6 +235,7 @@ public class MallOrderServiceImpl extends
 		order.setInvoiceType(invoiceType);
 		order.setUpdateTime(new Date());
 		order.setPayType(1);// 现金支付
+		order.setFuid(fuid);
 		this.baseMapper.updateById(order);
 		Integer totalFee = order.getPayAmount().setScale(2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal("100")).intValue();
 		return wxPayService.payment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua", wxopenid, userId, new BigDecimal("0"), "shopping");
@@ -277,6 +278,7 @@ public class MallOrderServiceImpl extends
 	}
 	
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public MallOrderEntity payMallOrder(String orderNo, String buyTime) {
 		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(null, orderNo, null);
 		if (order == null) {

@@ -78,7 +78,8 @@ public class MallOrderServiceHystrix implements IMallOrderService {
 	@Override
 	public ResponseMessage confirmOrder(Long userId, String orderNo,
 			Integer invoiceType, String invoiceTitle, String address,
-			String consignee,String mobile,String wxopenid,String spbill_create_ip) {
+			String consignee,String mobile,String wxopenid,
+			String spbill_create_ip, Long fuid) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 	

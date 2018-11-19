@@ -107,6 +107,10 @@ public class UserEntity implements Serializable {
 	 */
 	private String province;
 	/**
+	 * 所在地区
+	 */
+	private String areaCode;
+	/**
 	 * 用户的语言，简体中文为zh_CN
 	 */
 	private String language;
@@ -496,5 +500,11 @@ public class UserEntity implements Serializable {
 	}
 	public void setIdentity(String identity) {
 		this.identity = identity;
+	}
+	public String getAreaCode() {
+		return areaCode;
+	}
+	public void setAreaCode(String areaCode) {
+		this.areaCode = areaCode;
 	}
 }

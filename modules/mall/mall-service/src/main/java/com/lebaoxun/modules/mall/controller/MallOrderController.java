@@ -81,9 +81,10 @@ public class MallOrderController {
 			@RequestParam("consignee") String consignee,
 			@RequestParam("mobile") String mobile,
 			@RequestParam("wxopenid") String wxopenid,
-			@RequestParam("spbill_create_ip") String spbill_create_ip) {
+			@RequestParam("spbill_create_ip") String spbill_create_ip,
+			@RequestParam(name="fuid",required=false) Long fuid) {
 		return mallOrderService.confirmOrder(userId, orderNo, invoiceType,
-				invoiceTitle, address, consignee, mobile, wxopenid, spbill_create_ip);
+				invoiceTitle, address, consignee, mobile, wxopenid, spbill_create_ip,fuid);
 	}
 
 	@RequestMapping("/mall/mallorder/scoreExchange")

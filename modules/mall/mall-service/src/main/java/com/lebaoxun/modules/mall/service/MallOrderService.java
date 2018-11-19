@@ -42,7 +42,7 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 
 	ResponseMessage confirmOrder(Long userId, String orderNo, Integer invoiceType,
 			String invoiceTitle, String address, String consignee, String mobile,
-			String wxopenid,String spbill_create_ip);
+			String wxopenid,String spbill_create_ip, Long fuid);
 	
 	void delete(Long userId, String orderNo);
 	
