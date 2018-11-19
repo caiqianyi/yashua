@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lebaoxun.commons.utils.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,16 +34,19 @@ import com.google.zxing.common.BitMatrix;
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.GenerateCode;
+import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.modules.pay.entity.PayOrderEntity;
 import com.lebaoxun.modules.pay.pojo.WxpayConfig;
 import com.lebaoxun.modules.pay.service.IPayOrderService;
 import com.lebaoxun.modules.pay.service.IWxpayConfigService;
+import com.lebaoxun.modules.pay.service.IWxpayGatewayService;
 import com.lebaoxun.modules.pay.wxpay.util.HttpXmlUtils;
 import com.lebaoxun.modules.pay.wxpay.util.JdomParseXmlUtils;
 import com.lebaoxun.modules.pay.wxpay.util.ParseXMLUtils;
 import com.lebaoxun.modules.pay.wxpay.util.RandCharsUtils;
 import com.lebaoxun.modules.pay.wxpay.util.WXSignUtils;
 import com.lebaoxun.modules.pay.wxpay.vo.Unifiedorder;
+import com.lebaoxun.modules.pay.wxpay.vo.Unifierefund;
 
 /**
  * 
@@ -61,6 +63,9 @@ public class WxpayController {
 	
 	@Resource
 	private IPayOrderService payOrderService;
+	
+	@Resource
+	private IWxpayGatewayService wxpayGatewayService;
 	
 	@RequestMapping(value = "/wxpay/config/list", method = RequestMethod.GET)
 	List<WxpayConfig> configList(){
@@ -89,10 +94,13 @@ public class WxpayController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/wxpay/payment", method = RequestMethod.POST)
-	ResponseMessage payment(@RequestParam("spbill_create_ip")String spbill_create_ip, @RequestParam("orderNo")String orderNo, 
+	ResponseMessage payment(@RequestParam("spbill_create_ip")String spbill_create_ip, 
+			@RequestParam("orderNo")String orderNo, 
 			@RequestParam("descr")String descr, @RequestParam("totalFee")Integer totalFee, 
 			@RequestParam("attach")String attach, @RequestParam("group")String group, 
-			@RequestParam("openid")String openid, @RequestParam("userId") Long userId) {
+			@RequestParam("openid")String openid, @RequestParam("userId") Long userId,
+			@RequestParam(value="rechargeFee",required=false)BigDecimal rechargeFee,
+			@RequestParam(value="scene",required=false)String scene) {
 		String tradeType = "JSAPI";
 		
 		WxpayConfig config = wxpayConfigService.getWxpayConfig(group);
@@ -194,7 +202,9 @@ public class WxpayController {
 		order.setSpbillCreateIp(spbill_create_ip);
 		order.setStatus(0);
 		order.setTotalFee(new BigDecimal(totalFee).divide(new BigDecimal(100)));
+		order.setRechargeFee(rechargeFee);
 		order.setTradeType(tradeType);
+		order.setScene(scene);
 		payOrderService.insert(order);
 		
 		String resign = WXSignUtils.createSign("UTF-8", parameters1,secret);
@@ -225,7 +235,9 @@ public class WxpayController {
 			@RequestParam("wapName") String wapName, @RequestParam("spbill_create_ip") String spbill_create_ip, 
 			@RequestParam("orderNo") String orderNo, @RequestParam("descr") String descr, 
 			@RequestParam("totalFee") Integer totalFee, @RequestParam("attach") String attach, 
-			@RequestParam("group") String group, @RequestParam("userId") Long userId){
+			@RequestParam(value="rechargeFee",required=false)BigDecimal rechargeFee,
+			@RequestParam("group") String group, @RequestParam("userId") Long userId,
+			@RequestParam(value="scene",required=false)String scene){
 		
 		String tradeType = "MWEB";
 		
@@ -325,7 +337,9 @@ public class WxpayController {
 		order.setSpbillCreateIp(spbill_create_ip);
 		order.setStatus(0);
 		order.setTotalFee(new BigDecimal(totalFee).divide(new BigDecimal(100)));
+		order.setRechargeFee(rechargeFee);
 		order.setTradeType(tradeType);
+		order.setScene(scene);
 		payOrderService.insert(order);
 		return new ResponseMessage(retMap);
 	}
@@ -335,7 +349,9 @@ public class WxpayController {
 			@RequestParam("spbill_create_ip") String spbill_create_ip, @RequestParam("orderNo") String orderNo, 
 			@RequestParam("descr") String descr, @RequestParam("totalFee") Integer totalFee, 
 			@RequestParam("attach") String attach, @RequestParam("group") String group, 
-			@RequestParam("userId") Long userId) throws Exception {
+			@RequestParam("userId") Long userId,
+			@RequestParam(value="rechargeFee",required=false)BigDecimal rechargeFee,
+			@RequestParam(value="scene",required=false)String scene) throws Exception {
 		String tradeType = "NATIVE";
 		WxpayConfig config = wxpayConfigService.getWxpayConfig(group);
 		String notify_url = config.getNotifyUrl();
@@ -427,7 +443,9 @@ public class WxpayController {
 		order.setSpbillCreateIp(spbill_create_ip);
 		order.setStatus(0);
 		order.setTotalFee(new BigDecimal(totalFee).divide(new BigDecimal(100)));
+		order.setRechargeFee(rechargeFee);
 		order.setTradeType(tradeType);
+		order.setScene(scene);
 		payOrderService.insert(order);
 		
 		String prepay_id=retMap.get("prepay_id").toString();
@@ -435,6 +453,7 @@ public class WxpayController {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.put("prepay_id", prepay_id);
 		ret.put("code_url", code_url);
+		ret.put("order_no", orderNo);
 		return new ResponseMessage(ret);
 	}
 	
@@ -504,7 +523,9 @@ public class WxpayController {
 	ResponseMessage appPayment(@RequestParam("spbill_create_ip")String spbill_create_ip, @RequestParam("orderNo")String orderNo, 
 			@RequestParam("descr")String descr, @RequestParam("totalFee")Integer totalFee, 
 			@RequestParam("attach")String attach, @RequestParam("group")String group,
-			@RequestParam("userId") Long userId) {
+			@RequestParam("userId") Long userId,
+			@RequestParam(value="rechargeFee",required=false)BigDecimal rechargeFee,
+			@RequestParam(value="scene",required=false)String scene) {
 		String tradeType = "APP";
 		WxpayConfig config = wxpayConfigService.getWxpayConfig(group);
 		String notify_url = config.getNotifyUrl();
@@ -596,7 +617,9 @@ public class WxpayController {
 		order.setSpbillCreateIp(spbill_create_ip);
 		order.setStatus(0);
 		order.setTotalFee(new BigDecimal(totalFee).divide(new BigDecimal(100)));
+		order.setRechargeFee(rechargeFee);
 		order.setTradeType(tradeType);
+		order.setScene(scene);
 		payOrderService.insert(order);
 		
 		nonce_str = RandCharsUtils.getRandomString(16);
@@ -624,6 +647,63 @@ public class WxpayController {
 		ret.put("iossign", ios_resign);
 		ret.put("andsign", and_resign);
 		return new ResponseMessage(ret);
+	}
+	
+	/**
+	 * 小程序支付退款
+	 * 
+	 * @return JsonObject
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/wxpay/pay/wxAppRefund", method = RequestMethod.POST)
+	ResponseMessage wxAppRefund(@RequestParam("orderNo")String orderNo,
+			@RequestParam("refundDesc")String refundDesc,
+			@RequestParam(value="refundFee",required=false)Integer refundFee) {
+		PayOrderEntity order = payOrderService.selectOne(new EntityWrapper<PayOrderEntity>().eq("order_no", orderNo));
+		if(order == null){
+			logger.error("订单不存在 {}",orderNo);
+			throw new I18nMessageException("-1","订单不存在");
+		}
+		if(order.getStatus() == 2){
+			logger.error("订单已退款 {}",orderNo);
+			throw new I18nMessageException("-1","订单已退款");
+		}
+		if(order.getStatus() != 1){
+			logger.error("订单尚未支付 {}",orderNo);
+			throw new I18nMessageException("-1","订单尚未支付");
+		}
+		return ResponseMessage.ok(wxpayGatewayService.refund(order, refundFee, refundDesc));
+	}
+	
+	ResponseMessage wxAppRefund(Unifierefund unifiedorder) {
+		// 构造xml参数
+		String xmlInfo = HttpXmlUtils.refundXmlInfo(unifiedorder);
+		String wxUrl = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+		String method = "POST";
+
+		String weixinPost = HttpXmlUtils.httpsRequest(wxUrl, method, xmlInfo).toString();
+
+		Map<String, Object> retMap = ParseXMLUtils.jdomParseXml(weixinPost);
+		String return_code=retMap.get("return_code").toString();
+		
+		logger.debug("retMap={}",retMap);
+		logger.debug("请求申请退款接口返回结果 ==return_code={}",return_code);
+		if("FAIL".equals(return_code)){
+			throw new I18nMessageException("-1","支付失败,"+retMap.get("return_msg"));
+		}
+		//支付结果
+		String result_code=retMap.get("result_code").toString();
+		logger.debug("请求申请退款接口返回支付结果 ==return_code={}",result_code);
+		if("FAIL".equals(result_code)){
+			String err_code=retMap.get("err_code").toString();//返回错误码
+			String err_code_des=retMap.get("err_code_des").toString();//错误描述信息
+			if("BIZERR_NEED_RETRY".equals(err_code)){//退款业务流程错误，需要商户触发重试来解决
+				return wxAppRefund(unifiedorder);
+			}
+			throw new I18nMessageException("-1",err_code_des);
+		}
+		
+		return new ResponseMessage();
 	}
 	
 	@RequestMapping(value="/wxpay/notify")
@@ -663,7 +743,7 @@ public class WxpayController {
 				if(StringUtils.isNotBlank(config.getQueueName())){
 					queue = config.getQueueName();
 				}
-				return payOrderService.notify(out_trade_no, total_fee, tradeNo, buyTime, queue , "wxpay");
+				return payOrderService.notify(out_trade_no, total_fee, tradeNo, buyTime, queue, "wxpay");
 			}
 			logger.error("[wxpay] notify.error {}","sign failure");
 			query(out_trade_no, account, "1");
@@ -758,7 +838,7 @@ public class WxpayController {
 				BigDecimal totalFee = new BigDecimal(total_fee).divide(new BigDecimal("100"));
 				Long buyTime = DateUtils.parseDate(time_end, new String[]{"yyyyMMddHHmmss"}).getTime();
 				
-				payOrderService.notify(out_trade_no, totalFee, tradeNo, buyTime, config.getQueueName(), "wxpay");
+				payOrderService.notify(out_trade_no, totalFee, tradeNo, buyTime, config.getQueueName(),"wxpay");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

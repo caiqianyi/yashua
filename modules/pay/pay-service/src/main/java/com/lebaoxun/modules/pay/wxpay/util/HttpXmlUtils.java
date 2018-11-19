@@ -17,11 +17,12 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lebaoxun.commons.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.modules.pay.wxpay.vo.Unifiedorder;
+import com.lebaoxun.modules.pay.wxpay.vo.Unifierefund;
 
 
 /**
@@ -228,6 +229,75 @@ public class HttpXmlUtils {
         return "";
     }
     
+    public static String refundXmlInfo(Unifierefund unifierefund) {
+        //构造xml参数的时候，至少又是个必传参数
+
+        if (unifierefund != null) {
+            StringBuffer bf = new StringBuffer();
+            bf.append("<xml>");
+
+            bf.append("<appid>");
+            bf.append(unifierefund.getAppid());
+            bf.append("</appid>");
+
+            bf.append("<mch_id>");
+            bf.append(unifierefund.getMch_id());
+            bf.append("</mch_id>");
+
+            bf.append("<nonce_str>");
+            bf.append(unifierefund.getNonce_str());
+            bf.append("</nonce_str>");
+
+            bf.append("<sign>");
+            bf.append(unifierefund.getSign());
+            bf.append("</sign>");
+
+            if(StringUtils.isNotBlank(unifierefund.getOut_trade_no())){
+            	bf.append("<out_trade_no>");
+            	bf.append(unifierefund.getOut_trade_no());
+            	bf.append("</out_trade_no>");
+            }
+            if(StringUtils.isNotBlank(unifierefund.getTransaction_id())){
+            	bf.append("<transaction_id>");
+            	bf.append(unifierefund.getTransaction_id());
+            	bf.append("</transaction_id>");
+            }
+            
+            bf.append("<out_refund_no>");
+            bf.append(unifierefund.getOut_refund_no());
+            bf.append("</out_refund_no>");
+            
+            bf.append("<total_fee>");
+        	bf.append(unifierefund.getTotal_fee());
+        	bf.append("</total_fee>");
+        	
+        	bf.append("<refund_fee>");
+        	bf.append(unifierefund.getRefund_fee());
+        	bf.append("</refund_fee>");
+            
+        	if(StringUtils.isNotBlank(unifierefund.getRefund_desc())){
+            	bf.append("<refund_desc>");
+            	bf.append(unifierefund.getRefund_desc());
+            	bf.append("</refund_desc>");
+            }
+        	if(StringUtils.isNotBlank(unifierefund.getRefund_account())){
+        		bf.append("<refund_account>");
+        		bf.append(unifierefund.getRefund_account());
+        		bf.append("</refund_account>");
+        	}
+        	if(StringUtils.isNotBlank(unifierefund.getNotify_url())){
+        		bf.append("<notify_url>");
+        		bf.append(unifierefund.getNotify_url());
+        		bf.append("</notify_url>");
+        	}
+        	
+            bf.append("</xml>");
+            return bf.toString();
+        }
+
+        return "";
+    }
+    
     public static String queryXmlInfo(Unifiedorder unifiedorder) {
         //构造xml参数的时候，至少又是个必传参数
 
@@ -381,7 +451,7 @@ public class HttpXmlUtils {
             //POST请求
             DataOutputStream out = new DataOutputStream(
                     connection.getOutputStream());
-            System.out.println(xml);
+            //System.out.println(xml);
             out.writeBytes(xml);
             out.flush();
             out.close();

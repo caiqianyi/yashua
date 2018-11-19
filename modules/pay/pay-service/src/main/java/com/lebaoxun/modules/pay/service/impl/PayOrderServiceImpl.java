@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.lebaoxun.commons.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ import com.google.gson.Gson;
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.Query;
+import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.modules.pay.dao.PayOrderDao;
 import com.lebaoxun.modules.pay.entity.PayOrderEntity;
 import com.lebaoxun.modules.pay.service.IPayOrderService;
@@ -36,15 +36,27 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderDao, PayOrderEntity
 	
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+    	String userId = (String)params.get("userId"),
+    			orderNo = (String)params.get("orderNo"),
+    			outOrderNo = (String)params.get("outOrderNo"),
+    			group = (String)params.get("group"),
+    			scene = (String)params.get("scene"),
+    			status = (String)params.get("status");
         Page<PayOrderEntity> page = this.selectPage(
                 new Query<PayOrderEntity>(params).getPage(),
                 new EntityWrapper<PayOrderEntity>()
+                .eq(StringUtils.isNotBlank(orderNo), "order_no", orderNo)
+                .eq(StringUtils.isNotBlank(outOrderNo), "out_order_no", outOrderNo)
+                .eq(StringUtils.isNotBlank(group), "group", group)
+                .eq(StringUtils.isNotBlank(scene), "scene", scene)
+                .eq(StringUtils.isNotBlank(userId) && StringUtils.isNumeric(userId), "user_id", userId)
+                .eq(StringUtils.isNotBlank(status) && StringUtils.isInteger(status), "status", status)
         );
 
         return new PageUtils(page);
     }
 
-    @Override
+	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public String notify(String out_trade_no, BigDecimal total_fee, String tradeNo, Long buyTime, String queue, String platform){
 		PayOrderEntity order = this.selectOne(new EntityWrapper<PayOrderEntity>().eq("out_order_no", out_trade_no));
@@ -69,21 +81,26 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderDao, PayOrderEntity
 		order.setPayTime(buyTime);
 		order.setQueueKey(queue);
 		this.baseMapper.updateById(order);
-		sendNotify(order.getCreateUser(), queue, order.getOrderNo(), out_trade_no, total_fee.toString(), tradeNo,
+		sendNotify(order.getCreateUser(), queue, order.getOrderNo(), out_trade_no, order
+				.getRechargeFee(), total_fee.toString(), tradeNo,
 				buyTime + "", order.getTradeType(), order.getMchId(), platform,
-				order.getGroup());
+				order.getGroup(),order.getScene());
 		return "sucess";
 	}
 	
-	private void sendNotify(Long userId,String queueKey,String orderNo,String out_trade_no,String total_fee,String rransaction_id,
-			String buyTime,String trade_type,String merc_no,String platform,String group){
+	private void sendNotify(Long userId,String queueKey,String orderNo,String out_trade_no,BigDecimal rechargeFee,String total_fee,String rransaction_id,
+			String buyTime,String trade_type,String merc_no,String platform,String group,String scene){
 		Map<String,String> message = new HashMap<String,String>();
+		message.put("scene", scene);
 		message.put("group", group);
 		if(userId != null){
 			message.put("user_id", userId.toString());
 		}
 		message.put("order_no", orderNo);
 		message.put("out_trade_no", out_trade_no);
+		if(rechargeFee != null){
+			message.put("recharge_fee", rechargeFee.toString());
+		}
 		message.put("total_fee", total_fee);
 		message.put("trade_no", rransaction_id);
 		message.put("buy_time", ""+buyTime);

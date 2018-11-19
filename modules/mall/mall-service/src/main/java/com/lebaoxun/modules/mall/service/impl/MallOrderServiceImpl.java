@@ -236,7 +236,9 @@ public class MallOrderServiceImpl extends
 		order.setUpdateTime(new Date());
 		order.setPayType(1);// 现金支付
 		this.baseMapper.updateById(order);
-		return wxPayService.payment(spbill_create_ip, orderNo, "购买魔牙产品", order.getPayAmount().setScale(2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal("100")).intValue(), "", "yashua", wxopenid, userId);
+		Integer totalFee = order.getPayAmount().setScale(2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal("100")).intValue();
+		return wxPayService.payment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua", wxopenid, userId, new BigDecimal("0"), "shopping");
+		//return wxPayService.payment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua", wxopenid, userId);
 	}
 
 	@Override

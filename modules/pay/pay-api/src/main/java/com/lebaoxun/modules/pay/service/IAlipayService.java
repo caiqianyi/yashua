@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.pay.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +36,24 @@ public interface IAlipayService {
 			@RequestParam("totalAmount")String totalAmount,
 			@RequestParam(value="body",required=false)String body,
 			@RequestParam(value="spbill_create_ip",required=false)String spbill_create_ip,
-			@RequestParam(value="userId") Long userId);
+			@RequestParam(value="userId") Long userId,
+			@RequestParam(value="rechargeFee",required=false)BigDecimal rechargeFee);
+	
+	@RequestMapping(value = "/alipay/qr_code/payment", method = RequestMethod.POST)
+	ResponseMessage qrCodePayment(
+			@RequestParam("group") String group,
+			@RequestParam("outTradeNo") String outTradeNo,
+			@RequestParam("subject") String subject,
+			@RequestParam("totalAmount") String totalAmount,
+			@RequestParam(value = "rechargeFee", required = false) BigDecimal rechargeFee,
+			@RequestParam(value = "body", required = false) String body,
+			@RequestParam(value = "spbill_create_ip", required = false) String spbill_create_ip,
+			@RequestParam(value = "userId") Long userId,
+			@RequestParam(value = "scene", required = false) String scene);
 
 	@RequestMapping(value = "/alipay/notify")
 	String notify(@RequestParam Map<String, String> params);
+	
+	@RequestMapping(value="/alipay/refund")
+	ResponseMessage refund(@RequestParam("orderNo")String orderNo);
 }

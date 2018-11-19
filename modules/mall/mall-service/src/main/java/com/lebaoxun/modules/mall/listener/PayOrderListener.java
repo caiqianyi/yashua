@@ -50,9 +50,12 @@ public class PayOrderListener {
 		String text = body.replace("\\\"", "\"");
 		JSONObject message = JSONObject.parseObject(text);
 		try {
-			String orderNo = message.getString("order_no");
-			Long buy_time = message.getLong("buy_time");
-			mallOrderService.payMallOrder(orderNo, buy_time+"");
+			String scene = message.getString("scene");
+			if("shopping".equals(scene)){
+				String orderNo = message.getString("order_no");
+				Long buy_time = message.getLong("buy_time");
+				mallOrderService.payMallOrder(orderNo, buy_time+"");
+			}
 		}  catch (Exception e) {
 			logger.error("error|body={}",body);
 			e.printStackTrace();

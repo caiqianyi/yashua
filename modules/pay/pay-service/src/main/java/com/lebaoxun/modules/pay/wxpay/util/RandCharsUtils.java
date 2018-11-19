@@ -39,5 +39,9 @@ public class RandCharsUtils {
 		now.add(Calendar.MINUTE,60);
 		return df.format(now.getTimeInMillis());
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(RandCharsUtils.getRandomString(32));
+	}
 
 }

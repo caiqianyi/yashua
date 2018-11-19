@@ -58,6 +58,11 @@ public class UserMessageEntity implements Serializable {
 	 * 是否删除  -1：已删除  0：正常
 	 */
 	private Integer delFlag;
+	
+	/**
+	 * 消息只通知哪种性别
+	 */
+	private Integer sex;
 
 	/**
 	 * 设置：
@@ -179,4 +184,11 @@ public class UserMessageEntity implements Serializable {
 	public Integer getDelFlag() {
 		return delFlag;
 	}
+	public Integer getSex() {
+		return sex;
+	}
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+	
 }

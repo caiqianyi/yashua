@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.pay.service.hystrix;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -39,7 +40,8 @@ public class WxPayServiceHystrix implements IWxPayService {
 	@Override
 	public ResponseMessage payment(String spbill_create_ip, String orderNo,
 			String descr, Integer totalFee, String attach, String group,
-			String openid, Long userId) {
+			String openid, Long userId,BigDecimal rechargeFee,
+			String scene) {
 		// TODO Auto-generated method stub
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
@@ -47,7 +49,8 @@ public class WxPayServiceHystrix implements IWxPayService {
 	@Override
 	public ResponseMessage h5Payment(String wapUrl, String wapName,
 			String spbill_create_ip, String orderNo, String descr,
-			Integer totalFee, String attach, String group, Long userId) {
+			Integer totalFee, String attach, String group, Long userId,
+			BigDecimal rechargeFee,String scene) {
 		// TODO Auto-generated method stub
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
@@ -55,7 +58,7 @@ public class WxPayServiceHystrix implements IWxPayService {
 	@Override
 	public ResponseMessage qrcodePayment(String spbill_create_ip,
 			String orderNo, String descr, Integer totalFee, String attach,
-			String group, Long userId) throws Exception {
+			String group, Long userId,BigDecimal rechargeFee,String scene){
 		// TODO Auto-generated method stub
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
@@ -63,7 +66,7 @@ public class WxPayServiceHystrix implements IWxPayService {
 	@Override
 	public ResponseMessage appPayment(String spbill_create_ip, String orderNo,
 			String descr, Integer totalFee, String attach, String group,
-			Long userId) {
+			Long userId,BigDecimal rechargeFee,String scene) {
 		// TODO Auto-generated method stub
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
@@ -75,4 +78,10 @@ public class WxPayServiceHystrix implements IWxPayService {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
+	@Override
+	public ResponseMessage wxAppRefund(String outTradeNo, String refundDesc,
+			Integer refundFee) {
+		// TODO Auto-generated method stub
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
 }

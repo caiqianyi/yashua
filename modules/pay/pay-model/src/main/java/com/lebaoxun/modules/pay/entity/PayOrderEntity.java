@@ -32,6 +32,10 @@ public class PayOrderEntity implements Serializable {
 	 */
 	private String outOrderNo;
 	/**
+	 * 商户退款单号
+	 */
+	private String outRefundNo;
+	/**
 	 * 支付金额
 	 */
 	private BigDecimal totalFee;
@@ -64,7 +68,7 @@ public class PayOrderEntity implements Serializable {
 	 */
 	private String tradeType;
 	/**
-	 * 订单状态0=待支付，1=已支付，-1=支付异常
+	 * 订单状态0=待支付，1=已支付，-1=支付异常，2=已退款
 	 */
 	private Integer status;
 	/**
@@ -99,6 +103,16 @@ public class PayOrderEntity implements Serializable {
 	 * 分组
 	 */
 	private String group;
+	
+	/**
+	 * 充值金额
+	 */
+	private BigDecimal rechargeFee;
+	
+	/**
+	 * 场景
+	 */
+	private String scene;
 
 	/**
 	 * 设置：
@@ -339,5 +353,23 @@ public class PayOrderEntity implements Serializable {
 	 */
 	public String getGroup() {
 		return group;
+	}
+	public BigDecimal getRechargeFee() {
+		return rechargeFee;
+	}
+	public void setRechargeFee(BigDecimal rechargeFee) {
+		this.rechargeFee = rechargeFee;
+	}
+	public String getScene() {
+		return scene;
+	}
+	public void setScene(String scene) {
+		this.scene = scene;
+	}
+	public String getOutRefundNo() {
+		return outRefundNo;
+	}
+	public void setOutRefundNo(String outRefundNo) {
+		this.outRefundNo = outRefundNo;
 	}
 }

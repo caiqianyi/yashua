@@ -169,9 +169,11 @@ var vm = new Vue({
         	}
         	var order = vm.order;
         	console.info(order);
+        	var url = baseURL + (vm.order.type == 1? "/alipay/payment" : "/alipay/qr_code/payment");
+        	console.info(vm.order.type,url); 
         	$.ajax({
                 type: "POST",
-                url: baseURL + "/alipay/payment",
+                url: url,
                 data: {
                 	group: order.group,
                 	outTradeNo: order.outTradeNo,

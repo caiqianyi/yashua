@@ -83,7 +83,10 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		userMessage: {},
+		userMessage: {
+			sex: 0,
+			status: 0
+		},
 		q:{
 			userId: null
 		},
@@ -99,7 +102,10 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.userMessage = {};
+			vm.userMessage = {
+				sex: 0,
+				status: 0
+			};
 		},
 		update: function (event) {
 			var id = getSelectedRow();

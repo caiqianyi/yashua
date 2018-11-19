@@ -20,7 +20,7 @@
     </resultMap>
 
 	<select id="findSignUinfoByUserId" resultMap="signUinfoMap">
-	    SELECT * FROM sign_uinfo WHERE user_id=#{userId}
+	    SELECT * FROM sign_uinfo WHERE user_id=#{userId} limit 1
 	</select>
 	
 	<select id="queryMonthSignLog" resultMap="signUinfoMap">
