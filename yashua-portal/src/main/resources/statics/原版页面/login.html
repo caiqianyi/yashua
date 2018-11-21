@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="/oauth2/secret.js"></script>
+<#include "/header.html">
+<title>登录</title>
+<script type="text/javascript">
+	//密码可视设置
+	function OpenEye(){
+		 $('#seeEye').addClass('hid');
+		 $('#closeEye').removeClass('hid');
+		 $('#password').attr('type','password');
+	}
+	function ShutEye(){
+		 $('#closeEye').addClass('hid');
+		 $('#seeEye').removeClass('hid');
+		 $('#password').attr('type','text');
+	}
+</script>
+</head>
+<body class="bg-white">
+<div class="Top">登录<a href="/register.html">注册</a></div>
+<section class="zhuce">
+	<div class="logo"><!--请放入logo图片--></div>
+    <div class="login">
+    	<form>
+	    	<div class="tel">
+	            <em></em>
+	            <input type="text" id="username"  placeholder="请输入手机号码" maxlength="11" />
+	        </div>
+	        <div class="tel psd">
+	            <em></em>
+	            <input class="loginPsd" type="text" maxlength="16" id="password" value="" placeholder="请输入密码">
+	            <i id="closeEye" class="hid" onclick="ShutEye()"></i><i id="seeEye" onclick="OpenEye()"></i>
+	        </div> 
+	        <div style="position: relative;width: 100%;height: 1.03rem;border-bottom: 1px solid #cfcfcf;">
+	            <input type="text" maxlength="5" id="captcha" value="" placeholder="请输入验证码" style="height: 40px;">
+	            <div style="width: 100px;height: 40px;float: left;padding-left: 0px;margin-left: 0px;margin-right: 15px;" >
+                    <img src="" style="width: 100px;" class="captchaImg">
+                </div>
+	        </div> 
+	    	<div style="position: relative;width: 100%;height: .88rem;border-bottom: 1px solid #cfcfcf;padding: .24rem 0;margin-bottom: .3rem;">
+                <input type="checkbox" name="" id="ckBox" style="margin-right: 10px;-webkit-appearance: checkbox;">勾选可绑定微信
+	        </div>
+	        <a href="/signin/accountrecovery.html" class="forget">忘记密码？</a>     	
+	        <button type="submit" id="login-button" class="denglu font-36">登录</button>
+	        <div class="opt">
+	        	<p><span>其他方式登录</span></p>
+	            <ul>
+	            	<li><img src="/statics/images/weixin.png" alt="" id="ruc-use-wechat"/></li>
+	                <li><img src="/statics/images/qq.png" alt="" id="ruc-use-qq"/></li>
+	            </ul>
+	        </div>
+        </form>
+    </div>
+</section>
+<script type="text/javascript">
+
+	Date.prototype.format = function(fmt) { //author: meizz 
+		var o = {
+			"M+" : this.getMonth() + 1, //月份 
+			"d+" : this.getDate(), //日 
+			"h+" : this.getHours(), //小时 
+			"m+" : this.getMinutes(), //分 
+			"s+" : this.getSeconds(), //秒 
+			"q+" : Math.floor((this.getMonth() + 3) / 3), //季度 
+			"S" : this.getMilliseconds()
+		//毫秒 
+		};
+		if (/(y+)/.test(fmt))
+			fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "")
+					.substr(4 - RegExp.$1.length));
+		for ( var k in o)
+			if (new RegExp("(" + k + ")").test(fmt))
+				fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k])
+						: (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+	login.el = ".captchaImg";
+	$(function() {
+		
+		var openid = url("openid");
+		if(openid){
+			$("#ckBox").prop("checked","checked").parent().show();
+		}else{
+			$("#ckBox").parent().hide();
+		}
+		
+		$('#login-button').click(function(event) {
+			event.preventDefault();
+			var username = $("#username").val();
+			var password = $("#password").val();
+			var captcha = $("#captcha").val();
+			
+			if(username == '' || password == '' || captcha == '') {
+				//均不能为空
+				alert('账号、密码和验证码不能为空!');
+				//改变验证码
+				return false;
+			}
+			var l1 = $.loading({content:"登录中..."}).show();
+			var wxopenid = $("#ckBox").is(":checked") && openid ? openid: '' ;
+			//验证登录
+		    login.action(
+		    	{
+		    		username:username,
+		    		password:password,
+		    		captcha:captcha,
+		    		wxopenid:wxopenid
+		    	},function(){
+		    		l1.hide();
+		    	}
+		    );
+		});
+
+		/* document.onkeydown = function(event){
+			var e = window.event||event;
+			if (e.keyCode == 13){
+				//验证登录
+				login.action();
+			}  
+		} */
+		login.refreshCode();
+		
+		$("#ruc-use-wechat").click(function(){
+			var callback = encodeURIComponent("http://" + window.location.host + "/wechatOA.html");
+			var oauth2_uri = "https://open.weixin.qq.com/connect/qrconnect?appid=wx3916e075f64cf1b5&redirect_uri="+callback+"&response_type=code&scope=snsapi_login";
+			window.location.href = oauth2_uri;
+		})
+		
+		$("#ruc-use-qq").click(function(){
+			var callback = encodeURIComponent("http://" + window.location.host + "/oauth2/login/wechatOa");
+			var oauth2_uri = "https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101343674&redirect_uri="+callback+"&scope=get_user_info";
+			window.location.href = oauth2_uri;
+		})
+		
+	});
+</script>
+</body>
+</html>
+

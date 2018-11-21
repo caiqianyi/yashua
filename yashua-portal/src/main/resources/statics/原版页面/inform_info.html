@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<title>消息详情</title>
+</head>
+<body class="bg-white">
+	<div class="Top">
+		<span onclick="javascript:history.go(-1);"></span>消息详情
+	</div>
+	<dl class="msg-xiangq">
+		<dt class="title"></dt>
+		<dd class="time">
+		</dd>
+	</dl>
+	<div class="jieshao">
+	</div>
+<script type="text/javascript">
+$(function(){
+	var id = url("id");
+	if(!id || isNaN(id)){
+		alert("参数错误！");
+		window.location.href = '/account/inform.html';
+	}
+	var l1 = $.loading().show();
+	$.ajax({
+		type: "GET",
+	    url: "/account/inform/info/"+id,
+	    success: function(r){
+	    	l1.hide();
+	    	if(r.errcode == 0){
+	    		var userMessage = r.data;
+	    		$(".title").text(userMessage.title);
+	    		$(".time").html(new Date(parseInt(userMessage.createTime,10)).format("yyyy-MM-dd<i></i>hh:mm:ss"));
+	    		$(".jieshao").html(userMessage.content);
+	    		
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+});
+</script>
+</body>
+</html>
+

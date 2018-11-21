@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<title>我的设备</title>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:window.location.href='/account.html'"></span>我的设备</div>
+<div class="list">
+	<div class="items">
+    </div>
+	<input type="button" value="添加绑定设备" class="font-30" id="addYashuaBtn"/>
+</div>
+
+<div class="ui-dialog">
+    <div class="ui-dialog-cnt">
+	    <header class="ui-dialog-hd ui-border-b">
+                  <h3>绑定设备</h3>
+                  <i class="ui-dialog-close" data-role="button"></i>
+              </header>
+        <div class="ui-dialog-bd">
+            <div><input type="text" name="identity" maxlength="20" placeholder="请输入设备ID"/></div>
+        </div>
+        <div class="ui-dialog-ft">
+            <button type="button" data-role="button">取消</button>
+            <button type="button" data-role="button">绑定</button>
+        </div>
+    </div>        
+</div>
+<script type="text/javascript">
+$(function(){
+	var l1 = $.loading().show();
+	$.ajax({
+		type: "GET",
+	    url: "/yashua/device/mylist",
+	    success: function(r){
+	    	l1.hide();
+	    	if(r.errcode == 0){
+	    		var html = "";
+	    		var datas = r.data;
+	    		for(var i=0;i<datas.list.length;i++){
+	    			var device = datas.list[i];
+	    			html += '<div class="binding">';
+	    			html += '	<img src="'+device.icon+'" alt=""/>';
+    				html += '	<p>'+device.name+'<i></i>'+device.identity+'</p>';
+   					html += '	<em class="unbindBtn" data="'+device.identity+'">解绑</em>';
+ 					html += '</div>';
+	    		}
+	    		$(".items").html(html);
+	    		
+	    		$(".items .unbindBtn").unbind("click");
+	    		$(".items .unbindBtn").click(function(){
+	    			var identity = $(this).attr("data");
+	    			var l2 = $.loading({content:'解绑中...'}).show();
+	    			$.ajax({
+	    				type: "POST",
+	    			    url: "/yashua/device/unbind",
+	    			    data: {identity:identity},
+	    			    success: function(r1){
+	    			    	l2.hide();
+	    			    	if(r1.errcode == 0){
+	    			    		alert("解绑成功");
+	    			    		window.location.reload();
+	    			    		return;
+	    			    	}
+	    			    	alert(r1.errmsg);
+	    			    }
+	    			});
+	    			
+	    		});
+			}else{
+				alert(r.errmsg);
+			}
+		}
+	});
+	
+	$("#addYashuaBtn").click(function(){
+		var dia = $(".ui-dialog").dialog("show");
+		dia.on("dialog:action",function(e){
+			if(e.index == 2){//0==关闭，1==取消，2==确定
+				
+				var l3 = $.loading({content:'设备绑定中...'}).show();
+				var identity = $("input[name=identity]").val();
+				$.ajax({
+					type: "POST",
+				    url: "/yashua/device/bind",
+				    data: {identity:identity},
+				    success: function(r){
+				    	l3.hide();
+				    	if(r.errcode == 0){
+				    		alert("设备绑定成功");
+				    		window.location.reload();
+				    		return;
+				    	}
+				    	alert(r.errmsg);
+				    }
+				});
+			}
+	    });
+	});
+});
+</script>
+</body>
+</html>
+
