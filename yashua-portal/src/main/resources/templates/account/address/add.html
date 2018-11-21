@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/setup.js"></script>
 <title>新增收货地址</title>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:window.location.href=$.go('/account/address.html');"></span>新增收货地址</div>
+<div class="Top"><h3 onclick="javascript:$.goBack('/account/address.html');">新增收货地址</h3></div>
 <form>
-	<div class="new-dizhi bg-white">
-		<p><i>收货人</i><input type="text" name="consignee"/></p>
-	    <p><i>联系电话</i><input type="text" name="mobile"/></p>
-	    <p><i>所在地区</i><span class="addressSelected">请选择</span></p>
-	    <p><i>详细地址</i><textarea cols="30" rows="10" placeholder="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元室等" name="address"></textarea></p>
-	    <p><i>地址别名</i><input type="text" name="name"/></p>
-	    <p class="moren on">设置默认地址</p>
-	</div>
-	 <button type="submit" id="save-button" class="baocun font-28">保存</button>
+<div class="new-dizhi font-32">
+	<p><i>收货人</i><input type="text" name="consignee"/></p>
+    <p><i>联系电话</i><input type="text" name="mobile"/></p>
+    <p><i>所在地区</i><span class="addressSelected">请选择</span></p>
+    <p><i>详细地址</i><textarea name="address" id="" cols="30" rows="10" placeholder="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元室等"></textarea></p>
+    <p class="moren on">设置默认地址</p>
+</div>
+<button class="baocun font-40" id="save-button" type="submit">保存</button>
 </form>
 <script type="text/javascript">
 var pickerSetup = null;

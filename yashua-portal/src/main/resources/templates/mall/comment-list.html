@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>评价列表</title>
-<#include "/header.html">
+<#include "/new_header.html">
 <link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
 <style type="text/css">
@@ -33,9 +33,9 @@
 </style>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:$.goBack('/mall/info/${id}.html');"></span>评价</div>
+<div class="Top"><h3 onclick="javascript:$.goBack('/mall/info/${id}.html');">评价</h3></div>
 <!--总计评价-->
-<div class="Total bg-white font-26"><p>共计${product.attrs.replies}条评论</p></div>
+<div class="Total font-32 bg-new"><p>共计${product.attrs.replies}条评论</p></div>
 <div id="wrapper">
 	<div class="ul-list">
 	</div>
@@ -66,13 +66,13 @@ $(function(){
 	                    	for(var i=0;i<response.data.length;i++){
 	                    		var item = response.data[i];
 	                    		console.info(item);
-	                    		html += '<div class="babytalk bg-white">';
-                    			html += '	<div class="name font-24">';
+	                    		html += '<div class="babytalk bg-new">';
+                    			html += '	<div class="name font-32">';
                    				html += '    	<img src="'+item.headimgurl+'" alt=""/>';
                    				html += '        <p><span>'+item.nickname+'</span></p>';
                    				html += '    </div>';
-                   				html += '    <div class="time font-22 c-9">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd")+' '+item.mallOrderProductEntity.productSpecName+' </div>';
-                   				html += '    <div class="txt font-26">'+item.content+'</div>';
+                   				html += '    <div class="time font-24 c-9">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd")+' '+item.mallOrderProductEntity.productSpecName+' </div>';
+                   				html += '    <div class="txt font-30">'+item.content+'</div>';
                    				if(item.picImgs && item.picImgs.length > 0){
 	                   				html += '    <div class="cmt_att" ptag="">';
                    					for(var k=0;k<item.picImgs.length;k++){

@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="format-detection" content="telephone=no">
+<#include "/new_header.html">
+
 <!-- <link rel="shortcut icon" href="/statics/images/logo_bank_gfyh.png" type="image/x-icon"/> -->
-<link rel="stylesheet" href="/statics/css/css.css" type="text/css">
-<script type="text/javascript" src="/statics/js/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="/statics/js/Font.js"></script>
-<script type="text/javascript" src="/statics/js/TouchSlide.1.1.js"></script>
-<script type="text/javascript" src="/statics/js/libs/storge.js"></script>
-<script type="text/javascript" src="/statics/js/libs/common.js"></script>
-<script type="text/javascript" src="/statics/js/libs/oauth2.js"></script>
-<script type="text/javascript" src="/statics/js/libs/set.js"></script>
+
+<script type="text/javascript" src="/statics/new_js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/statics/new_js/Font.js"></script>
+<script type="text/javascript" src="/statics/new_js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="/statics/new_js/libs/storge.js"></script>
+<script type="text/javascript" src="/statics/new_js/libs/common.js"></script>
+<script type="text/javascript" src="/statics/new_js/libs/oauth2.js"></script>
+<script type="text/javascript" src="/statics/new_js/libs/set.js"></script>
 <link rel="stylesheet" href="/statics/plugins/jcrop/jquery.Jcrop.css" type="text/css">
 <link rel="stylesheet" href="/statics/plugins/mobiscroll/mobiscroll.custom-2.5.0.min.css" type="text/css">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <script type="text/javascript" src="/statics/plugins/jcrop/jquery.Jcrop.min.js"></script>
 
 <script type="text/javascript" src="/statics/plugins/mobiscroll/jquery.mobile-1.3.0.min.js"></script>
 <script type="text/javascript" src="/statics/plugins/mobiscroll/mobiscroll.js"></script>
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
-
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/setup.js"></script>
 
 <style type="text/css">
 #uploadJcrop {width: 100%;height: 100%;position: fixed;top: 0;left: 0;z-index: 999;display: none;}
@@ -33,7 +32,7 @@
 #uploadJcrop .headImgBox .headImg {margin-top: 10px;margin-top: 1rem;}
 #uploadJcrop .headImgBox .appearBtns {width: 100%;position: absolute;right: 5%;bottom: 5%;}
 #uploadJcrop .headImgBox .appearBtns a {display: inline-block;width: 35%;margin-left: 13%;height: 33px;background-color: #f93741;color: #ffffff;border-radius: 5px;border-radius: 0.5rem;text-align: center;font-size: 16px;line-height: 30px;}
-
+.xinxi li span{float: right;color:#63ed98;}
 .ui-radio{float: left;}
 .ui-radio .ui-btn-inner{margin-right: 0rem;}
 .ui-radio input[type="radio"] { margin-left: 0rem;}
@@ -41,27 +40,16 @@
 <title>个人信息</title>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:window.location.href='/account.html'">&nbsp;</span>个人信息<a href="javascript:void(0);" class="saveBtn">保存</a></div>
-<ul class="xinxi font-30">
-	<li class="toux">
-		<p>头像</p>
-		<span class="photo"><img src="/statics/images/touxiang.png" alt=""/><em></em></span>
-		<form class="img_form" action="">
-        	<input id="xFile" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" name="xFile" style="display: none;">
-        </form>
+<div class="Top"><h3 onclick="javascript:window.location.href='/account.html'">个人信息</h3><a onclick="javascript:window.location.href='/account/edit_info.html'" >编辑</a></div>
+<ul class="xinxi font-32">
+	<li class="toux"><p>头像</p><span class="photo"><img src="" alt=""/><em></em></span>
 	</li>
-    <li><p>昵称</p><input type="text" name="nickname" maxlength="20"></li>
-    <li>
-    	<p>性别</p>
-        <span>
-	        <input type="radio" id="Mr" name="sex" value="1" checked><label for="Mr">男</label>
-			<input type="radio" id="Miss" name="sex" value="2"><label for="Miss"> 女</label>
-        </span>
-    </li>
-    <li><p>生日</p><input type="text" name="birthday" id="birthday"></li>
-    <li><p>手机号</p><input type="text" name="mobile" maxlength="11"></li>
-    <li><p>真实姓名</p><input type="text" name="realname" maxlength="20"></li>
-    <li><p>身份证号</p><input type="text" name="identity" maxlength="21"></li>
+    <li><p>昵称</p><span id='nickname'></span></li>
+    <li><p>性别</p><span id="sex"></span></li>
+    <li><p>生日</p><span id="birthday"></span></li>
+    <li><p>手机号</p><span id="mobile"></span></li>
+    <li><p>真实姓名</p><span id="realname"></span></li>
+    <li><p>地域</p><span class="addressSelected">请选择</span></li>
 </ul>
 <div class="tuichu">退出登录</div>
 
@@ -83,90 +71,18 @@
 </div>
 </body>
 
-<script type="text/javascript">
-function headImgUpload(){
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        //加载图片完成，取得图片的base64                
-        imgObj = e.target.result;
-        var image = new Image();
-        image.src = imgObj;
-        image.onload = function () {  //创建一个image对象，给canvas绘制使用  
-            var cvs = document.createElement('canvas');
-            var scale = 1;
-            if (this.width > 320 || this.height > 320) {  //1000只是示例，可以根据具体的要求去设定    
-                if (this.width > this.height) {
-                    scale = 320 / this.width;
-                } else {
-                    scale = 320 / this.height;
-                }
-            }
-            cvs.width = this.width * scale;
-            cvs.height = this.height * scale;     //计算等比缩小后图片宽高  
-            var ctx = cvs.getContext('2d');
-            ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
-            var newImageData = cvs.toDataURL('image/png');  
-            
-            var headImg = new Image();
-            headImg.src = newImageData;
-            headImg.id = 'cropImg';
-            $('.headImg').append(headImg);
-            $('#uploadJcrop').css('display','block');
+ <script type="text/javascript">
 
-            $('#cropImg').Jcrop({
-                allowSelect:false, //允许新选框
-                allowResize:false,
-                aspectRatio:1,
-                maxSize:[256,256],  
-                minSize:[128,128]  
-            },function(){
-                jcropApi = this;
-                jcropApi.setSelect([0,0,128,128]);
-                var width = jcropApi.getBounds()[0];
-                $('.jcrop-holder').css({
-                    'left':'50%',
-                    'margin-left':-width/2
-                })
-            });
-        }    
-        
-    }
-    reader.readAsDataURL(xFile.files[0]);
-}
-$(function(){
-	var newjavascript={
-	     plugdatetime:function ($dateTxt,type) {
-	        var opt = {}
-		    opt.time = {preset : type};
-            opt.date = {preset : type};
-            opt.datetime = { 
-				preset : type, 
-				minDate: new Date(1900,1,01), 
-				maxDate: new Date(2050,12,31), 
-				stepMinute: 1  
-		    };
-			$dateTxt.val('').scroller('destroy').scroller(
-				$.extend(opt[type], 
-				{ 
-					theme: "sense-ui", 
-					mode: "scroller", 
-					display: "modal", 
-					lang: "english",
-					monthText: "月",
-					dayText: "日",
-					yearText: "年",
-					hourText: "时",
-					minuteText: "分",
-					ampmText:"上午/下午",
-					setText: '确定',
-					cancelText: '取消',
-					dateFormat: 'yy-mm-dd'
-				})
-			);
-        }
-	}
-	newjavascript.plugdatetime($("#birthday"), "date")
-		                  
+ $(function(){
+	pickerSetup = new PickerSetup({
+		selected: [0,0,0],
+		title: "请选择地区",
+		onSelected: function(selected,text){
+			$(".addressSelected").html(text.toString().replace(new RegExp(",","gm")," "));
+			areaCode = selected.toString();
+		}
+	});
+ 
 	$.ajax({
 		type: "GET",
 	    url: "/account/user/info",
@@ -178,123 +94,21 @@ $(function(){
 	    		$(".photo img").bind("error",function(e){
 	    			$(".photo img").attr("src","/statics/images/touxiang.png");
 	    		});
+	    		$("#nickname").text(user.nickname);
+	    		if(user.sex==1)
+	    			$("#sex").text('男');
+	    		else if(user.sex==2)
+	    			$("#sex").text('女');
+	    		$("#birthday").text(user.birthday);
+	    		$("#mobile").text(user.mobile);
+	    		$("#realname").text(user.realname);
 	    		
-	    		$("input[name=sex]").removeAttr("checked",'checked');
-	    		$("input[name=sex][value="+user.sex+"]").prop('checked', true)
-	    		
-	    		var props = ["nickname","mobile","birthday","realname","identity"];
-    			for(var i=0;i<props.length;i++){
-    				var pro = props[i];
-    				var value = "";
-    				if(user[pro]){
-    					value = user[pro];
-    				}
-    				console.info(value);
-    				$("input[name="+pro+"]").val(value);
-    			}
+	    		pickerSetup.setSelected(user.areaCode.split(","));
 			}else{
 				alert(r.errmsg);
 			}
 		}
 	});
-	
-	$(".saveBtn").click(function(){
-		var user = {
-			nickname: null,
-			sex: 0,
-			birthday: null,
-			mobile: null,
-			realname: null,
-			identity: null
-		};
-		for(var pro in user){
-			user[pro] = $("input[name="+pro+"]").val();
-		}
-		if(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(user.nickname) == false){
-			alert("昵称输入不符合规则");  
-	        return  false;
-		}
-		if(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(user.realname) == false){
-			alert("真实姓名输入不符合规则");  
-	        return  false;
-		}
-		var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
-	    if(reg.test(user.identity) === false){
-	    	alert("身份证输入不合法");  
-	        return  false;
-	    }
-		$.ajax({
-			type: "POST",
-		    url: "/account/user/modifyInfo",
-		    contentType: "application/json",
-		    data: JSON.stringify(user),
-		    success: function(r){
-		    	if(r.errcode == 0){
-		    		alert("保存成功！");
-		    		window.location.reload();
-				}else{
-					alert(r.errmsg);
-				}
-			}
-		});
-	});
-	
-	$(".tuichu").click(function(){
-		window.storage.clear();
-		$.ajax({
-			type: "GET",
-		    url: "/account/logout"
-		});
-	});
-	
-	$(".photo img").click(function(){
-		$("#xFile").click();
-	});
-	
-	$('#xFile').bind('change',headImgUpload);
-	
-	$('.cancelBtn').bind('click',function(){
-        $('.img_form')[0].reset();
-        $('#uploadJcrop').css('display','none');
-        $('.headImg').empty();
-        jcropApi.destroy();
-    })
-    // 确定
-    $('.sureBtn').bind('click',function(){
-        var corpW = jcropApi.tellSelect().w;
-        var corpH = jcropApi.tellSelect().h;
-        var corpX = jcropApi.tellSelect().x;
-        var corpY = jcropApi.tellSelect().y;
-        var width = jcropApi.getBounds()[0];
-        var height = jcropApi.getBounds()[1];
-        var imgObj = document.getElementById('cropImg');
-        var cjcanvas = document.createElement('canvas');
-        var ctx = cjcanvas.getContext("2d");
-        cjcanvas.width = corpW;
-        cjcanvas.height = corpH;
-        ctx.drawImage(imgObj,corpX,corpY,corpW,corpH,0,0,corpW,corpH);
-        var image = cjcanvas.toDataURL('image/png');
-        
-        var data = {imgStr: image};
-        
-        $.ajax({
-    		type: "POST",
-    	    url: "/account/user/modifyHeadimgurl",
-    	    data: data,
-    	    success: function(r){
-   	            $('.img_form')[0].reset();
-   	            $('#uploadJcrop').css('display','none');
-   	            $('.headImg').empty();
-   	            jcropApi.destroy();
-   	            
-    	    	if(r.errcode == 0){
-    	    		$('.photo img').attr('src',r.data); 
-    			}else{
-    				alert(r.errmsg);
-    			}
-    		}
-    	});
-    })
 })
 </script>
 </html>

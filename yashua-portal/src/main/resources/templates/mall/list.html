@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+<#include "/new_header.html">
+<link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
 <title>商城</title>
-<#include "/header.html">
+<script type="text/javascript" src="/statics/new_js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/statics/new_js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="/statics/new_js/Font.js"></script>
 <link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:window.location.href='/found.html'"></span>商城</div>
-<#if categorys??>
-	<div class="shop-top bg-white font-30">
+<div class="Top"><h3 onclick="javascript:window.location.href='/found.html'">商城</h3></div>
+<!-- <div class="sc_tab"> -->
+ <#if categorys??>
+	<div class="hd shop-top font-30">
+		<!-- <ul>
+			<li class="on"><span>牙刷头</span></li>
+			<li><span>牙膏</span></li>
+			<li><span>漱口水</span></li>
+			
+		</ul> -->
 		<ul>
 			<#list categorys as cat>
 				<li <#if cat_index = 0>class="on" </#if>id="cat_${cat.id}"><span style="background: url('${cat.icon}') no-repeat left center;    background-size: .22rem .48rem;">${cat.name}</span></li>
@@ -17,53 +28,123 @@
 		</ul>
 	</div>
 </#if>
-
-<div id="wrapper">
-	<div class="shop-list bg-white">
-		<a href="shangpinxiangqing.html" class="box">
-	    	<img src="images/yst-1.png" alt=""/>
-	        <div class="txt">
-	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
-	            <span>包邮 &nbsp; 上海</span>
-	            <p><i>￥98</i>11235人付款</p>
-	        </div>
-	    </a>
-	    <a href="shangpinxiangqing.html" class="box">
-	    	<img src="images/yst-2.png" alt=""/>
-	        <div class="txt">
-	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
-	            <span>包邮 &nbsp; 上海</span>
-	            <p><i>￥98</i>11235人付款</p>
-	        </div>
-	    </a>
-	    <a href="shangpinxiangqing.html" class="box">
-	    	<img src="images/yst-1.png" alt=""/>
-	        <div class="txt">
-	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
-	            <span>包邮 &nbsp; 上海</span>
-	            <p><i>￥98</i>11235人付款</p>
-	        </div>
-	    </a>
-	    <a href="shangpinxiangqing.html" class="box">
-	    	<img src="images/yst-2.png" alt=""/>
-	        <div class="txt">
-	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
-	            <span>包邮 &nbsp; 上海</span>
-	            <p><i>￥98</i>11235人付款</p>
-	        </div>
-	    </a>
-	</div>
-</div>
+	<div id="wrapper">
+		<!--牙刷头-->
+		<div class="bd shop-list font-28 bg-gray">
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-1.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-2.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-1.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-2.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+		</div>
+		<!--牙膏-->
+		<div class="bd shop-list font-28 bg-gray">
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-1.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-2.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-1.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-2.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+		</div>
+		<!--漱口水-->
+		<div class="bd shop-list font-28 bg-gray">
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-1.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-2.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-1.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+			<a href="shangpinxiangqing.html" class="box">
+				<img src="/statics/new_images/yst-2.png" alt=""/>
+				<div class="txt">
+					<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+					<span>包邮 &nbsp; 上海</span>
+					<p><i>￥98</i>11235人付款</p>
+				</div>
+			</a>
+		</div>
+	</div>    
+<!-- </div> -->
 <script type="text/javascript">
 $(function(){
 	var offset = 0;
-	var uid = '${uid}';
 	$("li[id^=cat_]").click(function(){
 		$("li[id^=cat_]").removeClass("on");
 		$(this).addClass("on");
 		offset = 0;
 		$('.shop-list').html('');
-		$('#wrapper').html('<div class="shop-list bg-white"></div>');
+		$('#wrapper').html('<div class="bd shop-list font-28 bg-gray"></div>');
 		var categoryId = $(this).attr("id").replace("cat_","");
 		console.info(categoryId);
 	    $('#wrapper').dropload({
@@ -86,7 +167,7 @@ $(function(){
 		                    	for(var i=0;i<response.data.length;i++){
 		                    		var item = response.data[i];
 		                    		console.info(item);
-		                    		html += '<a href="/mall/info/'+item.id+'.html?u='+uid+'" class="box">';
+		                    		html += '<a href="/mall/info/'+item.id+'.html" class="box">';
 		                    		html += '	<img src="'+item.showPic+'" alt=""/>';
 		                    		html += '	<div class="txt">';
 		                    		html += '		<h3>'+item.name+'</h3>';
@@ -127,4 +208,4 @@ $(function(){
 </script>
 </body>
 </html>
-
+<script type="text/javascript" >jQuery(".sc_tab").slide({trigger:"click",});</script>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <link rel="stylesheet" href="/statics/plugins/jcrop/jquery.Jcrop.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/jcrop/jquery.Jcrop.min.js"></script>
 <title>我的</title>
@@ -16,10 +16,10 @@
 </style>
 </head>
 <body>
-<div class="my-top font-30">
-	<a href="/account/info.html" class="bianji"><img src="/statics/images/zx-bj.png" alt=""/></a>
+<div class="my-top font-24">
+	<a href="/account/info.html" class="bianji"><img src="/statics/new_images/zx-bj.png" alt=""/></a>
     <span class="photo">
-    	<img src="/statics/images/touxiang.png" alt=""/>
+    	<img src="/statics/new_images/touxiang.png" alt=""/>
     	<form class="img_form" action="">
         	<input id="xFile" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" name="xFile" style="display: none;">
         </form>
@@ -27,15 +27,26 @@
     <h3 class="name">请叫我小美</h3>
     <p class="bindYashua"></p>
 </div>
-<div class="my-txt bg-white">
-	<ul>
-		<li><a href="/yashua/my.html">我的牙刷<em></em></a></li>
-        <li><a href="/order/mylist.html">我的订单<em></em></a></li>
-        <li><a href="/account/inform.html">消息管理<em></em></a></li>
-        <li><a href="/account/address.html">地址管理<em></em></a></li>
-        <li><a href="/help.html">使用帮助<em></em></a></li>
-        <li><a href="/about.html">关于我们<em></em></a></li>
-	</ul>
+
+<div class="my-txt font-36">
+	<div class="woline">
+		<ul>
+			<li><a href="/yashua/my.html">我的牙刷</a></li>
+			<li class="lia"><a href="/account/inform.html">消息管理</a></li>
+		</ul>
+		<ul>
+			<li class="lib"><a href="/order/mylist.html">我的订单</a></li>
+			<li class="lic"><a href="/account/address.html">地址管理</a></li>
+		</ul>
+		<ul>
+			<li class="lid"><a href="#">联系客服</a></li>
+			<li class="lie"><a href="doctor.html">我的医生</a></li>
+		</ul>
+		<ul style="background: none;">
+			<li class="lif"><a href="help.html">使用帮助</a></li>
+			<li class="lig"><a href="about.html">关于我们</a></li>
+		</ul>
+	</div>
 </div>
 
 <div id="uploadJcrop">
@@ -58,6 +69,7 @@
 <!--公用底部-->
 <#assign footerflag=3/>
 <#include "/footer.html">
+
 
 <script type="text/javascript">
 function headImgUpload(){
@@ -122,10 +134,10 @@ $(function(){
 		    	l1.hide();
 	    	}
 	    	if(r.errcode == 0){
-	    		var headimgurl = r.data.headimgurl && r.data.headimgurl.length>0 ? r.data.headimgurl : "/statics/images/touxiang.png";
+	    		var headimgurl = r.data.headimgurl && r.data.headimgurl.length>0 ? r.data.headimgurl : "/statics/new_images/touxiang.png";
 	    		$(".photo img").attr("src",headimgurl);
 	    		$(".photo img").bind("error",function(e){
-	    			$(".photo img").attr("src","/statics/images/touxiang.png");
+	    			$(".photo img").attr("src","/statics/new_images/touxiang.png");
 	    		});
 	    		$(".name").text(r.data.nickname?r.data.nickname:"");
 			}else{

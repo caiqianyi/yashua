@@ -217,6 +217,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		entity.setRealname(q.getRealname());
 		entity.setIdentity(q.getIdentity());
 		entity.setBirthday(q.getBirthday());
+		entity.setAreaCode(q.getAreaCode());
 		this.updateById(entity);
 	}
 

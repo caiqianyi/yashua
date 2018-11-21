@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/setup.js"></script>
@@ -11,7 +11,7 @@
 <body>
 <div class="Top"><span onclick="javascript:$.go('/account/address.html');"></span>编辑收货地址</div>
 <form>
-	<div class="new-dizhi bg-white">
+	<div class="new-dizhi font-32">
 		<p><i>收货人</i><input type="text" name="consignee"/></p>
 	    <p><i>联系电话</i><input type="text" name="mobile"/></p>
 	    <p><i>所在地区</i><span class="addressSelected">请选择</span></p>
@@ -19,7 +19,7 @@
 	    <p><i>地址别名</i><input type="text" name="name"/></p>
 	    <p class="moren on">设置默认地址</p>
 	</div>
-	 <button type="submit" id="save-button" class="baocun font-28">保存</button>
+	 <button type="submit" id="save-button" class="baocun font-40">保存</button>
 </form>
 <script type="text/javascript">
 var pickerSetup = null,areaCode = null,address=null;

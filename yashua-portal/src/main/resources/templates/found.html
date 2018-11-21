@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
+<meta charset="utf-8">
+<#include "/new_header.html">
 <title>发现</title>
+<script type="text/javascript" src="/statics/new_js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/statics/new_js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="/statics/new_js/Font.js"></script>
 </head>
 <body>
 <div class="Top">发现</div>
@@ -10,34 +14,33 @@
     <div class="hd"><ul></ul></div>
     <div class="bd">
         <ul>
-            <li><a href=""><img src="/statics/images/banner-1.jpg"/></a></li>
-            <li><a href=""><img src="/statics/images/banner-2.jpg"/></a></li>
-            <li><a href=""><img src="/statics/images/banner-1.jpg"/></a></li>
-            <li><a href=""><img src="/statics/images/banner-2.jpg"/></a></li>
+            <li><a href=""><img src="/statics/new_images/banner-1.jpg"/></a></li>
+            <li><a href=""><img src="/statics/new_images/banner-2.jpg"/></a></li>
+            <li><a href=""><img src="/statics/new_images/banner-3.jpg"/></a></li>
         </ul>
     </div>
 </div>
 
-<div class="find">
-	<ul class="find-1">
+<div class="find font-32">
+	<ul>
+   		<li><a href="/account/signIn.html">日常签到<em></em></a></li>
     	<li><a href="/account/logs.html">我的积分<em></em></a></li>
-    </ul>
-    <ul class="find-2">
-    	<li><a href="/news/list.html">牙科小知识<em></em></a></li>
-        <li><a href="/account/signIn.html">日常签到<em></em></a></li>
-    </ul>
-    <ul class="find-3">
+    	<li><a href="/news/list.html">口腔知识<em></em></a></li>
     	<li><a href="">私人医生<em></em></a></li>
-        <li><a href="/mall/list.html">商城<em></em></a></li>
-    </ul>
-    <ul class="find-more">
+    	<li><a href="/mall/list.html">购物商城<em></em></a></li>
     	<li><a href="">更多<em></em></a></li>
     </ul>
 </div>
 
 <!--公用底部-->
-<#assign footerflag=2/>
-<#include "/footer.html">
+<div class="bot-nav bg-white font-26">
+	<ul>
+		<li><a href="index.html">首页</a></li>
+        <li><a href="/history.html">历史</a></li>
+        <li class="on"><a href="found.html">发现</a></li>
+        <li><a href="account.html">我的</a></li>
+	</ul>
+</div>
 
 </body>
 </html>
