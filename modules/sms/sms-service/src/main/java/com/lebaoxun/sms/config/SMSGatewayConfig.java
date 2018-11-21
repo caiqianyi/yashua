@@ -30,7 +30,7 @@ public class SMSGatewayConfig {
 	public SMSGateway initGateway(){
 		
 		//畅卓科技
-		String passwd = MD5.encodeByMD5ForUpperCase("jzpw78xq1i");
+		/*String passwd = MD5.encodeByMD5ForUpperCase("jzpw78xq1i");
 		//畅卓科技
 		String gatewayName = "czkj";
 		SMSGateway gateway = new SMSGateway();
@@ -42,10 +42,10 @@ public class SMSGatewayConfig {
 		gateway.setSuccessText("发送成功");
 		gateway.setUrl("http://api.chanzor.com/send");
 		gateway.setWeight(10);
-		gateway.setRequestBody("account=98abec&password="+passwd+"&mobile=%s&content=%s");
+		gateway.setRequestBody("account=98abec&password="+passwd+"&mobile=%s&content=%s");*/
 		
-		/*String gatewayName = "fhwj";
-		SMSGateway gateway = new SMSGateway(FhwjSMSGatewayClient.class);*/
+		String gatewayName = "fhwj";
+		SMSGateway gateway = new SMSGateway(FhwjSMSGatewayClient.class);
 		
 		if(!redisHash.hExists(RedisKeyConstant.HASH_SMS_GATEWAY_CONFIGS, gatewayName)){
 			redisHash.hSet(RedisKeyConstant.HASH_SMS_GATEWAY_CONFIGS, gatewayName, JSONObject.toJSON(gateway).toString());

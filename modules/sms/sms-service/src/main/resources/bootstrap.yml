@@ -8,11 +8,11 @@ spring:
     suffix: .html  #后缀名
   cloud:
     config:
-      name: fastfood
+      name: yashua
       profile: dev
-      username: shancan
-      password: Scadmin773577
-      uri: http://39.104.97.47:7369
+      username: yashua
+      password: yashua0921
+      uri: http://47.95.192.172:7369/
       label: master
     http:
         multipart:
