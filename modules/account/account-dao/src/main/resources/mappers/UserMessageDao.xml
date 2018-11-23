@@ -27,7 +27,7 @@
   			and (message.user_id=#{user_id,jdbcType=BIGINT} OR message.user_id is null) 
 	    	and (message.start_time <![CDATA[<=]]> NOW() or message.start_time is null) 
 	    	and (message.end_time <![CDATA[>=]]> NOW() or message.end_time is null)
-	    	and (message.sex is null or message.sex ＝ 0 or message.sex = u.sex )
+	    	and (message.sex is null or message.sex= 0 or message.sex = u.sex )
 	    	and (message.area_code is null or message.area_code = u.area_code)
   		ORDER BY message.create_time DESC 
   		<if test="size != null" >

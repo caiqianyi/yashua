@@ -52,27 +52,16 @@
     <li><p>地域</p><span class="addressSelected">请选择</span></li>
 </ul>
 <div class="tuichu">退出登录</div>
-
-<div id="uploadJcrop">
-            
-    <div class="shadow"></div>
-
-    <div class="headImgBox">
-
-        <div class="headImg">
-        </div>
-
-        <div class="appearBtns">    
-            <a class="sureBtn">确认</a>
-            <a class="cancelBtn">取消</a>
-        </div>
-    </div>
-
-</div>
 </body>
 
  <script type="text/javascript">
-
+ $(".tuichu").click(function(){
+		window.storage.clear();
+		$.ajax({
+			type: "GET",
+		    url: "/account/logout"
+		});
+	});
  $(function(){
 	pickerSetup = new PickerSetup({
 		selected: [0,0,0],
@@ -88,12 +77,12 @@
 	    url: "/account/user/info",
 	    success: function(r){
 	    	if(r.errcode == 0){
-	    		var user = r.data;
+	    		var user = r.data;console.info(user);
 	    		var headimgurl = user.headimgurl && user.headimgurl.length>0 ? user.headimgurl : "/statics/images/touxiang.png";
 	    		$(".photo img").attr("src",headimgurl);
-	    		$(".photo img").bind("error",function(e){
+	    		 $(".photo img").bind("error",function(e){
 	    			$(".photo img").attr("src","/statics/images/touxiang.png");
-	    		});
+	    		}); 
 	    		$("#nickname").text(user.nickname);
 	    		if(user.sex==1)
 	    			$("#sex").text('男');

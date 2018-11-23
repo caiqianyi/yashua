@@ -59,7 +59,7 @@ $(function(){
                 	size:10
                 },
                 success: function(response){
-                	if(response.errcode == 0){
+                	if(response.errcode == 0){console.info(response.data);
 	                    var arrLen = response.data.length;
 	                    var html = "";
 	                    if(arrLen > 0){
@@ -67,7 +67,7 @@ $(function(){
 	                    		var item = response.data[i];
 	                    		console.info(item);
 	                    		html += '<div class="babytalk bg-new">';
-                    			html += '	<div class="name font-32">';
+                    			html += '	<div class="name font-30">';
                    				html += '    	<img src="'+item.headimgurl+'" alt=""/>';
                    				html += '        <p><span>'+item.nickname+'</span></p>';
                    				html += '    </div>';
