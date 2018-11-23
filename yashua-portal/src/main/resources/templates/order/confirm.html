@@ -94,6 +94,7 @@ $(function(){
 					address = $(".dizhi-ok .addressA").text(),
 					consignee = $(".dizhi-ok .consignee").text(),
 					mobile = $(".dizhi-ok .mobile").text();
+					var fuid = window.storage.get('user.mall.inviter', false, false);//分享邀请人
 					var orderset = {
 						orderNo: orderNo,
 						invoiceType: invoiceType ,
@@ -101,7 +102,8 @@ $(function(){
 						address: address,
 						consignee: consignee,
 						mobile: mobile,
-						wxopenid: window.storage.get("login.wxopenid" , false, false)
+						wxopenid: window.storage.get("login.wxopenid" , false, false),
+						fuid: fuid
 					};
 					var ptype = $(".payTypeToggle").val();
 					if(ptype == 1){
@@ -123,6 +125,7 @@ $(function(){
 				                                "paySign": pay_info.paySign  //微信签名,
 				                            }, function (res) {
 				                                if (res.err_msg == "get_brand_wcpay_request:ok") {
+				                                	window.storage.remove("login.wxopenid" , false, false)
 				                                    // 此处可以使用此方式判断前端返回,微信团队郑重提示：res.err_msg 将在用户支付成功后返回ok，但并不保证它绝对可靠。
 				                                	$.go("/order/mylist.html");
 				                                    return;

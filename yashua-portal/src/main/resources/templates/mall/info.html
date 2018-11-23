@@ -96,6 +96,10 @@
 </div>
 
 <script type="text/javascript">
+	$(function(){
+		var uid = url('u');
+		window.storage.set('user.mall.inviter',uid,false);
+	});
 	var specs;
 	var productSpecs = {};
 	var id = ${product.id};
