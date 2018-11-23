@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/new_header.html">
+<title>资讯列表</title>
+</head>
+<body>
+<div class="Top"><h3 onclick="javascript:window.location.href='/found.html'">口腔知识</h3></div>
+<#if release??>  
+	<#list release as news>
+		<div class="yachi bg-new" style="margin-top:.15rem;">
+			<h3>
+		    	<#if news.title??>  
+				   ${news.title}
+				</#if>
+			</h3>
+			 <div class="txt font-28">
+		    	<#if news.picItems??>
+		    		<img src="${news.picItems}" alt=""/>
+		    	</#if>
+				<#if news.content?length gt 60>
+					<p>${news.content?substring(0,60)}...<a href="/news/info/${news.id}.html">阅读全文>></a></p>
+				<#else>
+					<p>${news.content!}<a href="/news/info/${news.id}.html">阅读全文>></a></p>
+				</#if>				
+		    </div>	   
+		    <div class="all">
+		    	<p class="fl">${news.createTime?string('yyyy-MM-dd HH:mm:ss')}</p>
+		        <p class="fr"><span>${news.replies}</span><span class="sc">${news.praises}</span></p>
+		    </div>   
+		</div>
+	</#list>
+</#if>
+
+
+</body>
+</html>
+
