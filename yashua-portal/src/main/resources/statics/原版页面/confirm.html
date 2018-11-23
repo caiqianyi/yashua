@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>确认订单</title>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/setup.js"></script>
+<script type="text/javascript" src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:$.goBack();"></span>确认订单</div>
+<!--地址确认-->
+<div class="dizhi-ok bg-white font-26">
+	<a href="javascript:$.go('/account/address.html',3)">
+	<p>收货人：<span class="consignee"></span> <span class="mobile"></span></p>
+    <p>收货地址：<span class="addressA"></span></p>
+    </a>
+</div>
+<!--商品确认-->
+<div class="dingdan-txt bg-white font-24">
+</div>
+<!--发票-->
+<div class="fap-ok bg-white font-26">
+	<p class="fl pa"><input type="checkbox"/>发票</p>
+    <div class="fr">
+        <p class="pb">发票抬头：<input type="text" name="invoiceTitle"></p>
+        <p class="pc">
+            发票内容：
+            <select name="invoiceType">
+              <option value ="1">明细</option>
+              <option value ="2">日用品</option>
+              <option value ="3">家居用品</option>
+            </select>
+        </p>
+    </div>
+</div>
+<!---->
+<div class="tt-ok bg-white font-26">
+	<p><span>支付方式：</span><select class="payTypeToggle" style="float: right;margin-top: 10px;"><option value="1">现金支付</option><option value="0">积分兑换</option></select></p>
+	<div class="showPayType1">
+		<p><span>订单金额：</span><em class="orderMoney money">0.00</em></p>
+	    <p><span>运费：</span><em>0.00</em></p>
+	    <p><em>小计：<i class="totalMoney">0.00</i></em></p>
+	</div>
+	<div class="showPayType0" style="display: none;">
+		<p><span>订单积分：</span><em class="orderScore money">0.00</em></p>
+	</div>
+</div>
+
+<div class="gouwuche-buy bg-white font-26 qian-ok">
+    <p>合计：<i><em class="totalMoney">0.00</em></i></p>
+    <a href="javascript:void(0);" class="confirmBtn">支付</a>
+</div>
+<script type="text/javascript">
+$(function(){
+	var orderNo = url("orderNo"),
+		payType = url("payType");
+	if(!payType){
+		payType = 0;//现金支付
+	}
+	$(".payTypeToggle").change(function(){
+		var val = $(this).val();
+		$("div[class^=showPayType]").hide();
+		$(".totalMoney").text($(".money",".showPayType"+val).text());
+		$(".showPayType"+val).show();
+	});
+	var pickerSetup = new PickerSetup({
+    	selected: [0,0,0],
+		title: "请选择地区",
+		onSelected: function(selected,text){
+			$(".addressSelected").html(text.toString().replace(new RegExp(",","gm")," "));
+			areaCode = selected.toString();
+		}
+	});
+	$.ajax({
+		url: "/account/address/defaultUse",
+		success: function(r){
+			if(r.errcode == 0){
+				var address = r.data;
+				var d = pickerSetup.getCityByCode(r.data.areaCode.split(","));
+				$(".dizhi-ok .consignee").text(address.consignee);
+				$(".dizhi-ok .mobile").text(address.mobile);
+				$(".dizhi-ok .addressA").text(d.toString().replace(new RegExp(",","gm"),"")+address.address);
+				$(".confirmBtn").click(function(){
+					if(!login.isLogin()){
+						window.location.href = loginCallUri();
+						return;
+					}
+					var invoiceType = $("select[name=invoiceType]").val(),
+					invoiceTitle = $("input[name=invoiceTitle]").val(),
+					address = $(".dizhi-ok .addressA").text(),
+					consignee = $(".dizhi-ok .consignee").text(),
+					mobile = $(".dizhi-ok .mobile").text();
+					var orderset = {
+						orderNo: orderNo,
+						invoiceType: invoiceType ,
+						invoiceTitle: invoiceTitle,
+						address: address,
+						consignee: consignee,
+						mobile: mobile,
+						wxopenid: window.storage.get("login.wxopenid" , false, false)
+					};
+					var ptype = $(".payTypeToggle").val();
+					if(ptype == 1){
+						$.ajax({
+							url: "/mall/order/confirmOrder",
+							type: "POST",
+							data: orderset,
+							success: function(response){
+								if(response.errcode == '0'){
+									var pay_info = response.data;
+				                    function onBridgeReady(){
+				                        WeixinJSBridge.invoke(
+				                            'getBrandWCPayRequest', {
+				                                "appId": pay_info.appId, //公众号名称，由商户传入
+				                                "timeStamp": pay_info.timeStamp, //戳，自1970 年以来的秒数
+				                                "nonceStr": pay_info.nonceStr, //随机串
+				                                "package": pay_info.package,
+				                                "signType": pay_info.signType, //微信签名方式:
+				                                "paySign": pay_info.paySign  //微信签名,
+				                            }, function (res) {
+				                                if (res.err_msg == "get_brand_wcpay_request:ok") {
+				                                    // 此处可以使用此方式判断前端返回,微信团队郑重提示：res.err_msg 将在用户支付成功后返回ok，但并不保证它绝对可靠。
+				                                	$.go("/order/mylist.html");
+				                                    return;
+				                                }
+				                                alert(res.err_msg);
+				                            }
+				                        )  
+				                    }
+
+				                    if (typeof WeixinJSBridge == "undefined"){
+				                        if( document.addEventListener ){
+				                            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+				                        }else if (document.attachEvent){
+				                            document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+				                            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				                        }
+				                     }else{
+				                        onBridgeReady();
+				                     }
+									return;
+								}
+								alert(response.errmsg);
+							}
+						});
+					}else{
+						$.ajax({
+							url: "/mall/order/scoreExchange",
+							type: "POST",
+							data: orderset,
+							success: function(r){
+								if(r.errcode == '0'){
+									alert("支付成功！");
+									$.go("/order/mylist.html");
+									return;
+								}
+								alert(r.errmsg);
+							}
+						});
+					}
+				});
+			}
+		}
+	});
+	
+	$.ajax({
+		url: "/mall/order/nopay",
+		data: {orderNo:orderNo},
+		success: function(r){
+			
+			if(r.errcode == '0'){
+				if(!r.data || r.data.length == 0){
+					alert("订单已支付或不存在！");
+					return;
+				}
+				var html = "";
+				for(var i=0;i<r.data.childs.length;i++){
+					html += '<dl style="background:#fff;">';
+					html += '    <dt><img src="'+r.data.childs[i].picImg+'" alt=""/></dt>';
+					html += '    <dd>';
+					html += '        <span>'+r.data.childs[i].name+'</span>';
+					html += '        <i>'+r.data.childs[i].productSpecName+'</i>';
+					html += '    </dd>';
+					html += '     <em>&times; '+r.data.childs[i].buyNumber+'</em>';
+					html += ' </dl>';
+				}
+				$(".dingdan-txt").html(html);
+				$(".orderMoney").text("￥"+r.data.payAmount.toFixed(2));
+				$(".orderScore").text(r.data.orderScore.toFixed(2));
+				
+				if(r.data.orderScore <= 0){//不能使用积分兑换
+					payType = 1;
+					$(".payTypeToggle option[value=0]").remove();
+				}
+				$(".payTypeToggle option[value="+payType+"]").prop("selected", 'selected');
+				$(".payTypeToggle").change();
+			}
+		}
+	});
+	
+});
+</script>
+</body>
+</html>

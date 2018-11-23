@@ -2,8 +2,8 @@
 <html>
 <head>
 <title>我的订单</title>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
 <style type="text/css">
@@ -31,9 +31,9 @@
 .result-success .result-list .col3:before {content: '';position: absolute;top: -2rem;bottom: -2rem;left: -12px;border-left: 1px solid #e6e6e6;}
 </style>
 </head>
-<body>
-<div class="Top"><span onclick="javascript:$.goBack('/account.html');"></span>我的订单</div>
-<div class="dingdan bg-white">
+<body class="bg-gray">
+<div class="Top" style="margin-bottom: 0"><h3 onclick="javascript:$.goBack('/account.html');">我的订单</h3></div>
+<div class="dingdan font-36">
 	<ul>
 		<li class="on" id="status_"><a href="javascript:void(0);">全部</a></li>
         <li id="status_0"><a href="javascript:void(0);">待付款</a></li>
@@ -42,31 +42,59 @@
         <li id="status_3"><a href="javascript:void(0);">待评价</a></li>
 	</ul>
 </div>
+
 <div id="wrapper">
-	<div class="order-list">
-		<div class="dingdan-txt bg-white font-24">
-			<p class="bianhao"><i>定单编号：</i>LV201805226135764900</p>
-		    <a href="dingdanxiangqing.html">
-		        <dl>
-		            <dt><img src="/statics/images/yst-2.png" alt=""/></dt>
-		            <dd>
-		                <span>美牙智能纳米牙刷头牙刷头牙刷头牙刷头...</span>
-		                <i>颜色：蓝色</i>
-		            </dd>
-		            <em>&times; 1</em>
-		        </dl>
-		    </a>
-		    <p class="money">共一件商品 合计：<span><i>123</i>.00</span></p>
-		    <ul>
-		    	<li><a href="">查看物流</a></li>
-		        <li><a href="">删除订单</a></li>
-		        <li class="once"><a href="">再次购买</a></li>
-		        <li class="pj"><a href="pingjia.html">评价</a></li>
-		    </ul>
-		    <p class="zhuangtai">已签收</p>
-		</div>
-	</div>
+<div class="order-list">
+
+
+<div class="dingdan-txt bg-white font-24">
+	<p class="bianhao"><i>定单编号：</i>LV201805226135764900</p>
+    <a href="dingdanxiangqing.html">
+        <dl>
+            <dt><img src="/statics/new_images/yst-2.png" alt=""/></dt>
+            <dd>
+                <span>美牙智能纳米牙刷头牙刷头牙刷头牙刷头...</span>
+                <i>颜色：蓝色</i>
+            </dd>
+            <b>￥26.00</b>
+            <em>&times; 1</em>
+        </dl>
+    </a>
+    <p class="money">共1件商品 合计：<span>123.00</span></p>
+    <ul>
+    	<li><a href="">查看物流</a></li>
+        <li><a href="">删除订单</a></li>
+        <li class="once"><a href="">再次购买</a></li>
+        <li class="pj"><a href="pingjia.html">评价</a></li>
+    </ul>
+    <p class="zhuangtai font-26">已签收</p>
 </div>
+</div>
+</div>
+<!-- 
+<div class="dingdan-txt bg-white font-24">
+	<p class="bianhao"><i>定单编号：</i>LV201805226135764900</p>
+    <a href="dingdanxiangqing.html">
+        <dl>
+            <dt><img src="/statics/new_images/yst-1.png" alt=""/></dt>
+            <dd>
+                <span>美牙智能纳米牙刷头牙刷头牙刷头牙刷头...</span>
+                <i>颜色：红色</i>
+            </dd>
+            <b>￥26.00</b>
+            <em>&times; 1</em>
+        </dl>
+    </a>
+    <p class="money">共1件商品 合计：<span>186.00</span></p>
+    <ul>
+    	<li><a href="">查看物流</a></li>
+        <li><a href="">删除订单</a></li>
+        <li><a href="">再次购买</a></li>
+        <li class="pj"><a href="pingjia.html">评价</a></li>
+    </ul>
+    <p class="zhuangtai">已签收</p>
+</div>
+ -->
 <div class="ui-dialog" style="overflow:scroll; ">
 	<div class="ui-dialog-cnt" style="width: 90%;top: 5%;">
 		<header class="ui-dialog-hd ui-border-b">
@@ -178,6 +206,8 @@ function kuaidiQuery(postid){
     });
 }
 
+
+
 function confirmReceive(orderNo){
 	l1.show();
 	$.ajax({
@@ -245,22 +275,20 @@ $(function(){
 		                    		html += '                <span>'+order.name+'</span>';
 		                    		html += '                <i>'+order.productSpecName+'</i>';
 		                    		html += '            </dd>';
+		                    		html += ' 			 <b>'+order.price.toFixed(2)+'</b>';
 		                    		html += '            <em>&times; '+order.buyNumber+'</em>';
 		                    		html += '        </dl>';
 		                    		html += '    </a>';
 		                    		if(item.payType == 1){
-			                    		html += '    <p class="money">金额：<span><i>￥'+order.price.toFixed(2)+'</i></span></p>';
+			                    		html += '    <p class="money">共'+order.buyNumber+'件商品 金额：<span><i>￥'+order.price.toFixed(2)+'</i></span></p>';
 		                    		}else{
-			                    		html += '    <p class="money">积分：<span><i>'+order.score.toFixed(2)+'</i></span></p>';
+			                    		html += '    <p class="money">共'+order.buyNumber+'件商品 积分：<span><i>'+order.score.toFixed(2)+'</i></span></p>';
 		                    		}
 		                    		html += '    <ul>';
 		                    		if(item.orderStatus == 2){
 			                    		html += '    	<li><a href="javascript:kuaidiQuery(\''+item.postid+'\');">查看物流</a></li>';
 			                    		html += '    	<li><a href="javascript:confirmReceive(\''+item.orderNo+'\');">确认收货</a></li>';
-		                    		}
-		                    		if(order.status == 3){
-		                    			html += '        <li class="pj"><a href="/comment/publish.html?order_product_id='+order.orderProductId+'">评价</a></li>';
-		                    		}
+		                    		}		                    	
 		                    		if(item.orderStatus == 0){
 			                    		html += '    <li><a href="/order/confirm.html?orderNo='+item.orderNo+'">支付</a></li>';
 		                    		}
@@ -270,7 +298,13 @@ $(function(){
 		                    		if(item.orderStatus != 0){
 			                    		html += '        <li class="once"><a href="/mall/info/'+order.productId+'.html">再次购买</a></li>';
 		                    		}
+		                    		if(item.orderStatus == 3){
+		                    			html += '        <li class="pj"><a href="/comment/publish.html?order_product_id='+order.orderProductId+'">评价</a></li>';
+		                    		}
 		                    		html += '    </ul>';
+		                    		if(item.orderStatus !=0 && item.orderStatus !=1 && item.orderStatus !=2){
+		                    			html += '        <p class="zhuangtai font-26">已签收</p>';
+		                    		}
 		                    		html += '</div>';
 	                    		}
 	                    	}

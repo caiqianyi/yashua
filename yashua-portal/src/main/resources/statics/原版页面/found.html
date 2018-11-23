@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<title>发现</title>
+</head>
+<body>
+<div class="Top">发现</div>
+<div id="focus" class="focus">
+    <div class="hd"><ul></ul></div>
+    <div class="bd">
+        <ul>
+            <li><a href=""><img src="/statics/images/banner-1.jpg"/></a></li>
+            <li><a href=""><img src="/statics/images/banner-2.jpg"/></a></li>
+            <li><a href=""><img src="/statics/images/banner-1.jpg"/></a></li>
+            <li><a href=""><img src="/statics/images/banner-2.jpg"/></a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="find">
+	<ul class="find-1">
+    	<li><a href="/account/logs.html">我的积分<em></em></a></li>
+    </ul>
+    <ul class="find-2">
+    	<li><a href="/news/list.html">牙科小知识<em></em></a></li>
+        <li><a href="/account/signIn.html">日常签到<em></em></a></li>
+    </ul>
+    <ul class="find-3">
+    	<li><a href="">私人医生<em></em></a></li>
+        <li><a href="/mall/list.html">商城<em></em></a></li>
+    </ul>
+    <ul class="find-more">
+    	<li><a href="">更多<em></em></a></li>
+    </ul>
+</div>
+
+<!--公用底部-->
+<#assign footerflag=2/>
+<#include "/footer.html">
+
+</body>
+</html>
+<script type="text/javascript">
+    TouchSlide({ 
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"left", 
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页c" 
+    });
+</script>

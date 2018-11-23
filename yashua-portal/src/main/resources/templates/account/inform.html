@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
-
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
 <title>消息通知</title>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:window.location.href='/account.html'"></span>消息通知</div>
+<div class="Top"><h3 onclick="javascript:window.location.href='/account.html'">消息通知</h3></div>
 <div id="wrapper">
 	<div class="msg-tongzhi">
-		<div class="tongzhi bg-white">
-	    	<p><span>2015-09-08<i></i>20:30:23</span>个人通知</p>
+		<div class="tongzhi">
+	    	<p><span>系统通知</span><i>2018-10-26 09:22:36</i></p>
+	        <h4>有关牙齿的基本知识给您推送一遍精选文章一遍精选文章</h4>
 	        <a href="xiaoxixiangqing.html">查看详情</a>
 	    </div>
-	    <div class="tongzhi bg-white">
-	    	<p><span>2015-09-08<i></i>20:30:23</span>个人通知</p>
+	    
+		<div class="tongzhi">
+	    	<p><span>系统通知</span><i>2018-10-26 09:22:36</i></p>
+	        <h4>有关牙齿的基本知识给您推送一遍精选文章一遍精选文章</h4>
+	        <a href="xiaoxixiangqing.html">查看详情</a>
+	    </div>
+	    
+	    <div class="tongzhi">
+	    	<p><span>系统通知</span><i>2018-10-26 09:22:36</i></p>
+	        <h4>有关牙齿的基本知识给您推送一遍精选文章一遍精选文章</h4>
 	        <a href="xiaoxixiangqing.html">查看详情</a>
 	    </div>
 	</div>
@@ -43,8 +51,9 @@ $(function(){
                     if(arrLen > 0){
                     	for(var i=0;i<response.data.length;i++){
                     		var item = response.data[i];
-                    		html += '<div class="tongzhi bg-white">';
-                    		html += '	<p><span>'+new Date(parseInt(item.createTime,10)).format("yyyy-MM-dd<i></i>hh:mm:ss")+'</span>'+item.title+'</p>';
+                    		html += '<div class="tongzhi">';
+                    		html += '	<p><span>系统通知</span><i>'+new Date(parseInt(item.createTime,10)).format("yyyy-MM-dd  hh:mm:ss")+'</i></p>';
+                    		html += '    <h4>'+item.title+'</h4>';
                     		html += '    <a href="/account/inform/info.html?id='+item.id+'">查看详情</a>';
                     		html += '</div>';
                     	}

@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/carts.js"></script>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/carts.js"></script>
 <title>购物车</title>
 </head>
-<body>
+<body class="bg-gray">
 	<div class="Top">
-		<span onclick="javascript:history.go(-1);"></span>购物车<a href="javascript:void(0)" onClick="edit()"
-			id="edit">编辑</a>
+		<h3 onclick="javascript:history.go(-1);">购物车</h3><a href="javascript:void(0)" onClick="edit()"
+			id="edit">管理</a>
 	</div>
 
-	<div class="bg-white font-24 gouwuche">
+	<div class="bg-white font-26 gouwuche">
 	</div>
 
 	<!--结算-->
 	<div id="jiesuan" style="display: block"
-		class="gouwuche-buy bg-white font-26">
+		class="gouwuche-buy bg-white font-30">
 		<span class="checkAllBtn">全选</span>
 		<!--class='on'状态变为全选-->
 		<p>
@@ -26,7 +26,7 @@
 	</div>
 
 	<!--删除-->
-	<div class="gouwuche-buy bg-white font-26" id="shanchu"
+	<div class="gouwuche-buy bg-white font-30" id="shanchu"
 		style="display: none">
 		<span>全选</span>
 		<!--class='on'状态变为全选-->
@@ -37,12 +37,12 @@
 <script type="text/javascript">
 	function edit() {
 		var edit = document.getElementById("edit");
-		if (edit.innerHTML == "编辑") {
+		if (edit.innerHTML == "管理") {
 			edit.innerHTML = "完成";
 			document.getElementById("jiesuan").style.display = "none";
 			document.getElementById("shanchu").style.display = "block";
 		} else {
-			edit.innerHTML = "编辑";
+			edit.innerHTML = "管理";
 			document.getElementById("jiesuan").style.display = "block";
 			document.getElementById("shanchu").style.display = "none";
 		}
@@ -94,9 +94,9 @@
 			html += '		<span>'+item.product.name+'</span> <i>'+item.specName+'：'+item.sepcAttrName+'</i>';
 			html += '	</div>';
 			html += '	<div class="Num">';
-			html += '       <b class="less">-</b>';
-    		html += '       <input type="text" value="'+num+'" max="'+item.spec.stock+'" min="1" name="amount">';
-    		html += '       <b class="add">+</b>';
+			html += '       <b class="less" onClick="change(1,1)">-</b>';
+    		html += '       	<input type="text" value="'+num+'" max="'+item.spec.stock+'" min="1" name="amount">';
+    		html += '       <b class="add" onClick="change(1,2)">+</b>';
 			html += '	</div>';
 			html += '	<p>￥<span class="price">'+item.spec.price+'</span></p>';
 			html += '</div>';
@@ -123,6 +123,7 @@
 		if(isBlur){
 			$("input[name=amount]").trigger("blur");
 		}
+		
 		
 		$("b.add").click("tap",function(){
 			var iput = $(this).parent(".Num").find("input");

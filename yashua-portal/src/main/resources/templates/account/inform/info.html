@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <title>消息详情</title>
 </head>
-<body class="bg-white">
-	<div class="Top">
-		<span onclick="javascript:history.go(-1);"></span>消息详情
+<body>
+	<div class="Top"><h3 onclick="javascript:history.go(-1);">消息详情</h3></div>
+<dl class="msg-xiangq font-28">
+	<div class=tz_tit>
+		<span class="title">个人通知</span>
+		<em class="time">2015-09-08 &nbsp 20:30:23</em>
 	</div>
-	<dl class="msg-xiangq">
-		<dt class="title"></dt>
-		<dd class="time">
-		</dd>
-	</dl>
-	<div class="jieshao">
+	<div class="txt">
+		<p>牙周病的早期症状不易引起重视，造成牙周组织长期慢性感染，炎症反复发作，不仅损害口腔咀嚼系统的功能，还会严重影响健康。</p>
+		<p>1.目前最有效的方法是每天坚持正确刷牙，按摩牙龈，促进牙龈血液循环，增强牙龈组织的抗病能力。注意锻炼身体，增强机体免疫力。 2.除去局部刺激因素，清洁牙齿和刮除牙周的牙石、牙垢，矫正不良修复体及矫治食物嵌塞，基本可治愈。 3.补充含有丰富维生素C的食品，可调节牙周组织的营养，有利于牙周炎的康复。 4.牙周病发病后应积极治疗，初期疗效尚好，晚期疗效较差，可丧失牙齿。</p>
 	</div>
+</dl>
+
 <script type="text/javascript">
 $(function(){
 	var id = url("id");
@@ -33,8 +35,7 @@ $(function(){
 	    		var userMessage = r.data;
 	    		$(".title").text(userMessage.title);
 	    		$(".time").html(new Date(parseInt(userMessage.createTime,10)).format("yyyy-MM-dd<i></i>hh:mm:ss"));
-	    		$(".jieshao").html(userMessage.content);
-	    		
+	    		$(".txt").html(userMessage.content);
 			}else{
 				alert(r.errmsg);
 			}
@@ -42,6 +43,7 @@ $(function(){
 	});
 });
 </script>
+
 </body>
 </html>
 

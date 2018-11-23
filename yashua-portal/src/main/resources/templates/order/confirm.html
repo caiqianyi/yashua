@@ -2,28 +2,28 @@
 <html>
 <head>
 <title>确认订单</title>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
 <script type="text/javascript" src="/statics/plugins/picker/setup.js"></script>
 <script type="text/javascript" src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
-<body>
-<div class="Top"><span onclick="javascript:$.goBack();"></span>确认订单</div>
+<body class="bg-gray" style="padding: 0;">
+<div class="Top"><h3 onclick="javascript:$.goBack();">确认订单</h3></div>
 <!--地址确认-->
 <div class="dizhi-ok bg-white font-26">
 	<a href="javascript:$.go('/account/address.html',3)">
-	<p>收货人：<span class="consignee"></span> <span class="mobile"></span></p>
-    <p>收货地址：<span class="addressA"></span></p>
+	<p class="font-30">收货人：<span class="consignee"></span> <span class="mobile"></span></p>
+    <p class="font-28">收货地址：<span class="addressA"></span></p>
     </a>
 </div>
 <!--商品确认-->
-<div class="dingdan-txt bg-white font-24">
+<div class="dingdan-txt bg-white c-3 font-26" style="margin-bottom: .1rem;">
 </div>
 <!--发票-->
-<div class="fap-ok bg-white font-26">
+<div class="fap-ok bg-white c-3 font-26" >
 	<p class="fl pa"><input type="checkbox"/>发票</p>
     <div class="fr">
         <p class="pb">发票抬头：<input type="text" name="invoiceTitle"></p>
@@ -38,7 +38,7 @@
     </div>
 </div>
 <!---->
-<div class="tt-ok bg-white font-26">
+<div class="tt-ok bg-white font-28 c-3">
 	<p><span>支付方式：</span><select class="payTypeToggle" style="float: right;margin-top: 10px;"><option value="1">现金支付</option><option value="0">积分兑换</option></select></p>
 	<div class="showPayType1">
 		<p><span>订单金额：</span><em class="orderMoney money">0.00</em></p>
@@ -50,9 +50,9 @@
 	</div>
 </div>
 
-<div class="gouwuche-buy bg-white font-26 qian-ok">
-    <p>合计：<i><em class="totalMoney">0.00</em></i></p>
-    <a href="javascript:void(0);" class="confirmBtn">支付</a>
+<div class="gouwuche-buy bg-white font-30 qian-ok">
+    <p>合计金额：<i><em class="totalMoney">0.00</em></i></p>
+    <a href="javascript:void(0);" class="confirmBtn">提交订单</a>
 </div>
 <script type="text/javascript">
 $(function(){
@@ -94,8 +94,6 @@ $(function(){
 					address = $(".dizhi-ok .addressA").text(),
 					consignee = $(".dizhi-ok .consignee").text(),
 					mobile = $(".dizhi-ok .mobile").text();
-					
-					var fuid = window.storage.get('user.mall.inviter', false, false);//分享邀请人
 					var orderset = {
 						orderNo: orderNo,
 						invoiceType: invoiceType ,
@@ -103,8 +101,7 @@ $(function(){
 						address: address,
 						consignee: consignee,
 						mobile: mobile,
-						wxopenid: window.storage.get("login.wxopenid" , false, false),
-						fuid: fuid
+						wxopenid: window.storage.get("login.wxopenid" , false, false)
 					};
 					var ptype = $(".payTypeToggle").val();
 					if(ptype == 1){
@@ -126,7 +123,6 @@ $(function(){
 				                                "paySign": pay_info.paySign  //微信签名,
 				                            }, function (res) {
 				                                if (res.err_msg == "get_brand_wcpay_request:ok") {
-				                                	window.storage.remove("user.mall.inviter" , false, false)
 				                                    // 此处可以使用此方式判断前端返回,微信团队郑重提示：res.err_msg 将在用户支付成功后返回ok，但并不保证它绝对可靠。
 				                                	$.go("/order/mylist.html");
 				                                    return;

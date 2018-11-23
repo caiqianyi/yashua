@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
-
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
 <link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
-<title>我的金币</title>
+<title>我的积分</title>
 </head>
 <body>
-<div class="Top"><span onclick="javascript:history.go(-1);"></span>我的积分</div>
+<div class="Top"><h3 onclick="javascript:history.go(-1);">我的积分</h3></div>
 <div class="my-jinbi">
 	<div class="my-jb-top">
-        <p class="money">0</p>
-        <span><img src="/statics/images/jinbi.png" alt=""/>总积分</span>
-        <a href="/mall/jflist.html">积分兑换</a>
+       <span>总积分</span>
+        <p class="money"><i></i></p>
+        <a href="/mall/jflist.html"><img src="/statics/new_images/jifen_pg2.png" alt=""/></a>
     </div>
-    <div class="my-jb-txt bg-white">
-    	<p><i>积分明细</i></p>
-	    <div id="wrapper">
+    <div class="my-jb-txt font-36">
+    	<p>积分明细</p>
+    	<div id="wrapper">
 	    	<ul class="ul-list">
 	    		<li><span>绑定牙刷<i>2018-05-18</i></span><em>+10</em></li>
-	            <li><span>日常签到<i>2018-05-18</i></span><em>+10</em></li>
+	            <li><span>日常签到<i>2018-05-18</i></span><em>+100</em></li>
 	            <li><span>牙刷兑换<i>2018-05-18</i></span><em>-1000</em></li>
 	    	</ul>
 	    </div>
@@ -37,7 +36,7 @@ $(function(){
 	    	l1.hide();
 	    	if(r.errcode == 0){
 	    		var user = r.data;
-	    		$(".money").text(user.balance);
+	    		$(".money").html(user.balance+'<i>分</i>');
 			}else{
 				alert(r.errmsg);
 			}

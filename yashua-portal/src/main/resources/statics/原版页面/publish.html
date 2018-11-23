@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>评价</title>
+<#include "/header.html">
+<script type="text/javascript" src="/statics/js/libs/oauth2_token_listener.js"></script>
+</head>
+<body>
+<div class="Top"><span></span>发表评价<a href="javascript:publish();">完成</a></div>
+<div class="pjia-top bg-white">
+	<img src="/statics/images/yst-2.png" alt="" class="picImg"/>
+    <p class="name"></p>
+</div>
+<form class="img_form" action="">
+	<input id="xFile" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" name="xFile" style="display: none;">
+</form>
+<div class="tousu-online">
+    <div class="wenzi"><textarea name="content" id="" cols="30" rows="10" placeholder="请输入你想说的内容，给其他想买的小伙伴做个参考呗" ></textarea></div>
+    <ul class="tousu-pic">
+        <li><img src="/statics/images/tousu-pic1.jpg" alt="" id="uploadBtn"/></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+
+function compress(param){
+	var setting = {
+		width: 320,
+		height: 320,
+		afterComplete: function(data){
+			
+		}
+	};
+	
+	setting = $.extend(setting,param);
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        //加载图片完成，取得图片的base64                
+        imgObj = e.target.result;
+        var image = new Image();
+        image.src = imgObj;
+        image.onload = function () {  //创建一个image对象，给canvas绘制使用  
+            var cvs = document.createElement('canvas');
+            var scale = 1;
+            if (this.width > setting.width || this.height > setting.height) {  //1000只是示例，可以根据具体的要求去设定    
+                if (this.width > this.height) {
+                    scale = setting.width / this.width;
+                } else {
+                    scale = setting.height / this.height;
+                }
+            }
+            cvs.width = this.width * scale;
+            cvs.height = this.height * scale;     //计算等比缩小后图片宽高  
+            var ctx = cvs.getContext('2d');
+            ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+            setting.afterComplete(cvs.toDataURL('image/png'));
+        }    
+    }
+    reader.readAsDataURL(xFile.files[0]);
+}
+
+var order_product_id = url("order_product_id");
+var order;
+function publish(){
+	var content = $("textarea[name=content]").val();
+	if(!content || content.length == 0){
+		alert("您总的要说的什么吧？");
+		return;
+	}
+	var comment={
+		content: content,
+		picImgs: [
+		],
+	};
+	$(".showPic").each(function(i,e){
+		comment.picImgs[i] = {
+			picImg: $(e).attr("src"),
+			sort: i
+		};
+	});
+	var l2 = $.loading({content:"发表中..."}).show();
+	$.ajax({
+    	url: "/mall/mallproductcomment/publish?orderProductId="+order_product_id,
+    	type: "POST",
+    	contentType: "application/json",
+	    data: JSON.stringify(comment),
+    	success: function(r){
+    		l2.hide();
+    		if(r.errcode == 0){
+    			alert("发布成功");
+    			$.goBack("/order/mylist.html");
+    			return;
+    		}
+    		alert(r.errmsg);
+    	}
+	});
+}
+$(function(){
+	var l1 = $.loading({content:"加载中..."}).show();
+	 $.ajax({
+    	url: "/mall/orderProduct/find",
+    	data: {
+    		id: order_product_id
+    	},
+    	success: function(r){
+    		l1.hide();
+    		if(r.errcode == 0){
+    			order = r.data;
+    			if(!order || order.status != 3){
+    				var errmsg = null;
+    				if(!order)
+    					errmsg = "订单不存在！";
+        			else if(order.status < 3)
+    					errmsg = "订单尚未完成，无法评价！";
+    				else
+    					errmsg = "订单已发表评价！";
+   					alert(errmsg);
+    				$.go("/order/mylist.html");
+   					return;
+    			}
+    			$(".pjia-top .picImg").attr("src",order.picImg);
+    			$(".pjia-top .name").text(order.name);
+    		}
+    	}
+	});
+	$("#uploadBtn").click(function(){
+		if($(".showPic").length>= 10){
+			alert("最多上传十张图片");
+			return;
+		}
+		$("#xFile").click();
+	});
+	
+	$('#xFile').bind('change',function(){
+		compress({afterComplete: function(imgData){
+			var imgLi = $('<li><img src="" alt="" class="showPic"/><i class="close"></i></li>');
+			imgLi.find("img").attr("src",imgData);
+			imgLi.insertBefore($("#uploadBtn").parent());
+			$(".tousu-pic .close").unbind("click");
+			$(".tousu-pic .close").click(function(){
+				$(this).parent().remove();
+			});
+		}});
+	});
+});
+</script>
+
+</body>
+</html>
+

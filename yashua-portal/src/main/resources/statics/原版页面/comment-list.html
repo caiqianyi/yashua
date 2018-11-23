@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>评价列表</title>
+<#include "/header.html">
+<link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
+<script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
+<style type="text/css">
+.cmt_att {
+    margin-right: -10px;
+    padding-bottom: 4px;
+    padding: 0 10px;
+}
+.cmt_att .img {
+    width: 64px;
+    height: 68px;
+    display: inline-block;
+    margin-right: 3px;
+    overflow: hidden;
+    text-align: center;
+    background: #f3f3f3;
+    margin-bottom: 1px;
+}
+.cmt_att .img img {
+    width: auto;
+    display: inline-block;
+    height: auto;
+    min-width: 64px;
+    max-height: 68px;
+    border: 0 none;
+    vertical-align: top;
+}
+</style>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:$.goBack('/mall/info/${id}.html');"></span>评价</div>
+<!--总计评价-->
+<div class="Total bg-white font-26"><p>共计${product.attrs.replies}条评论</p></div>
+<div id="wrapper">
+	<div class="ul-list">
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	var offset = 0;
+	$('.ul-list').html('');
+	var id = ${id};
+    $('#wrapper').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            // 拼接HTML
+        	$.ajax({
+                type: 'GET',
+                url: '/mall/comment/list',
+                data:{
+                	productId: id,
+                	offset:offset,
+                	size:10
+                },
+                success: function(response){
+                	if(response.errcode == 0){
+	                    var arrLen = response.data.length;
+	                    var html = "";
+	                    if(arrLen > 0){
+	                    	for(var i=0;i<response.data.length;i++){
+	                    		var item = response.data[i];
+	                    		console.info(item);
+	                    		html += '<div class="babytalk bg-white">';
+                    			html += '	<div class="name font-24">';
+                   				html += '    	<img src="'+item.headimgurl+'" alt=""/>';
+                   				html += '        <p><span>'+item.nickname+'</span></p>';
+                   				html += '    </div>';
+                   				html += '    <div class="time font-22 c-9">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd")+' '+item.mallOrderProductEntity.productSpecName+' </div>';
+                   				html += '    <div class="txt font-26">'+item.content+'</div>';
+                   				if(item.picImgs && item.picImgs.length > 0){
+	                   				html += '    <div class="cmt_att" ptag="">';
+                   					for(var k=0;k<item.picImgs.length;k++){
+		                   				html += '		<span class="img"><img src="'+item.picImgs[k].picImg+'" prview=""></span>';
+		                   				html += '		<span class="img"><img src="'+item.picImgs[k].picImg+'" prview=""></span>';
+                   					}
+	                   				html += '	 </div>';
+                   				}
+                   				html += '</div>';
+	                    	}
+	                    	if(arrLen < 10){
+	                    		// 锁定
+	                            me.lock();
+	                            // 无数据
+	                            me.noData();
+	                    	}
+	                    	offset += arrLen;
+	                    // 如果没有数据
+	                    }else{
+	                        // 锁定
+	                        me.lock();
+	                        // 无数据
+	                        me.noData();
+	                    }
+	                    // 为了测试，延迟1秒加载
+	                    // 插入数据到页面，放到最后面
+	                    $('.ul-list').append(html);
+	                    // 每次数据插入，必须重置
+	                    me.resetload();
+                	}else{
+        				alert(response.errmsg);
+        			}
+                }
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>

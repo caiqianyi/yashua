@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>商城</title>
+<#include "/header.html">
+<link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
+<script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
+</head>
+<body>
+<div class="Top"><span onclick="javascript:window.location.href='/found.html'"></span>商城</div>
+<#if categorys??>
+	<div class="shop-top bg-white font-30">
+		<ul>
+			<#list categorys as cat>
+				<li <#if cat_index = 0>class="on" </#if>id="cat_${cat.id}"><span style="background: url('${cat.icon}') no-repeat left center;    background-size: .22rem .48rem;">${cat.name}</span></li>
+			</#list>
+		</ul>
+	</div>
+</#if>
+
+<div id="wrapper">
+	<div class="shop-list bg-white">
+		<a href="shangpinxiangqing.html" class="box">
+	    	<img src="images/yst-1.png" alt=""/>
+	        <div class="txt">
+	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+	            <span>包邮 &nbsp; 上海</span>
+	            <p><i>￥98</i>11235人付款</p>
+	        </div>
+	    </a>
+	    <a href="shangpinxiangqing.html" class="box">
+	    	<img src="images/yst-2.png" alt=""/>
+	        <div class="txt">
+	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+	            <span>包邮 &nbsp; 上海</span>
+	            <p><i>￥98</i>11235人付款</p>
+	        </div>
+	    </a>
+	    <a href="shangpinxiangqing.html" class="box">
+	    	<img src="images/yst-1.png" alt=""/>
+	        <div class="txt">
+	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+	            <span>包邮 &nbsp; 上海</span>
+	            <p><i>￥98</i>11235人付款</p>
+	        </div>
+	    </a>
+	    <a href="shangpinxiangqing.html" class="box">
+	    	<img src="images/yst-2.png" alt=""/>
+	        <div class="txt">
+	        	<h3>纳米牙刷替换头 正品抗菌护理成人软毛牙刷头</h3>
+	            <span>包邮 &nbsp; 上海</span>
+	            <p><i>￥98</i>11235人付款</p>
+	        </div>
+	    </a>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	var offset = 0;
+	$("li[id^=cat_]").click(function(){
+		$("li[id^=cat_]").removeClass("on");
+		$(this).addClass("on");
+		offset = 0;
+		$('.shop-list').html('');
+		$('#wrapper').html('<div class="shop-list bg-white"></div>');
+		var categoryId = $(this).attr("id").replace("cat_","");
+		console.info(categoryId);
+	    $('#wrapper').dropload({
+	        scrollArea : window,
+	        loadDownFn : function(me){
+	            // 拼接HTML
+	        	$.ajax({
+	                type: 'GET',
+	                url: '/mall/product/list',
+	                data:{
+	                	categoryId: categoryId,
+	                	offset:offset,
+	                	size:10
+	                },
+	                success: function(response){
+	                	if(response.errcode == 0){
+		                    var arrLen = response.data.length;
+		                    var html = "";
+		                    if(arrLen > 0){
+		                    	for(var i=0;i<response.data.length;i++){
+		                    		var item = response.data[i];
+		                    		console.info(item);
+		                    		html += '<a href="/mall/info/'+item.id+'.html" class="box">';
+		                    		html += '	<img src="'+item.showPic+'" alt=""/>';
+		                    		html += '	<div class="txt">';
+		                    		html += '		<h3>'+item.name+'</h3>';
+		                    		html += '	    <span>包邮 &nbsp; 北京</span>';
+		                    		html += '	    <p><i>￥'+item.showPrice+'</i>'+item.attrs.salesVolume+'人付款</p>';
+		                    		html += '	</div>';
+		                    		html += '	</a>';
+		                    	}
+		                    	if(arrLen < 10){
+		                    		// 锁定
+		                            me.lock();
+		                            // 无数据
+		                            me.noData();
+		                    	}
+		                    	offset += arrLen;
+		                    // 如果没有数据
+		                    }else{
+		                        // 锁定
+		                        me.lock();
+		                        // 无数据
+		                        me.noData();
+		                    }
+		                    // 为了测试，延迟1秒加载
+		                    // 插入数据到页面，放到最后面
+		                    $('.shop-list').append(html);
+		                    // 每次数据插入，必须重置
+		                    me.resetload();
+	                	}else{
+	        				alert(response.errmsg);
+	        			}
+	                }
+	            });
+	        }
+	    });
+	});
+	$("li[id^=cat_].on").click();
+});
+</script>
+</body>
+</html>
+

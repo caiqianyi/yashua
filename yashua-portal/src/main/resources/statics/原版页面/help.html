@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/header.html">
+<title>使用帮助</title>
+</head>
+<body>
+<div class="Top">使用帮助</div>
+<div class="help-pic"><img src="/statics/images/help.png" alt=""/></div>
+<div class="help bg-white">
+	<ul>
+		<li><a href="/help/cjwt.html">常见问题<em></em></a></li>
+        <li><a href="/help/syjc.html">使用教程<em></em></a></li>
+        <li><a href="/help/gnjs.html">功能介绍<em></em></a></li>
+        <li class="kefu-call">联系客服<em></em></li>
+        <li><a href="">帮忙评分<em></em></a></li>
+	</ul>
+</div>
+
+<!--客服弹窗-->
+<div class="pop-kefu font-28">
+	<div></div>
+	<ul>
+    	<li><p>客服电话1</p><span>13255687943</span></li>
+        <li><p>客服电话2</p><span>13255687943</span></li>
+        <li class="last"><p>客服电话3</p><span>13255687943</span></li>
+        <img src="/statics/images/kefu.png" alt=""/>
+    </ul>
+</div>
+
+</body>
+</html>
+<script>
+	$('.kefu-call').click(function(){
+		$('.pop-kefu div').show();
+		$('.pop-kefu ul').show();
+	});
+	$('.pop-kefu div').click(function(){
+		$('.pop-kefu div').hide();
+		$('.pop-kefu ul').hide();
+	});
+</script>
+
+

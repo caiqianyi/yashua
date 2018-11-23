@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
+<#include "/new_header.html">
 <link rel="stylesheet" href="/statics/plugins/dropload/dropload.css" type="text/css">
 <script type="text/javascript" src="/statics/plugins/dropload/dropload.min.js"></script>
 <title>
@@ -14,13 +14,11 @@
 </#if>
 </title>
 </head>
-<body class="bg-white">
+<body>
 <#if news??>
-<div class="Top"><span onclick="javascript:window.location.href='/news/list.html'"></span>详情</div>
-<div class="zixun">
-	<span class="time">
-		${news.createTime?string('yyyy-MM-dd HH:mm:ss')}
-	</span>	
+<div class="Top"><h3 onclick="javascript:window.location.href='/news/list.html'">详情</h3></div>
+<div class="zixun bg-new font-28">
+		
     <h3>
 	    <#if news.title??>  
 		   ${news.title}
@@ -29,25 +27,35 @@
  	<#if news.picItems??>
    		<img src="${news.picItems}" alt=""/>
    	</#if>
-	<#if news.content??>
-		${news.content!} 
-	</#if>
+   	<p>
+		<#if news.content??>
+			${news.content!} 
+		</#if>
+	</p>
+	<h6>作者：王国军</h6>
+	
+	<h6>
+		${news.createTime?string('yyyy-MM-dd HH:mm:ss')}
+	</h6>
 	<div class="how">
         <span class="fl">${news.clicks}人看过</span>
         <span class="fr"><i>${news.replies}</i><i class="sc">${news.praises}</i></span>
     </div> 
 </div>
-
+<div class="pingl">
+	<div class="ddpl bg-new font-36">&#9679;&#9679;&#9679; 评论</div>
+</div>
 <div id="wrapper">
-	<div class="duzhe bg-white">
-		<div class="renwu">
-	    	<img src="/statics/images/duzhe1.jpg" alt=""/>
+	<div class="duzhe">
+		<div class="renwu bg-new">
+	    	<img src="/statics/new_images/duzhe1.jpg" alt=""/>
 	        <div class="txt">
-	        	<p class="nic font-26">小雪</p>
-	        	<p class="pl font-22 c-6">感觉很有用处，关注牙齿，关注健康，持续关注中</p>
-	            <span class="font-20 c-9">2015-05-20 15:08</span>
+	        	<p class="font-36">小雪</p>
+	        	<p class="font-30">感觉很有用处，关注牙齿，关注健康，持续关注中</p>
+	            <p class="font-24">2015-05-20 15:08</p>
+	        	<em></em>
 	        </div>
-	        <em></em>
+	        
 	    </div>
 	</div>
 </div>
@@ -97,14 +105,14 @@ $(function(){
                     if(arrLen > 0){
                     	for(var i=0;i<response.data.length;i++){
                     		var item = response.data[i];
-                    		html += '<div class="renwu">';
+                    		html += '<div class="renwu bg-new">';
                     		html += '	<img src="'+item.headimgurl+'" alt=""/>';
                     		html += '     <div class="txt">';
-                    		html += '    	<p class="nic font-26">'+item.nickname+'</p>';
-                    		html += '    	<p class="pl font-22 c-6">'+item.content+'</p>';
-                    		html += '        <span class="font-20 c-9">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd hh:mm:ss")+'</span>';
-                    		html += '    </div>';
+                    		html += '    	<p class="font-36">'+item.nickname+'</p>';
+                    		html += '    	<p class="font-30">'+item.content+'</p>';
+                    		html += '        <p class="font-24">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd hh:mm:ss")+'</p>';
                     		html += '    <em></em>';
+                    		html += '    </div>';
                     		html += '</div>';
                     	}
                     	if(arrLen < 10){
