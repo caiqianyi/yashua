@@ -179,9 +179,9 @@ function headImgUpload(){
 	$.ajax({
 		type: "GET",
 	    url: "/account/user/info",
-	    success: function(r){console.info(r.errcode);
+	    success: function(r){
 	    	if(r.errcode == 0){
-	    		var user = r.data;
+	    		var user = r.data;console.info(user);
 	    		var headimgurl = user.headimgurl && user.headimgurl.length>0 ? user.headimgurl : "/statics/images/touxiang.png";
 	    		$(".photo img").attr("src",headimgurl);
 	    		$(".photo img").bind("error",function(e){
@@ -190,7 +190,8 @@ function headImgUpload(){
 	    		
 	    		$("input[name=sex]").removeAttr("checked",'checked');
 	    		$("input[name=sex][value="+user.sex+"]").prop('checked', true)
-	    		pickerSetup.setSelected(user.areaCode.split(","));
+	    		if(user.areaCode!=null && user.areaCode!='')
+					pickerSetup.setSelected(user.areaCode.split(","));
 	    		var props = ["nickname","mobile","birthday","realname","identity"];
     			for(var i=0;i<props.length;i++){
     				var pro = props[i];

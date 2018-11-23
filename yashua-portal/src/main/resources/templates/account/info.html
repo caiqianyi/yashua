@@ -49,7 +49,7 @@
     <li><p>生日</p><span id="birthday"></span></li>
     <li><p>手机号</p><span id="mobile"></span></li>
     <li><p>真实姓名</p><span id="realname"></span></li>
-    <li><p>地域</p><span class="addressSelected">请选择</span></li>
+    <li><p>地域</p><span class="addressSelected"></span></li>
 </ul>
 <div class="tuichu">退出登录</div>
 </body>
@@ -91,8 +91,8 @@
 	    		$("#birthday").text(user.birthday);
 	    		$("#mobile").text(user.mobile);
 	    		$("#realname").text(user.realname);
-	    		
-	    		pickerSetup.setSelected(user.areaCode.split(","));
+	    		if(user.areaCode!=null && user.areaCode!='')
+	    			pickerSetup.setSelected(user.areaCode.split(","));
 			}else{
 				alert(r.errmsg);
 			}
