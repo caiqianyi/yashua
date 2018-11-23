@@ -6,8 +6,6 @@ public class AccountConstant {
 	 */
 	public static final String CACHEKEY_LOGIN_ACCOUNT_LOCK = "user:login:account:lock";
 	
-	public static final String SMS_VFCODE = "sms:send:vfcode:%s";
-	
 	public final static Integer ACCOUNT_ERROR_COUNT = 10;//一天账号密码错误次数
 	
 	public final static Long ACCOUNT_ERROR_LOCK_TIME = 60 * 60 * 2L;//锁定时间

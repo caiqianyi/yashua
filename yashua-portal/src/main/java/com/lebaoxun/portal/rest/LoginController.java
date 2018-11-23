@@ -14,6 +14,7 @@ import javax.servlet.ServletOutputStream;
 import com.lebaoxun.commons.utils.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,7 @@ import com.lebaoxun.commons.utils.GenerateCode;
 import com.lebaoxun.commons.utils.PwdUtil;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
+import com.lebaoxun.modules.sms.service.ISMSGatewayService;
 import com.lebaoxun.portal.config.AccountConstant;
 import com.lebaoxun.security.oauth2.Oauth2AccessToken;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
@@ -57,6 +59,12 @@ public class LoginController extends BaseController{
 	
 	@Resource
 	private IWechatService wechatService;
+	
+	@Resource
+	private ISMSGatewayService smsGatewayService;
+	
+	@Value("${sms.cst_id}")
+	private String smsCstid;
 	
 	@RequestMapping("captcha.jpg")
 	public void captcha(String emid)throws IOException {
@@ -283,13 +291,10 @@ public class LoginController extends BaseController{
 		} catch (Exception e) {
 			throw new I18nMessageException("10015", "密钥不对");
 		}
-		logger.info("username={},password={}",account,passwd);
-		String verifycode = (String) redisCache.get(String.format(AccountConstant.SMS_VFCODE, account));
-		logger.debug("verifycode={},vfcode={}",verifycode,vfcode);
-		if(verifycode == null || !verifycode.equalsIgnoreCase(vfcode)){
-			throw new I18nMessageException("10001", "验证码不正确");
+		ResponseMessage sm = smsGatewayService.checkVfCode(smsCstid, account, vfcode);
+		if(!"0".equals(sm.getErrcode())){
+			return sm;
 		}
-		redisCache.del(String.format(AccountConstant.SMS_VFCODE, account));
 		UserEntity user = userService.findByAccount(account);
 		if(user == null){
 			throw new I18nMessageException("-1", "帐号不存在！");
@@ -316,12 +321,10 @@ public class LoginController extends BaseController{
 			throw new I18nMessageException("10015", "密钥不对");
 		}
 		logger.info("username={},password={}",account,passwd);
-		String verifycode = (String) redisCache.get(String.format(AccountConstant.SMS_VFCODE, account));
-		logger.debug("verifycode={},vfcode={}",verifycode,vfcode);
-		if(verifycode == null || !verifycode.equalsIgnoreCase(vfcode)){
-			throw new I18nMessageException("10001", "验证码不正确");
+		ResponseMessage sm = smsGatewayService.checkVfCode(smsCstid, account, vfcode);
+		if(!"0".equals(sm.getErrcode())){
+			return sm;
 		}
-		redisCache.del(String.format(AccountConstant.SMS_VFCODE, account));;
 		UserEntity user = new UserEntity();
 		Long userId = GenerateCode.gen16(9);
 		user.setBalance(0);
