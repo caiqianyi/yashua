@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/new_header.html">
+<title>历史记录</title>
+<script type="text/javascript" src="/statics/new_js/chart.js"></script>
+<script type="text/javascript" src="/statics/new_js/jquery.SuperSlide.2.1.1.js"></script>
+</head>
+<body>
+<div class="Top"><h3>历史记录</h3></div>
+<div class="shuju">
+	<div class="hd center">
+    	<ul>
+    		<li>周</li>
+           <li>月</li>
+           <li>季</li>
+    	</ul>
+    </div>
+   <div class="bd font-22">
+   		<!--周记录-->
+    	<div class="chart-container">
+       		<p class="mark">分数</p>
+       		<p class="time">周（天）</p>
+        	<canvas id="myChart" ></canvas>
+        </div>
+        <!--月记录-->
+        <div class="chart-container">
+        	<p class="mark">分数</p>
+       		<p class="time">月（周）</p>
+        	<canvas id="myChart-month" ></canvas>
+        </div>
+        <!--季记录-->
+        <div class="chart-container">
+        	<p class="mark">分数</p>
+       		<p class="time">季（月）</p>
+        	<canvas id="myChart-season" ></canvas>
+        </div>
+    </div>	
+</div>
+
+<!--口气平均分-->
+<div class="jilu-fen center">
+	<div class="fenxi font-30">数据分析<p>口气平均分</p></div>
+	<div class="zhi font-30">
+		<div class="score">
+			<div><p><i>6</i>分<span>早</span></p></div>
+		</div>
+		<div class="score">
+			<div><p><i>10</i>分<span>晚</span></p></div>
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>
+<script>
+	//切换
+	jQuery(".shuju").slide({trigger:"click"});
+	//折线图
+    var ctx = document.getElementById("myChart").getContext("2d");
+	var ctx1 = document.getElementById("myChart");
+	ctx1.height=260;
+	
+	Chart.defaults.global.defaultFontColor = 'white';
+	Chart.defaults.global.defaultFontSize =14;
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["一","二","三","四","五","六","日"],
+            datasets: [{
+				label: '早',
+				fill: true,//是否填充背景色
+ 				backgroundColor:'rgb(99, 237, 152,.2)',//背景色
+				pointBorderColor:'#fff',//圆点边框
+                pointBackgroundColor:'rgb(25, 149, 72)',//圆点背景色
+                borderColor: 'rgb(99, 237, 152)',//线条颜色
+                data: [5, 2, 5, 2, 7, 8, 9],
+            },  {
+				label: '晚',
+				fill: true,
+ 				backgroundColor:'rgb(254, 223, 80,.2)',
+				pointBorderColor:'#fff',
+                pointBackgroundColor:'rgb(254, 223, 80)',
+                borderColor: 'rgb(254, 223, 80)',
+                data: [2, 3, 7, 7, 8, 3, 7],
+            }]
+        },
+	    
+        // 配置文件
+        options: {
+            //标题设置
+            title:{
+                display:true,
+                text:'一周内口气记录',
+				fontStyle:'normal',
+            },
+            //动画
+            animation:{
+              duration:true,
+            },
+            hover:{
+                animationDuration:0,
+            },
+            responsiveAnimationDuration: 0,
+            //提示功能
+            tooltips:{
+              enable:true
+            },
+            //设置x,y轴网格线显示,标题等
+            scales :{
+				precision:5,	
+                xAxes:[{
+						
+                    //轴标题
+                    scaleLabel:{
+                        display:true,
+                        labelString:'',  
+                    },
+					 
+                    //网格显示
+                    gridLines:{
+                        display:false,//是否显示网格线	
+                    },
+ 						ticks: {
+						fontColor: "#fff", // this here
+						},
+						 
+                }],
+                yAxes:[{
+					
+                    scaleLabel:{
+                        display:true,
+						padding:-10,
+                        labelString:'',
+						fontColor:'#fff'
+                    },
+                    gridLines:{
+                        display:false,//是否显示网格线	
+                    },
+ 					ticks: {
+						
+						min : 0,
+               	    	max : 10,
+						stepSize: 5,
+						fontColor: "#fff", // this here
+						},
+                }],
+ 
+            },
+ 
+            //禁用赛尔曲线
+            elements: {
+                line: {
+                    tension: 0,
+                }
+            }
+ 
+        }
+    });
+    </script>
