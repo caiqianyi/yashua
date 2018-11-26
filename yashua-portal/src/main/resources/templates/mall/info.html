@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/carts.js"></script>
+<title>
+<#if product??>
+	<#if product.shareTitle??>  
+	   ${product.shareTitle}
+	</#if>
+<#else>
+商品详情
+</#if>
+</title>
+</head>
+<body class="bg-gray c-3">
+<img alt="" src="${product.showPic}" style="display:none;">
+<div style="display:none;">${product.shareDescription}</div>
+<img alt="" src="/statics/new_images/good-or-tick.png" style="display: none;">
+<div class="Top"><h3 onclick="javascript:$.goBack('/mall/list.html');">商品详情</h3></div>
+<!--图片展示-->
+<#if product.images??>
+<div id="focus" class="thing bg-white">
+    <div class="bd">
+        <ul>
+        	<#list product.images as img>
+				<#if img.picImg??>  
+	            <li><a href=""><img src="${img.picImg}"/></a></li>
+	            </#if>
+			</#list>
+        </ul>
+    </div>
+    <div class="hd"><ul></ul></div>
+</div>
+</#if>
+<!--文字介绍-->
+<div class="thing-txt bg-white">
+	<div class="txt-name font-28">
+    	<h3>${product.name}</h3>
+        <span>分享</span>
+    </div>
+    <p class="money font-40">￥<i id="showPrice">${product.showPrice}</i>.00<span>价格</span></p>
+    <p class="free font-26"><i>快递 免运费</i><i>月销${product.attrs.salesVolume}笔</i><i>上海</i></p>    
+     
+</div>
+<!--选择宝贝-->
+<div class="thing-cho font-32" id="specs"></div>
+<div class="spxq-pic font-30 bg-white">
+	<h3><span>详情</span></h3>
+	<img src="/statics/new_images/spxq1.jpg" alt=""/>
+</div>
+
+<!--宝贝评价-->
+<a href="/mall/comment/${id}.html" style="color:#333;">
+<div class="thing-cho font-32" style="padding:0 .25rem;">
+	<span>宝贝评价（${product.attrs.replies}）</span>
+</div>
+<#if lastComment??>
+<div class="babytalk bg-white">
+	<div class="name font-23">
+		<#if lastComment.headimgurl??>
+    		<img src="${lastComment.headimgurl}" alt=""/>
+    	</#if>
+    	<#if lastComment.nickname??>
+        	<p class="font-30">${lastComment.nickname}</p>
+        </#if>
+    </div>
+    <div class="time font-24 c-9">${lastComment.createTime?string("yyyy-MM-dd")} 
+    <#if lastComment.mallOrderProductEntity??>
+    	<#if lastComment.mallOrderProductEntity.productSpecName??>
+    		${lastComment.mallOrderProductEntity.productSpecName}
+    	</#if> 
+    </#if> 
+    </div>
+    <#if lastComment.content??>
+    	<div class="txt font-30">${lastComment.content}</div>
+    </#if> 
+</div>
+</#if>
+</a>
+<!--购买-->
+<div class="thing-mai bg-white font-36">
+	<span>客服</span>
+<!-- <a href="/mall/cart.html"><span class="icon_cart">购物车</span></a> -->	
+    <ul>
+    	<li class="bg-gwc"><a href="/mall/cart.html">购物车</a></li>
+        <li class="bg-mai"><a href="javascript:buyOrder();">立即购买</a></li>
+    </ul>
+</div>
+
+<div class="ui-loading-block">
+    <div class="ui-loading-cnt">
+        <i class="ui-loading-bright" style="background-image: url(/statics/images/good-or-tick.png);-webkit-background-size: auto 37px;"></i>
+        <p>加入购物车成功</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		var uid = url('u');
+		window.storage.set('user.mall.inviter',uid,false);
+	});
+	var specs;
+	var productSpecs = {};
+	var id = ${product.id};
+	function buyOrder(){
+		if(!login.isLogin()){
+			parent.location.href = loginCallUri();
+			return;
+		}
+		var pos = [{productSpecId:$(".aLi").attr("data")
+			,buyNumber:$("input[name=amount]").val()}];
+		var l2 = $.loading({content:"请求中..."}).show();
+		$.ajax({
+	    	url: "/mall/order/create",
+	    	type: "POST",
+	    	contentType: "application/json",
+		    data: JSON.stringify(pos),
+	    	success: function(r){
+	    		l2.hide();
+	    		if(r.errcode == 0){
+	    			$.go("/order/confirm.html?orderNo="+r.data.orderNo);
+	    			return;
+	    		}else if(r.errcode == 20110){
+	    			alert(r.errmsg);
+	    			$.go("/order/mylist.html");
+	    			return;
+	    		}
+	    		alert(r.errmsg);
+	    	}
+		});
+	}
+	function joinCart(specId){
+		var productSpecIds = [];
+		$(".aLi").each(function(i,e){
+			productSpecId = $(e).attr("data");
+			productSpecIds[i] = productSpecId;
+		});
+		var num = $("input[name=amount]").not(":hidden").val();
+		if(!num){
+			num = 1;
+		}
+		carts.put(productSpecIds.toString(),num);
+		carts.syncServer();
+		$(".ui-loading-block").dialog("show");
+		setTimeout(function(){
+			$(".ui-loading-block").dialog("hide");
+		},2000);
+		$(".xzpop[id=xzpop-"+specId+"] .bg-black").click();
+	}
+    
+    $.ajax({
+    	url: "/mall/product/info/specs",
+    	type: "get",
+    	data: {
+    		id: id
+    	},
+    	success: function(r){
+    		if(r.errcode == 0){
+    			var datas = r.data;
+    			productSpecs = datas;
+    			specs = [];
+    			function indexOf(id){
+    				for(var i=0;i<specs.length;i++){
+        				if(specs[i].id == id){
+        					return i;
+        				}
+        			}
+    				return -1;
+    			}
+    			function indexOf2(id){
+    				for(var i=0;i<specs.length;i++){
+    					for(var j=0;j<specs[i].data.length;j++){
+            				if(specs[i].data[j].specAttrId == id){
+            					return {i:i,j:j};
+            				}
+            			}
+        			}
+    				return null;
+    			}
+    			for(var i=0;i<datas.length;i++){
+    				var idx = indexOf(datas[i].specificationId);
+    				if(idx == -1){
+    					specs[specs.length] = {
+    						id: datas[i].specificationId,
+    						name: datas[i].specName,
+    						data: [datas[i]]
+    					};
+    				}else{
+    					specs[idx].data[specs[idx].data.length] = datas[i];
+    				}
+    			}
+    			var html = '';
+    			for(var k=0;k<specs.length;k++){
+    				var spec = specs[k];
+	    			html += '<div class="thing-cho font-34" style="padding:0 .25rem;" id="st-spec-'+spec.id+'">选择 商品规格 '+spec.name+' <i class="showSelect"></i></div>' ;
+	    			html += '<!--选择弹窗-->';
+		    		html += '<div class="xzpop" id="xzpop-'+spec.id+'">';
+		    		html += '	<div class="bg-black"></div>';
+		    		html += '	<div class="txt bg-white font-32" style="z-index:1;">';
+		    		html += '   	<!--关闭按钮-->';
+		    		html += '   	<em><img src="/statics/new_images/tousu-close.png" alt=""/></em>';
+		    		html += '       <!--颜色分类-->';
+		    		html += '   	<dl>';
+		    		html += '        	<dt>'+spec.name+'</dt>';
+		    		html += '           <dd>';
+		    		for(var j=0;j<spec.data.length;j++){
+		    			var att = spec.data[j];
+			    		html += '	            	<span '+(j==0?'class="aLi"': '')+' id="attr_'+att.specAttrId+'" data="'+att.productSpecId+'">'+att.specAttrName+'</span>';
+		    		}
+		    		html += '           </dd>';
+		    		html += '       </dl>';
+		    		html += '       <!--购买数量-->';
+		    		if(spec.data[0].stock > 0){
+			    		html += '       <div class="gmai">';
+			    		html += '       	<p>购买数量</p>';
+			    		html += '           <div class="Num" style="margin-right:.15rem;">';
+			    		html += '               <b class="less">-</b>';
+			    		html += '               <input type="text" value="1" max="'+spec.data[0].stock+'" min="1" name="amount">';
+			    		html += '               <b class="add">+</b>';
+			    		html += '           </div>';
+			    		html += '       </div>';
+		    		}
+		    		html += '       <!--加入购物车-->';
+		    		html += '       <a href="javascript:joinCart('+spec.id+')" class="jiaru">加入购物车</a>';
+		    		html += '   </div>';
+		    		html += '</div>';
+    			}
+	    		$("#specs").html(html);
+	    		
+	    		//商品数量点击事件
+	    		var nubs=$(".Num").find("input").val();
+					$("b.add").click("tap",function(){
+						nubs++;
+						$(".Num").find("input").val(nubs);
+					});
+					$("b.less").click("tap",function(){
+						nubs--;
+						$(".Num").find("input").val(nubs);
+						if(nubs<=0){
+							$(".Num").find("input").val(1);
+							alert("最少兑一件");
+						}
+					});
+	    		
+					//弹窗
+		    		$("div[id^=st-spec-]").click(function(){
+		    			var specId = $(this).attr("id").replace("st-spec-","");
+		    			$("#xzpop-"+specId+" .bg-black").show();
+		    			$("#xzpop-"+specId+" .txt").slideDown();
+		    		})
+		    		$(".xzpop .bg-black,.txt em").click(function(){
+		    			var xzpop = $(this).parent(".xzpop");
+		    			if(xzpop.length == 0){
+		    				xzpop = $(this).parent().parent(".xzpop");
+		    			}
+		    			$(".bg-black",xzpop).hide();
+		    			$(".txt",xzpop).slideUp();	
+		    		});
+	    		
+	    		//选颜色
+	    		$(".xzpop .txt dl span").click(function(){
+	    			var id = $(this).attr("id").replace("attr_","");
+	    			var pos = indexOf2(id);
+	    			var item = specs[pos.i].data[pos.j];
+	    			var e = $(this).parents(".xzpop");
+	    			$("input",e).attr("max",item.stock);
+	    			$(".showSelect","#st-spec-"+specs[pos.i].id).text(item.specAttrName);
+	    			if(item.price > 0){
+		    			$("#showPrice").text(item.price);
+	    			}
+	    			$(this).addClass("aLi").siblings().removeClass("aLi");	
+	    		});
+	    		$(".aLi").click();
+    		}
+    	}
+    });
+    TouchSlide({ 
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"left", 
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页c" 
+    });
+	
+</script>
+</body>
+</html>
