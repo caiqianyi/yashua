@@ -83,14 +83,22 @@
 	    		 $(".photo img").bind("error",function(e){
 	    			$(".photo img").attr("src","/statics/images/touxiang.png");
 	    		}); 
-	    		$("#nickname").text(user.nickname);
+	    		 if(user.nickname!=null && user.nickname!=''){
+	    			 $("#nickname").text(user.nickname);
+	    		 }	    		
 	    		if(user.sex==1)
 	    			$("#sex").text('男');
 	    		else if(user.sex==2)
 	    			$("#sex").text('女');
-	    		$("#birthday").text(user.birthday);
-	    		$("#mobile").text(user.mobile);
-	    		$("#realname").text(user.realname);
+	    		if(user.birthday!=null && user.birthday!=''){
+	    			$("#birthday").text(user.birthday);
+	    		}	    		
+	    		if(user.mobile!=null && user.mobile!=''){
+	    			$("#mobile").text(user.mobile);
+	    		}	    		
+	    		if(user.realname!=null && user.realname!=''){
+	    			$("#realname").text(user.realname);
+	    		}	    		
 	    		if(user.areaCode!=null && user.areaCode!='')
 	    			pickerSetup.setSelected(user.areaCode.split(","));
 			}else{
