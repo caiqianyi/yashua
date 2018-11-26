@@ -324,34 +324,29 @@ h1{display:none;}
 .duzhe .renwu em{width: .34rem;height: .3rem;background:url(../new_images/yaya-4.png) no-repeat center;-webkit-background-size: contain;background-size: contain;position: absolute;bottom:.1rem;right:0;}
 
 /*------------------------------牙刷设置------------------------------*/
-.shezhi-qiu{width: 100%;height: 2.6rem;background:url(../new_images/shezhi-line.png) repeat-x top;-webkit-background-size:1px 1.36rem;background-size:1px 1.36rem;position: relative;}
-#dowebok{width: 2.5rem;height: 2.5rem;margin-left:2.5rem;border-radius:50%;border:.08rem solid #b4f6c8;background:#f5f5f5;}
-.shezhi-qiu p{position:absolute;left:3.1rem;bottom:.6rem;}
-.shezhi-qiu span{position:absolute;left:3.5rem;top:.3rem;}
-.shezhi-nini{text-align: center;line-height:1rem;background:url(../new_images/dot-3.png) repeat-x bottom;}
-.shezhi-nini em{display: inline-block;width: .4rem;height:.37rem;margin-left:.1rem;background:url(../new_images/nini.png) no-repeat center;-webkit-background-size: contain;background-size: contain;}
-.shezhi-moshi{padding:.16rem .4rem .18rem;line-height:.5rem;background:url(../new_images/dot-3.png) repeat-x bottom;}
-.shezhi-moshi p{font-size:.28rem;}
-.shezhi-xx{margin-bottom: .5rem;}
-.shezhi-xx li{height: .9rem;line-height: .9rem;padding-left:.84rem;border-bottom:1px solid #b1b1b1;}
-.shezhi-xx li.on{color:#14dbfa;background-image: url(../new_images/shezhi.png),url(../new_images/shezhi-gou.png);-webkit-background-size:.26rem .24rem, .33rem .23rem;background-size:.26rem .24rem, .33rem .23rem;background-repeat: no-repeat, no-repeat;background-position:.47rem center, 6.9rem center;}
-.shezhi-tou{height: .9rem;line-height: .9rem;padding-left:.5rem;margin-bottom:.5rem;border-bottom:1px solid #b1b1b1;border-top:1px solid #b1b1b1;}
-.shezhi-tou p{float: left;width: 4.5rem;height: .16rem;margin:.36rem 0 0 .2rem;border-radius:.15rem;overflow: hidden;background:#d9d9d9;position: relative;}
-.shezhi-tou p em{width:2rem;height: .16rem;background:#14dbfa;position:absolute;left: 0;top: 0;}
-/*改版样式*/
-.shezhi-plv, .shezhi-time{padding:0 .5rem .4rem;margin-bottom:.15rem;border-bottom:1px solid #b1b1b1;}
-.shezhi-plv h3, .shezhi-time h3{padding:.2rem 0;}
-.shezhi-plv li{float: left;width: 33.33%;text-align: center;margin-bottom:.15rem;font-size:.26rem;}
-.shezhi-plv p{width: 80%;margin:0 auto;height: .05rem;background:#d9d9d9;position: relative;}
-.shezhi-plv p img{width: .1rem;height:.3rem;position: absolute;top:-.13rem;left:.4rem;}
-.shezhi-time{border-top:1px solid #b1b1b1;overflow: hidden;}
-.shezhi-time ul{width: 100%;height: .05rem;margin-top:.7rem;background-image:linear-gradient(to right, #d4ecf8, #14dbfa);position: relative; }
-.shezhi-time li{float: left;width: 20%;text-align: right;font-size:.24rem;position: absolute;left: 0;top: -.6rem;}
-.shezhi-time li:nth-child(2){left: 20%;}
-.shezhi-time li:nth-child(3){left: 40%;}
-.shezhi-time li:nth-child(4){left: 60%;}
-.shezhi-time li:nth-child(5){left: 80%;}
-.shezhi-time ul img{width: .1rem;height: .3rem;position: absolute;left:15%;top: -.13rem;}
+.nichen{background: #2a292e;line-height:1.3rem;margin-bottom:.2rem;}
+.nichen em{width:.5rem;height: .4rem;background:url(../new_images/bianji.png) no-repeat center;-webkit-background-size: contain;background-size: contain;display: inline-block;margin-left:.15rem;}
+.shezhi-moshi{background: #646d67;padding:.26rem 0;}
+.shezhi-moshi p{font-size:.32rem;margin-bottom:.14rem;}
+.qj-moshi,.settime{background:url(../new_images/bg-shezhi.jpg) no-repeat center;-webkit-background-size: cover;background-size: cover;padding:.55rem .3rem;overflow: hidden;margin-bottom:.02rem;}
+.qj-moshi p,.settime p{text-align: center;font-size:.3rem;margin-bottom:.8rem;}
+.qj-moshi ul{width: 100%;overflow: hidden;background:url(../new_images/shezhi-moshi.png) no-repeat center;-webkit-background-size: contain;background-size: contain;}
+.qj-moshi ul li{padding-top:1rem;float: left;width: 33.33%;background:url(../new_images/shezhi-off.png) no-repeat center .32rem; -webkit-background-size:.64rem .64rem;background-size:.64rem .64rem;}
+.qj-moshi ul li:nth-child(1){text-align: left;background-position:left .32rem;}
+.qj-moshi ul li:nth-child(2){text-align:center;}
+.qj-moshi ul li:nth-child(3){text-align:right;background-position:right .32rem;}
+.qj-moshi ul li.on{background-image:url(../new_images/shezhi-moshiOn.png);}
+.settime{padding-bottom:1rem;}
+.settime ul{position: relative;margin-top:1.5rem;width: 100%;height: .08rem;background:url(../new_images/settime-line1.png) repeat-x;}
+.settime em{height: .08rem;background:url(../new_images/settime-line2.png) repeat-x;position:absolute;left: 0;top: 0;}
+.settime ul li{width: .27rem;height:.7rem;background:url(../new_images/settimeoff.png) no-repeat bottom center;-webkit-background-size:.27rem .27rem;background-size:.27rem .27rem;position: absolute;top:-.53rem;z-index: 1;}
+.settime ul li i{position: relative;top:-.15rem;left:-.15rem;width: .55rem;display: block;}
+.settime ul li:nth-child(1){background-position:bottom left;}
+.settime ul li:nth-child(2){left:25%;}
+.settime ul li:nth-child(3){left:50%;}
+.settime ul li:nth-child(4){left:75%;}
+.settime ul li:nth-child(5){right:0;background-position:bottom right;}
+.settime ul li.on{background-image: url(../new_images/settimeon.png);}
 
 /*------------------------------刷牙情况------------------------------*/
 .shuaya .day{height:.85rem;line-height:.85rem;background:#f6f9fe;padding:0 .26rem;}
@@ -421,25 +416,37 @@ background-size:.19rem .37rem;}
 
 
 
-
-
+/*------------------------------历史------------------------------*/
+.lishi{}
+.lishi h3{text-align: center;font-size:.4rem;line-height:1.27rem;}
+.lishi .jilu{padding:.34rem .14rem;overflow: hidden;margin-bottom:.05rem;}
+.lishi .jilu .date{line-height:1.52rem;border-right:1px solid #fff;padding-right:.12rem;}
+.lishi .jilu .time{margin-left:.2rem;}
+.lishi .jilu .time .timeAm{margin:.25rem 0;}
+.lishi .jilu .time .timeAm span{width:5rem;display: inline-block;height: .15rem;background: #869497;position: relative;}
+.lishi .jilu .time .timeAm span em{height:.15rem;background: #63ed98;position: absolute;left: 0;top: 0;}
+.lishi .jilu .time .timeAm span em i{position: absolute;right: 0;top:-.36rem;font-size:.22rem;color:#63ed98;border-right:1px solid #63ed98;padding:0 .1rem .1rem;}
+.lishi .jilu .time .timePm span em{background: #fd5a84;}
+.lishi .jilu .time .timePm span em i{color: #fd5a84;border-color: #fd5a84;}
+.lishi a.more{display: block;line-height:1.2rem;}
 
 
 
 /*------------------------------历史记录------------------------------*/
-.zoushi-top{width: 6rem;height: .6rem;line-height:.6rem;margin:.15rem auto .3rem;border:1px solid #ddd;border-radius:.35rem;}
-.zoushi-top li{float: left;width: 33.33%;text-align: center;}
-.zoushi-top li.on{color:#fff;background:#333;border-radius:.35rem;}
-.zoushi-txt{width: 100%;overflow: hidden;position: relative;}
-.zoushi-txt .line{width: 88%;height: .05rem;background:url(../new_images/timg.png) repeat-x;-webkit-background-size:.15rem .03rem;background-size:.15rem .03rem;position: absolute;top:.12rem;left: 6%;}
-.zoushi-txt li{float: left;width: 20%;text-align: center;color:#999;font-size:.24rem;padding-top:.28rem;}
-.zoushi-txt li.on{font-size:.28rem;color:#333;background:url(../new_images/red.png) no-repeat top center;-webkit-background-size:.27rem .2rem;background-size:.27rem .2rem;}
-.zoushi-txt .zoushi-pic img{width:7rem;height: 4rem;display: block;margin:.5rem auto;}
-.zoushi-txt .leiji{width: 5rem;margin:0 auto;overflow: hidden;}
-.zoushi-txt .leiji img{float: left;width: 1.35rem;height: 1.43rem;margin-right:.15rem;}
-.zoushi-txt .leiji p{float: left;margin-top:.4rem;font-size:.26rem;}
-.zoushi-txt .leiji p i{display: block;}
-.zoushi-txt .leiji p i em{font-size:.3rem;padding:0 .1rem 0 0;color:red;}
+.shuju .hd{background:#2a292e;line-height:1.2rem;margin-bottom:.35rem;overflow: hidden;}
+.shuju .hd li{float: left;width: 32.33%;font-size:.44rem;border-bottom:.04rem solid #4E4D52;margin:0 0.5%;}
+.shuju .hd li.on{color:#63ED98;border-color: #63ED98;}
+.chart-container{padding:0 .25rem;position: relative;}
+.chart-container .mark{position: absolute;top:1rem;}
+.chart-container .time{position: absolute;bottom:.3rem;right:.3rem;}
+.jilu-fen{overflow: hidden;padding:0 .55rem .55rem;}
+.jilu-fen .fenxi{color: #199548;margin-bottom:.24rem;}
+.jilu-fen .fenxi p{font-size:.36rem;color: #63ed98;margin:.12rem 0;}
+.jilu-fen .zhi .score{float: left;width: 50%;}
+.jilu-fen .zhi .score div{width: 2.2rem;height: 2.2rem;border:1px solid #58cc86;border-radius:50%;margin:0 auto;padding:.08rem;}
+.jilu-fen .zhi .score div p{width:100%;height:100%;background: #373c3f;border:1px solid #58cc86;border-radius:50%;color: #58cc86;padding:.2rem .4rem;}
+.jilu-fen .zhi .score div p i{font-size:.7rem;}
+.jilu-fen .zhi .score div p span{display:block;font-size:.24rem;color: #fff;border-top:1px solid #58cc86;padding-top:.12rem;}
 
 /*------------------------------金币兑换------------------------------*/
 .jinbi{height:1.2rem;line-height:1.2rem;padding:0 .25rem;position: relative;}
