@@ -1,83 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
+<#include "/new_header.html">
 <title>主页</title>
+<script type="text/javascript" src="/statics/new_js/circles.js"></script>
 </head>
 <body>
-<div class="Top font-30">首页</div>
-<div class="sy-top">
-	<div class="sy-t1">
-    	<p class="fl">牙刷电量<span><i>86</i>%</span></p>
-        <p class="fr">刷头剩余寿命<span><i>28</i>天</span></p>
+<div class="Top">首页</div>
+<!---->
+<div class="sy-top bg-new">
+	<div class="set center fl font-26">
+    	<a href="yashuashezhi.html"><img src="/statics/new_images/sy-set.png" alt=""/></a>
+        <p>设置我的牙刷</p>
     </div>
-    <div class="sy-t2">
-    	<a href="yashuashezhi - 改版.html"><img src="/statics/new_images/sy-ys.png" alt=""/>设置我的牙刷</a>
-    </div>
-    <div class="sy-t3">
-    	<p class="fl">获得积分<span><i>2400</i></span></p>
-        <p class="fr">累计刷牙<span><i>203</i>次</span></p>
-    </div>
-</div>
-
-<div class="sy-kouqi bg-white">
-	<h3>口气检测</h3>
-    <div class="kouqi-txt">
-    	<p><span><i>当前口气：<b>8分</b></i></span></p>
-        <em>开始检测</em>
-    </div>
-    <div class="moshi font-24">当前模式：<em>漱口水</em></div>    
-</div>
-
-<div class="sy-mid bg-white">
-	<h3>健康计划<a href="tianjiajihua.html">添加</a></h3>
-    <div class="line">
-    	<div class="plan on">
-        	<span>07:00</span>
-            <p>起床刷牙<i>（已完成）</i></p>
+    <div class="con fl font-24">
+    	<div class="conup">
+        	<span>获得积分</span>
+           <em><i>2400</i>分</em>
         </div>
-        <div class="plan plan1">
-        	<span>12:30</span>
-            <p>别忘了漱口</p>
-        </div>
-        <div class="plan plan2">
-        	<span>23:30</span>
-            <p>睡前记得刷牙</p>
+        <div class="conup condow">
+        	<span>获得积分</span>
+           <em><i>20</i>次</em>
         </div>
     </div>
 </div>
+<!--剩余寿命-->
+<div class="sy-syu">
+	<div class="inBox bg-new fl">
+    	<h3>牙刷电量</h3>
+       <p><i>80</i>%</p>
+    </div>
+    <div class="inBox bg-new fr">
+    	<h3>刷头剩余寿命</h3>
+       <p><i>27</i>次</p>
+       <span>更换</span>
+    </div>
+</div>
 
-<div class="sy-fot bg-white font-26">
-	<h3>牙科小知识</h3>
-    <a href="zixunliebiao.html">
-        <dl>
-            <p>8个刷牙错误常识</p>
-            <dt>错误1 冰冷刷牙</dt>
-            <dd>冷水会导致牙本质敏感的人牙齿酸痛，而且不利于牙膏内的有效物质发挥活性。牙膏中的主要成分是摩擦剂和氟化物，实验室研究发现这些有效成分发...</dd>
-        </dl> 
-    </a>   
+<!--检测-->
+<div class="jiance">
+    <article class="htmleaf-container">	
+        <div id="canvas">
+            <div class="circle" id="circles-1"></div>
+            <div class="circle" id="circles-2"></div>
+        </div>
+        <img src="/statics/new_images/jiance.png" alt=""/>
+	</article> 
+    <input type="button" value="开始检测" />
 </div>
 
 <!--公用底部-->
-<#assign footerflag=0/>
-<#include "/footer.html">
+<div class="bot-nav font-26">
+	<ul>
+		<li class="on"><a href="index.html">首页</a></li>
+        <li><a href="history.html">历史</a></li>
+        <li><a href="found.html">发现</a></li>
+        <li><a href="account.html">我的</a></li>
+	</ul>
+</div>
 
-<!--口气模式弹窗-->
-<div class="pop-kefu font-28" style="text-align:center;">
+<!--检测弹窗-->
+<div class="pop-kefu font-36" style="text-align:center;">
 	<div></div>
-	<ul style="width:3.8rem;height:4rem;padding-top:.8rem; overflow:hidden;">
-    	<li>漱口水</li>
-        <li>口香糖</li>
-        <li>刷牙</li>
-        <li class="last">水果</li>
-        <em>请选择改善口气的模式</em>
+	<ul style="overflow:hidden;">
+    	<li class="frist">刷头更换</li>
+        <li>购买</li>
+        <li class="last on">重置</li>
     </ul>
 </div>
+
+
 
 </body>
 </html>
 <script>
-	$('.moshi em').click(function(){
+	$('.jiance input').click(function(){
 		$('.pop-kefu div').show();
 		$('.pop-kefu ul').show();
 	});
@@ -85,4 +82,43 @@
 		$('.pop-kefu div').hide();
 		$('.pop-kefu ul').hide();
 	});
+
+ 
+	//
+	var colors = [
+			['#FFF', '#fb2653'], ['#FFF', '#11ff6c']
+		],
+		circles = [];
+	
+	for (var i = 1; i <= 2; i++) {
+		var child = document.getElementById('circles-' + i),
+		
+			percentage = 8,//进度
+			
+			circle = Circles.create({
+				id:         child.id,
+				value:      percentage,
+				radius:     getWidth(i),
+				width:      2,
+				colors:     colors[i - 1]
+			});
+	
+		circles.push(circle);
+	}
+	window.onresize = function(e) {
+		for (var i = 0; i < circles.length; i++) {
+			circles[i].updateRadius(getWidth());
+		}
+	};
+	//进度圆的大小
+	function getWidth(i) {
+		
+		if(i==1){
+			return window.innerWidth / 2.8;
+			}
+			return window.innerWidth / 3;
+		}
+
+
 </script>
+

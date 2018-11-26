@@ -35,6 +35,10 @@ public class UserDeviceEntity implements Serializable {
 	 */
 	private String identity;
 	/**
+	 * 物理地址
+	 */
+	private String mac;
+	/**
 	 * 图片
 	 */
 	private String icon;
@@ -114,5 +118,11 @@ public class UserDeviceEntity implements Serializable {
 	 */
 	public String getName() {
 		return name;
+	}
+	public String getMac() {
+		return mac;
+	}
+	public void setMac(String mac) {
+		this.mac = mac;
 	}
 }

@@ -1,103 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/header.html">
-<title>刷牙详情</title>
+<#include "/new_header.html">
+<title>历史</title>
 </head>
 <body>
-<div class="Top">刷牙详情</div>
-
-<div id="shuaya" class="shuaya">
-	<p class="day font-30">今日刷牙情况：</p>
-    <div class="bd">
-        <ul>
-            <li>
-            	<div class="txt">
-                    <span>7:00 AM</span>
-                    <p>口气： 8 分</p>
-                </div>
-            </li>
-            <li>
-            	<div class="txt">
-                    <span>13:00 PM</span>
-                    <p>口气： 8 分</p>
-                </div>
-            </li>
-            <li>
-            	<div class="txt">
-                    <span>9:00 PM</span>
-                    <p>口气： 8 分</p>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="hd"><ul></ul></div>
-</div>
-
-<!--刷牙记录-->
-<div class="shuayajilu">
-	<p class="tit font-30">近期口气记录：</p>
-    <ul>
-    	<li>
-        	<div class="date fl on"><span><em>5</em>/18</span><p><i>07:28</i><i>21:00</i></p></div>
-            <div class="tiao fl font-22">
-            	<p><em style="width:4rem;">8分</em></p>
-                <p><em style="width:3.5rem;">7分</em></p>
-            </div>
-        </li>
-        <li>
-        	<div class="date fl"><span><em>5</em>/17</span><p><i>07:35</i><i>20:00</i></p></div>
-            <div class="tiao fl font-22">
-            	<p><em style="width:4.5rem;">9分</em></p>
-                <p><em style="width:3rem;">6分</em></p>
-            </div>
-        </li>
-        <li>
-        	<div class="date fl"><span><em>5</em>/16</span><p><i>08:28</i><i>18:30</i></p></div>
-            <div class="tiao fl font-22">
-            	<p><em style="width:5rem;">10分</em></p>
-                <p><em style="width:4rem;">8分</em></p>
-            </div>
-        </li>
-        <li>
-        	<div class="date fl"><span><em>5</em>/15</span><p><i>08:00</i><i>19:10</i></p></div>
-            <div class="tiao fl font-22">
-            	<p><em style="width:4rem;">8分</em></p>
-                <p><em style="width:4.5rem;">9分</em></p>
-            </div>
-        </li>
-        <li>
-        	<div class="date fl"><span><em>5</em>/14</span><p><i>07:10</i><i>20:05</i></p></div>
-            <div class="tiao fl font-22">
-            	<p><em style="width:3.5rem;">7分</em></p>
-                <p><em style="width:4rem;">8分</em></p>
-            </div>
-        </li>
-        <li>
-        	<div class="date fl"><span><em>5</em>/13</span><p><i>07:00</i><i>20:15</i></p></div>
-            <div class="tiao fl font-22">
-            	<p><em style="width:4.5rem;">9分</em></p>
-                <p><em style="width:5rem;">10分</em></p>
-            </div>
-        </li>
-    </ul>
-    <a href="lishijilu.html">查看更多>></a>
+<div class="Top">历史</div>
+<div class="lishi">
+	<h3>近期口气记录</h3>
+	<div class="jilu bg-new">
+		<div class="date font-36 fl">10/26</div>
+		<div class="time font-28 fl">
+			<div class="timeAm">
+				<label for="">07:30</label>
+				<span><em style="width:60%"><i>6分</i></em></span>
+			</div>
+			<div class="timeAm timePm">
+				<label for="">07:30</label>
+				<span><em style="width: 60%"><i>6分</i></em></span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="jilu bg-new">
+		<div class="date font-36 fl">10/27</div>
+		<div class="time font-28 fl">
+			<div class="timeAm">
+				<label for="">07:30</label>
+				<span><em style="width:50%"><i>5分</i></em></span>
+			</div>
+			<div class="timeAm timePm">
+				<label for="">07:30</label>
+				<span><em style="width: 60%"><i>6分</i></em></span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="jilu bg-new">
+		<div class="date font-36 fl">10/28</div>
+		<div class="time font-28 fl">
+			<div class="timeAm">
+				<label for="">07:30</label>
+				<span><em style="width:50%"><i>5分</i></em></span>
+			</div>
+			<div class="timeAm timePm">
+				<label for="">07:30</label>
+				<span><em style="width: 60%"><i>6分</i></em></span>
+			</div>
+		</div>
+	</div>
+	
+	<a href="lishijilu.html" class="more bg-new font-36 center">查看更多...</a>
 </div>
 
 <!--公用底部-->
-<#assign footerflag=1/>
-<#include "/footer.html">
+<div class="bot-nav font-26">
+	<ul>
+		<li><a href="index.html">首页</a></li>
+        <li class="on"><a href="history.html">历史</a></li>
+        <li><a href="found.html">发现</a></li>
+        <li><a href="account.html">我的</a></li>
+	</ul>
+</div>
 
 
 </body>
 </html>
-<script type="text/javascript">
-    TouchSlide({ 
-        slideCell:"#shuaya",
-        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
-        mainCell:".bd ul", 
-        effect:"left", 
-        autoPlay:true,//自动播放
-        autoPage:true, //自动分页c" 
-    });
-</script>
+
