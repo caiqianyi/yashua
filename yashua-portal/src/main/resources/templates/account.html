@@ -149,7 +149,8 @@ $(function(){
 	$.ajax({
 		type: "GET",
 	    url: "/yashua/device/mylist",
-	    success: function(r){
+	    data:{},
+	    success: function(r){console.info(r)
 	    	loadc++;
 	    	if(loadc == 2){
 		    	l1.hide();
@@ -158,8 +159,12 @@ $(function(){
 	    		var html = "";
 	    		var datas = r.data;
 	    		if(datas.list.length>0){
-	    			var device = datas.list[0];
-		    		$(".bindYashua").text("已绑定："+device.identity);
+	    			for(var i=0;i<datas.list.length;i++){
+	    				if(datas.list[i].defaultDevice==1){
+		    				$(".bindYashua").text("已绑定："+datas.list[i].identity);
+		    				break;
+	    				}
+	    			}
 	    		}else{
 		    		$(".bindYashua").text("");
 	    		}

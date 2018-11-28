@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.yashua.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,5 +126,16 @@ public class UserDeviceController {
     	userDeviceService.unbind(account, identity);
     	return ResponseMessage.ok();
     }
+
+    /**
+     * 设备链接
+     */
+    @RequestMapping("/yashua/device/connect")
+    @RedisLock(value="yashua:userdevice:connect:lock:#arg0")
+	ResponseMessage connect(@RequestParam("account") String account, @RequestParam("identity") String identity){
+    	userDeviceService.connect(account,identity);
+    	return ResponseMessage.ok();
+    }
+    
 
 }

@@ -59,7 +59,7 @@ public class UserDeviceController {
     @RequestMapping("/yashua/device/bind")
     ResponseMessage bind(@RequestParam("identity") String identity){
     	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
-        return userDeviceService.bind(ue.getAccount(), identity, 1);
+        return userDeviceService.bind(ue.getAccount(), identity, 5);//最多绑定5个设备
     }
 
     /**
@@ -70,5 +70,14 @@ public class UserDeviceController {
     	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
         return userDeviceService.unbind(ue.getAccount(), identity);
     }
-
+   
+    /**
+     * 链接设备
+     */
+   
+    @RequestMapping("/yashua/device/connect")
+    ResponseMessage connect(@RequestParam("identity") String identity){
+    	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+        return userDeviceService.connect(ue.getAccount(), identity);
+    }
 }

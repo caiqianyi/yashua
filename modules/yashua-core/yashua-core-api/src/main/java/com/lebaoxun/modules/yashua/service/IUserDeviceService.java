@@ -79,6 +79,13 @@ public interface IUserDeviceService {
     @RequestMapping("/yashua/userdevice/unbind")
     ResponseMessage unbind(@RequestParam("account")String account,
     		@RequestParam("identity") String identity);
+   
+    /**
+     * 设备链接
+     */
+
+    @RequestMapping("/yashua/device/connect")
+	ResponseMessage connect(@RequestParam("account") String account, @RequestParam("identity") String identity);
     
 }
 

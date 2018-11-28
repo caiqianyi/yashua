@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.yashua.entity.UserDeviceEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,5 +21,9 @@ public interface UserDeviceService extends IService<UserDeviceEntity> {
     void bind(String account,String identity,Integer maxBindNum);
     
     void unbind(String account,String identity);
+
+    
+	void connect(String account, String identity);
+
 }
 

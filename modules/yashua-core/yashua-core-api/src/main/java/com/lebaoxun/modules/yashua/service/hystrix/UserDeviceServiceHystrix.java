@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lebaoxun.modules.yashua.entity.UserDeviceEntity;
 import com.lebaoxun.modules.yashua.service.IUserDeviceService;
@@ -61,6 +62,10 @@ public class UserDeviceServiceHystrix implements IUserDeviceService {
 	public ResponseMessage unbind(String account, String identity) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
-    
+
+	@Override
+	public ResponseMessage connect(String account, String identity) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
 }
 

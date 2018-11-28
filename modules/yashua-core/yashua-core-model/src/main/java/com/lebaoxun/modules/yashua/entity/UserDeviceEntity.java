@@ -46,7 +46,26 @@ public class UserDeviceEntity implements Serializable {
 	 * 名称
 	 */
 	private String name;
+	
+	/**
+	 * 设备链接（0  非链接状态   1    链接）
+	 */
+	private Integer defaultDevice;
 
+	/**
+	 * 获取
+	 */
+	public Integer getDefaultDevice() {
+		return defaultDevice;
+	}
+	
+	/**
+	 * 设置
+	 */
+	public void setDefaultDevice(Integer defaultDevice) {
+		this.defaultDevice = defaultDevice;
+	}
+	
 	/**
 	 * 设置：
 	 */

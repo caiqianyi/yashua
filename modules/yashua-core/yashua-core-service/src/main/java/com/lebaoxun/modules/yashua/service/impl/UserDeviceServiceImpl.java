@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.yashua.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import com.lebaoxun.commons.utils.StringUtils;
@@ -27,8 +28,7 @@ public class UserDeviceServiceImpl extends ServiceImpl<UserDeviceDao, UserDevice
     	String account = (String) params.get("account");
         Page<UserDeviceEntity> page = this.selectPage(
                 new Query<UserDeviceEntity>(params).getPage(),
-                new EntityWrapper<UserDeviceEntity>().eq(StringUtils.isNotBlank(account), "account", account)
-        );
+                new EntityWrapper<UserDeviceEntity>().eq(StringUtils.isNotBlank(account), "account", account));
 
         return new PageUtils(page);
     }
@@ -64,6 +64,22 @@ public class UserDeviceServiceImpl extends ServiceImpl<UserDeviceDao, UserDevice
 			throw new I18nMessageException("-1","设备ID‘"+identity+"’不存在！");
 		}
 		baseMapper.unbind(account, identity);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void connect(String account, String identity) {
+		List<UserDeviceEntity> list  = this.baseMapper.selectList(new EntityWrapper<UserDeviceEntity>().eq("account", account).eq("default_device", 1));
+		if(list!=null && list.size()>0){
+			for(UserDeviceEntity userDeviceEntity :list){
+				userDeviceEntity.setDefaultDevice(0);
+				baseMapper.update(userDeviceEntity, new EntityWrapper<UserDeviceEntity>().eq("identity", userDeviceEntity.getIdentity()));
+			}
+		}
+		UserDeviceEntity userDevice = new UserDeviceEntity();
+		userDevice.setIdentity(identity);
+		userDevice.setDefaultDevice(1);
+		baseMapper.update(userDevice, new EntityWrapper<UserDeviceEntity>().eq("identity", identity));
 	}
 
 }
