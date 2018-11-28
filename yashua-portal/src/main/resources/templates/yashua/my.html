@@ -90,11 +90,11 @@ $(function(){
     				html += '		<p class="who">'+device.name+'</p>'
     				html += '		<p class="code">'+device.identity+'</p>';
     				if(device.defaultDevice==1)
-    					html += '		<p class="join on" onclick="connect(this)">连接中</p>';
+    					html += '		<p class="join on" onclick="connect(this)">设为自动连接</p>';
     				if(device.defaultDevice==0)
     					html += '		<p class="join" onclick="connect(this)">设为自动连接</p>';
     				html += '	</div>';
-   					html += '	<em class="unbindBtn" data="'+device.identity+'">解绑</em>';
+   					html += '	<em class="unbindBtn" data="'+device.identity+'">删除</em>';
  					html += '</div>';
 	    		}
 	    		$(".items").html(html);
@@ -102,11 +102,11 @@ $(function(){
 	    		$(".items .unbindBtn").unbind("click");
 	    		$(".items .unbindBtn").click(function(){
 	    			if($(this).prev().children().last().hasClass("on")){
-	    				alert("设备使用中，不可解绑");
+	    				alert("自动连接设备不允许删除！");
 	    				return;
 	    			}
 	    			var identity = $(this).attr("data");
-	    			var l2 = $.loading({content:'解绑中...'}).show();
+	    			var l2 = $.loading({content:'删除中...'}).show();
 	    			$.ajax({
 	    				type: "POST",
 	    			    url: "/yashua/device/unbind",
@@ -114,7 +114,7 @@ $(function(){
 	    			    success: function(r1){
 	    			    	l2.hide();
 	    			    	if(r1.errcode == 0){
-	    			    		alert("解绑成功");
+	    			    		alert("删除成功");
 	    			    		window.location.reload();
 	    			    		return;
 	    			    	}
@@ -160,18 +160,15 @@ $(function(){
 //设备链接
    function connect(obj){
 	var identity = $(obj).prev().text();
-	var l3 = $.loading({content:'设备链接中...'}).show();
 	$.ajax({
 		type: "POST",
 	    url: "/yashua/device/connect",
 	    data: {identity:identity},
 	    success: function(r){
-	    	l3.hide();
 	    	$(".join").removeClass("on");
 	    	$(".join").text("设为自动连接");
 	    	if(r.errcode == 0){
-	    		alert("设备链接成功");
-	    		$(obj).text("连接中");
+//	    		$(obj).text("连接中");
 	    		$(obj).addClass("on");
 	    		return;
 	    	}
