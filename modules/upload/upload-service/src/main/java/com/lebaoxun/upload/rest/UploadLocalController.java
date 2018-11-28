@@ -41,11 +41,10 @@ public class UploadLocalController {
 		String file = null;
 		try{
 			file = localUploadService.uploadImg(namespace, imgStr, fileType);
-			
-			byte[] bdtmp = localUploadService.readFileByBytes(file);
-			String imgStrForBaidu = Base64Util.encode(bdtmp);
 			boolean audit = true;
 			if(check != null && check){
+				byte[] bdtmp = localUploadService.readFileByBytes(file);
+				String imgStrForBaidu = Base64Util.encode(bdtmp);
 				audit = baiduAuditImgService.userDefinedImage(imgStrForBaidu);
 			}
 			logger.debug("uploadImg|audit={}",audit);

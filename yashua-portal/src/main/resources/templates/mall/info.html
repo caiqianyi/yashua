@@ -47,7 +47,12 @@
 <div class="thing-cho font-32" id="specs"></div>
 <div class="spxq-pic font-30 bg-white">
 	<h3><span>详情</span></h3>
-	<img src="/statics/new_images/spxq1.jpg" alt=""/>
+	<#if product.introduce??>
+		<#list product.introduce?split(",") as img>
+        <img src="${img}" alt=""/>
+     	</#list>
+    </#if>
+	<!-- <img src="/statics/new_images/spxq1.jpg" alt=""/> -->
 </div>
 
 <!--宝贝评价-->
