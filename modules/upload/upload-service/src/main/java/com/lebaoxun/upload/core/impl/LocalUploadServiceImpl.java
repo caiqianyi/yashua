@@ -35,10 +35,17 @@ public class LocalUploadServiceImpl implements IUploadService{
 		try{
 			String uri = filePath;
 			if(filePath.startsWith("http://")){
-				uri = filePath.substring(filePath.indexOf("/","http://".length()),filePath.length());
+				uri = filePath.substring(filePath.indexOf("/","http://".length()));
+				int ix = staticsHost.indexOf("/","http://".length());
+				if(ix > -1){
+					String s = staticsHost.substring(ix);
+					uri = uri.substring(s.length());
+				}
 			}
 			logger.debug("readFileByBytes|uri={}",uri);
-			File file = new File(baseDir+uri);
+			String path = baseDir+uri;
+			logger.info("staticsHost={},baseDir={},path={}",staticsHost,baseDir,path);
+			File file = new File(path);
 			if (!file.exists()) {
 				throw new FileNotFoundException(filePath);
 			} else {
@@ -119,4 +126,20 @@ public class LocalUploadServiceImpl implements IUploadService{
 		}
 		return false;
 	}
+	
+//	public static void main(String[] args) {
+//		String filePath = "http://moya.phenointec.com/upload/user/587095310/1543283262348.png",
+//				staticsHost = "http://moya.phenointec.com/upload";
+//		String uri = filePath;
+//		if(filePath.startsWith("http://")){
+//			uri = filePath.substring(filePath.indexOf("/","http://".length()));
+//			int ix = staticsHost.indexOf("/","http://".length());
+//			if(ix > -1){
+//				String s = staticsHost.substring(ix);
+//				uri = uri.substring(s.length());
+//			}
+//		}
+//		System.out.println(uri);
+//		
+//	}
 }

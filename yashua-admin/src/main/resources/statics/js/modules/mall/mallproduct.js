@@ -125,6 +125,13 @@ var category_setting = {
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
+		//文件上传的参数
+		uploadAction: baseURL + "/upload/imageUp?token="+window.storage.get('login.access_token',false),
+        dialogImageUrl: '',
+        dialogVisible: false,
+        //图片列表（用于在上传组件中回显图片）
+        fileList: [],
+
 		showList: true,
 		attrShowList: true,//编辑属性
 		title: null,
@@ -166,6 +173,65 @@ var vm = new Vue({
 		mallCategoryProducts: []
 	},
 	methods: {
+		//文件上传成功的钩子函数
+        handleSuccess: function(res, file) {
+        	if(res.errcode == 0){
+        		this.$message({
+        			type: 'info',
+        			message: '图片上传成功',
+        			duration: 6000
+        		});
+        		vm.fileList.push({name: res.data.uri,url: res.data.uri});
+//        		console.info(res,file);
+//        		if (file.response.success) {
+//        			this.editor.picture = file.response.message; //将返回的文件储存路径赋值picture字段
+//        		}
+        		return;
+        	}
+        	this.$message({
+                type: 'info',
+                message: res.errmsg,
+                duration: 6000
+            });
+        },
+        //删除文件之前的钩子函数
+        handleRemove: function(file, fileList) {
+            this.$message({
+                type: 'info',
+                message: '已删除原有图片',
+                duration: 6000
+            });
+            vm.fileList = fileList;
+            console.info(file,fileList);
+        },
+        //点击列表中已上传的文件事的钩子函数
+        handlePreview: function(file) {
+        },
+        //上传的文件个数超出设定时触发的函数
+        onExceed: function(files, fileList) {
+            this.$message({
+                type: 'info',
+                message: '最多只能上传一个图片',
+                duration: 6000
+            });
+        },
+        //文件上传前的前的钩子函数
+        //参数是上传的文件，若返回false，或返回Primary且被reject，则停止上传
+        beforeUpload: function(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isGIF = file.type === 'image/gif';
+            const isPNG = file.type === 'image/png';
+            const isBMP = file.type === 'image/bmp';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isJPG && !isGIF && !isPNG && !isBMP) {
+                this.$message.error('上传图片必须是JPG/GIF/PNG/BMP 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传图片大小不能超过 2MB!');
+            }
+            return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
+        },
 		query: function () {
 			vm.reload();
 		},
@@ -213,6 +279,11 @@ var vm = new Vue({
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.mallProduct.id == null ? "mall/mallproduct/save" : "mall/mallproduct/update";
+			var introduce = [];
+			for(var i=0;i<vm.fileList.length;i++){
+				introduce[i] = vm.fileList[i].url;
+			}
+			vm.mallProduct.introduce = introduce.toString();
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
@@ -258,6 +329,17 @@ var vm = new Vue({
             		return;
             	}
                 vm.mallProduct = r.data.mallProduct;
+                
+                vm.fileList = [];
+                if(vm.mallProduct.introduce){
+                	var introduce = vm.mallProduct.introduce.split(",");
+                	for(var i=0;i<introduce.length;i++){
+                		vm.fileList[i] = {
+                				name: introduce[i],
+                				url: introduce[i] 
+                		};
+                	}
+                }
             });
 		},
 		getAttrInfo: function(id){
