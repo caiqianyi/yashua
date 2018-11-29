@@ -228,17 +228,19 @@ CREATE TABLE `mall_product_comment_image` (
 
 
 drop procedure IF EXISTS account_balance_deduct_proce;
-create procedure account_balance_deduct_proce(IN UID INT,IN V INT,IN LOGTYPE VARCHAR(100),IN DESCR VARCHAR(100))
+create procedure account_balance_deduct_proce(IN UID INT,IN V INT,IN LOGTYPE VARCHAR(100),IN DESCR VARCHAR(100),IN ADJUNCTINFO VARCHAR(100))
 begin
-	 set @UID=UID;
+   set @UID=UID;
    set @V=V;
    set @LOGTYPE=LOGTYPE;
    set @DESCR=DESCR;
+   set @ADJUNCTINF=ADJUNCTINFO;
    select user_id,account,balance into @userId,@account,@balance from user where user_id = @UID;
    select @userId,@account,@balance;
-	 INSERT INTO `user_log` (`user_id`, `account`, `create_time`, `log_type`, `trade_money`, `money`, `descr`, `adjunct_info`) VALUES (@userId, @account, NOW(), @LOGTYPE, @V, @balance, @DESCR, @V);
-	 UPDATE `user` set balance = balance - @V where user_id = @userId;
+   INSERT INTO `user_log` (`user_id`, `account`, `create_time`, `log_type`, `trade_money`, `money`, `descr`, `adjunct_info`) VALUES (@userId, @account, NOW(), @LOGTYPE, -@V, @balance, @DESCR,@ADJUNCTINF);
+   UPDATE `user` set balance = balance - @V where user_id = @userId;
 END;
+
 
 drop procedure IF EXISTS account_balance_add_proce;
 create procedure account_balance_add_proce(IN UID INT,IN V INT,IN LOGTYPE VARCHAR(100),IN DESCR VARCHAR(100))

@@ -142,6 +142,7 @@ public class LoginController extends BaseController{
 			String captcha,String openid,
 			String wxopenid){
 		Boolean isCorrectPwd = null; 
+		UserEntity a = null;
 		if(StringUtils.isBlank(openid)){
 			if(!"app".equals(platform)
 					&& !"wechatOA".equals(platform)){
@@ -166,7 +167,6 @@ public class LoginController extends BaseController{
 			}
 			
 			String account = username,passwd = null;
-			UserEntity a = null;
 			if("wechatOA".equals(platform)){
 				a = userService.findByAccount(account);
 			}else{
@@ -209,6 +209,7 @@ public class LoginController extends BaseController{
 		Oauth2AccessToken.setToken(oauth2.getAssess_token());
 		
 		Map<String,Object> json = new TreeMap<String,Object>();
+		json.put("uid", a.getUserId());
 		json.put("access_token", oauth2.getAssess_token());
 		json.put("openid", oauth2.getOpenid());
 		json.put("expires_in", oauth2.getExpires_in());

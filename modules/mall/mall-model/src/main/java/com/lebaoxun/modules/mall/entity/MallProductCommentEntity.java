@@ -86,7 +86,7 @@ public class MallProductCommentEntity implements Serializable {
 	private List<MallProductCommentImageEntity> picImgs;
 	
 	@TableField(exist=false)
-	private MallOrderProductEntity mallOrderProductEntity;
+	private String productSpecName;
 
 	/**
 	 * 设置：评价ID
@@ -280,11 +280,10 @@ public class MallProductCommentEntity implements Serializable {
 	public void setOrderProductId(Long orderProductId) {
 		this.orderProductId = orderProductId;
 	}
-	public MallOrderProductEntity getMallOrderProductEntity() {
-		return mallOrderProductEntity;
+	public String getProductSpecName() {
+		return productSpecName;
 	}
-	public void setMallOrderProductEntity(
-			MallOrderProductEntity mallOrderProductEntity) {
-		this.mallOrderProductEntity = mallOrderProductEntity;
+	public void setProductSpecName(String productSpecName) {
+		this.productSpecName = productSpecName;
 	}
 }
