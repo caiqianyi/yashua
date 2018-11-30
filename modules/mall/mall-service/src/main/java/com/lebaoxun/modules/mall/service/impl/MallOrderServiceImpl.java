@@ -272,6 +272,7 @@ public class MallOrderServiceImpl extends
 			mope.setStatus(1);
 			mallOrderProductDao.updateById(mope);
 		}
+		logger.info("userId={},order.getOrderScore={},orderNo={}",userId,order.getOrderScore(),orderNo);
 		this.baseMapper.balancePay(userId, order.getOrderScore(),
 				"MALL_EXCHANGE", "商品兑换", orderNo);
 		this.baseMapper.updateById(order);

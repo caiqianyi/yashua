@@ -131,12 +131,11 @@ $(function(){
        				html += '    	<img src="'+item.headimgurl+'" alt=""/>';
        				html += '        <p><span>'+item.nickname+'</span></p>';
        				html += '    </div>';
-       				html += '    <div class="time font-24 c-9">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd")+' '+item.mallOrderProductEntity.productSpecName+' </div>';
+       				html += '    <div class="time font-24 c-9">'+new Date(parseInt(item.createTime)).format("yyyy-MM-dd")+' '+item.productSpecName+' </div>';
        				html += '    <div class="txt font-30">'+item.content+'</div>';
        				if(item.picImgs && item.picImgs.length > 0){
         				html += '    <div class="cmt_att" ptag="">';
        					for(var k=0;k<item.picImgs.length;k++){
-         					html += '		<span class="img"><img src="'+item.picImgs[k].picImg+'" prview=""></span>';
          					html += '		<span class="img"><img src="'+item.picImgs[k].picImg+'" prview=""></span>';
        					}
         				html += '	 </div>';

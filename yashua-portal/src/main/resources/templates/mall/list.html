@@ -139,8 +139,7 @@
 <script type="text/javascript">
 $(function(){
 	var offset = 0;
-	
-	var uid = '${(uid)!}';
+	var uid = login.visitor().getUid();
 	$("li[id^=cat_]").click(function(){
 		$("li[id^=cat_]").removeClass("on");
 		$(this).addClass("on");

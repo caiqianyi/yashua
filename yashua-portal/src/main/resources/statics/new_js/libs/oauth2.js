@@ -138,6 +138,11 @@ var login = {
 			},
 			getID: function(){
 				return window.storage.get('visitor.id',false,true);
+			},
+			getUid :function(){
+				if(_this.isLogin())
+					return parent.window.storage.get('login.uid', false);
+				return '';
 			}
 		};
 		return v;
