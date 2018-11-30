@@ -109,7 +109,7 @@ public class MallOrderServiceImpl extends
 		List<MallProductCartVo> mpcvs = mallCartDao
 				.queryByProductSpecId(productSpecIds.toArray(new Long[] {}));
 		if (mpcvs.size() != products.size()) {
-			throw new I18nMessageException("-1", "商品不存在或已下架");
+			throw new I18nMessageException("-1", "商品不存在或已下架 ");
 		}
 		int count = this.baseMapper
 				.selectCount(new EntityWrapper<MallOrderEntity>().eq("user_id",
