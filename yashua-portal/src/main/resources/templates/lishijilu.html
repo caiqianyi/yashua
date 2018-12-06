@@ -11,7 +11,7 @@
 <div class="shuju">
 	<div class="hd center">
     	<ul>
-    		<li>周</li>
+    	   <li>周</li>
            <li>月</li>
            <li>季</li>
     	</ul>
@@ -43,10 +43,10 @@
 	<div class="fenxi font-30">数据分析<p>口气平均分</p></div>
 	<div class="zhi font-30">
 		<div class="score">
-			<div><p><i>6</i>分<span>早</span></p></div>
+			<div><p><i></i>分<span>早</span></p></div>
 		</div>
 		<div class="score">
-			<div><p><i>10</i>分<span>晚</span></p></div>
+			<div><p><i></i>分<span>晚</span></p></div>
 		</div>
 	</div>
 </div>
@@ -57,105 +57,509 @@
 <script>
 	//切换
 	jQuery(".shuju").slide({trigger:"click"});
-	//折线图
-    var ctx = document.getElementById("myChart").getContext("2d");
-	var ctx1 = document.getElementById("myChart");
-	ctx1.height=260;
-	
-	Chart.defaults.global.defaultFontColor = 'white';
-	Chart.defaults.global.defaultFontSize =14;
-    var chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["一","二","三","四","五","六","日"],
-            datasets: [{
-				label: '早',
-				fill: true,//是否填充背景色
- 				backgroundColor:'rgb(99, 237, 152,.2)',//背景色
-				pointBorderColor:'#fff',//圆点边框
-                pointBackgroundColor:'rgb(25, 149, 72)',//圆点背景色
-                borderColor: 'rgb(99, 237, 152)',//线条颜色
-                data: [5, 2, 5, 2, 7, 8, 9],
-            },  {
-				label: '晚',
-				fill: true,
- 				backgroundColor:'rgb(254, 223, 80,.2)',
-				pointBorderColor:'#fff',
-                pointBackgroundColor:'rgb(254, 223, 80)',
-                borderColor: 'rgb(254, 223, 80)',
-                data: [2, 3, 7, 7, 8, 3, 7],
-            }]
-        },
-	    
-        // 配置文件
-        options: {
-            //标题设置
-            title:{
-                display:true,
-                text:'一周内口气记录',
-				fontStyle:'normal',
-            },
-            //动画
-            animation:{
-              duration:true,
-            },
-            hover:{
-                animationDuration:0,
-            },
-            responsiveAnimationDuration: 0,
-            //提示功能
-            tooltips:{
-              enable:true
-            },
-            //设置x,y轴网格线显示,标题等
-            scales :{
-				precision:5,	
-                xAxes:[{
-						
-                    //轴标题
-                    scaleLabel:{
-                        display:true,
-                        labelString:'',  
-                    },
-					 
-                    //网格显示
-                    gridLines:{
-                        display:false,//是否显示网格线	
-                    },
- 						ticks: {
-						fontColor: "#fff", // this here
-						},
-						 
-                }],
-                yAxes:[{
-					
-                    scaleLabel:{
-                        display:true,
-						padding:-10,
-                        labelString:'',
-						fontColor:'#fff'
-                    },
-                    gridLines:{
-                        display:false,//是否显示网格线	
-                    },
- 					ticks: {
-						
-						min : 0,
-               	    	max : 10,
-						stepSize: 5,
-						fontColor: "#fff", // this here
-						},
-                }],
- 
-            },
- 
-            //禁用赛尔曲线
-            elements: {
-                line: {
-                    tension: 0,
-                }
-            }
- 
-        }
+	$("ul").delegate("li","click",function(){
+		var id="0",labels,arry1=[],arry2=[],aver1=0,aver2=0,flag='',text='';
+		if($(this).text()=="周"){//显示一个周内的口气
+			id=0;
+			labels=["一","二","三","四","五","六","日"];
+			flag="myChart";
+			text="一周内口气记录";
+		}
+		else if($(this).text()=="月"){//显示一个月的口气
+			id=1;
+			labels=["一周","二周","三周","四周"];
+			flag="myChart-month";
+			text="一月内口气记录";
+		}
+		else if($(this).text()=="季"){//显示一个季度的口气
+			id=2;
+			var date = new Date();
+			var month = date.getMonth()+1;
+			if(month==1 || month==2 || month==3)
+				labels=["一月","二月","三月"];
+			if(month==4 || month==5 || month==6)
+				labels=["四月","五月","六月"];
+			if(month==7 || month==8 || month ==9 )
+				labels=["七月","八月","九月"];
+			if(month==10 || month==11 || month ==12 )
+				labels=["十月","十一月","十二月"];
+			flag="myChart-season";
+			text="一季度内的口气记录";
+		}
+		var l1 = $.loading().show();
+		$.ajax({
+    		type: "GET",
+    	    url: "/yashua/userdata/history/list/"+id,
+    	    success: function(r){
+    	    	l1.hide();
+    	    	if(r.errcode == 0){console.info(r);
+    		   	 	var datas = r.data;
+    		   	 	if(id==0){//一周的口气
+	    		   	 	for(var i=0;i<datas.list.length;i++){
+	    		   	 		var data = datas.list[i];
+	    		   	 		if(data.biaoshi==1){
+	    		   	 			arry1.push(datas.list[i].fenshu);
+	    		   	 			aver1+=datas.list[i].fenshu;
+	    		   	 		}
+	    		   	 		else if(data.biaoshi==2){
+	    		   	 			arry2.push(datas.list[i].fenshu);
+	    		   	 			aver2+=datas.list[i].fenshu;
+	    		   	 		}
+	    		   	 	}
+	    		   	  	if(arry1.length<7){
+	    		   	  		var a1=0,a2=0;
+	    		   	  		if(arry1.length>0) a1 = Math.ceil(aver1/arry1.length);
+	  		   	  			$(".jilu-fen").find("i").eq(0).text(a1);
+	    		   	  		
+	    		   	  		if(arry2.length>0) a2 = Math.ceil(aver2/arry2.length);
+	    		   	  		$(".jilu-fen").find("i").eq(1).text(a2);
+			   	  			var arrylength1=arry1.length,arrylength2=arry2.length;
+	    		   	 		for(var j=0;j<7-arrylength1;j++){
+	    		   	 			arry1.push(0);
+	    		   	 		}
+		    		   	 	for(var k=0;k<7-arrylength2;k++){
+				   	 			arry2.push(0);
+				   	 		}
+	    		   	 	} 
+	    		   	}else if(id=="1"){//一个月的口气
+	    		   		var arryc=countmonthkouqidata(datas);
+	    		   		arry1=arryc.zkouqi;
+	    				arry2=arryc.pkouqi;
+	    				aver1=arryc.ak;
+	    				aver2=arryc.pk;
+	    				$(".jilu-fen").find("i").eq(0).text(aver1);
+	    				$(".jilu-fen").find("i").eq(1).text(aver2);
+	    		   	}else if(id=="2"){//一个季度的口气
+	    		   		var arryc=countjidukouqidata(datas);
+	    		   		arry1=arryc.zkouqi;
+	    				arry2=arryc.pkouqi;
+	    				aver1=arryc.ak;
+	    				aver2=arryc.pk;
+	    				$(".jilu-fen").find("i").eq(0).text(aver1);
+	    				$(".jilu-fen").find("i").eq(1).text(aver2);
+	    		   	}
+    		   	 	
+    		   	//图表绘制
+    			 	document.getElementById(flag).height=260;
+    			 	Chart.defaults.global.defaultFontColor = 'white';
+    			 	Chart.defaults.global.defaultFontSize =14;
+    			 	console.info(arry1);
+    			 	console.info(arry2);
+    			     var chart = new Chart(document.getElementById(flag).getContext("2d"), {
+    			         type: 'line',
+    			         data: {
+    			             labels: labels,
+    			             datasets: [{
+    			 				label: '早',
+    			 				fill: true,//是否填充背景色
+    			  				backgroundColor:'rgb(99, 237, 152,.2)',//背景色
+    			 				pointBorderColor:'#fff',//圆点边框
+    			                 pointBackgroundColor:'rgb(25, 149, 72)',//圆点背景色
+    			                 borderColor: 'rgb(99, 237, 152)',//线条颜色
+    			                 data: arry1
+    			             },  {
+    			 				label: '晚',
+    			 				fill: true,
+    			  				backgroundColor:'rgb(254, 223, 80,.2)',
+    			 				pointBorderColor:'#fff',
+    			                 pointBackgroundColor:'rgb(254, 223, 80)',
+    			                 borderColor: 'rgb(254, 223, 80)',
+    			                 data: arry2
+    			             }]
+    			         },
+    			 	    
+    			         // 配置文件
+    			         options: {
+    			             //标题设置
+    			             title:{
+    			                 display:true,
+    			                 text:text,
+    			 				fontStyle:'normal',
+    			             },
+    			             //动画
+    			             animation:{
+    			               duration:true,
+    			             },
+    			             hover:{
+    			                 animationDuration:0,
+    			             },
+    			             responsiveAnimationDuration: 0,
+    			             //提示功能
+    			             tooltips:{
+    			               enable:true
+    			             },
+    			             //设置x,y轴网格线显示,标题等
+    			             scales :{
+    			 				precision:5,	
+    			                 xAxes:[{
+    			 						
+    			                     //轴标题
+    			                     scaleLabel:{
+    			                         display:true,
+    			                         labelString:'',  
+    			                     },
+    			 					 
+    			                     //网格显示
+    			                     gridLines:{
+    			                         display:false,//是否显示网格线	
+    			                     },
+    			  						ticks: {
+    			 						fontColor: "#fff", // this here
+    			 						},
+    			 						 
+    			                 }],
+    			                 yAxes:[{
+    			 					
+    			                     scaleLabel:{
+    			                         display:true,
+    			 						padding:-10,
+    			                         labelString:'',
+    			 						fontColor:'#fff'
+    			                     },
+    			                     gridLines:{
+    			                         display:false,//是否显示网格线	
+    			                     },
+    			  					ticks: {
+    			 						
+    			 						min : 0,
+    			                	    	max : 10,
+    			 						stepSize: 5,
+    			 						fontColor: "#fff", // this here
+    			 						},
+    			                 }],
+    			  
+    			             },
+    			  
+    			             //禁用赛尔曲线
+    			             elements: {
+    			                 line: {
+    			                     tension: 0,
+    			                 }
+    			             }
+    			  
+    			         }
+    			     });
+    		   	 }else{
+     				alert(r.errmsg);
+     			}
+    	    	}
+    	    });
+	});
+		//折线图
+	$(function(){
+    	var l1 = $.loading().show();
+    	var arry1=[];//保存早上的口气数据
+    	var arry2=[];//保存晚上的口气数据
+    	var aver1=0;//早上的口气总值
+    	var aver2=0;//晚上的口气总值
+    	var id=0;
+    	$.ajax({
+    		type: "GET",
+    	    url: "/yashua/userdata/history/list/"+id,
+    	    success: function(r){
+    	    	l1.hide();
+    	    	if(r.errcode == 0){
+    		   	 	var datas = r.data;
+    		   	 	if(id==0){//一周的口气
+	    		   	 	for(var i=0;i<datas.list.length;i++){
+	    		   	 		var data = datas.list[i];
+	    		   	 		if(data.biaoshi==1){
+	    		   	 			arry1.push(datas.list[i].fenshu);
+	    		   	 			aver1+=datas.list[i].fenshu;
+	    		   	 		}
+	    		   	 		else if(data.biaoshi==2){
+	    		   	 			arry2.push(datas.list[i].fenshu);
+	    		   	 			aver2+=datas.list[i].fenshu;
+	    		   	 		}
+	    		   	 	}
+	    		   	  	if(arry1.length<7){
+	    		   	  		var a1=0,a2=0;
+	    		   	  		if(arry1.length>0) a1 = Math.ceil(aver1/arry1.length);
+	  		   	  			$(".jilu-fen").find("i").eq(0).text(a1);
+	    		   	  		
+	    		   	  		if(arry2.length>0) a2 = Math.ceil(aver2/arry2.length);
+	    		   	  		$(".jilu-fen").find("i").eq(1).text(a2);
+			   	  			var arrylength1=arry1.length,arrylength2=arry2.length;
+	    		   	 		for(var j=0;j<7-arrylength1;j++){
+	    		   	 			arry1.push(0);
+	    		   	 		}
+		    		   	 	for(var k=0;k<7-arrylength2;k++){
+				   	 			arry2.push(0);
+				   	 		}
+	    		   	 	}
+	    		 	
+    		   	 }
+    		   
+    		 	
+    		    document.getElementById("myChart").height=260;
+    		 	Chart.defaults.global.defaultFontColor = 'white';
+    		 	Chart.defaults.global.defaultFontSize =14;
+    		     var chart = new Chart(document.getElementById("myChart").getContext("2d"), {
+    		         type: 'line',
+    		         data: {
+    		             labels: ["一","二","三","四","五","六","日"],
+    		             datasets: [{
+    		 				label: '早',
+    		 				fill: true,//是否填充背景色
+    		  				backgroundColor:'rgb(99, 237, 152,.2)',//背景色
+    		 				pointBorderColor:'#fff',//圆点边框
+    		                 pointBackgroundColor:'rgb(25, 149, 72)',//圆点背景色
+    		                 borderColor: 'rgb(99, 237, 152)',//线条颜色
+    		                 data: arry1
+    		             },  {
+    		 				label: '晚',
+    		 				fill: true,
+    		  				backgroundColor:'rgb(254, 223, 80,.2)',
+    		 				pointBorderColor:'#fff',
+    		                 pointBackgroundColor:'rgb(254, 223, 80)',
+    		                 borderColor: 'rgb(254, 223, 80)',
+    		                 data: arry2
+    		             }]
+    		         },
+    		 	    
+    		         // 配置文件
+    		         options: {
+    		             //标题设置
+    		             title:{
+    		                 display:true,
+    		                 text:'一周内口气记录',
+    		 				fontStyle:'normal',
+    		             },
+    		             //动画
+    		             animation:{
+    		               duration:true,
+    		             },
+    		             hover:{
+    		                 animationDuration:0,
+    		             },
+    		             responsiveAnimationDuration: 0,
+    		             //提示功能
+    		             tooltips:{
+    		               enable:true
+    		             },
+    		             //设置x,y轴网格线显示,标题等
+    		             scales :{
+    		 				precision:5,	
+    		                 xAxes:[{
+    		 						
+    		                     //轴标题
+    		                     scaleLabel:{
+    		                         display:true,
+    		                         labelString:'',  
+    		                     },
+    		 					 
+    		                     //网格显示
+    		                     gridLines:{
+    		                         display:false,//是否显示网格线	
+    		                     },
+    		  						ticks: {
+    		 						fontColor: "#fff", // this here
+    		 						},
+    		 						 
+    		                 }],
+    		                 yAxes:[{
+    		 					
+    		                     scaleLabel:{
+    		                         display:true,
+    		 						padding:-10,
+    		                         labelString:'',
+    		 						fontColor:'#fff'
+    		                     },
+    		                     gridLines:{
+    		                         display:false,//是否显示网格线	
+    		                     },
+    		  					ticks: {
+    		 						
+    		 						min : 0,
+    		                	    	max : 10,
+    		 						stepSize: 5,
+    		 						fontColor: "#fff", // this here
+    		 						},
+    		                 }],
+    		  
+    		             },
+    		  
+    		             //禁用赛尔曲线
+    		             elements: {
+    		                 line: {
+    		                     tension: 0,
+    		                 }
+    		             }
+    		  
+    		         }
+    		     });
+    		   
+    			}
+    	    	else{
+    				alert(r.errmsg);
+    			}
+    	    }
+    	    	
+    	});
+  
     });
+	
+    //统计一个月内的口气数据
+    function countmonthkouqidata(datas){
+    	var monthakouqi=[],//保存一个月内的早上口气
+    		monthpkouqi=[],//保存一个月内的晚上口气
+    		avera=0,//早上口气的平均值
+    		averp=0;//晚上口气的平均值
+    	if(datas.list.length==0){//一个月内都没有口气检测
+    		monthakouqi=[0,0,0,0];
+    		monthpkouqi=[0,0,0,0];
+    		avera=0;
+    		averp=0;
+    	}
+    	else{
+    		var w1am=0,w1pm=0,w2am=0,w2pm=0,w3am=0,w3pm=0,w4am=0,w4pm=0,//一个月四周内各周早晚总口气
+    			anum1=0,pnum1=0,anum2=0,pnum2=0,anum3=0,pnum3=0,anum4=0,pnum4=0,//一个月各周早晚口气检测次数
+    			an1=0,pn1=0;//总的早晚口气检测次数
+	    	for(var i=0;i<datas.list.length;i++){
+	    		var data=datas.list[i];
+	    		if(getWeek(data.adddate)==1 && data.biaoshi==1){
+	   				w1am+=data.fenshu;anum1++;
+	    		}
+	   			if(getWeek(data.adddate)==1 && data.biaoshi==2){
+	   				w1pm+=data.fenshu;pnum1++;
+	   			}
+	   			if(getWeek(data.adddate)==2 && data.biaoshi==1){
+	   				w2am+=data.fenshu;anum2++;
+	   			}
+	   			if(getWeek(data.adddate)==2 && data.biaoshi==2){
+	   				w2pm+=data.fenshu;pnum2++;
+	   			}
+	   			if(getWeek(data.adddate)==3 && data.biaoshi==1){
+	   				w3am+=data.fenshu;anum3++;
+	   			}
+	   			if(getWeek(data.adddate)==3 && data.biaoshi==2){
+	   				w3pm+=data.fenshu;pnum3++;
+	   			}
+	   			if(getWeek(data.adddate)==4 && data.biaoshi==1){
+	   				w4am+=data.fenshu;anum4++;
+	   			}
+	   			if(getWeek(data.adddate)==4 && data.biaoshi==2){
+	   				w4pm+=data.fenshu;pnum4++;
+	   			}
+	   			if(data.biaoshi==1) {
+	   				avera+=data.fenshu;an1++;
+	   			}
+	   			if(data.biaoshi==2){
+	   				averp+=data.fenshu;pn1++;
+	   			}
+	    	}
+    		//计算各周的平均口气
+    		if(anum1==0) monthakouqi.push(0);
+    		else  monthakouqi.push(Math.ceil(w1am/anum1));
+    		if(pnum1==0) monthpkouqi.push(0);
+    		else  monthpkouqi.push(Math.ceil(w1pm/pnum1));
+    		if(anum2==0) monthakouqi.push(0);
+    		else  monthakouqi.push(Math.ceil(w2am/anum2));
+    		if(pnum2==0) monthpkouqi.push(0);
+    		else  monthpkouqi.push(Math.ceil(w2pm/pnum2));
+    		if(anum3==0) monthakouqi.push(0);
+    		else  monthakouqi.push(Math.ceil(w3am/anum3));
+    		if(pnum3==0) monthpkouqi.push(0);
+    		else  monthpkouqi.push(Math.ceil(w3pm/pnum3));
+    		if(anum4==0) monthakouqi.push(0);
+    		else  monthakouqi.push(Math.ceil(w4am/anum4));
+    		if(pnum4==0) monthpkouqi.push(0);
+    		else  monthpkouqi.push(Math.ceil(w4pm/pnum4));
+    		if(an1==0) avera=0;
+    		else avera=Math.ceil(avera/an1);
+    		if(pn1==0) averp=0;
+    		else averp=Math.ceil(averp/pn1);
+    	}
+    	var arryc={};
+		arryc.zkouqi=monthakouqi;
+		arryc.pkouqi=monthpkouqi;
+		arryc.ak=avera;
+		arryc.pk=averp;
+		return arryc;
+    }
+    
+    //判断当前日期是该月的第几周
+    	function getWeek(date) {
+    	  date = new Date(parseInt(date,10));
+    		if(date instanceof Date){
+    			if(date.getDate()<7){
+    				if(date.getDay()!==1)
+    					return 0;//当前月的前几天不是周一，返回0，不计入当前月的口气统计
+    			}
+    			var weekday=Math.ceil(date.getDate()/7);
+    			return weekday;
+    		}
+    	}
+    
+    //统计一个季度内的口气
+    
+   function countjidukouqidata(datas){
+    	var jiduakouqi=[],//保存一个季度内的早上口气
+    		jidupkopuqi=[],//保存一个季度内晚上口气
+    		avera=0,//早上口气的平均值
+    		averp=0;//晚上口气的平均值
+    	if(datas.list.length==0){//一个季度内都没有检测口气
+    		jiduakouqi=[0,0,0];
+    		jidupkopuqi=[0,0,0];
+    		avera=0;
+    		averp=0;
+    	}
+    	else{
+    		var jam1=0,jpm1=0,jam2=0,jpm2=0,jam3=0,jpm3=0,//一个季度三个月的各月早晚口气和
+    			aum1=0,pum1=0,aum2=0,pum2=0,aum3=0,pum3=0,//三个月内各月的口气检测次数
+    			an1=0,pn1=0;//早晚口气检测次数
+    		for(var i=0;i<datas.list.length;i++){
+    			var data = datas.list[i];
+    			var date = new Date(parseInt(data.adddate,10));console.info(date);
+    			var month = date.getMonth()+1;
+    			if(month%3==1 && data.biaoshi==1){
+    				jam1+=data.fenshu; aum1++;
+    			}
+    			else if(month%3==1 && data.biaoshi==2){
+    				jpm1+=data.fenshu; pum1++;
+    			}
+    			else if(month%3==2 && data.biaoshi==1){
+    				jam2+=data.fenshu; aum2++;
+    			}
+    			else if(month%3==2 && data.biaoshi==2){
+    				jpm2+=data.fenshu; pum2++;
+    			}
+    			else if(month%3==0 && data.biaoshi==1){
+    				jam3+=data.fenshu; aum3++;
+    			}
+    			else if(month%3==0 && data.biaoshi==2){
+    				jpm3+=data.fenshu; pum3++;
+    			}
+    			if(data.biaoshi==1) {
+	   				avera+=data.fenshu;an1++;
+	   			}
+	   			if(data.biaoshi==2){
+	   				averp+=data.fenshu;pn1++;
+	   			}
+    		}
+    		//计算一个季度内的各月平均口气
+			if(aum1==0) jiduakouqi.push(0);
+			else jiduakouqi.push(Math.ceil(jam1/aum1));
+			if(pum1==0) jidupkopuqi.push(0);
+			else jidupkopuqi.push(Math.ceil(jpm1/pum1))
+			if(aum2==0) jiduakouqi.push(0);
+			else jiduakouqi.push(Math.ceil(jam2/aum2));
+			if(pum2==0) jidupkopuqi.push(0);
+			else jidupkopuqi.push(Math.ceil(jpm2/pum2))
+			if(aum3==0) jiduakouqi.push(0);
+			else jiduakouqi.push(Math.ceil(jam3/aum3));
+			if(pum3==0) jidupkopuqi.push(0);
+			else jidupkopuqi.push(Math.ceil(jpm3/pum3));
+			if(an1==0) avera=0;
+    		else avera=Math.ceil(avera/an1);
+    		if(pn1==0) averp=0;
+    		else averp=Math.ceil(averp/pn1);
+    	}
+    	var arryc={};
+		arryc.zkouqi=jiduakouqi;
+		arryc.pkouqi=jidupkopuqi;
+		arryc.ak=avera;
+		arryc.pk=averp;
+		return arryc;
+    }
     </script>

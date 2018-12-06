@@ -11,4 +11,6 @@ import com.lebaoxun.modules.yashua.entity.UserDataEntity;
  */
 public interface UserDataService extends IService<UserDataEntity>{
 	  PageUtils queryPage(Map<String, Object> params);
+
+	PageUtils queryByConditgions(Map<String, Object> params);
 }

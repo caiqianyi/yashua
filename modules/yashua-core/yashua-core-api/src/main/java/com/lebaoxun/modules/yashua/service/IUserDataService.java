@@ -3,6 +3,7 @@ package com.lebaoxun.modules.yashua.service;
 import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,5 +20,10 @@ public interface IUserDataService {
      */
     @RequestMapping("/yashua/userdata/list")
     ResponseMessage list(@RequestParam Map<String, Object> params);
+    /**
+     * 获取历史口气数据
+     */
+    @RequestMapping("/yashua/userdata/history/list")
+	ResponseMessage hlist(@RequestParam Map<String, Object> params);
 
 }

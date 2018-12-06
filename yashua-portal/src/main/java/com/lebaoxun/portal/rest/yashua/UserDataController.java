@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +34,17 @@ public class UserDataController {
     	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
     	params.put("user_id", ue.getUserId());
         return userDataService.list(params);
+    }
+    
+    /**
+     * 获取历史口气数据
+     */
+    	@RequestMapping("/yashua/userdata/history/list/{id}")
+    	ResponseMessage hlist(@RequestParam Map<String, Object> params,@PathVariable("id") Integer id){
+    	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+    	params.put("user_id", ue.getUserId());
+    	params.put("id", id);
+    	params.put("limit",300);
+        return userDataService.hlist(params);
     }
 }

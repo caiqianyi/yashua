@@ -26,5 +26,13 @@ public class UserDataController {
         PageUtils page = userDataService.queryPage(params);
         return ResponseMessage.ok(page);
     }
+    /**
+     * 获取历史口气数据
+     */
+    @RequestMapping("/yashua/userdata/history/list")
+   	ResponseMessage hlist(@RequestParam Map<String, Object> params){
+    	 PageUtils page = userDataService.queryByConditgions(params);
+         return ResponseMessage.ok(page);
+    }
 
 }
