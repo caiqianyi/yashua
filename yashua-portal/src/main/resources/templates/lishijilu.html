@@ -483,10 +483,12 @@
     	  date = new Date(parseInt(date,10));
     		if(date instanceof Date){
     			if(date.getDate()<7){
-    				if(date.getDay()!==1)
+    				var zcs=date.getDay();
+    				if(zcs==0) zcs=7;//周日
+    				if(zcs>date.getDate())
     					return 0;//当前月的前几天不是周一，返回0，不计入当前月的口气统计
     			}
-    			var weekday=Math.ceil(date.getDate()/7);
+    			var weekday=Math.ceil(date.getDate()/7);console.info(weekday+":"+date.format("yyyy-MM-dd hh:mm:ss"));
     			return weekday;
     		}
     	}
