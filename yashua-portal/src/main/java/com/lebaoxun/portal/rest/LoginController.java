@@ -66,27 +66,27 @@ public class LoginController extends BaseController{
 	@Value("${sms.cst_id}")
 	private String smsCstid;
 	
-	@RequestMapping("captcha.jpg")
-	public void captcha(String emid)throws IOException {
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		
-		//验证码等级
-		String code = CommonUtil.getVerifyCode(output, 1);
-		//当前页面刷验证码的次数
-		
-		if(StringUtils.isNotBlank(emid)){
-			redisCache.set("agent:vfcode:"+emid, code, 20*60L);
-		}else{
-			logger.debug("code={}",code);
-			request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, code);
-		}
-		try {
-			ServletOutputStream out = response.getOutputStream();
-			output.writeTo(out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@RequestMapping("captcha.jpg")
+//	public void captcha(String emid)throws IOException {
+//		ByteArrayOutputStream output = new ByteArrayOutputStream();
+//		
+//		//验证码等级
+//		String code = CommonUtil.getVerifyCode(output, 1);
+//		//当前页面刷验证码的次数
+//		
+//		if(StringUtils.isNotBlank(emid)){
+//			redisCache.set("agent:vfcode:"+emid, code, 20*60L);
+//		}else{
+//			logger.debug("code={}",code);
+//			request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, code);
+//		}
+//		try {
+//			ServletOutputStream out = response.getOutputStream();
+//			output.writeTo(out);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/oauth2/secret.js",produces="application/javascript;charset=UTF-8")
 	String securitySecret(){
@@ -139,20 +139,21 @@ public class LoginController extends BaseController{
 	@RequestMapping(value = "/oauth2/token", method = RequestMethod.POST)
 	ResponseMessage oauthToken(String username,String password,
 			String platform,
-			String captcha,String openid,
+			//String captcha,
+			String openid,
 			String wxopenid){
 		Boolean isCorrectPwd = null; 
 		UserEntity a = null;
 		if(StringUtils.isBlank(openid)){
-			if(!"app".equals(platform)
-					&& !"wechatOA".equals(platform)){
-				String verifycode = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-				logger.debug("verifycode={},captcha={}",verifycode,captcha);
-				if(verifycode == null || !verifycode.equalsIgnoreCase(captcha)){
-					throw new I18nMessageException("10001", "验证码不正确");
-				}
-				request.getSession().removeAttribute(Constants.KAPTCHA_SESSION_KEY);
-			}
+//			if(!"app".equals(platform)
+//					&& !"wechatOA".equals(platform)){
+//				String verifycode = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+//				logger.debug("verifycode={},captcha={}",verifycode,captcha);
+//				if(verifycode == null || !verifycode.equalsIgnoreCase(captcha)){
+//					throw new I18nMessageException("10001", "验证码不正确");
+//				}
+//				request.getSession().removeAttribute(Constants.KAPTCHA_SESSION_KEY);
+//			}
 			if(StringUtils.isBlank(username) || StringUtils.isBlank(password)){
 				throw new I18nMessageException("10001", "验证码不正确");
 			}
@@ -246,7 +247,7 @@ public class LoginController extends BaseController{
 		if("N".equals(user.getStatus())){
 			throw new I18nMessageException("10014","账户已被禁用，请联系管理员");
 		}
-		ResponseMessage success = oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null, null);
+		ResponseMessage success = oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null,null);
 		Map<String,Object> json = (Map<String, Object>) success.getData();
 		json.put("wxappid", openid);
 		return success;
@@ -341,7 +342,7 @@ public class LoginController extends BaseController{
     	if(!"0".equals(success.getErrcode())){
     		return success;
     	}
-		return oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null, null);
+		return oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null);
 	}
 	
 }
