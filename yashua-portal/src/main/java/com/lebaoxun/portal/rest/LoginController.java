@@ -65,6 +65,7 @@ public class LoginController extends BaseController{
 	
 	@Value("${sms.cst_id}")
 	private String smsCstid;
+
 	
 //	@RequestMapping("captcha.jpg")
 //	public void captcha(String emid)throws IOException {
