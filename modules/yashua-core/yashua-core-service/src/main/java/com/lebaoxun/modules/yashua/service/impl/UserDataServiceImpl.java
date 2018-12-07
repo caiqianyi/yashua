@@ -20,7 +20,7 @@ import com.lebaoxun.modules.yashua.entity.UserDataEntity;
 import com.lebaoxun.modules.yashua.service.UserDataService;
 
 @Service("userDataService")
-public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity> implements UserDataService{
+public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity> implements UserDataService{ 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
 		Long user_id = Long.parseLong((String) params.get("user_id"));
@@ -56,31 +56,22 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 			if(id==0){//查询当前一周的起止时间
 				 calendar = Calendar.getInstance();  
 				 calendar.setFirstDayOfWeek(Calendar.MONDAY);  
-		        
-				calendar.set(Calendar.HOUR_OF_DAY, 0);  
-				calendar.set(Calendar.MINUTE, 0);  
-				calendar.set(Calendar.SECOND, 0);  
-				calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);  
-				startDate = calendar.getTime();
-				
-				calendar = Calendar.getInstance();
-				calendar.setFirstDayOfWeek(Calendar.MONDAY);  
-		        
-				calendar.set(Calendar.HOUR_OF_DAY, 23);  
-				calendar.set(Calendar.MINUTE, 59);  
-				calendar.set(Calendar.SECOND, 59);  
-				calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);  
-				endDate = calendar.getTime();
+				 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);  
+				 startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
+				 calendar = Calendar.getInstance();
+				 calendar.setFirstDayOfWeek(Calendar.MONDAY);  
+		         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);  
+				 endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
 			} 
 			else if(id==1){//查询一个月的起止时间
 				calendar = Calendar.getInstance();
 				calendar.set(Calendar.DATE, 1);
-				startDate =new SimpleDateFormat("yyyy-MM-dd 00:00:00").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
+				startDate =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
 				calendar = Calendar.getInstance();
 				calendar.set(Calendar.DATE, 1); 
 				calendar.add(Calendar.MONTH, 1); 
 				calendar.add(Calendar.DATE, -1); 
-				endDate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
+				endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
 			} 
 			else if(id==2){//查询一个季度的起止时间
 				calendar=Calendar.getInstance();
@@ -94,7 +85,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 				else if (currentMonth >= 10 && currentMonth <= 12) 
 					calendar.set(Calendar.MONTH, 9); 
 				calendar.set(Calendar.DATE, 1); 
-				startDate =new SimpleDateFormat("yyyy-MM-dd 00:00:00").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
+				startDate =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
 				calendar  = Calendar.getInstance(); 
 			    currentMonth = calendar.get(Calendar.MONTH) + 1; 
 			    if (currentMonth >= 1 && currentMonth <= 3) { 
@@ -113,7 +104,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 			    	calendar.set(Calendar.MONTH, 11); 
 			    	calendar.set(Calendar.DATE, 31); 
 			    } 
-			        endDate  =new SimpleDateFormat("yyyy-MM-dd 23:59:59").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
+			        endDate  =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
 		}
 			}catch (Exception e) { 
             e.printStackTrace(); 

@@ -21,19 +21,19 @@
     	<div class="chart-container">
        		<p class="mark">分数</p>
        		<p class="time">周（天）</p>
-        	<canvas id="myChart" ></canvas>
+        	<canvas id="myChart" height="260"></canvas>
         </div>
         <!--月记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
        		<p class="time">月（周）</p>
-        	<canvas id="myChart-month" ></canvas>
+        	<canvas id="myChart-month" height="260"></canvas>
         </div>
         <!--季记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
        		<p class="time">季（月）</p>
-        	<canvas id="myChart-season" ></canvas>
+        	<canvas id="myChart-season" height="260"></canvas>
         </div>
     </div>	
 </div>
@@ -140,7 +140,7 @@
 	    		   	}
     		   	 	
     		   	//图表绘制
-    			 	document.getElementById(flag).height=260;
+  //  			 	document.getElementById(flag).height=260;
     			 	Chart.defaults.global.defaultFontColor = 'white';
     			 	Chart.defaults.global.defaultFontSize =14;
     			 	console.info(arry1);

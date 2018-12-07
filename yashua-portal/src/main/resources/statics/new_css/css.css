@@ -437,7 +437,7 @@ background-size:.19rem .37rem;}
 .shuju .hd li{float: left;width: 32.33%;font-size:.44rem;border-bottom:.04rem solid #4E4D52;margin:0 0.5%;}
 .shuju .hd li.on{color:#63ED98;border-color: #63ED98;}
 .chart-container{padding:0 .25rem;position: relative;}
-.chart-container .mark{position: absolute;top:1rem;}
+.chart-container .mark{position: absolute;top:.85rem;}
 .chart-container .time{position: absolute;bottom:.3rem;right:.3rem;}
 .jilu-fen{overflow: hidden;padding:0 .55rem .55rem;}
 .jilu-fen .fenxi{color: #199548;margin-bottom:.24rem;}
