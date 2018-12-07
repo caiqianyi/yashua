@@ -154,9 +154,9 @@ public class LoginController extends BaseController{
 //				}
 //				request.getSession().removeAttribute(Constants.KAPTCHA_SESSION_KEY);
 //			}
-			if(StringUtils.isBlank(username) || StringUtils.isBlank(password)){
-				throw new I18nMessageException("10001", "验证码不正确");
-			}
+//			if(StringUtils.isBlank(username) || StringUtils.isBlank(password)){
+//				throw new I18nMessageException("10001", "验证码不正确");
+//			}
 			String key = AccountConstant.CACHEKEY_LOGIN_ACCOUNT_LOCK + "." + username;
 			String value = (String) redisCache.get(key);
 			if (StringUtils.isNotBlank(value) && "LOCK".equals(value)) {
