@@ -26,8 +26,7 @@
 		select id,user_id,create_time,log_type,trade_money,money,descr from
 		user_log
 		where user_id=#{user_id,jdbcType=BIGINT}
-		and trade_money <![CDATA[!=]]>
-		0
+		and (trade_money <![CDATA[!=]]> 0  or log_type = 'MALL_PRO_SHARE_PAY_AWARD')
 		ORDER BY create_time DESC
 		<if test="size != null">
 			limit
