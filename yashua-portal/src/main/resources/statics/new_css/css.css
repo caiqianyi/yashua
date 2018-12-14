@@ -423,9 +423,9 @@ background-size:.19rem .37rem;}
 .lishi .jilu .date{line-height:1.52rem;border-right:1px solid #fff;padding-right:.12rem;}
 .lishi .jilu .time{margin-left:.2rem;}
 .lishi .jilu .time .timeAm{margin:.25rem 0;}
-.lishi .jilu .time .timeAm span{width:5rem;display: inline-block;height: .15rem;background: #869497;position: relative;}
+.lishi .jilu .time .timeAm span{width:4.6rem;display: inline-block;height: .15rem;background: #869497;position: relative;}
 .lishi .jilu .time .timeAm span em{height:.15rem;background: #63ed98;position: absolute;left: 0;top: 0;}
-.lishi .jilu .time .timeAm span em i{position: absolute;right: 0;top:-.36rem;font-size:.22rem;color:#63ed98;border-right:1px solid #63ed98;padding:0 .1rem .1rem;}
+.lishi .jilu .time .timeAm span em i{width:.7rem;text-align:right;position: absolute;right: 0;top:-.38rem;font-size:.22rem;color:#63ed98;border-right:1px solid #63ed98;padding:0 .1rem .1rem;}
 .lishi .jilu .time .timePm span em{background: #fd5a84;}
 .lishi .jilu .time .timePm span em i{color: #fd5a84;border-color: #fd5a84;}
 .lishi a.more{display: block;line-height:1.2rem;}

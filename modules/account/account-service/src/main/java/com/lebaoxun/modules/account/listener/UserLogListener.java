@@ -19,10 +19,13 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
 import com.lebaoxun.commons.utils.StringUtils;
+import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.entity.UserLogEntity;
 import com.lebaoxun.modules.account.service.UserLogService;
+import com.lebaoxun.modules.account.service.UserService;
 import com.lebaoxun.soa.amqp.core.sender.IRabbitmqSender;
 
 /**
@@ -38,6 +41,9 @@ public class UserLogListener {
 	
 	@Resource
 	private UserLogService userLogService;
+	
+	@Resource
+	private UserService userService;
 	
 	@Resource
 	private IRabbitmqSender rabbitmqSender;
@@ -71,8 +77,10 @@ public class UserLogListener {
 					descr = message.getString("descr"),
 					adjunctInfo = message.getString("adjunctInfo");
 			
+			UserEntity user = userService.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 			UserLogEntity log = new UserLogEntity();
 			log.setUserId(userId);
+			log.setAccount(user.getAccount());
 			log.setCreateTime(new Date(timestamp));
 			log.setLogType(logType);
 			if(StringUtils.isNotBlank(tradeMoney))

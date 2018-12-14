@@ -12,12 +12,12 @@
 		<div class="date font-36 fl">10/26</div>
 		<div class="time font-28 fl">
 			<div class="timeAm">
-				<label for="">8:00</label>
-				<span><em style="width:1%"><i>0</i></em></span>
+				<label for="">08:00</label>
+				<span><em style="width:0%"><i>0分</i></em></span>
 			</div>
 			<div class="timeAm timePm">
-				<label for="">9:00</label>
-				<span><em style="width: 0%"><i>0</i></em></span>
+				<label for="">21:00</label>
+				<span><em style="width: 0%"><i>0分</i></em></span>
 			</div>
 		</div>
 	</div>
@@ -26,12 +26,12 @@
 		<div class="date font-36 fl">10/27</div>
 		<div class="time font-28 fl">
 			<div class="timeAm">
-				<label for="">8:00</label>
-				<span><em style="width:0%"><i>0</i></em></span>
+				<label for="">08:00</label>
+				<span><em style="width:0%"><i>0分</i></em></span>
 			</div>
 			<div class="timeAm timePm">
-				<label for="">9:00</label>
-				<span><em style="width: 0%"><i>0</i></em></span>
+				<label for="">21:00</label>
+				<span><em style="width: 0%"><i>0分</i></em></span>
 			</div>
 		</div>
 	</div>
@@ -40,12 +40,12 @@
 		<div class="date font-36 fl">10/28</div>
 		<div class="time font-28 fl">
 			<div class="timeAm">
-				<label for="">8:00</label>
-				<span><em style="width:0%"><i>0</i></em></span>
+				<label for="">08:00</label>
+				<span><em style="width:0%"><i>0分</i></em></span>
 			</div>
 			<div class="timeAm timePm">
-				<label for="">9:00</label>
-				<span><em style="width: 0%"><i>0</i></em></span>
+				<label for="">21:00</label>
+				<span><em style="width: 0%"><i>0分</i></em></span>
 			</div>
 		</div>
 	</div>
@@ -86,12 +86,12 @@ $(function(){
 		    			var hour=new Date(parseInt(data.adddate,10)).getHours();
 		    		    var minutes=new Date(parseInt(data.adddate,10)).getMinutes();
 		    			if(data.biaoshi==1 && data.fenshu!=0){
-		    				$(this).find(".timeAm").children().eq(0).text(hour+((minutes < 10) ? ":0" : ":") + minutes);
+		    				$(this).find(".timeAm").children().eq(0).text(((hour < 10) ? "0" : "") + hour+((minutes < 10) ? ":0" : ":") + minutes);
 		    				$(this).find("em").eq(0).children().text(data.fenshu+"分");
 		    				$(this).find("em").eq(0).css('width',data.fenshu*10+"%");
 		    			}
 		    			if(data.biaoshi==2 && data.fenshu!=0){
-		    				$(this).find(".timePm").children().eq(0).text(hour-12+((minutes < 10) ? ":0" : ":") + minutes);
+		    				$(this).find(".timePm").children().eq(0).text(((hour < 10) ? "0" : "") + hour+((minutes < 10) ? ":0" : ":") + minutes);
 		    				$(this).find("em").eq(1).children().text(data.fenshu+"分");
 		    				$(this).find("em").eq(1).css('width',data.fenshu*10+"%");
 		    			}

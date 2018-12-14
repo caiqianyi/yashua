@@ -62,7 +62,7 @@ public class RechargeListener {
 			String adjunctInfo = message.getString("adjunctInfo"),
 					descr = message.getString("descr"),
 					logType = message.getString("logType"),
-					recharge_fee = message.getString("recharge_fee");
+					recharge_fee = message.getString("rechargeFee");
 			Long userId = message.getLong("userId");
 			Long logTime = message.getLong("logTime");
 			UserEntity user = userService.rechargeForSys(userId, logType, adjunctInfo, recharge_fee, logTime);

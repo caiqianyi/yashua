@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/new_header.html">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"> </script>
 <title>设置</title>
 </head>
 <body>
@@ -16,23 +17,538 @@
 <div class="qj-moshi font-26">
 	<p>清洁模式</p>
 	<ul>
-		<li>轻柔</li>
-		<li class="on">标准</li>
-		<li>深度</li>
+		<li onclick="senddatap(0,0x01);">轻柔</li>
+		<li  onclick="senddatap(0,0x02);">标准</li>
+		<li onclick="senddatap(0,0x03);">深度</li>
 	</ul>
 </div>
 
 <div class="settime font-24 center">
-	<p>清洁模式</p>
+	<p>刷牙时长</p>
 	<ul>
-		<li><i>10秒</i></li><!--em宽为0-->
-		<li><i>15秒</i></li><!--em宽为25%-->
-		<li><i>20秒</i></li><!--em宽为50%-->
-		<li class="on"><i>25秒</i></li><!--em宽为75%-->
-		<li><i>30秒</i></li><!--em宽为100%-->
+		<li onclick="senddatap(1,0x01);"><i>10秒</i></li><!--em宽为0-->
+		<li onclick="senddatap(1,0x02);"><i>15秒</i></li><!--em宽为25%-->
+		<li onclick="senddatap(1,0x03);"><i>20秒</i></li><!--em宽为50%-->
+		<li  onclick="senddatap(1,0x04);"><i>25秒</i></li><!--em宽为75%-->
+		<li onclick="senddatap(1,0x05);"><i>30秒</i></li><!--em宽为100%-->
 		<em style="width:0%"></em>
 	</ul>
 </div>
-
+<div id="myparams" style="display: none">
+ <span id="timestamp">1543473844</span>
+ <span id="nonceStr">cc37b2fd83094a34</span>
+ <span id="signature">48c0be1a5510dab7070b9bf8054b5373a1e74e59</span>
+ <span id="appId">wx3916e075f64cf1b5</span>
+  <span id="trueCardRandom"></span>
+ 
+</div>
 </body>
 </html>
+<script type="text/javascript">
+
+	 jQuery(document).ready(function(){
+
+	   //base64_to_bytes_array('UgAFDQo=');
+	  
+	  //初始化库 
+	 loadXMLDoc();
+	 //初始化库结束
+	  var dianliang, shouming,shuayaci, jiujing, kouqi; 
+
+	  $("#CallGetWXrefresh").on("click",function(e){  
+	    //showdialog();
+	     
+	     //1. 打开微信设备 
+	     my_openWXDeviceLib();
+	      
+	     //2. 安装设备事件
+	     my_installwxEvents();
+	      
+	     //2.1安装状态改变事件 暂时不检测
+	    // my_onWXDeviceStateChange(); 
+	      
+	     //3. 安装接收到数据事件 暂时 
+	     my_onReceiveDataFromWXDevice();
+	      
+	     //4. 刷新设备信息
+	     my_getWXDeviceInfos();
+	      
+	      
+	       
+	  });
+	   
+	   
+	   
+	  
+	 });
+	 //微信硬件jsapi库
+	function loadXMLDoc()
+	{
+	    var appId =jQuery("#appId").text();
+	    var timestamp=jQuery("#timestamp").text();
+	    var nonceStr =jQuery("#nonceStr").text();
+	    var signature=jQuery("#signature").text();
+	    wx.config({
+	             beta: true,
+	              debug: true,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+	              appId: appId, 
+	              timestamp: timestamp,
+	              nonceStr: nonceStr,
+	              signature: signature,
+	              jsApiList: [
+	                'openWXDeviceLib',
+	                'closeWXDeviceLib',
+	                'getWXDeviceInfos',
+	                'getWXDeviceBindTicket',
+	                'getWXDeviceUnbindTicket',
+	                'startScanWXDevice',
+	                'stopScanWXDevice',
+	                'connectWXDevice',
+	                'disconnectWXDevice',
+	                'sendDataToWXDevice',
+	                'onWXDeviceBindStateChange',
+	                'onWXDeviceStateChange',
+	                'onScanWXDeviceResult',
+	                'onReceiveDataFromWXDevice',
+	                'onWXDeviceBluetoothStateChange',
+	              ]
+	          });
+	            // alert("初始化库结束");
+	}
+	//判断调用jsapi返回状态 true表示成功
+	wx.error(function (res) {
+	  alert("调用微信jsapi返回的状态:"+res.errMsg);
+	});
+	 
+	/******************************分割线************************************************/
+	/*********************************************************
+	* 打开微信设备
+	* 作者：wxh 2016-04-04
+	* my_openWXDeviceLib
+	* 入口参数：无
+	* 出口参数：0表示打开成功；1表示打开失败
+	*********************************************************/
+	function my_openWXDeviceLib(){
+	   var x=0; 
+	   WeixinJSBridge.invoke('openWXDeviceLib', {}, 
+	   function(res){
+	       mlog("打开设备返回："+res.err_msg);
+	      if(res.err_msg=='openWXDeviceLib:ok')
+	        {
+	          if(res.bluetoothState=='off')
+	            {    
+	              showdialog("太着急啦","亲,使用前请先打开手机蓝牙！");  
+	              $("#lbInfo").innerHTML="1.请打开手机蓝牙";
+	              $("#lbInfo").css({color:"red"});
+	              x=1;
+	              //isOver();
+	            };
+	          if(res.bluetoothState=='unauthorized')
+	            {
+	              showdialog("出错啦","亲,请授权微信蓝牙功能并打开蓝牙！");    
+	              $("#lbInfo").html("1.请授权蓝牙功能");
+	              $("#lbInfo").css({color:"red"});
+	              x=1;
+	              //isOver();
+	            }; 
+	          if(res.bluetoothState=='on')
+	            {
+	              //showdialog("太着急啦","亲,请查看您的设备是否打开！");   
+	              $("#lbInfo").html("1.蓝牙已打开,未找到设备");
+	              $("#lbInfo").css({color:"red"});
+	              //$("#lbInfo").attr(("style", "background-color:#000");
+	              x=0;
+	              //isOver();
+	            };      
+	        }
+	      else
+	        {
+	          $("#lbInfo").html("1.微信蓝牙打开失败");
+	          x=1; 
+	          showdialog("微信蓝牙状态","亲,请授权微信蓝牙功能并打开蓝牙！");   
+	        }
+	    });
+	   return x;  //0表示成功 1表示失败
+	}
+	 
+	 
+	/*********************************************************
+	* 装载微信事件处理
+	* 作者：wxh 2016-04-04
+	* my_installwxEvents
+	* 入口参数：无
+	* 出口参数：无
+	*********************************************************/
+	 function my_installwxEvents(){
+	   //1. 安装微信绑定事件
+	   WeixinJSBridge.on('onWXDeviceBindStateChange', function(argv) {
+	       //todo
+	        }); 
+	   //2. 扫描到某个设备      
+	   WeixinJSBridge.on('onScanWXDeviceResult', function(argv) {
+	        //todo
+	        });
+	   //3. 手机蓝牙状态改变事件    
+	   WeixinJSBridge.on('onWXDeviceBluetoothStateChange', function(argv) {
+	        //todo
+	        });         
+	 }
+	  
+	/*********************************************************
+	* 接收到数据事件
+	* 作者：wxh 2016-04-04
+	* my_onReceiveDataFromWXDevice
+	* 入口参数：无
+	* 出口参数：无
+	*********************************************************/ 
+	function my_onReceiveDataFromWXDevice(){
+		
+	    WeixinJSBridge.on('onReceiveDataFromWXDevice', function(argv) {
+	      var sss=argv.base64Data;
+	    mlog("接收的数据-->"+base64_to_bytes_array(sss));
+	        //var Bytes=base64_to_bytes_array(argv.base64Data);
+	        //alert("硬件设备返回的base64数据"+argv.base64Data);
+	      //  mlog("接收的数据-->"+pHex(base64_to_bytes_array(argv.base64Data)));
+	       // recevResult=checkReceiveData(Bytes);
+	        
+	       
+	      });
+	}
+	  
+	 
+	 
+	/**********************************************
+	* 取得微信设备信息
+	* 作者：wxh 2016-04-04
+	* my_getWXDeviceInfos
+	* 入口参数：无
+	* 出口参数：返回一个已经链接的设备的ID
+	**********************************************/
+	function my_getWXDeviceInfos(){
+	    
+	    WeixinJSBridge.invoke('getWXDeviceInfos', {}, function(res){
+	        var len=res.deviceInfos.length;  //绑定设备总数量
+	        for(i=0; i<=len-1;i++)
+	         {
+	           //alert(i + ' ' + res.deviceInfos[i].deviceId + ' ' +res.deviceInfos[i].state); 
+	           if(res.deviceInfos[i].state==="connected")
+	            {
+	              $("#lbdeviceid").html(res.deviceInfos[i].deviceId); 
+	              C_DEVICEID = res.deviceInfos[i].deviceId;
+	              $("#lbInfo").html("2.设备已成功连接");
+	              $("#lbInfo").css({color:"green"});
+	              woshou();
+	              break;   
+	            }  
+	         }
+	            
+	    }); 
+	  return;    
+	}
+	 
+	function mlog(m){
+	    var log=$('#logtext').val();
+	    //log=log+m;
+	    log = m;
+	    $('#logtext').val(log);
+	}
+	 
+	/***************************************************************
+	 * 显示提示信息
+	***************************************************************/
+	function showdialog(DialogTitle,DialogContent){
+	   var $dialog = $("#Mydialog");
+	   $dialog.find("#dialogTitle").html(DialogTitle);
+	   $dialog.find("#dialogContent").html(DialogContent);
+	   $dialog.show();
+	   $dialog.find(".weui_btn_dialog").one("click", function(){
+	        $dialog.hide();
+	   });
+	}
+	 
+	 
+	/***
+	   * 
+	   */
+	  $("#icFuWei").on("click",function(e){
+	         alert("开始"+C_DEVICEID);
+	         
+	         var Bytes=CheckBalance();
+	         var x=senddataBytes(Bytes,C_DEVICEID);
+	          
+	         if(x===0){$("#lbInfo").html('x.完成')}
+	         else {$("#lbInfo").html('x.失败')};
+	    });
+	      function woshou(){
+
+	           var Bytes=new Array();
+	           
+	            Bytes[0]=0x40;
+	        
+	            Bytes[1]=0x01;
+	        
+	            Bytes[2]=0x02;
+	           
+	            Bytes[3]=0x0d;
+	            Bytes[4]=0x0a;
+	       var x=senddataBytes(Bytes,C_DEVICEID);
+	          
+	      
+	    }
+	    function senddatap(biaoshi,valzhi){
+
+	           var Bytes=new Array();
+	           if(biaoshi==0){
+	           
+	            Bytes[0]=0x32;
+	        }else{
+	          
+	            Bytes[0]=0x33;
+	         }
+	          
+	           Bytes[1]=0x00;
+	        
+	         if(valzhi==1){
+	         
+	               Bytes[2]=0x01;
+	            }else if(valzhi==2){
+	             
+	               Bytes[2]=0x02;
+	            }else if(valzhi==3){
+	            
+	              Bytes[2]=0x03;
+	            }else if(valzhi==4){
+		            
+		              Bytes[2]=0x04;
+		            }else if(valzhi==5){
+			            
+			              Bytes[2]=0x05;
+			            }
+	            Bytes[3]=0x0d;
+	            Bytes[4]=0x0a;
+	       var x=senddataBytes(Bytes,C_DEVICEID);
+	          
+	         if(x===0){$("#lbInfo").html('x.完成')}
+	         else {$("#lbInfo").html('x.失败')}; 
+	    }
+	         function kaishiceliang(){
+
+	           var Bytes=new Array();
+	            Bytes[0]=0x31;
+	         
+	            Bytes[1]=0x00;
+	        
+	         
+	            Bytes[2]=0x01;
+	            
+	            Bytes[3]=0x0d;
+	            Bytes[4]=0x0a;
+	       var x=senddataBytes(Bytes,C_DEVICEID);
+	          
+	         if(x===0){$("#lbInfo").html('x.完成')}
+	         else {$("#lbInfo").html('x.失败')}; 
+	    }
+	    function CheckBalance(){
+	     var Bytes=new Array();
+	     
+	        Bytes[0]=0x02;
+	         
+	        Bytes[1]=0x00;
+	        Bytes[2]=0x01;
+	         
+	        Bytes[3]=0x02;
+	        Bytes[4]=0x03;
+	         
+	        Bytes[5]=0x04;
+	        Bytes[6]=0x05;
+	      return Bytes;
+	     
+	  }
+	   
+	   
+	  /*******************************************************************
+	 * 发送数据函数
+	 * 作者：V型知识库 www.vxzsk.com 2016-04-04
+	 * 入口参数：
+	 *     cmdBytes: 需要发送的命令字节
+	 *     selDeviceID: 选择的需要发送设备的ID 
+	 * 出口参数：
+	 *     返回: 0表示发送成功；1表示发送失败
+	 *     如果成功，则接收事件应该能够收到相应的数据
+	*******************************************************************/
+	function senddataBytes(cmdBytes,selDeviceID){
+	  //1. 如果输入的参数长度为零，则直接退出
+	  if(cmdBytes.length<=0){return 1};
+	 // alert("向微信发送指令数据");
+	  //1.1 如果设备ID为空，则直接返回
+	  if(selDeviceID.length<=0){return 1};
+	  //2. 发送数据
+	  var x=0;
+	  WeixinJSBridge.invoke('sendDataToWXDevice', {
+	            "deviceId":selDeviceID, 
+	            "base64Data":bytes_array_to_base64(cmdBytes)
+	            }, function(res){
+	                //alert("向微信发送指令数据返回的状态"+res.err_msg);
+	            if(res.err_msg=='sendDataToWXDevice:ok')
+	               {
+	                 
+	                 x=0;
+	                 alert("数据发送成功");
+	               }  
+	            else
+	               {
+	                 
+	                 x=1; 
+	                 alert("数据发送失败");
+	               } 
+	        });  
+	  return x;      
+	}
+	 
+	 
+	/**
+	 *  Byte数组转Base64字符,原理同上 
+	 * @Param [0x00,0x00]
+	 * @return Base64字符串
+	 **/
+	function bytes_array_to_base64(array) {
+	    if (array.length == 0) {
+	        return "";
+	    }
+	    var b64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+	    var result = "";
+	    // 给末尾添加的字符,先计算出后面的字符
+	    var d3 = array.length % 3;
+	    var endChar = "";
+	    if (d3 == 1) {
+	        var value = array[array.length - 1];
+	        endChar = b64Chars.charAt(value >> 2);
+	        endChar += b64Chars.charAt((value << 4) & 0x3F);
+	        endChar += "==";
+	    } else if (d3 == 2) {
+	        var value1 = array[array.length - 2];
+	        var value2 = array[array.length - 1];
+	        endChar = b64Chars.charAt(value1 >> 2);
+	        endChar += b64Chars.charAt(((value1 << 4) & 0x3F) + (value2 >> 4));
+	        endChar += b64Chars.charAt((value2 << 2) & 0x3F);
+	        endChar += "=";
+	    }
+	 
+	    var times = array.length / 3;
+	    var startIndex = 0;
+	    // 开始计算
+	    for (var i = 0; i < times - (d3 == 0 ? 0 : 1); i++) {
+	        startIndex = i * 3;
+	 
+	        var S1 = array[startIndex + 0];
+	        var S2 = array[startIndex + 1];
+	        var S3 = array[startIndex + 2];
+	 
+	        var s1 = b64Chars.charAt(S1 >> 2);
+	        var s2 = b64Chars.charAt(((S1 << 4) & 0x3F) + (S2 >> 4));
+	        var s3 = b64Chars.charAt(((S2 & 0xF) << 2) + (S3 >> 6));
+	        var s4 = b64Chars.charAt(S3 & 0x3F);
+	        // 添加到结果字符串中
+	        result += (s1 + s2 + s3 + s4);
+	    }
+	 
+	    return result + endChar;
+	}
+	 /**
+	 *  Base64字符转Byte数组,原理同上 
+	 * @Param Base64字符
+	 * @return Base64字符串
+	 **/
+	function base64_to_bytes_array (input) { // 解码，配合decodeURIComponent使用
+	    var base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	    var output = "";
+	    var chr1, chr2, chr3;
+	    var enc1, enc2, enc3, enc4;
+	    var i = 0;
+	    input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+	    while (i < input.length) {
+	        enc1 = base64EncodeChars.indexOf(input.charAt(i++));
+	        enc2 = base64EncodeChars.indexOf(input.charAt(i++));
+	        enc3 = base64EncodeChars.indexOf(input.charAt(i++));
+	        enc4 = base64EncodeChars.indexOf(input.charAt(i++));
+	        chr1 = (enc1 << 2) | (enc2 >> 4);
+	        chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+	        chr3 = ((enc3 & 3) << 6) | enc4;
+	        output = output + String.fromCharCode(chr1);
+	        if (enc3 != 64) {
+	            output = output + String.fromCharCode(chr2);
+	        }
+	        if (enc4 != 64) {
+	            output = output + String.fromCharCode(chr3);
+	        }
+	    }
+	    //alert(CharToHex(output));
+	    return CharToHex(output);
+	}
+	function CharToHex(str) {
+	    var out, i, h,j;
+	    var kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei;
+	    out = "";
+	    i = 0;
+	    while(i < str.length) 
+	    {
+	        h = str.charCodeAt(i++).toString(16);
+	        if(h==54){
+	          kxieyi=54;
+	          j=i;
+	        }else if(h==55){
+	          jxieyi=55;
+	          j=i;
+	        }else if(h==51){
+	          dxieyi=51; 
+	          j=i;
+	        }
+	        if(kxieyi==54 && i-j==1){
+	          kgaowei=h;
+	        }
+	        if(kxieyi==54 && i-j==2){
+	          kdiwei=h;
+	        }
+	        if(jxieyi==55 && i-j==1){
+	          jgaowei=h;
+	        }
+	        if(jxieyi==55 && i-j==2){
+	          jdiwei=h;
+	        }
+	        if(dxieyi==51 && i-j==1){
+	          dgaowei=h;
+	        }
+	        if(dxieyi==51 && i-j==2){
+	          sdiwei=h;
+	        }
+	        if(dxieyi==51 && i-j==3){
+		          sanwei=h;
+		        }
+	        if(h.length==1){
+	          h="0"+h;
+	        }
+	        out += "\\0x" + h;
+	        out +=(i > 0 && i % 8 == 0)?"\r\n":", ";
+	    }
+
+	    if(kxieyi==54){
+	      kouqi=parseInt(kgaowei,16)*256+parseInt(kdiwei,16);
+	      }
+	    if(jxieyi==55){
+	      jiujing=parseInt(jgaowei,16)*256+parseInt(jdiwei,16);
+	      }
+	    if(dxieyi==51){
+	      dianliang=parseInt(dgaowei,16);
+	      shouming=parseInt(sdiwei,16);
+	      shuayaci=parseInt(sanwei,16);
+	      }
+	   
+	    $("#dianliang").html(dianliang);
+	    $("#shouming").html(shouming);
+	    $("#shuayaci").html(shuayaci);
+	    $("#kouqi").html(kouqi);
+	    $("#jiujing").html(jiujing);
+	    return out;
+	}
+
+</script>

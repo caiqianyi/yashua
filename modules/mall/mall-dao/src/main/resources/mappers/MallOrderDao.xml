@@ -26,6 +26,7 @@
 		<result property="address" column="address" />
 		<result property="consignee" column="consignee" />
 		<result property="mobile" column="mobile" />
+		<result property="fuid" column="fuid" />
 		<collection property="childs"
 			ofType="com.lebaoxun.modules.mall.entity.MallOrderProductEntity"
 			resultMap="mallOrderProductMap" />
