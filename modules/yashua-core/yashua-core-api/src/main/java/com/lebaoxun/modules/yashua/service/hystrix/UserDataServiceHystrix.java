@@ -25,4 +25,9 @@ public class UserDataServiceHystrix implements IUserDataService{
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
+	@Override
+	public ResponseMessage save(Long kouqi,Long user_id) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
 }

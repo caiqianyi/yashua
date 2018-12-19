@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.yashua.service.UserDataService;
+import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 /**
  * 用户口气表
@@ -34,5 +35,14 @@ public class UserDataController {
     	 PageUtils page = userDataService.queryByConditgions(params);
          return ResponseMessage.ok(page);
     }
+    /**
+     * 保存口气数据
+     */
+    @RequestMapping("/yashua/userdata/save")
+    @RedisLock(value="yashua:userdata:save:lock:#arg0")
+    ResponseMessage save(@RequestParam("kouqi") Long kouqi,@RequestParam("user_id") Long user_id){
+   	   userDataService.save(kouqi,user_id);
+    return ResponseMessage.ok();
+   }
 
 }

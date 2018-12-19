@@ -25,5 +25,10 @@ public interface IUserDataService {
      */
     @RequestMapping("/yashua/userdata/history/list")
 	ResponseMessage hlist(@RequestParam Map<String, Object> params);
+    /*
+     * 保存口气数据
+     */
+    @RequestMapping("/yashua/userdata/save")
+	ResponseMessage save(@RequestParam("kouqi") Long kouqi,@RequestParam("user_id") Long user_id);
 
 }

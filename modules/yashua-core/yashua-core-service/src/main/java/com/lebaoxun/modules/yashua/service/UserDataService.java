@@ -13,4 +13,6 @@ public interface UserDataService extends IService<UserDataEntity>{
 	  PageUtils queryPage(Map<String, Object> params);
 
 	PageUtils queryByConditgions(Map<String, Object> params);
+
+    void save(Long kouqi,Long usedr_id);
 }
