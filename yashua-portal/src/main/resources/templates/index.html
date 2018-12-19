@@ -142,6 +142,17 @@ $('.inBox span').click(function(){
 		}
 
 	 jQuery(document).ready(function(){
+		 $.ajax({
+				type: "GET",
+			    url: "/account/user/info",
+			    success: function(r){
+			    	if(r.errcode == 0){
+			    		$("#shoujifen").text(r.data.balance);
+					}else{
+						alert(r.errmsg);
+					}
+				}
+			});
 
 	   //base64_to_bytes_array('UgAFDQo=');
 	  $.ajax({
@@ -634,7 +645,7 @@ $('.inBox span').click(function(){
 
 	    if(kxieyi==54){
 	      kouqi=parseInt(kgaowei,16)*256+parseInt(kdiwei,16);
-	      $("#circles-1 span").html(kouqi);
+	      $("#circles-2 span").html(kouqi);
 	      }
 	    if(jxieyi==55){
 	      jiujing=parseInt(jgaowei,16)*256+parseInt(jdiwei,16);
