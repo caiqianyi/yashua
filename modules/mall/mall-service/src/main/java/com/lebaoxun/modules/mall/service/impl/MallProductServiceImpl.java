@@ -79,10 +79,10 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductDao, MallProd
 		
 		Integer showInShelve = mallProduct.getShowInShelve();
 		if(1 == showInShelve){//如果上架
-			mpe.setShowInShelve(showInShelve);
 			mpe.setShelveBy(mallProduct.getUpdateBy());
 			mpe.setShelveTime(new Date());
 		}
+		mpe.setShowInShelve(showInShelve);
 		mpe.setProductNumber(mallProduct.getProductNumber());
 		mpe.setDescription(mallProduct.getDescription());
 		mpe.setIntroduce(mallProduct.getIntroduce());
