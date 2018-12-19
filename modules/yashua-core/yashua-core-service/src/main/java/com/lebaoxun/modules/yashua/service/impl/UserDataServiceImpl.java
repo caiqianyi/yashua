@@ -118,7 +118,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
         } 
 		 Page<UserDataEntity> page = this.selectPage(
 	                new Query<UserDataEntity>(params).getPage(),
-	                new EntityWrapper<UserDataEntity>().eq(" ", user_id).orderBy("adddate", true).le("adddate",endDate).gt("adddate",startDate));
+	                new EntityWrapper<UserDataEntity>().eq("userid", user_id).orderBy("adddate", true).le("adddate",endDate).gt("adddate",startDate));
 	       return new PageUtils(page);
 	}
 
