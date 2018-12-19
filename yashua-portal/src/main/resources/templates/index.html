@@ -651,8 +651,28 @@ $('.inBox span').click(function(){
 	    $("#shuayaci").html(shuayaci);
 	    $("#kouqi").html(kouqi);
 	    $("#jiujing").html(jiujing);
+	    
+	  //保存口气数据
+		$.ajax({
+			type: "POST",
+		    url: "/yashua/userdata/save",
+		    data: {kouqi:3},
+		    success: function(r){
+		    	
+		    	 if(r.errcode == 0){
+
+		    		
+		    		alert("保存成功");
+		    		return;
+		    	} 
+		    	alert(r.errmsg);
+		    }
+		});
 	    return out;
 	}
 
+	
+  
+   
 </script>
 
