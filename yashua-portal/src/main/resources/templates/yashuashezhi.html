@@ -6,7 +6,7 @@
 <title>设置</title>
 </head>
 <body>
-<div class="Top"><h3>设置</h3><a href="">完成</a></div>
+<div class="Top"><h3 onclick="javascript:history.go(-1);">设置</h3><!-- <a href="">完成</a> --></div>
 <div class="nichen font-36 center">牙刷名称<em></em></div>
 
 <div class="shezhi-moshi center font-28">
@@ -17,27 +17,27 @@
 <div class="qj-moshi font-26">
 	<p>清洁模式</p>
 	<ul>
-		<li onclick="senddatap(0,0x01);">轻柔</li>
-		<li  onclick="senddatap(0,0x02);">标准</li>
-		<li onclick="senddatap(0,0x03);">深度</li>
+		<li class="on" onclick="senddatap(0,0x01);" id="qinrou">轻柔</li>
+		<li  onclick="senddatap(0,0x02);" id="biaozhun">标准</li>
+		<li onclick="senddatap(0,0x03);" id="shendu">深度</li>
 	</ul>
 </div>
 
 <div class="settime font-24 center">
 	<p>刷牙时长</p>
 	<ul>
-		<li onclick="senddatap(1,0x01);"><i>10秒</i></li><!--em宽为0-->
-		<li onclick="senddatap(1,0x02);"><i>15秒</i></li><!--em宽为25%-->
-		<li onclick="senddatap(1,0x03);"><i>20秒</i></li><!--em宽为50%-->
-		<li  onclick="senddatap(1,0x04);"><i>25秒</i></li><!--em宽为75%-->
-		<li onclick="senddatap(1,0x05);"><i>30秒</i></li><!--em宽为100%-->
+		<li onclick="senddatap(1,0x01);" class="on" id="shimiao"><i>10秒</i></li><!--em宽为0-->
+		<li onclick="senddatap(1,0x02);" id="shiwumiao"><i>15秒</i></li><!--em宽为25%-->
+		<li onclick="senddatap(1,0x03);" id="ershimiao"><i>20秒</i></li><!--em宽为50%-->
+		<li  onclick="senddatap(1,0x04);" id="ershiwumiao"><i>25秒</i></li><!--em宽为75%-->
+		<li onclick="senddatap(1,0x05);" id="sanshimiao"><i>30秒</i></li><!--em宽为100%-->
 		<em style="width:0%"></em>
 	</ul>
 </div>
 <div id="myparams" style="display: none">
- <span id="timestamp">1543473844</span>
- <span id="nonceStr">cc37b2fd83094a34</span>
- <span id="signature">48c0be1a5510dab7070b9bf8054b5373a1e74e59</span>
+ <span id="timestamp">1545048625</span>
+ <span id="nonceStr">a784287b835449eb</span>
+ <span id="signature">92a9469ffc4938356e3718e1e711868bc0cef71f</span>
  <span id="appId">wx3916e075f64cf1b5</span>
   <span id="trueCardRandom"></span>
  
@@ -45,7 +45,6 @@
 </body>
 </html>
 <script type="text/javascript">
-
 	 jQuery(document).ready(function(){
 
 	   //base64_to_bytes_array('UgAFDQo=');
@@ -53,29 +52,9 @@
 	  //初始化库 
 	 loadXMLDoc();
 	 //初始化库结束
-	  var dianliang, shouming,shuayaci, jiujing, kouqi; 
+	 
 
-	  $("#CallGetWXrefresh").on("click",function(e){  
-	    //showdialog();
-	     
-	     //1. 打开微信设备 
-	     my_openWXDeviceLib();
-	      
-	     //2. 安装设备事件
-	     my_installwxEvents();
-	      
-	     //2.1安装状态改变事件 暂时不检测
-	    // my_onWXDeviceStateChange(); 
-	      
-	     //3. 安装接收到数据事件 暂时 
-	     my_onReceiveDataFromWXDevice();
-	      
-	     //4. 刷新设备信息
-	     my_getWXDeviceInfos();
-	      
-	      
-	       
-	  });
+	 setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
 	   
 	   
 	   
@@ -90,7 +69,7 @@
 	    var signature=jQuery("#signature").text();
 	    wx.config({
 	             beta: true,
-	              debug: true,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+	              debug: false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 	              appId: appId, 
 	              timestamp: timestamp,
 	              nonceStr: nonceStr,
@@ -246,12 +225,6 @@
 	  return;    
 	}
 	 
-	function mlog(m){
-	    var log=$('#logtext').val();
-	    //log=log+m;
-	    log = m;
-	    $('#logtext').val(log);
-	}
 	 
 	/***************************************************************
 	 * 显示提示信息
@@ -266,21 +239,7 @@
 	   });
 	}
 	 
-	 
-	/***
-	   * 
-	   */
-	  $("#icFuWei").on("click",function(e){
-	         alert("开始"+C_DEVICEID);
-	         
-	         var Bytes=CheckBalance();
-	         var x=senddataBytes(Bytes,C_DEVICEID);
-	          
-	         if(x===0){$("#lbInfo").html('x.完成')}
-	         else {$("#lbInfo").html('x.失败')};
-	    });
 	      function woshou(){
-
 	           var Bytes=new Array();
 	           
 	            Bytes[0]=0x40;
@@ -309,38 +268,60 @@
 	           Bytes[1]=0x00;
 	        
 	         if(valzhi==1){
-	         
+	        	 if(biaoshi==0){
+	        		 $("#qinrou").attr('class','on');
+	        		 $("#biaozhun").removeClass("on");
+	        		 $("#shendu").removeClass("on");
+		         }else if(biaoshi==1){
+		        	 $("#shimiao").attr('class','on');
+	        		 $("#shiwumiao").removeClass("on");
+	        		 $("#ershimiao").removeClass("on");
+	        		 $("#ershiwumiao").removeClass("on");
+	        		 $("#sanshimiao").removeClass("on");
+		         }
 	               Bytes[2]=0x01;
 	            }else if(valzhi==2){
-	             
+	            	if(biaoshi==0){
+		        		 $("#biaozhun").attr('class','on');
+		        		 $("#qinrou").removeClass("on");
+		        		 $("#shendu").removeClass("on");
+			         }else if(biaoshi==1){
+			        	 $("#shiwumiao").attr('class','on');
+		        		 $("#shimiao").removeClass("on");
+		        		 $("#ershimiao").removeClass("on");
+		        		 $("#ershiwumiao").removeClass("on");
+		        		 $("#sanshimiao").removeClass("on");
+			         }
 	               Bytes[2]=0x02;
 	            }else if(valzhi==3){
-	            
+	            	if(biaoshi==0){
+		        		 $("#shendu").attr('class','on');
+		        		 $("#biaozhun").removeClass("on");
+		        		 $("#qinrou").removeClass("on");
+			         }else if(biaoshi==1){
+			        	 $("#ershimiao").attr('class','on');
+		        		 $("#shimiao").removeClass("on");
+		        		 $("#shiwumiao").removeClass("on");
+		        		 $("#ershiwumiao").removeClass("on");
+		        		 $("#sanshimiao").removeClass("on");
+			         }
 	              Bytes[2]=0x03;
 	            }else if(valzhi==4){
-		            
+	            	 $("#ershiwumiao").attr('class','on');
+	        		 $("#shimiao").removeClass("on");
+	        		 $("#shiwumiao").removeClass("on");
+	        		 $("#ershimiao").removeClass("on");
+	        		 $("#sanshimiao").removeClass("on");
 		              Bytes[2]=0x04;
 		            }else if(valzhi==5){
-			            
+		            	 $("#sanshimiao").attr('class','on');
+		        		 $("#shimiao").removeClass("on");
+		        		 $("#shiwumiao").removeClass("on");
+		        		 $("#ershiwumiao").removeClass("on");
+		        		 $("#ershimiao").removeClass("on");
 			              Bytes[2]=0x05;
 			            }
-	            Bytes[3]=0x0d;
-	            Bytes[4]=0x0a;
-	       var x=senddataBytes(Bytes,C_DEVICEID);
-	          
-	         if(x===0){$("#lbInfo").html('x.完成')}
-	         else {$("#lbInfo").html('x.失败')}; 
-	    }
-	         function kaishiceliang(){
-
-	           var Bytes=new Array();
-	            Bytes[0]=0x31;
-	         
-	            Bytes[1]=0x00;
 	        
-	         
-	            Bytes[2]=0x01;
-	            
 	            Bytes[3]=0x0d;
 	            Bytes[4]=0x0a;
 	       var x=senddataBytes(Bytes,C_DEVICEID);
@@ -348,22 +329,6 @@
 	         if(x===0){$("#lbInfo").html('x.完成')}
 	         else {$("#lbInfo").html('x.失败')}; 
 	    }
-	    function CheckBalance(){
-	     var Bytes=new Array();
-	     
-	        Bytes[0]=0x02;
-	         
-	        Bytes[1]=0x00;
-	        Bytes[2]=0x01;
-	         
-	        Bytes[3]=0x02;
-	        Bytes[4]=0x03;
-	         
-	        Bytes[5]=0x04;
-	        Bytes[6]=0x05;
-	      return Bytes;
-	     
-	  }
 	   
 	   
 	  /*******************************************************************
@@ -487,67 +452,78 @@
 	}
 	function CharToHex(str) {
 	    var out, i, h,j;
-	    var kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei;
+	    var zxieyi,sxieyi;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
 	    {
 	        h = str.charCodeAt(i++).toString(16);
-	        if(h==54){
-	          kxieyi=54;
+	        if(h==52){
+	        	zxieyi=52;
 	          j=i;
-	        }else if(h==55){
-	          jxieyi=55;
-	          j=i;
-	        }else if(h==51){
-	          dxieyi=51; 
+	        }else if(h==53){
+	        	sxieyi=53;
 	          j=i;
 	        }
-	        if(kxieyi==54 && i-j==1){
+	        if(zxieyi==52 && i-j==1){
 	          kgaowei=h;
+	          if(h=1){
+	        	 $("#qinrou").attr('class','on');
+	        	 $("#biaozhun").removeClass("on");
+	        	 $("#shendu").removeClass("on");
+	          }else if(h=2){
+		        	 $("#biaozhun").attr('class','on');
+		        	 $("#qinrou").removeClass("on");
+		        	 $("#shendu").removeClass("on");
+	          }else if(h=3){
+		        	 $("#shendu").attr('class','on');
+		        	 $("#biaozhun").removeClass("on");
+		        	 $("#qinrou").removeClass("on");
+	          }
 	        }
-	        if(kxieyi==54 && i-j==2){
-	          kdiwei=h;
+	        if(sxieyi==53 && i-j==1){
+	        	 if(h=1){
+		        	 $("#shimiao").attr('class','on');
+	        		 $("#shiwumiao").removeClass("on");
+	        		 $("#ershimiao").removeClass("on");
+	        		 $("#ershiwumiao").removeClass("on");
+	        		 $("#sanshimiao").removeClass("on");
+		          }else if(h=2){
+			        	 $("#shiwumiao").attr('class','on');
+		        		 $("#shimiao").removeClass("on");
+		        		 $("#ershimiao").removeClass("on");
+		        		 $("#ershiwumiao").removeClass("on");
+		        		 $("#sanshimiao").removeClass("on");
+		          }else if(h=3){
+			        	 $("#ershimiao").attr('class','on');
+		        		 $("#shiwumiao").removeClass("on");
+		        		 $("#shimiao").removeClass("on");
+		        		 $("#ershiwumiao").removeClass("on");
+		        		 $("#sanshimiao").removeClass("on");
+		          }else if(h=4){
+			        	 $("#ershiwumiao").attr('class','on');
+		        		 $("#shiwumiao").removeClass("on");
+		        		 $("#ershimiao").removeClass("on");
+		        		 $("#shimiao").removeClass("on");
+		        		 $("#sanshimiao").removeClass("on"); 
+		          }else if(h=5){
+			        	 $("#sanshimiao").attr('class','on');
+		        		 $("#shiwumiao").removeClass("on");
+		        		 $("#ershimiao").removeClass("on");
+		        		 $("#ershiwumiao").removeClass("on");
+		        		 $("#shimiao").removeClass("on");
+		          }
 	        }
-	        if(jxieyi==55 && i-j==1){
-	          jgaowei=h;
-	        }
-	        if(jxieyi==55 && i-j==2){
-	          jdiwei=h;
-	        }
-	        if(dxieyi==51 && i-j==1){
-	          dgaowei=h;
-	        }
-	        if(dxieyi==51 && i-j==2){
-	          sdiwei=h;
-	        }
-	        if(dxieyi==51 && i-j==3){
-		          sanwei=h;
-		        }
+	        
+	        
+	        
 	        if(h.length==1){
 	          h="0"+h;
 	        }
 	        out += "\\0x" + h;
 	        out +=(i > 0 && i % 8 == 0)?"\r\n":", ";
 	    }
-
-	    if(kxieyi==54){
-	      kouqi=parseInt(kgaowei,16)*256+parseInt(kdiwei,16);
-	      }
-	    if(jxieyi==55){
-	      jiujing=parseInt(jgaowei,16)*256+parseInt(jdiwei,16);
-	      }
-	    if(dxieyi==51){
-	      dianliang=parseInt(dgaowei,16);
-	      shouming=parseInt(sdiwei,16);
-	      shuayaci=parseInt(sanwei,16);
-	      }
 	   
-	    $("#dianliang").html(dianliang);
-	    $("#shouming").html(shouming);
-	    $("#shuayaci").html(shuayaci);
-	    $("#kouqi").html(kouqi);
-	    $("#jiujing").html(jiujing);
 	    return out;
 	}
 

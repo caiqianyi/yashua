@@ -21,7 +21,7 @@
         </div>
         <div class="conup condow">
         	<span>刷牙次数</span>
-           <em><i id="shuayaci">20</i>次</em>
+           <em><i id="shuayaci">-</i>次</em>
         </div>
     </div>
 </div>
@@ -29,11 +29,11 @@
 <div class="sy-syu">
 	<div class="inBox bg-new fl">
     	<h3>牙刷电量</h3>
-       <p><i id="dianliang">80</i>%</p>
+       <p><i id="dianliang">-</i>%</p>
     </div>
     <div class="inBox bg-new fr">
     	<h3>刷头剩余寿命</h3>
-       <p><i id="shouming">27</i>次</p>
+       <p><i id="shouming">-</i>次</p>
        <span>更换</span>
     </div>
 </div>
@@ -47,7 +47,7 @@
         </div>
         <img src="/statics/new_images/jiance.png" alt=""/>
 	</article> 
-    <input type="button" value="开始检测" onclick="showceliang();"/>
+    <input type="button" value="开始检测"/>
 </div>
 
 <!--公用底部-->
@@ -61,29 +61,29 @@
 </div>
 
 <!--检测弹窗-->
-<div class="pop-kefu font-36" style="text-align:center;">
-	<div></div>
-	<ul style="overflow:hidden;">
+<div class="pop-kefu font-36" style="text-align:center;" id="jcchuangkou">
+	<div id="jcchuangkou2"></div>
+	<ul style="overflow:hidden;"  id="jcchuangkou1">
     	<li class="frist">刷头更换</li>
-        <li>购买</li>
-        <li class="last on">重置</li>
+        <li><a href="/mall/list.html">购买</a></li>
+        <li class="last on" onclick="chongzhi();">重置</li>
     </ul>
 </div>
 
 <!--检测弹窗-->
 <div class="pop-kefu font-36" style="text-align:center;" id="clchuangkou">
-	<div></div>
-	<ul style="overflow:hidden;">
+	<div id="clchuangkou2"></div>
+	<ul style="overflow:hidden;" id="clchuangkou1">
     	<li class="frist">选择测量类型</li>
         <li onclick="kaishiceliang(0);">口气</li>
-        <li onclick="kaishiceliang(1);">酒精</li>
+        <li onclick="kaishiceliang(1);"  class="last on">酒精</li>
     </ul>
 </div>
 
 <div id="myparams" style="display: none">
- <span id="timestamp">1543473844</span>
- <span id="nonceStr">cc37b2fd83094a34</span>
- <span id="signature">48c0be1a5510dab7070b9bf8054b5373a1e74e59</span>
+ <span id="timestamp">1545048575</span>
+ <span id="nonceStr">77b9f3dc71294e86</span>
+ <span id="signature">8cd21a1f6b193a47bce5bc07e5afa68013dc25c1</span>
  <span id="appId">wx3916e075f64cf1b5</span>
   <span id="trueCardRandom"></span>
  
@@ -92,16 +92,24 @@
 </body>
 </html>
 <script type="text/javascript">
+//刷头弹窗
+$('.inBox span').click(function(){
+ $('#jcchuangkou').show();
+ $('#jcchuangkou1').show();
+ $('#jcchuangkou2').show();
+});
+$('.pop-kefu li').click(function(){
+ $('.pop-kefu div').hide();
+ $('.pop-kefu ul').hide();
+});
+
 	$('.jiance input').click(function(){
-		$('.pop-kefu div').show();
-		$('.pop-kefu ul').show();
-	});
-	$('.pop-kefu li').click(function(){
-		$('.pop-kefu div').hide();
-		$('.pop-kefu ul').hide();
+		$('#clchuangkou').show();
+		$('#clchuangkou1').show();
+		$('#clchuangkou2').show();
 	});
 
- 
+	 var dianliang, shouming,shuayaci, jiujing, kouqi; 
 	//
 	var colors = [
 			['#FFF', '#fb2653'], ['#FFF', '#11ff6c']
@@ -111,7 +119,7 @@
 	for (var i = 1; i <= 2; i++) {
 		var child = document.getElementById('circles-' + i),
 		
-			percentage = 8,//进度
+			percentage = 0,//进度
 			
 			circle = Circles.create({
 				id:         child.id,
@@ -144,29 +152,28 @@
 	  //初始化库 
 	 loadXMLDoc();
 	 //初始化库结束
-	  var dianliang, shouming,shuayaci, jiujing, kouqi; 
 
-	  $("#CallGetWXrefresh").on("click",function(e){  
+	 // $("#CallGetWXrefresh").on("click",function(e){  
 	    //showdialog();
-	     
+	 setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
 	     //1. 打开微信设备 
-	     my_openWXDeviceLib();
+	     
 	      
 	     //2. 安装设备事件
-	     my_installwxEvents();
+	     
 	      
 	     //2.1安装状态改变事件 暂时不检测
 	    // my_onWXDeviceStateChange(); 
 	      
 	     //3. 安装接收到数据事件 暂时 
-	     my_onReceiveDataFromWXDevice();
+	     
 	      
 	     //4. 刷新设备信息
-	     my_getWXDeviceInfos();
+	     
 	      
 	      
 	       
-	  });
+	 // });
 	   
 	   
 	   
@@ -181,7 +188,7 @@
 	    var signature=jQuery("#signature").text();
 	    wx.config({
 	             beta: true,
-	              debug: true,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+	              debug: false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 	              appId: appId, 
 	              timestamp: timestamp,
 	              nonceStr: nonceStr,
@@ -223,7 +230,7 @@
 	   var x=0; 
 	   WeixinJSBridge.invoke('openWXDeviceLib', {}, 
 	   function(res){
-	       mlog("打开设备返回："+res.err_msg);
+	      // alert("打开设备返回："+res.err_msg);
 	      if(res.err_msg=='openWXDeviceLib:ok')
 	        {
 	          if(res.bluetoothState=='off')
@@ -316,7 +323,6 @@
 	* 出口参数：返回一个已经链接的设备的ID
 	**********************************************/
 	function my_getWXDeviceInfos(){
-	    
 	    WeixinJSBridge.invoke('getWXDeviceInfos', {}, function(res){
 	        var len=res.deviceInfos.length;  //绑定设备总数量
 	        for(i=0; i<=len-1;i++)
@@ -356,20 +362,9 @@
 	        $dialog.hide();
 	   });
 	}
+	
+		  
 	 
-	 
-	/***
-	   * 
-	   */
-	  $("#icFuWei").on("click",function(e){
-	         alert("开始"+C_DEVICEID);
-	         
-	         var Bytes=CheckBalance();
-	         var x=senddataBytes(Bytes,C_DEVICEID);
-	          
-	         if(x===0){$("#lbInfo").html('x.完成')}
-	         else {$("#lbInfo").html('x.失败')};
-	    });
 	      function woshou(){
 
 	           var Bytes=new Array();
@@ -433,30 +428,21 @@
 	            Bytes[3]=0x0d;
 	            Bytes[4]=0x0a;
 	       var x=senddataBytes(Bytes,C_DEVICEID);
-	       $("#clchuangkou").hide();
 	         if(x===0){$("#lbInfo").html('x.完成')}
 	         else {$("#lbInfo").html('x.失败')}; 
 	    }
-	         function showceliang(){
-	        	 $("#clchuangkou").show();
-	   		}
-	    function CheckBalance(){
-	     var Bytes=new Array();
-	     
-	        Bytes[0]=0x02;
-	         
-	        Bytes[1]=0x00;
-	        Bytes[2]=0x01;
-	         
-	        Bytes[3]=0x02;
-	        Bytes[4]=0x03;
-	         
-	        Bytes[5]=0x04;
-	        Bytes[6]=0x05;
-	      return Bytes;
-	     
-	  }
-	   
+	         function chongzhi(){
+		           var Bytes=new Array();
+		            Bytes[0]=0x34;
+		         
+		            Bytes[1]=0x00;
+		            Bytes[2]=0x02;
+		            Bytes[3]=0x0d;
+		            Bytes[4]=0x0a;
+		       var x=senddataBytes(Bytes,C_DEVICEID);
+		         if(x===0){$("#lbInfo").html('x.完成')}
+		         else {$("#lbInfo").html('x.失败')}; 
+		    }
 	   
 	  /*******************************************************************
 	 * 发送数据函数
@@ -579,7 +565,7 @@
 	}
 	function CharToHex(str) {
 	    var out, i, h,j;
-	    var kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei;
+	    var kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
@@ -616,6 +602,12 @@
 	        if(dxieyi==51 && i-j==3){
 		          sanwei=h;
 		        }
+	        if(dxieyi==51 && i-j==4){
+		          stgaowei=h;
+		        }
+	        if(dxieyi==51 && i-j==5){
+		          stdiwei=h;
+		        }
 	        if(h.length==1){
 	          h="0"+h;
 	        }
@@ -625,14 +617,16 @@
 
 	    if(kxieyi==54){
 	      kouqi=parseInt(kgaowei,16)*256+parseInt(kdiwei,16);
+	      $("#circles-1 span").html(kouqi);
 	      }
 	    if(jxieyi==55){
 	      jiujing=parseInt(jgaowei,16)*256+parseInt(jdiwei,16);
+	      $("#circles-1 span").html(jiujing);
 	      }
 	    if(dxieyi==51){
 	      dianliang=parseInt(dgaowei,16);
-	      shouming=parseInt(sdiwei,16);
-	      shuayaci=parseInt(sanwei,16);
+	      shouming=parseInt(stgaowei,16)*256+parseInt(stdiwei,16);
+	      shuayaci=parseInt(sdiwei,16)*256+parseInt(sanwei,16);
 	      }
 	   
 	    $("#dianliang").html(dianliang);
