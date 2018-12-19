@@ -47,4 +47,14 @@ public class UserDataController {
     	params.put("limit",300);
         return userDataService.hlist(params);
     }
+    	
+    /**
+     * 保存口气数据
+     */
+    	@RequestMapping("/yashua/userdata/save")
+        ResponseMessage save(@RequestParam("kouqi") Long kouqi){
+        	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+            return userDataService.save(kouqi,ue.getUserId());
+        }
+    	
 }

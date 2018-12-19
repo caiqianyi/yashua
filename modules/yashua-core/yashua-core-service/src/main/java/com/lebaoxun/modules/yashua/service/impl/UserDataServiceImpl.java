@@ -8,11 +8,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.Query;
 import com.lebaoxun.modules.yashua.dao.UserDataDao;
@@ -21,6 +26,8 @@ import com.lebaoxun.modules.yashua.service.UserDataService;
 
 @Service("userDataService")
 public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity> implements UserDataService{ 
+	@Resource
+	private UserDataDao userDataDao;
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
 		Long user_id = Long.parseLong((String) params.get("user_id"));
@@ -111,8 +118,45 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
         } 
 		 Page<UserDataEntity> page = this.selectPage(
 	                new Query<UserDataEntity>(params).getPage(),
-	                new EntityWrapper<UserDataEntity>().eq("userid", user_id).orderBy("adddate", true).le("adddate",endDate).gt("adddate",startDate));
+	                new EntityWrapper<UserDataEntity>().eq(" ", user_id).orderBy("adddate", true).le("adddate",endDate).gt("adddate",startDate));
 	       return new PageUtils(page);
 	}
 
+   
+	/**
+	 * 保存口气数据
+	 */
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void save(Long kouqi,Long user_id) {
+		if(kouqi==null || kouqi<=0 || kouqi>=10)
+			throw new I18nMessageException("-1","口气数据无效");
+		try {
+			Calendar calendar = Calendar.getInstance();
+			UserDataEntity userDataEntity = new UserDataEntity();
+			userDataEntity.setAdddate(new Date());
+			userDataEntity.setFenshu(kouqi);
+			userDataEntity.setUserid(user_id);
+			List<UserDataEntity> list=null;
+			Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
+			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+			if(hour>=7 && hour<=9){//早上的口气
+				list = userDataDao.lookList(newDate, user_id,1L);
+				if(list.size()>0) return;
+				userDataEntity.setBiaoshi(1L);
+				userDataDao.insert(userDataEntity);
+			}
+			else if(hour>=19 && hour<=21){//晚上的口气
+				list = userDataDao.lookList(newDate, user_id,2L);
+				if(list.size()>0) return;
+				userDataEntity.setBiaoshi(2L);
+				userDataDao.insert(userDataEntity);
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

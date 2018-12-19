@@ -395,13 +395,6 @@ public class LoginController extends BaseController{
     					ok.put("timestam",timestamp);
     					ok.put("nonceSt",noncestr);
     					ok.put("signatur",signature);
-    					String jifen = "0";
-    					UserEntity user = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
-    					if(user!=null){
-    						System.out.println(user.getBalance());
-    						jifen=user.getBalance()+"";
-    					}
-    					ok.put("jifen",jifen);
     					return new ResponseMessage(ok);
 	}
     @RequestMapping(method = RequestMethod.GET, value = "/oauth2/tokentick2")
@@ -445,6 +438,47 @@ public class LoginController extends BaseController{
     					ok.put("signatur",signature);
     					return new ResponseMessage(ok);
 	}
+    @RequestMapping(method = RequestMethod.GET, value = "/oauth2/tokentick3")
+   	ResponseMessage tokentick3() throws Exception{
+       	// TODO Auto-generated method stub
+       			//1、获取AccessToken  
+       					String accessToken =getAccessToken(); //"16_LN17KXa9jdOU5Eg4qjupBupH_XxdEbIHLxCzZ944nAoIC9wHmL1fKhx82duWdX7ad_0B8W-Sip5jGnM1DAckBzAgD61a4_kbt8P7tsfm8dDrnlyGKtrPVsv-EuMFKSaAJAUZH";  
+       					System.out.println("accessToken========="+accessToken);
+       					//2、获取Ticket  
+       					String jsapi_ticket =getTicket(accessToken); //"HoagFKDcsGMVCIY2vOjf9l_xORO2cDz_p4R2nJVbiRXnqO7ayO0GJ4WCpE41Cflk8G_3UiDVU0JYhod8X7vu6Q";  
+       					System.out.println("jsapi_ticket========="+jsapi_ticket);
+       					//3、时间戳和随机字符串  
+       					String noncestr = UUID.randomUUID().toString().replace("-", "").substring(0, 16);//随机字符串  
+       					String timestamp = String.valueOf(System.currentTimeMillis() / 1000);//时间戳  
+       					//System.out.println("accessToken:"+accessToken+"\njsapi_ticket:"+jsapi_ticket+"\n时间戳："+timestamp+"\n随机字符串："+noncestr);  
+       					//4、获取url  
+       					String url="http://moya.phenointec.com/yashua/my.html";  
+       					//5、将参数排序并拼接字符串  
+       					String str = "jsapi_ticket="+jsapi_ticket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;  
+       					String signature =null;
+       					try
+       			        {
+       			            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+       			            crypt.reset();
+       			            crypt.update(str.getBytes("UTF-8"));
+       			            signature = byteToHex(crypt.digest());
+       			        }
+       			        catch (NoSuchAlgorithmException e)
+       			        {
+       			            e.printStackTrace();
+       			        }
+       			        catch (UnsupportedEncodingException e)
+       			        {
+       			            e.printStackTrace();
+       			        }
+       					//System.out.println("参数："+str+"\n签名："+signature);  
+       					//Long userId = oauth2SecuritySubject.getCurrentUser();
+       					Map<String,Object> ok = new HashMap<String,Object>();
+       					ok.put("timestam",timestamp);
+       					ok.put("nonceSt",noncestr);
+       					ok.put("signatur",signature);
+       					return new ResponseMessage(ok);
+   	}
     public static String SHA1(String decript) {
 		try {
 			MessageDigest digest = java.security.MessageDigest
