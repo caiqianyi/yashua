@@ -17,7 +17,7 @@
     <div class="con fl font-24">
     	<div class="conup">
         	<span>获得积分</span>
-           <em><i>2400</i>分</em>
+           <em><i  id="shoujifen">0</i>分</em>
         </div>
         <div class="conup condow">
         	<span>刷牙次数</span>
@@ -65,7 +65,7 @@
 	<div id="jcchuangkou2"></div>
 	<ul style="overflow:hidden;"  id="jcchuangkou1">
     	<li class="frist">刷头更换</li>
-        <li><a href="/mall/list.html">购买</a></li>
+       <a href="/mall/list.html"> <li>购买</li></a>
         <li class="last on" onclick="chongzhi();">重置</li>
     </ul>
 </div>
@@ -97,10 +97,6 @@ $('.inBox span').click(function(){
  $('#jcchuangkou').show();
  $('#jcchuangkou1').show();
  $('#jcchuangkou2').show();
-});
-$('.pop-kefu li').click(function(){
- $('.pop-kefu div').hide();
- $('.pop-kefu ul').hide();
 });
 
 	$('.jiance input').click(function(){
@@ -148,14 +144,28 @@ $('.pop-kefu li').click(function(){
 	 jQuery(document).ready(function(){
 
 	   //base64_to_bytes_array('UgAFDQo=');
-	  
-	  //初始化库 
-	 loadXMLDoc();
-	 //初始化库结束
-
-	 // $("#CallGetWXrefresh").on("click",function(e){  
-	    //showdialog();
-	 setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
+	  $.ajax({
+		 type : "GET",
+		url:"/oauth2/tokentick",
+		data:{},
+		success:function(r){
+			if(r.errcode == 0){
+				if(r.data.timestam){
+					$("#shoujifen").text(r.data.jifen);
+					 $("#timestamp").text(r.data.timestam);
+					 $("#nonceStr").text(r.data.nonceSt);
+					 $("#signature").text(r.data.signatur);
+				}
+				  //初始化库 
+				 loadXMLDoc();
+				 //初始化库结束
+				 // $("#CallGetWXrefresh").on("click",function(e){  
+				    //showdialog();
+				setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
+			}
+		}
+	});
+	
 	     //1. 打开微信设备 
 	     
 	      
@@ -427,9 +437,13 @@ $('.pop-kefu li').click(function(){
 	             
 	            Bytes[3]=0x0d;
 	            Bytes[4]=0x0a;
+	 	       $('.pop-kefu div').hide();
+		       $('.pop-kefu ul').hide();
+		       alert("请吹气，等待结果上传！");
 	       var x=senddataBytes(Bytes,C_DEVICEID);
-	         if(x===0){$("#lbInfo").html('x.完成')}
-	         else {$("#lbInfo").html('x.失败')}; 
+
+	         if(x===0){}
+	         else {}; 
 	    }
 	         function chongzhi(){
 		           var Bytes=new Array();
@@ -439,7 +453,10 @@ $('.pop-kefu li').click(function(){
 		            Bytes[2]=0x02;
 		            Bytes[3]=0x0d;
 		            Bytes[4]=0x0a;
+		            $('.pop-kefu div').hide();
+				    $('.pop-kefu ul').hide();
 		       var x=senddataBytes(Bytes,C_DEVICEID);
+		     
 		         if(x===0){$("#lbInfo").html('x.完成')}
 		         else {$("#lbInfo").html('x.失败')}; 
 		    }
@@ -471,13 +488,13 @@ $('.pop-kefu li').click(function(){
 	               {
 	                 
 	                 x=0;
-	                 alert("数据发送成功");
+	                 //alert("数据发送成功");
 	               }  
 	            else
 	               {
 	                 
 	                 x=1; 
-	                 alert("数据发送失败");
+	                // alert("数据发送失败");
 	               } 
 	        });  
 	  return x;      

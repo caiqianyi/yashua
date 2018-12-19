@@ -48,13 +48,29 @@
 	 jQuery(document).ready(function(){
 
 	   //base64_to_bytes_array('UgAFDQo=');
-	  
-	  //初始化库 
-	 loadXMLDoc();
-	 //初始化库结束
+	  	  $.ajax({
+		 type : "GET",
+		url:"/oauth2/tokentick2",
+		data:{},
+		success:function(r){
+			if(r.errcode == 0){
+				if(r.data.timestam){
+					 $("#timestamp").text(r.data.timestam);
+					 $("#nonceStr").text(r.data.nonceSt);
+					 $("#signature").text(r.data.signatur);
+				}
+				  //初始化库 
+				 loadXMLDoc();
+				 //初始化库结束
+				 // $("#CallGetWXrefresh").on("click",function(e){  
+				    //showdialog();
+				 setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
+			}
+		}
+	});
 	 
 
-	 setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
+	
 	   
 	   
 	   
@@ -358,13 +374,13 @@
 	               {
 	                 
 	                 x=0;
-	                 alert("数据发送成功");
+	                 //alert("数据发送成功");
 	               }  
 	            else
 	               {
 	                 
 	                 x=1; 
-	                 alert("数据发送失败");
+	                // alert("数据发送失败");
 	               } 
 	        });  
 	  return x;      

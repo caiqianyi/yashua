@@ -3,7 +3,15 @@ package com.lebaoxun.portal.rest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.Formatter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -20,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.code.kaptcha.Constants;
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -345,5 +355,170 @@ public class LoginController extends BaseController{
     	}
 		return oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null);
 	}
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/oauth2/tokentick")
+	ResponseMessage tokentick() throws Exception{
+    	// TODO Auto-generated method stub
+    			//1、获取AccessToken  
+    					String accessToken =getAccessToken(); //"16_LN17KXa9jdOU5Eg4qjupBupH_XxdEbIHLxCzZ944nAoIC9wHmL1fKhx82duWdX7ad_0B8W-Sip5jGnM1DAckBzAgD61a4_kbt8P7tsfm8dDrnlyGKtrPVsv-EuMFKSaAJAUZH";  
+    					System.out.println("accessToken========="+accessToken);
+    					//2、获取Ticket  
+    					String jsapi_ticket =getTicket(accessToken); //"HoagFKDcsGMVCIY2vOjf9l_xORO2cDz_p4R2nJVbiRXnqO7ayO0GJ4WCpE41Cflk8G_3UiDVU0JYhod8X7vu6Q";  
+    					System.out.println("jsapi_ticket========="+jsapi_ticket);
+    					//3、时间戳和随机字符串  
+    					String noncestr = UUID.randomUUID().toString().replace("-", "").substring(0, 16);//随机字符串  
+    					String timestamp = String.valueOf(System.currentTimeMillis() / 1000);//时间戳  
+    					//System.out.println("accessToken:"+accessToken+"\njsapi_ticket:"+jsapi_ticket+"\n时间戳："+timestamp+"\n随机字符串："+noncestr);  
+    					//4、获取url  
+    					String url="http://moya.phenointec.com/index.html";  
+    					//5、将参数排序并拼接字符串  
+    					String str = "jsapi_ticket="+jsapi_ticket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;  
+    					String signature =null;
+    					try
+    			        {
+    			            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+    			            crypt.reset();
+    			            crypt.update(str.getBytes("UTF-8"));
+    			            signature = byteToHex(crypt.digest());
+    			        }
+    			        catch (NoSuchAlgorithmException e)
+    			        {
+    			            e.printStackTrace();
+    			        }
+    			        catch (UnsupportedEncodingException e)
+    			        {
+    			            e.printStackTrace();
+    			        }
+    					//System.out.println("参数："+str+"\n签名："+signature);  
+    					//Long userId = oauth2SecuritySubject.getCurrentUser();
+    					Map<String,Object> ok = new HashMap<String,Object>();
+    					ok.put("timestam",timestamp);
+    					ok.put("nonceSt",noncestr);
+    					ok.put("signatur",signature);
+    					String jifen = "0";
+    					UserEntity user = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+    					if(user!=null){
+    						System.out.println(user.getBalance());
+    						jifen=user.getBalance()+"";
+    					}
+    					ok.put("jifen",jifen);
+    					return new ResponseMessage(ok);
+	}
+    @RequestMapping(method = RequestMethod.GET, value = "/oauth2/tokentick2")
+	ResponseMessage tokentick2() throws Exception{
+    	// TODO Auto-generated method stub
+    			//1、获取AccessToken  
+    					String accessToken =getAccessToken(); //"16_LN17KXa9jdOU5Eg4qjupBupH_XxdEbIHLxCzZ944nAoIC9wHmL1fKhx82duWdX7ad_0B8W-Sip5jGnM1DAckBzAgD61a4_kbt8P7tsfm8dDrnlyGKtrPVsv-EuMFKSaAJAUZH";  
+    					System.out.println("accessToken========="+accessToken);
+    					//2、获取Ticket  
+    					String jsapi_ticket =getTicket(accessToken); //"HoagFKDcsGMVCIY2vOjf9l_xORO2cDz_p4R2nJVbiRXnqO7ayO0GJ4WCpE41Cflk8G_3UiDVU0JYhod8X7vu6Q";  
+    					System.out.println("jsapi_ticket========="+jsapi_ticket);
+    					//3、时间戳和随机字符串  
+    					String noncestr = UUID.randomUUID().toString().replace("-", "").substring(0, 16);//随机字符串  
+    					String timestamp = String.valueOf(System.currentTimeMillis() / 1000);//时间戳  
+    					//System.out.println("accessToken:"+accessToken+"\njsapi_ticket:"+jsapi_ticket+"\n时间戳："+timestamp+"\n随机字符串："+noncestr);  
+    					//4、获取url  
+    					String url="http://moya.phenointec.com/yashuashezhi.html";  
+    					//5、将参数排序并拼接字符串  
+    					String str = "jsapi_ticket="+jsapi_ticket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;  
+    					String signature =null;
+    					try
+    			        {
+    			            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+    			            crypt.reset();
+    			            crypt.update(str.getBytes("UTF-8"));
+    			            signature = byteToHex(crypt.digest());
+    			        }
+    			        catch (NoSuchAlgorithmException e)
+    			        {
+    			            e.printStackTrace();
+    			        }
+    			        catch (UnsupportedEncodingException e)
+    			        {
+    			            e.printStackTrace();
+    			        }
+    					//System.out.println("参数："+str+"\n签名："+signature);  
+    					//Long userId = oauth2SecuritySubject.getCurrentUser();
+    					Map<String,Object> ok = new HashMap<String,Object>();
+    					ok.put("timestam",timestamp);
+    					ok.put("nonceSt",noncestr);
+    					ok.put("signatur",signature);
+    					return new ResponseMessage(ok);
+	}
+    public static String SHA1(String decript) {
+		try {
+			MessageDigest digest = java.security.MessageDigest
+					.getInstance("SHA-1");
+			digest.update(decript.getBytes());
+			byte messageDigest[] = digest.digest();
+			// Create Hex String
+			StringBuffer hexString = new StringBuffer();
+			// 字节数组转换为 十六进制 数
+			for (int i = 0; i < messageDigest.length; i++) {
+				String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
+				if (shaHex.length() < 2) {
+					hexString.append(0);
+				}
+				hexString.append(shaHex);
+			}
+			return hexString.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	private static String byteToHex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash)
+        {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+    }
+	 private String getAccessToken() throws Exception{
+	        String Url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx3916e075f64cf1b5&secret=666749094c9fca38de21e2a9d572bc49";
+	        URL url = new URL(Url);
+		     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	 
+		     connection.setRequestMethod("GET");
+		     connection.setDoOutput(true);
+		     connection.setDoInput(true);
+		     connection.connect();
+	 
+		     //获取返回的字符
+		     InputStream inputStream = connection.getInputStream();
+		     int size =inputStream.available();
+		     byte[] bs =new byte[size];
+		     inputStream.read(bs);
+		     String message=new String(bs,"UTF-8");
+		     JSONObject json = JSON.parseObject(message);
+		     //获取access_token
+		     String token = json.getString("access_token");
+	        return token;
+	    }
+	 private String getTicket(String token) throws Exception{
+	        String Url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+token+"&type=jsapi";
+	        URL url = new URL(Url);
+		     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	 
+		     connection.setRequestMethod("GET");
+		     connection.setDoOutput(true);
+		     connection.setDoInput(true);
+		     connection.connect();
+	 
+		     //获取返回的字符
+		     InputStream inputStream = connection.getInputStream();
+		     int size =inputStream.available();
+		     byte[] bs =new byte[size];
+		     inputStream.read(bs);
+		     String message=new String(bs,"UTF-8");
+		     JSONObject json = JSON.parseObject(message);
+		     //获取access_token
+		     String ticket = json.getString("ticket");
+	        return ticket;
+	    }
 	
 }
