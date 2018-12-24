@@ -642,6 +642,34 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .tt-ok p em i{color:red;font-size:.28rem;}
 .qian-ok p{margin-left:1.5rem;}
 
+/*------------------------------首页刻度------------------------------*/
+.kedu{padding:0 .25rem;}
+.kedu h3{font-size:.36rem;color:#63ed98;text-align: center;padding:.4rem 0;margin-bottom:.9rem;}
+.kedu .kouqi{}
+.kouqikedu{width: 5.65rem;background:url(../images/kedutiao-kouqi.png) no-repeat bottom center;-webkit-background-size:100% .22rem;background-size:100% .22rem;position: relative;height:.3rem;margin:.1rem 0 .8rem .1rem;}
+.kouqikedu ul{position: absolute;width: 100%;top:-.25rem;}
+.kouqikedu li{float: left;text-align: center;}
+.kouqikedu dl{width: 103%;position:absolute;left: 0;top:.38rem;}
+.kouqikedu dl dd{font-size: .24rem;color:#fff;float: left;}
+.kouqikedu dl dd:nth-child(2){margin-left:26%;}
+.kouqikedu dl dd:nth-child(3){margin-left:27%;}
+.kouqikedu dl dd:nth-child(4){margin-left:34%;}
+.kedu .kouqi input{float: right;width: 1rem;height: .6rem;background:url(../images/kouqi.png) no-repeat center; -webkit-background-size: contain;background-size: contain;box-shadow:0.02rem 0.1rem 0.15rem #000;transition:all .2s;}
+.kedu .kouqi input.jiu{background-image:url(../images/jiujing.png);}
+.kedu .kouqi input:active{transform: scale(.9);}
+.kouqikedu em{height:1.35rem;font-size:.18rem;color:#63ed98;text-align:right;background:url(../images/kedutiao-white.png) no-repeat right bottom;-webkit-background-size:.22rem .88rem;background-size:.22rem .88rem;position:absolute;top:-1.06rem;left:-.1rem;}
+.kouqikedu em b{width:.62rem;font-weight:normal;position:absolute;top:0;right:-.15rem;text-align:center;}
+.kouqikedu em i{font-size:.35rem;}
+.kouqikedu em.green{background-image: url(../images/kedutiao-green.png);}
+.kouqikedu em.red{background-image: url(../images/kedutiao-red.png);}
+.kouqikedu em.gray{background-image: url(../images/kedutiao-gray.png);}
+.kouqikedu em.yellow{background-image: url(../images/kedutiao-yellow.png);}
+.jiujing{background-image:url(../images/kedutiao-jiujing.png);margin-bottom: 2rem;}
+.jiujing dl dd:nth-child(2){margin-left:15%;}
+.jiujing dl dd:nth-child(3){margin-left:53%;}
+.jiujing dl dd:nth-child(4){margin-left:13%;}
+
+
 
 
 

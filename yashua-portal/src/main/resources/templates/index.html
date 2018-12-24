@@ -39,7 +39,49 @@
 </div>
 
 <!--检测-->
-<div class="jiance">
+<div class="kedu">
+	<h3>口气分析</h3>
+	<div class="kouqi">
+		<div class="fl kouqikedu font-20">
+			<ul>
+				<li style="width:30%;color:#63ed98;">清新</li>
+				<li style="width:30%;color:#f4c319;">混浊</li>
+				<li style="width:40%;color:#d92d2d;">口臭</li>
+			</ul>
+			<dl>
+				<dd>0</dd>
+				<dd>3</dd>
+				<dd>6</dd>
+				<dd>10</dd>
+			</dl>
+			<em class="green" style="width:4%;" id="kouqijc"><b><i id='kouqisz'>0</i>分</b></em>
+		</div>
+		<input type="button"  onclick="kaishiceliang(0);">
+	</div>
+
+	<div class="cl"></div>
+
+	<h3>酒精浓度</h3>
+	<div class="kouqi">
+		<div class="fl kouqikedu font-20 jiujing">
+			<ul>
+				<li style="width:20%;color:#63ed98;">安全</li>
+				<li style="width:60%;color:#d92d2d;">酒驾</li>
+				<li style="width:20%;color:#6a7676;">醉驾</li>
+			</ul>
+			<dl>
+				<dd>0</dd>
+				<dd>20</dd>
+				<dd>80</dd>
+				<dd>100</dd>
+			</dl>
+			<em class="green" style="width:4%;" id="jiujingjc"><b><i id='jiujingsz'>0</i>mg/100ml</b></em>
+		</div>
+		<input class="jiu" type="button"  onclick="kaishiceliang(1);">
+	</div>
+</div>
+<!--检测-->
+<!-- <div class="jiance">
     <article class="htmleaf-container">	
         <div id="canvas">
             <div class="circle" id="circles-1"></div>
@@ -48,7 +90,7 @@
         <img src="/statics/new_images/jiance.png" alt=""/>
 	</article> 
     <input type="button" value="开始检测"/>
-</div>
+</div> -->
 
 <!--公用底部-->
 <div class="bot-nav font-26">
@@ -71,14 +113,14 @@
 </div>
 
 <!--检测弹窗-->
-<div class="pop-kefu font-36" style="text-align:center;" id="clchuangkou">
+<!-- <div class="pop-kefu font-36" style="text-align:center;" id="clchuangkou">
 	<div id="clchuangkou2"></div>
 	<ul style="overflow:hidden;" id="clchuangkou1">
     	<li class="frist">选择测量类型</li>
         <li onclick="kaishiceliang(0);">口气</li>
         <li onclick="kaishiceliang(1);"  class="last on">酒精</li>
     </ul>
-</div>
+</div> -->
 
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048575</span>
@@ -107,7 +149,7 @@ $('.inBox span').click(function(){
 
 	 var dianliang, shouming,shuayaci, jiujing, kouqi; 
 	//
-	var colors = [
+	/* var colors = [
 			['#FFF', '#fb2653'], ['#FFF', '#11ff6c']
 		],
 		circles = [];
@@ -139,7 +181,7 @@ $('.inBox span').click(function(){
 			return window.innerWidth / 2.8;
 			}
 			return window.innerWidth / 3;
-		}
+		} */
 
 	 jQuery(document).ready(function(){
 		 $.ajax({
@@ -645,11 +687,29 @@ $('.inBox span').click(function(){
 
 	    if(kxieyi==54){
 	      kouqi=parseInt(kgaowei,16)*256+parseInt(kdiwei,16);
-	      $("#circles-2 span").html(kouqi);
+	      //$("#circles-2 span").html(kouqi);
+	      if(0<= kouqi && kouqi<=3){
+				$('#kouqijc').attr('class','green');
+			}else if(3< kouqi && kouqi<=6){
+				$('#kouqijc').attr('class','yellow');
+			}else {
+				$('#kouqijc').attr('class','red');
+			}
+			$('#kouqisz').html(kouqi);
+			document.getElementById("kouqijc").style.width= kouqi+"4%";
 	      }
 	    if(jxieyi==55){
 	      jiujing=parseInt(jgaowei,16)*256+parseInt(jdiwei,16);
-	      $("#circles-1 span").html(jiujing);
+	      //$("#circles-1 span").html(jiujing);
+	      if(0<= jiujing && jiujing<=2){
+	    	  $('#jiujingjc').attr('class','green');
+			}else if(2< jiujing && jiujing<=8){
+				$('#jiujingjc').attr('class','red');
+			}else {
+				$('#jiujingjc').attr('class','gray');
+			}
+			$('#jiujingsz').html(jiujing*10);
+			document.getElementById("jiujingjc").style.width= jiujing+"4%";
 	      }
 	    if(dxieyi==51){
 	      dianliang=parseInt(dgaowei,16);
