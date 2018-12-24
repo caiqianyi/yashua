@@ -26,13 +26,13 @@
         <!--月记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
-       		<p class="time">月（周）</p>
+       		<p class="time">月（天）</p>
         	<canvas id="myChart-month" height="260"></canvas>
         </div>
         <!--季记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
-       		<p class="time">季（月）</p>
+       		<p class="time">季（周）</p>
         	<canvas id="myChart-season" height="260"></canvas>
         </div>
     </div>	
@@ -67,23 +67,16 @@
 		}
 		else if($(this).text()=="月"){//显示一个月的口气
 			id=1;
-			labels=["一周","二周","三周","四周"];
+			labels=["","3","6","9","12","15","18","21","24","27","30"];
 			flag="myChart-month";
 			text="一月内口气记录";
 		}
 		else if($(this).text()=="季"){//显示一个季度的口气
 			id=2;
-			var date = new Date();
-			var month = date.getMonth()+1;
-			if(month==1 || month==2 || month==3)
-				labels=["一月","二月","三月"];
-			if(month==4 || month==5 || month==6)
-				labels=["四月","五月","六月"];
-			if(month==7 || month==8 || month ==9 )
-				labels=["七月","八月","九月"];
-			if(month==10 || month==11 || month ==12 )
-				labels=["十月","十一月","十二月"];
-			flag="myChart-season";
+			/* var date = new Date();
+			var month = date.getMonth()+1; */
+		    labels=["","1","2","3","4","5","6","7","8","9","10","11","12"];
+		    flag="myChart-season";
 			text="一季度内的口气记录";
 		}
 		var l1 = $.loading().show();
@@ -401,21 +394,74 @@
 	
     //统计一个月内的口气数据
     function countmonthkouqidata(datas){
-    	var monthakouqi=[],//保存一个月内的早上口气
-    		monthpkouqi=[],//保存一个月内的晚上口气
+    	var monthakouqi=[{}],//保存一个月内的早上口气
+    		monthpkouqi=[{}],//保存一个月内的晚上口气
     		avera=0,//早上口气的平均值
     		averp=0;//晚上口气的平均值
     	if(datas.list.length==0){//一个月内都没有口气检测
-    		monthakouqi=[0,0,0,0];
-    		monthpkouqi=[0,0,0,0];
+    		for(var i=1;i<11;i++){
+    			monthakouqi.push(0);
+    			monthpkouqi.push(0);
+    		}
     		avera=0;
     		averp=0;
     	}
-    	else{
-    		var w1am=0,w1pm=0,w2am=0,w2pm=0,w3am=0,w3pm=0,w4am=0,w4pm=0,//一个月四周内各周早晚总口气
-    			anum1=0,pnum1=0,anum2=0,pnum2=0,anum3=0,pnum3=0,anum4=0,pnum4=0,//一个月各周早晚口气检测次数
-    			an1=0,pn1=0;//总的早晚口气检测次数
-	    	for(var i=0;i<datas.list.length;i++){
+    	 else{
+    		var arrya=[],arryp=[],an1=0,pn1=0;
+    		for(var i=0;i<11;i++){
+    			arrya.push({'fenshu':0,'num':0});
+    			arryp.push({'fenshu':0,'num':0});
+    		}
+    		for(var i=0;i<datas.list.length;i++){
+    			var data=datas.list[i];
+    			var date = new Date(parseInt(data.adddate,10));
+    			var index=Math.ceil(date.getDate()/3);//1~10
+    			if(data.biaoshi==1){
+    				var obj=arrya[index];
+    				obj.fenshu+=data.fenshu;
+    				obj.num++;
+    				arrya[index]=obj;
+    			}
+    			else if(data.biaoshi==2){
+    				var obj=arryp[index];
+    				obj.fenshu+=data.fenshu;
+    				obj.num++;
+    				arryp[index]=obj;
+    			}
+    			if(data.biaoshi==1) {
+       				avera+=data.fenshu;an1++;
+       			}
+       			if(data.biaoshi==2){
+       				averp+=data.fenshu;pn1++;
+       			}
+    			
+    		}
+    		for(var i=1;i<11;i++){
+    			var obj=arrya[i];
+    			if(obj.num>0){
+    				var kouqi=Math.ceil(obj.fenshu/obj.num);
+    				monthakouqi[i]=kouqi;
+    			}
+    			else monthakouqi[i]=0;
+    		}
+    		for(var i=1;i<11;i++){
+        		var obj=arryp[i];
+        		if(obj.num>0){
+        			var kouqi=Math.ceil(obj.fenshu/obj.num);
+        			monthpkouqi[i]=kouqi;
+        		}
+        		else
+        			monthpkouqi[i]=0;
+        	}
+    		if(an1==0) avera=0;
+    		else avera=Math.ceil(avera/an1);
+    		if(pn1==0) averp=0;
+    		else averp=Math.ceil(averp/pn1);
+    	}  
+ //   		var w1am=0,w1pm=0,w2am=0,w2pm=0,w3am=0,w3pm=0,w4am=0,w4pm=0,//一个月四周内各周早晚总口气
+ //   			anum1=0,pnum1=0,anum2=0,pnum2=0,anum3=0,pnum3=0,anum4=0,pnum4=0,//一个月各周早晚口气检测次数
+ //   			an1=0,pn1=0;//总的早晚口气检测次数
+	    /* 	for(var i=0;i<datas.list.length;i++){
 	    		var data=datas.list[i];
 	    		if(getWeek(data.adddate)==1 && data.biaoshi==1){
 	   				w1am+=data.fenshu;anum1++;
@@ -447,9 +493,9 @@
 	   			if(data.biaoshi==2){
 	   				averp+=data.fenshu;pn1++;
 	   			}
-	    	}
+	    	} */
     		//计算各周的平均口气
-    		if(anum1==0) monthakouqi.push(0);
+    		/* if(anum1==0) monthakouqi.push(0);
     		else  monthakouqi.push(Math.ceil(w1am/anum1));
     		if(pnum1==0) monthpkouqi.push(0);
     		else  monthpkouqi.push(Math.ceil(w1pm/pnum1));
@@ -468,19 +514,20 @@
     		if(an1==0) avera=0;
     		else avera=Math.ceil(avera/an1);
     		if(pn1==0) averp=0;
-    		else averp=Math.ceil(averp/pn1);
-    	}
+    		else averp=Math.ceil(averp/pn1); */
+ //   	}
     	var arryc={};
 		arryc.zkouqi=monthakouqi;
 		arryc.pkouqi=monthpkouqi;
 		arryc.ak=avera;
 		arryc.pk=averp;
+	
 		return arryc;
     }
     
     //判断当前日期是该月的第几周
-    	function getWeek(date) {
-    	  date = new Date(parseInt(date,10));
+   function getWeek(date) {
+    	 
     		if(date instanceof Date){
     			if(date.getDate()<7){
     				var zcs=date.getDay();
@@ -496,51 +543,84 @@
     //统计一个季度内的口气
     
    function countjidukouqidata(datas){
-    	var jiduakouqi=[],//保存一个季度内的早上口气
-    		jidupkopuqi=[],//保存一个季度内晚上口气
+    	var jiduakouqi=[{}],//保存一个季度内的早上口气
+    		jidupkopuqi=[{}],//保存一个季度内晚上口气
     		avera=0,//早上口气的平均值
     		averp=0;//晚上口气的平均值
     	if(datas.list.length==0){//一个季度内都没有检测口气
-    		jiduakouqi=[0,0,0];
-    		jidupkopuqi=[0,0,0];
+    		for(var i=0;i<13;i++){
+    			jiduakouqi.push(0);
+    			jidupkopuqi.push(0);
+    		}
     		avera=0;
     		averp=0;
     	}
     	else{
-    		var jam1=0,jpm1=0,jam2=0,jpm2=0,jam3=0,jpm3=0,//一个季度三个月的各月早晚口气和
-    			aum1=0,pum1=0,aum2=0,pum2=0,aum3=0,pum3=0,//三个月内各月的口气检测次数
-    			an1=0,pn1=0;//早晚口气检测次数
+    		var arrya=[],arryp=[],an1=0,pn1=0;
+    		for(var i=0;i<13;i++){
+    			arrya.push({'fenshu':0,'num':0});
+    			arryp.push({'fenshu':0,'num':0});
+    		}
     		for(var i=0;i<datas.list.length;i++){
     			var data = datas.list[i];
-    			var date = new Date(parseInt(data.adddate,10));console.info(date);
-    			var month = date.getMonth()+1;
-    			if(month%3==1 && data.biaoshi==1){
-    				jam1+=data.fenshu; aum1++;
+    			var date = new Date(parseInt(data.adddate,10));
+    			var month=date.getMonth()+1;
+    			var index1=month%3;//本季度的第index1个月
+    			if(index1==0) index1=3;
+    			var index2 =getWeek(date);//当前月的第几周
+    		
+    			var index = (index1-1)*4+index2;
+    			if(data.biaoshi==1){
+    				var obj=arrya[index];
+    				obj.fenshu+=data.fenshu;
+    				obj.num++;
+    				arrya[index]=obj;
     			}
-    			else if(month%3==1 && data.biaoshi==2){
-    				jpm1+=data.fenshu; pum1++;
+    			else if(data.biaoshi==2){
+    				var obj=arryp[index];
+    				obj.fenshu+=data.fenshu;
+    				obj.num++;
+    				arryp[index]=obj;
     			}
-    			else if(month%3==2 && data.biaoshi==1){
-    				jam2+=data.fenshu; aum2++;
-    			}
-    			else if(month%3==2 && data.biaoshi==2){
-    				jpm2+=data.fenshu; pum2++;
-    			}
-    			else if(month%3==0 && data.biaoshi==1){
-    				jam3+=data.fenshu; aum3++;
-    			}
-    			else if(month%3==0 && data.biaoshi==2){
-    				jpm3+=data.fenshu; pum3++;
-    			}
+    			
     			if(data.biaoshi==1) {
-	   				avera+=data.fenshu;an1++;
-	   			}
-	   			if(data.biaoshi==2){
-	   				averp+=data.fenshu;pn1++;
-	   			}
+       				avera+=data.fenshu;an1++;
+       			}
+       			if(data.biaoshi==2){
+       				averp+=data.fenshu;pn1++;
+       			}
     		}
+    		
+    		for(var i=1;i<13;i++){
+    			var obj=arrya[i];
+    			if(obj.num>0){
+    				var kouqi=Math.ceil(obj.fenshu/obj.num);
+    				jiduakouqi[i]=kouqi;
+    			}
+    			else jiduakouqi[i]=0;
+    		}
+    		for(var i=1;i<13;i++){
+        		var obj=arryp[i];
+        		if(obj.num>0){
+        			var kouqi=Math.ceil(obj.fenshu/obj.num);
+        			jidupkopuqi[i]=kouqi;
+        		}
+        		else
+        			jidupkopuqi[i]=0;
+        	}
+    		
+    		if(an1==0) avera=0;
+    		else avera=Math.ceil(avera/an1);
+    		if(pn1==0) averp=0;
+    		else averp=Math.ceil(averp/pn1);
+    		
+   		}
+ //   		var jam1=0,jpm1=0,jam2=0,jpm2=0,jam3=0,jpm3=0,//一个季度三个月的各月早晚口气和
+ //   			aum1=0,pum1=0,aum2=0,pum2=0,aum3=0,pum3=0,//三个月内各月的口气检测次数
+  //  			an1=0,pn1=0;//早晚口气检测次数
+    		
     		//计算一个季度内的各月平均口气
-			if(aum1==0) jiduakouqi.push(0);
+			/* if(aum1==0) jiduakouqi.push(0);
 			else jiduakouqi.push(Math.ceil(jam1/aum1));
 			if(pum1==0) jidupkopuqi.push(0);
 			else jidupkopuqi.push(Math.ceil(jpm1/pum1))
@@ -555,13 +635,14 @@
 			if(an1==0) avera=0;
     		else avera=Math.ceil(avera/an1);
     		if(pn1==0) averp=0;
-    		else averp=Math.ceil(averp/pn1);
-    	}
+    		else averp=Math.ceil(averp/pn1); */
+//    	}
     	var arryc={};
 		arryc.zkouqi=jiduakouqi;
 		arryc.pkouqi=jidupkopuqi;
 		arryc.ak=avera;
 		arryc.pk=averp;
+		console.info("一个季度=  "+arryc);
 		return arryc;
     }
     </script>
