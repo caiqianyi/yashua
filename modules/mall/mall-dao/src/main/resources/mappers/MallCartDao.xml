@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lebaoxun.modules.mall.dao.MallCartDao">
+<mapper namespace="com.lebaoxun.yashua.modules.mall.dao.MallCartDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-	<resultMap type="com.lebaoxun.modules.mall.entity.MallCartEntity"
+	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallCartEntity"
 		id="mallCartMap">
 		<result property="cartId" column="cart_id" />
 		<result property="productSpecId" column="product_spec_id" />
@@ -15,7 +15,7 @@
 		<result property="checkStatus" column="check_status" />
 	</resultMap>
 
-	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductEntity"
+	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallProductEntity"
 		id="mallProductMap">
 		<result property="id" column="id" />
 		<result property="productNumber" column="product_number" />
@@ -42,7 +42,7 @@
 	</resultMap>
 
 	<resultMap
-		type="com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity"
+		type="com.lebaoxun.yashua.modules.mall.entity.MallProductSpecificationEntity"
 		id="mallProductSpecificationMap">
 		<result property="productSpecId" column="product_spec_id" />
 		<result property="productSpecNumber" column="product_spec_number" />
@@ -63,17 +63,17 @@
 		<result property="updateBy" column="update_by" />
 	</resultMap>
 
-	<resultMap type="com.lebaoxun.modules.mall.pojo.MallProductCartVo"
+	<resultMap type="com.lebaoxun.yashua.modules.mall.pojo.MallProductCartVo"
 		id="MallProductCartVoMap">
 		<result property="sepcAttrName" column="sepc_attr_name" />
 		<result property="specName" column="spec_name" />
 		<association property="cart"
-			javaType="com.lebaoxun.modules.mall.entity.MallCartEntity" resultMap="mallCartMap" />
+			javaType="com.lebaoxun.yashua.modules.mall.entity.MallCartEntity" resultMap="mallCartMap" />
 		<association property="product"
-			javaType="com.lebaoxun.modules.mall.entity.MallProductEntity"
+			javaType="com.lebaoxun.yashua.modules.mall.entity.MallProductEntity"
 			resultMap="mallProductMap" />
 		<association property="spec"
-			javaType="com.lebaoxun.modules.mall.entity.MallProductSpecificationEntity"
+			javaType="com.lebaoxun.yashua.modules.mall.entity.MallProductSpecificationEntity"
 			resultMap="mallProductSpecificationMap"></association>
 	</resultMap>
 

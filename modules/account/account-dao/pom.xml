@@ -9,6 +9,7 @@
   
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.lebaoxun.yashua</groupId>
   <artifactId>account-dao</artifactId>
   <packaging>jar</packaging>
 
@@ -25,7 +26,7 @@
 			<artifactId>mybatis</artifactId>
 		</dependency>
 		<dependency>
-	  		<groupId>com.lebaoxun</groupId>
+	  		<groupId>com.lebaoxun.yashua</groupId>
 	  		<artifactId>account-model</artifactId>
 	  		<version>1.0.0-RELEASE</version>
 	  	</dependency>

@@ -2,13 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   
   <parent>
-  	<groupId>com.lebaoxun</groupId>
+  	<groupId>com.lebaoxun.yashua</groupId>
   	<artifactId>service-parent</artifactId>
   	<version>1.0.0-RELEASE</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
-
+  <groupId>com.lebaoxun.yashua</groupId>
   <artifactId>upload-service</artifactId>
   <version>1.0.0-RELEASE</version>
   <packaging>jar</packaging>

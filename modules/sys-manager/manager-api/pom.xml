@@ -9,6 +9,7 @@
   
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.lebaoxun.yashua</groupId>
   <artifactId>manager-api</artifactId>
   <packaging>jar</packaging>
 
@@ -29,7 +30,7 @@
 		<artifactId>common-utils</artifactId>
 	</dependency>
     <dependency>
-    	<groupId>com.lebaoxun</groupId>
+    	<groupId>com.lebaoxun.yashua</groupId>
     	<artifactId>manager-model</artifactId>
     	<version>1.0.0-RELEASE</version>
     </dependency>

@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   
   <parent>
-  	<groupId>com.lebaoxun</groupId>
+  	<groupId>com.lebaoxun.yashua</groupId>
   	<artifactId>service-parent</artifactId>
   	<version>1.0.0-RELEASE</version>
   </parent>
@@ -59,12 +59,12 @@
         <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
     </dependency>
     <dependency>
-    	<groupId>com.lebaoxun</groupId>
+    	<groupId>com.lebaoxun.yashua</groupId>
     	<artifactId>pay-model</artifactId>
     	<version>1.0.0-RELEASE</version>
     </dependency>
     <dependency>
-    	<groupId>com.lebaoxun</groupId>
+    	<groupId>com.lebaoxun.yashua</groupId>
     	<artifactId>pay-dao</artifactId>
     	<version>1.0.0-RELEASE</version>
     </dependency>

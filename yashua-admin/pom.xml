@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.lebaoxun</groupId>
+	<groupId>com.lebaoxun.yashua</groupId>
 	<artifactId>yashua-admin</artifactId>
 	<version>1.0.0-RELEASE</version>
 	<packaging>jar</packaging>
@@ -99,32 +99,32 @@
 			<version>${swagger.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lebaoxun</groupId>
+			<groupId>com.lebaoxun.yashua</groupId>
 			<artifactId>manager-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lebaoxun</groupId>
+			<groupId>com.lebaoxun.yashua</groupId>
 			<artifactId>account-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lebaoxun</groupId>
+			<groupId>com.lebaoxun.yashua</groupId>
 			<artifactId>yashua-core-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lebaoxun</groupId>
+			<groupId>com.lebaoxun.yashua</groupId>
 			<artifactId>news-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lebaoxun</groupId>
+			<groupId>com.lebaoxun.yashua</groupId>
 			<artifactId>upload-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lebaoxun</groupId>
+			<groupId>com.lebaoxun.yashua</groupId>
 			<artifactId>mall-api</artifactId>
 			<version>1.0.0-RELEASE</version>
 		</dependency>
