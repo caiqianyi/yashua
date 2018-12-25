@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lebaoxun.modules.mall.dao.MallProductCommentImageDao">
+<mapper namespace="com.lebaoxun.yashua.modules.mall.dao.MallProductCommentImageDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.mall.entity.MallProductCommentImageEntity" id="mallProductCommentImageMap">
+    <resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallProductCommentImageEntity" id="mallProductCommentImageMap">
         <result property="id" column="id"/>
         <result property="productCommentId" column="product_comment_id"/>
         <result property="picImg" column="pic_img"/>

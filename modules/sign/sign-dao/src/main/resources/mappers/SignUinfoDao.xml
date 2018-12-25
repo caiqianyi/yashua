@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lebaoxun.modules.sign.dao.SignUinfoDao">
+<mapper namespace="com.lebaoxun.yashua.modules.sign.dao.SignUinfoDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.modules.sign.entity.SignUinfoEntity" id="signUinfoMap">
+    <resultMap type="com.lebaoxun.yashua.modules.sign.entity.SignUinfoEntity" id="signUinfoMap">
         <result property="id" column="id"/>
         <result property="userId" column="user_id"/>
         <result property="keepUpCount" column="keep_up_count"/>
@@ -14,7 +14,7 @@
         <result property="totalSignNum" column="total_sign_num"/>
         <result property="totalResignNum" column="total_resign_num"/>
         <result property="signTime" column="sign_time"/>
-        <collection property="logs" ofType="com.lebaoxun.modules.sign.entity.SignLogEntity" javaType="java.util.ArrayList">
+        <collection property="logs" ofType="com.lebaoxun.yashua.modules.sign.entity.SignLogEntity" javaType="java.util.ArrayList">
 			<result property="createTime" column="logTime" />
 	    </collection>
     </resultMap>

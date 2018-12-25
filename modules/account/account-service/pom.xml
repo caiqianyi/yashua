@@ -8,7 +8,7 @@
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
-
+	<groupId>com.lebaoxun.yashua</groupId>
   <artifactId>account-service</artifactId>
   <version>1.0.0-RELEASE</version>
   <packaging>jar</packaging>
@@ -39,18 +39,13 @@
         <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
     </dependency>
     <dependency>
-    	<groupId>com.lebaoxun</groupId>
+    	<groupId>com.lebaoxun.yashua</groupId>
     	<artifactId>account-model</artifactId>
     	<version>1.0.0-RELEASE</version>
     </dependency>
     <dependency>
-    	<groupId>com.lebaoxun</groupId>
+    	<groupId>com.lebaoxun.yashua</groupId>
     	<artifactId>account-dao</artifactId>
-    	<version>1.0.0-RELEASE</version>
-    </dependency>
-    <dependency>
-    	<groupId>com.lebaoxun</groupId>
-    	<artifactId>manager-dao</artifactId>
     	<version>1.0.0-RELEASE</version>
     </dependency>
   </dependencies>

@@ -9,6 +9,7 @@
   
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.lebaoxun.yashua</groupId>
   <artifactId>mall-api</artifactId>
   <version>1.0.0-RELEASE</version>
   <packaging>jar</packaging>
@@ -30,7 +31,7 @@
 		<artifactId>common-utils</artifactId>
 	</dependency>
     <dependency>
-    	<groupId>com.lebaoxun</groupId>
+    	<groupId>com.lebaoxun.yashua</groupId>
     	<artifactId>mall-model</artifactId>
     	<version>1.0.0-RELEASE</version>
     </dependency>

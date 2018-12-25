@@ -8,7 +8,7 @@
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.lebaoxun</groupId>
+  <groupId>com.lebaoxun.yashua</groupId>
   <artifactId>sign-model</artifactId>
   <version>1.0.0-RELEASE</version>
   <packaging>jar</packaging>

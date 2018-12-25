@@ -4,11 +4,11 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-  	<groupId>com.lebaoxun</groupId>
-  	<artifactId>framework-parent</artifactId>
-  	<version>1.0.0-RELEASE</version>
-  </parent>
-
+	  	<groupId>com.lebaoxun</groupId>
+	  	<artifactId>framework-parent</artifactId>
+	  	<version>1.0.0-RELEASE</version>
+	</parent>
+    <groupId>com.lebaoxun.yashua</groupId>
 	<artifactId>wechat-model</artifactId>
 	<name>wechat-model</name>
 	<url>http://maven.apache.org</url>

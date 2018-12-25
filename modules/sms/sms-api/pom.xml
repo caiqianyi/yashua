@@ -8,7 +8,7 @@
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
-
+  <groupId>com.lebaoxun.yashua</groupId>
   <artifactId>sms-api</artifactId>
   <version>1.0.0-RELEASE</version>
   <packaging>jar</packaging>
@@ -29,11 +29,6 @@
 		<groupId>com.lebaoxun</groupId>
 		<artifactId>common-utils</artifactId>
 	</dependency>
-    <dependency>
-    	<groupId>com.lebaoxun</groupId>
-    	<artifactId>pay-model</artifactId>
-    	<version>1.0.0-RELEASE</version>
-    </dependency>
   </dependencies>
   
   <build>
