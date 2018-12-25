@@ -21,18 +21,21 @@
     	<div class="chart-container">
        		<p class="mark">分数</p>
        		<p class="time">周（天）</p>
+       		  <p class="biaoti"><em class="zao">早</em><em class="wan">晚</em></p>
         	<canvas id="myChart" height="260"></canvas>
         </div>
         <!--月记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
        		<p class="time">月（天）</p>
+       		  <p class="biaoti"><em class="zao">早</em><em class="wan">晚</em></p>
         	<canvas id="myChart-month" height="260"></canvas>
         </div>
         <!--季记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
        		<p class="time">季（周）</p>
+       		  <p class="biaoti"><em class="zao">早</em><em class="wan">晚</em></p>
         	<canvas id="myChart-season" height="260"></canvas>
         </div>
     </div>	
@@ -163,6 +166,9 @@
     			 	    
     			         // 配置文件
     			         options: {
+    			        	 legend: {
+    			                  display: false,
+    			                },
     			             //标题设置
     			             title:{
     			                 display:true,
@@ -312,6 +318,9 @@
     		 	    
     		         // 配置文件
     		         options: {
+    		        	 legend: {
+    		                  display: false,
+    		                },
     		             //标题设置
     		             title:{
     		                 display:true,
