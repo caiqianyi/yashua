@@ -12,7 +12,7 @@
 <div class="sy-top bg-new">
 	<div class="set center fl font-26">
     	<a href="yashuashezhi.html"><img src="/statics/new_images/sy-set.png" alt=""/></a>
-        <p >设置我的牙刷</p>
+        <p id="shebeihaot">设置我的牙刷</p>
     </div>
     <div class="con fl font-24">
     	<div class="conup">
@@ -147,7 +147,7 @@ $('.inBox span').click(function(){
 		$('#clchuangkou2').show();
 	});
 
-	 var dianliang, shouming,shuayaci, jiujing, kouqi; 
+	 var dianliang, shouming,shuayaci, jiujing, kouqi,shebeihao; 
 	//
 	/* var colors = [
 			['#FFF', '#fb2653'], ['#FFF', '#11ff6c']
@@ -653,6 +653,7 @@ $('.inBox span').click(function(){
 	function CharToHex(str) {
 	    var out, i, h,j;
 	    var kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei;
+	    var shebeixieyi,shebeia,shebeib,shebeic,shebeid,shebeie,shebeif,shebeig,shebeih,shebeii,shebeij;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
@@ -667,7 +668,10 @@ $('.inBox span').click(function(){
 	        }else if(h==51){
 	          dxieyi=51; 
 	          j=i;
-	        }
+	        }else if(h==56){
+	        	shebeixieyi=56; 
+		          j=i;
+		        }
 	        if(kxieyi==54 && i-j==1){
 	          kgaowei=h;
 	        }
@@ -695,6 +699,36 @@ $('.inBox span').click(function(){
 	        if(dxieyi==51 && i-j==5){
 		          stdiwei=h;
 		        }
+	        if(shebeixieyi==56 && i-j==1){
+		          shebeia=h;
+		        }
+		        if(shebeixieyi==56 && i-j==2){
+		        	shebeib=h;
+		        }
+		        if(shebeixieyi==56 && i-j==3){
+		        	shebeic=h;
+			        }
+		        if(shebeixieyi==56 && i-j==4){
+		        	shebeid=h;
+			        }
+		        if(shebeixieyi==56 && i-j==5){
+		        	shebeie=h;
+			        }
+		        if(shebeixieyi==56 && i-j==6){
+		        	shebeif=h;
+			        }
+		        if(shebeixieyi==56 && i-j==7){
+		        	shebeig=h;
+			        }
+		        if(shebeixieyi==56 && i-j==8){
+		        	shebeih=h;
+			        }
+		        if(shebeixieyi==56 && i-j==9){
+		        	shebeii=h;
+			        }
+		        if(shebeixieyi==56 && i-j==10){
+		        	shebeij=h;
+			        }
 	        if(h.length==1){
 	          h="0"+h;
 	        }
@@ -733,10 +767,17 @@ $('.inBox span').click(function(){
 	      shouming=parseInt(stgaowei,16)*256+parseInt(stdiwei,16);
 	      shuayaci=parseInt(sdiwei,16)*256+parseInt(sanwei,16);
 	      }
+	    
+	    if(shebeixieyi==56){
+	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
+	    }
 	   
 	    $("#dianliang").html(dianliang);
 	    $("#shouming").html(shouming);
 	    $("#shuayaci").html(shuayaci);
+	    if(shebeihao!=null && shebeihao !=""){
+	    	 $("#shebeihaot").html(shebeihao);
+	    }
 	   // $("#kouqi").html(kouqi);
 	   // $("#jiujing").html(jiujing);
 	    
