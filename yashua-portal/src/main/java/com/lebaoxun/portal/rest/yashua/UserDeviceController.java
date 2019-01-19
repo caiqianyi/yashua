@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
+import com.lebaoxun.modules.yashua.entity.UserDeviceEntity;
 import com.lebaoxun.modules.yashua.service.IUserDeviceService;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 
@@ -51,6 +53,20 @@ public class UserDeviceController {
     @RequestMapping("/yashua/device/info/{id}")
     ResponseMessage info(@PathVariable("id") Integer id){
         return userDeviceService.info(id, oauth2SecuritySubject.getCurrentUser());
+    }
+    
+    
+	/**
+     * 评论
+     */
+    @RequestMapping("/yashua/device/macupload")
+    @ResponseBody
+    ResponseMessage replys(@RequestParam("identity") String identity,@RequestParam("mac") String mac){
+    	 UserDeviceEntity userDevice = new UserDeviceEntity();
+    	 System.out.println("identity===="+identity+"===mac===="+mac);
+    	 userDevice.setIdentity(identity);
+       	 userDevice.setMac(mac);
+    	return userDeviceService.save(1l, userDevice);
     }
 
     /**

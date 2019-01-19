@@ -61,7 +61,7 @@ public class UserDeviceController {
      * 保存
      */
     @RequestMapping("/yashua/userdevice/save")
-    @RedisLock(value="yashua:userdevice:save:lock:#arg0")
+  //  @RedisLock(value="yashua:userdevice:save:lock:#arg0")
     ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody UserDeviceEntity userDevice){
 		userDeviceService.insert(userDevice);
         return ResponseMessage.ok();
