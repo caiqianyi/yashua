@@ -27,6 +27,7 @@ public class UserDataEntity implements Serializable{
 	 * 添加时间
 	 */
 	private Date adddate;
+	
 	/**
 	 * 用户的id
 	 */
