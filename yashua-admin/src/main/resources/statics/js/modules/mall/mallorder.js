@@ -61,6 +61,7 @@ $(function () {
 	            return "";
 	        }},
 			{ label: '发票抬头', name: 'invoiceTitle', index: 'invoice_title', width: 80 }, 			
+			{ label: '公司税号', name: 'invoiceNo', index: 'invoice_no', width: 80 }, 			
 			{ label: '订单状态', name: 'orderStatus', index: 'order_status', width: 80 , formatter: function(value){
 	            if(value == -1){
 	                return '<span class="label label-primary">已删除</span>';

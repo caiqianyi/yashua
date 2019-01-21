@@ -15,6 +15,7 @@
 		<result property="shipmentAmount" column="shipment_amount" />
 		<result property="invoiceType" column="invoice_type" />
 		<result property="invoiceTitle" column="invoice_title" />
+		<result property="invoiceNo" column="invoice_no" />
 		<result property="orderStatus" column="order_status" />
 		<result property="postid" column="postid" />
 		<result property="createTime" column="create_time" />
