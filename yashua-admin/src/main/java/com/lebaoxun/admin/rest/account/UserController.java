@@ -71,8 +71,8 @@ public class UserController {
     				"用户ID","账号","注册来源","状态","账户余额","是否关注","openid","昵称","生日","身份证号","真实姓名",
     				"性别","城市","国家","省份","头像","注册时间","最后登录时间","最后购买时间"};
     		headermaps[1] = new String[]{
-    				"userId","account","source","status","balance","subscribe","openid","nickname","realname",
-    				"birthday","identity","sex","city","country","province","headimgurl","createTime","lastLoginTime","lastBuyTime"};
+    				"userId","account","source","status","balance","subscribe","openid","nickname","birthday","identity","realname",
+    				"sex","city","country","province","headimgurl","createTime","lastLoginTime","lastBuyTime"};
 			excel.exportExcelPlus(
 					"会员列表",
 					headermaps, users, out, null,
