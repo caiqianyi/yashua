@@ -2,6 +2,7 @@ package com.lebaoxun.modules.account.service.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -30,6 +31,7 @@ import com.lebaoxun.modules.account.em.UserLogAction;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.entity.UserLogEntity;
 import com.lebaoxun.modules.account.service.UserService;
+import com.lebaoxun.soa.amqp.core.sender.IRabbitmqSender;
 
 
 @Service("userService")
@@ -185,6 +187,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		entity.setHeadimgurl(headimgurl);
 		this.updateById(entity);
 	}
+	
+	@Resource
+	private IRabbitmqSender rabbitmqSender;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
@@ -218,6 +223,19 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		entity.setIdentity(q.getIdentity());
 		entity.setBirthday(q.getBirthday());
 		entity.setAreaCode(q.getAreaCode());
+		
+		//个人信息 第一次编辑完善成功之后加100积分 ，积分明细列表显示完善资料+
+		Map<String,String> msg = new HashMap<String,String>();
+		String timestamp = System.currentTimeMillis()+"";
+		msg.put("userId", user.getId()+"");
+		msg.put("logTime", timestamp);
+		msg.put("logType", "ACCOUNT_MODIFY_AWARD");
+		msg.put("rechargeFee", 100+"");
+		msg.put("descr", "完善资料+");
+		msg.put("adjunctInfo", user.getId()+"");
+		
+		rabbitmqSender.sendContractDirect("account.balance.queue.rechage",
+				new Gson().toJson(msg));
 		this.updateById(entity);
 	}
 

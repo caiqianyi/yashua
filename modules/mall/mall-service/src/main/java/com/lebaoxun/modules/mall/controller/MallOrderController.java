@@ -77,6 +77,7 @@ public class MallOrderController {
 			@RequestParam("orderNo") String orderNo,
 			@RequestParam("invoiceType") Integer invoiceType,
 			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
 			@RequestParam("address") String address,
 			@RequestParam("consignee") String consignee,
 			@RequestParam("mobile") String mobile,
@@ -84,7 +85,8 @@ public class MallOrderController {
 			@RequestParam("spbill_create_ip") String spbill_create_ip,
 			@RequestParam(name="fuid",required=false) Long fuid) {
 		return mallOrderService.confirmOrder(userId, orderNo, invoiceType,
-				invoiceTitle, address, consignee, mobile, wxopenid, spbill_create_ip,fuid);
+				invoiceTitle, invoiceNo, address, consignee, mobile, 
+				wxopenid, spbill_create_ip,fuid);
 	}
 
 	@RequestMapping("/mall/mallorder/scoreExchange")
@@ -93,11 +95,12 @@ public class MallOrderController {
 			@RequestParam("orderNo") String orderNo,
 			@RequestParam("invoiceType") Integer invoiceType,
 			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
 			@RequestParam("address") String address,
 			@RequestParam("consignee") String consignee,
 			@RequestParam("mobile") String mobile) {
 		mallOrderService.scoreExchange(userId, orderNo, invoiceType,
-				invoiceTitle, address, consignee, mobile);
+				invoiceTitle, invoiceNo, address, consignee, mobile);
 		return ResponseMessage.ok();
 	}
 

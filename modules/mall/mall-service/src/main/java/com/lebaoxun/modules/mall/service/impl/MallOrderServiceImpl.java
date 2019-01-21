@@ -220,7 +220,7 @@ public class MallOrderServiceImpl extends
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public ResponseMessage confirmOrder(Long userId, String orderNo, Integer invoiceType,
-			String invoiceTitle, String address, String consignee, String mobile,
+			String invoiceTitle, String invoiceNo, String address, String consignee, String mobile,
 			String wxopenid,String spbill_create_ip, Long fuid) {
 		// TODO Auto-generated method stub
 		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(userId,
@@ -232,6 +232,7 @@ public class MallOrderServiceImpl extends
 		order.setConsignee(consignee);
 		order.setMobile(mobile);
 		order.setInvoiceTitle(invoiceTitle);
+		order.setInvoiceNo(invoiceNo);
 		order.setInvoiceType(invoiceType);
 		order.setUpdateTime(new Date());
 		order.setPayType(1);// 现金支付
@@ -245,7 +246,8 @@ public class MallOrderServiceImpl extends
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void scoreExchange(Long userId, String orderNo, Integer invoiceType,
-			String invoiceTitle, String address, String consignee, String mobile) {
+			String invoiceTitle, String invoiceNo, String address, String consignee, 
+			String mobile) {
 		// TODO Auto-generated method stub
 		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(userId,
 				orderNo, 0);
@@ -261,6 +263,7 @@ public class MallOrderServiceImpl extends
 		order.setConsignee(consignee);
 		order.setMobile(mobile);
 		order.setInvoiceTitle(invoiceTitle);
+		order.setInvoiceNo(invoiceNo);
 		order.setInvoiceType(invoiceType);
 		order.setUpdateTime(new Date());
 		order.setPayType(0);// 积分支付

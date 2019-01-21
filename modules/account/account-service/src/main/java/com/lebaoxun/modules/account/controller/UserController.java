@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.account.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +56,10 @@ public class UserController {
         return ResponseMessage.ok(page);
     }
 
+    @RequestMapping("/account/user/all")
+    List<UserEntity> all(){
+    	return userService.selectList(new EntityWrapper<UserEntity>());
+    }
 
     /**
      * 信息

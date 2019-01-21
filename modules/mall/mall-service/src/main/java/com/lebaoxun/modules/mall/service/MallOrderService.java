@@ -24,7 +24,8 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 	String create(Long userId, Integer maxOrderNum, List<MallCartEntity> products);
 	
 	void scoreExchange(Long userId, String orderNo, Integer invoiceType,
-			String invoiceTitle, String address, String consignee, String mobile);
+			String invoiceTitle, String invoiceNo, String address, 
+			String consignee, String mobile);
 	
 	/**
 	 * 支付订单成功接口
@@ -41,8 +42,9 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 			Integer size, Integer offset);
 
 	ResponseMessage confirmOrder(Long userId, String orderNo, Integer invoiceType,
-			String invoiceTitle, String address, String consignee, String mobile,
-			String wxopenid,String spbill_create_ip, Long fuid);
+			String invoiceTitle, String invoiceNo, String address, 
+			String consignee, String mobile, String wxopenid,
+			String spbill_create_ip, Long fuid);
 	
 	void delete(Long userId, String orderNo);
 	

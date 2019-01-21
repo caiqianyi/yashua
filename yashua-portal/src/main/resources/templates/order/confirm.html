@@ -27,6 +27,7 @@
 	<p class="fl pa"><input type="checkbox"/>发票</p>
     <div class="fr">
         <p class="pb">发票抬头：<input type="text" name="invoiceTitle"></p>
+        <p class="pb">公司税号：<input type="text" name="invoiceNo"></p>
         <p class="pc">
             发票内容：
             <select name="invoiceType">
@@ -91,6 +92,7 @@ $(function(){
 					}
 					var invoiceType = $("select[name=invoiceType]").val(),
 					invoiceTitle = $("input[name=invoiceTitle]").val(),
+					invoiceNo = $("input[name=invoiceNo]").val(),
 					address = $(".dizhi-ok .addressA").text(),
 					consignee = $(".dizhi-ok .consignee").text(),
 					mobile = $(".dizhi-ok .mobile").text();
@@ -99,6 +101,7 @@ $(function(){
 						orderNo: orderNo,
 						invoiceType: invoiceType ,
 						invoiceTitle: invoiceTitle,
+						invoiceNo: invoiceNo,
 						address: address,
 						consignee: consignee,
 						mobile: mobile,

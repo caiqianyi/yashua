@@ -61,6 +61,11 @@ public class MallOrderEntity implements Serializable {
 	 * 发票抬头
 	 */
 	private String invoiceTitle;
+	
+	/**
+	 * 公司税号
+	 */
+	private String invoiceNo;
 	/**
 	 * 订单状态 -1=已删除，0=待支付，1=已支付
 	 */
@@ -344,5 +349,11 @@ public class MallOrderEntity implements Serializable {
 	}
 	public void setFuid(Long fuid) {
 		this.fuid = fuid;
+	}
+	public String getInvoiceNo() {
+		return invoiceNo;
+	}
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
 	}
 }

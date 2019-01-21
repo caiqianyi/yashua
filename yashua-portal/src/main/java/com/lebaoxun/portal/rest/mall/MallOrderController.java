@@ -55,6 +55,7 @@ public class MallOrderController extends BaseController {
 	ResponseMessage confirmOrder(@RequestParam("orderNo") String orderNo,
 			@RequestParam("invoiceType") Integer invoiceType,
 			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
 			@RequestParam("address") String address,
 			@RequestParam("consignee") String consignee,
 			@RequestParam("mobile") String mobile,
@@ -72,14 +73,15 @@ public class MallOrderController extends BaseController {
 		}
 		String spbill_create_ip = CommonUtil.getIp2(request);
 		return mallOrderService.confirmOrder(
-				userId, orderNo, invoiceType,
-				invoiceTitle, address, consignee, mobile, wxopenid, spbill_create_ip, fuid);
+				userId, orderNo, invoiceType, invoiceTitle, invoiceNo,
+				address, consignee, mobile, wxopenid, spbill_create_ip, fuid);
 	}
 
 	@RequestMapping("/mall/order/scoreExchange")
 	ResponseMessage scoreExchange(@RequestParam("orderNo") String orderNo,
 			@RequestParam("invoiceType") Integer invoiceType,
 			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
 			@RequestParam("address") String address,
 			@RequestParam("consignee") String consignee,
 			@RequestParam("mobile") String mobile) {
@@ -90,7 +92,7 @@ public class MallOrderController extends BaseController {
 			throw new I18nMessageException("-1","账户余额不足");
 		}
 		return mallOrderService.scoreExchange(user.getUserId(), orderNo, invoiceType,
-				invoiceTitle, address, consignee, mobile);
+				invoiceTitle, invoiceNo, address, consignee, mobile);
 	}
 
 	@RequestMapping("/mall/order/mylist")

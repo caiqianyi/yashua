@@ -247,6 +247,9 @@ var vm = new Vue({
                 vm.user = r.data.user;
             });
 		},
+		handleExport(){
+			window.open("/account/export/user.xlsx?token="+window.storage.get('login.access_token',false) );
+		},
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');

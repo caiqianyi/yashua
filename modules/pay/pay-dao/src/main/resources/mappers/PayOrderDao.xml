@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lebaoxun.yashua.modules.pay.dao.PayOrderDao">
+<mapper namespace="com.lebaoxun.modules.pay.dao.PayOrderDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.yashua.modules.pay.entity.PayOrderEntity" id="payOrderMap">
+    <resultMap type="com.lebaoxun.modules.pay.entity.PayOrderEntity" id="payOrderMap">
         <result property="id" column="id"/>
         <result property="orderNo" column="order_no"/>
         <result property="outOrderNo" column="out_order_no"/>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lebaoxun.yashua.modules.mall.dao.MallProductCommentDao">
+<mapper namespace="com.lebaoxun.modules.mall.dao.MallProductCommentDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallProductCommentEntity"
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductCommentEntity"
 		id="mallProductCommentMap">
 		<result property="id" column="id" />
 		<result property="productId" column="product_id" />
@@ -26,12 +26,12 @@
 		<result property="productSpecName" column="op_product_spec_name" />
 
 		<collection property="picImgs"
-			ofType="com.lebaoxun.yashua.modules.mall.entity.MallProductCommentImageEntity"
+			ofType="com.lebaoxun.modules.mall.entity.MallProductCommentImageEntity"
 			resultMap="mallProductCommentImageMap"></collection>
 	</resultMap>
 
 	<resultMap
-		type="com.lebaoxun.yashua.modules.mall.entity.MallProductCommentImageEntity"
+		type="com.lebaoxun.modules.mall.entity.MallProductCommentImageEntity"
 		id="mallProductCommentImageMap">
 		<result property="id" column="comment_id" />
 		<result property="productCommentId" column="comment_product_comment_id" />
@@ -41,7 +41,7 @@
 	</resultMap>
 
 	<!-- 可根据自己的需求，是否要使用 -->
-	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallOrderProductEntity"
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallOrderProductEntity"
 		id="mallOrderProductMap">
 		<result property="orderProductId" column="order_product_id" />
 		<result property="orderId" column="op_order_id" />
@@ -59,7 +59,7 @@
 	</resultMap>
 
 	<insert id="save"
-		parameterType="com.lebaoxun.yashua.modules.mall.entity.MallProductCommentEntity"
+		parameterType="com.lebaoxun.modules.mall.entity.MallProductCommentEntity"
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO mall_product_comment (
 		product_id, user_id, nickname,

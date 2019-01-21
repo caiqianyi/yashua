@@ -1,5 +1,6 @@
 package com.lebaoxun.modules.account.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -28,6 +29,9 @@ public interface IUserService {
      */
     @RequestMapping("/account/user/list")
     ResponseMessage list(@RequestParam Map<String, Object> params);
+    
+    @RequestMapping("/account/user/all")
+    List<UserEntity> all();
 
 
     /**

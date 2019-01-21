@@ -53,6 +53,7 @@ public interface IMallOrderService {
     		@RequestParam("orderNo") String orderNo, 
     		@RequestParam("invoiceType") Integer invoiceType,
     		@RequestParam("invoiceTitle") String invoiceTitle, 
+    		@RequestParam(value="invoiceNo",required=false) String invoiceNo,
     		@RequestParam("address") String address,
     		@RequestParam("consignee") String consignee,
     		@RequestParam("mobile") String mobile,
@@ -65,6 +66,7 @@ public interface IMallOrderService {
 			@RequestParam("orderNo") String orderNo,
 			@RequestParam("invoiceType") Integer invoiceType,
 			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
 			@RequestParam("address") String address,
 			@RequestParam("consignee") String consignee,
 			@RequestParam("mobile") String mobile);

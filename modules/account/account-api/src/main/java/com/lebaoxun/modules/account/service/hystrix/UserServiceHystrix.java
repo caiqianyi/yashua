@@ -1,4 +1,5 @@
 package com.lebaoxun.modules.account.service.hystrix;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -22,6 +23,11 @@ public class UserServiceHystrix implements IUserService {
 
 	@Override
 	public ResponseMessage list(Map<String, Object> params) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
+	@Override
+	public List<UserEntity> all() {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 

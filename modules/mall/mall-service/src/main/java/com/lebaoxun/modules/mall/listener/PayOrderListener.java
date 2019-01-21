@@ -67,6 +67,20 @@ public class PayOrderListener {
 				
 				MallOrderEntity order = mallOrderService.payMallOrder(orderNo, buy_time+"");
 				
+				if(order != null){//消费返还100%积分+
+					Map<String,String> msg = new HashMap<String,String>();
+					String timestamp = buy_time+"";
+					msg.put("userId", order.getUserId()+"");
+					msg.put("logTime", timestamp);
+					msg.put("logType", "MALL_PRO_PAY_AWARD");
+					msg.put("rechargeFee", order.getOrderAmount().intValue()+"");
+					msg.put("descr", "消费返还+");
+					msg.put("adjunctInfo", order.getOrderNo());
+					
+					rabbitmqSender.sendContractDirect("account.balance.queue.rechage",
+							new Gson().toJson(msg));
+				}
+				
 				if(order != null && order.getFuid() != null){
 					Map<String,String> msg = new HashMap<String,String>();
 					String timestamp = buy_time+"";

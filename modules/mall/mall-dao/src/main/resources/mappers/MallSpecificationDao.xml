@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lebaoxun.yashua.modules.mall.dao.MallSpecificationDao">
+<mapper namespace="com.lebaoxun.modules.mall.dao.MallSpecificationDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallSpecificationEntity" id="mallSpecificationMap">
+    <resultMap type="com.lebaoxun.modules.mall.entity.MallSpecificationEntity" id="mallSpecificationMap">
         <result property="specificationId" column="specification_id"/>
         <result property="categoryId" column="category_id"/>
         <result property="name" column="name"/>
@@ -14,10 +14,10 @@
         <result property="createBy" column="create_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="updateBy" column="update_by"/>
-        <collection property="attrs" ofType="com.lebaoxun.yashua.modules.mall.entity.MallSpecificationAttributeEntity" resultMap="mallSpecificationAttributeMap"></collection>
+        <collection property="attrs" ofType="com.lebaoxun.modules.mall.entity.MallSpecificationAttributeEntity" resultMap="mallSpecificationAttributeMap"></collection>
     </resultMap>
     
-    <resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallSpecificationAttributeEntity" id="mallSpecificationAttributeMap">
+    <resultMap type="com.lebaoxun.modules.mall.entity.MallSpecificationAttributeEntity" id="mallSpecificationAttributeMap">
         <result property="specAttrId" column="spec_attr_id"/>
         <result property="specificationId" column="specification_id"/>
         <result property="name" column="attr_ame"/>

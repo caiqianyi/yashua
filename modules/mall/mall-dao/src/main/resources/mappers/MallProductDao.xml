@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lebaoxun.yashua.modules.mall.dao.MallProductDao">
+<mapper namespace="com.lebaoxun.modules.mall.dao.MallProductDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallProductEntity"
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductEntity"
 		id="mallProductMap">
 		<result property="id" column="id" />
 		<result property="productNumber" column="product_number" />
@@ -29,10 +29,10 @@
 		<result property="shareDescription" column="share_description" />
 		<result property="remarks" column="remarks" />
 		<association property="attrs"
-			javaType="com.lebaoxun.yashua.modules.mall.entity.MallProductAttrEntity"
+			javaType="com.lebaoxun.modules.mall.entity.MallProductAttrEntity"
 			resultMap="mallProductAttrMap"></association>
 	</resultMap>
-	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallProductEntity"
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductEntity"
 		id="mallProductInfoMap">
 		<result property="id" column="id" />
 		<result property="productNumber" column="product_number" />
@@ -57,15 +57,15 @@
 		<result property="shareDescription" column="share_description" />
 		<result property="remarks" column="remarks" />
 		<association property="attrs"
-			javaType="com.lebaoxun.yashua.modules.mall.entity.MallProductAttrEntity"
+			javaType="com.lebaoxun.modules.mall.entity.MallProductAttrEntity"
 			resultMap="mallProductAttrMap"></association>
 		<collection property="images"
 			javaType="java.util.List"
-			ofType="com.lebaoxun.yashua.modules.mall.entity.MallProductImageEntity"
+			ofType="com.lebaoxun.modules.mall.entity.MallProductImageEntity"
 			resultMap="mallProductImageMap"></collection>
 	</resultMap>
 
-	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallProductImageEntity"
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductImageEntity"
 		id="mallProductImageMap">
 		<result property="picImgId" column="pic_img_id" />
 		<result property="productId" column="product_id" />
@@ -77,7 +77,7 @@
 	</resultMap>
 
 
-	<resultMap type="com.lebaoxun.yashua.modules.mall.entity.MallProductAttrEntity"
+	<resultMap type="com.lebaoxun.modules.mall.entity.MallProductAttrEntity"
 		id="mallProductAttrMap">
 		<result property="id" column="id" />
 		<result property="productId" column="product_id" />
@@ -165,7 +165,7 @@
 		</if>
 	</select>
 
-	<insert id="addProduct" parameterType="com.lebaoxun.yashua.modules.mall.entity.MallProductEntity"
+	<insert id="addProduct" parameterType="com.lebaoxun.modules.mall.entity.MallProductEntity"
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO mall_product (
 		product_number, `name`, show_score,
