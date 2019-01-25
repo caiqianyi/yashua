@@ -95,6 +95,7 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductDao, MallProd
 		mpe.setShowInTop(mallProduct.getShowInTop());
 		mpe.setShowPic(mallProduct.getShowPic());
 		mpe.setShowPrice(mallProduct.getShowPrice());
+		mpe.setCostPrice(mallProduct.getCostPrice());
 		mpe.setShowScore(mallProduct.getShowScore());
 		mpe.setUpdateBy(mallProduct.getUpdateBy());
 		mpe.setUpdateTime(new Date());

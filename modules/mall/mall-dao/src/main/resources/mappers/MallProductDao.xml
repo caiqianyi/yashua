@@ -11,6 +11,7 @@
 		<result property="labelId" column="label_id" />
 		<result property="name" column="name" />
 		<result property="showScore" column="show_score" />
+		<result property="costPrice" column="cost_price" />
 		<result property="showPrice" column="show_price" />
 		<result property="showPic" column="show_pic" />
 		<result property="introduce" column="introduce" />
@@ -168,15 +169,15 @@
 	<insert id="addProduct" parameterType="com.lebaoxun.modules.mall.entity.MallProductEntity"
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO mall_product (
-		product_number, `name`, show_score,
+		product_number, `name`, `cost_price`, show_score,
 		show_price, show_pic, introduce,
 		description, show_in_top,
 		show_in_hot, show_in_shelve, create_time,
 		create_by, search_key,
 		share_title, share_description, remarks ) VALUES
-		( #{productNumber}, #{name}, #{showScore}, #{showPrice}, #{showPic},
-		#{introduce}, #{description}, #{showInTop}, #{showInHot},
-		#{showInShelve},
+		( #{productNumber}, #{name}, #{costPrice}, #{showScore}, 
+		#{showPrice}, #{showPic}, #{introduce}, #{description}, 
+		#{showInTop}, #{showInHot}, #{showInShelve},
 		#{createTime}, #{createBy}, #{searchKey},
 		#{shareTitle}, #{shareDescription},
 		#{remarks} );

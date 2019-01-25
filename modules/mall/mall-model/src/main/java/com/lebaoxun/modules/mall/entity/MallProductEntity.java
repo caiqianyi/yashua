@@ -42,6 +42,10 @@ public class MallProductEntity implements Serializable {
 	 */
 	private Integer showScore;
 	/**
+	 * 成本价，划线价格
+	 */
+	private BigDecimal costPrice;
+	/**
 	 * 显示价格
 	 */
 	private BigDecimal showPrice;
@@ -389,4 +393,11 @@ public class MallProductEntity implements Serializable {
 	public void setImages(List<MallProductImageEntity> images) {
 		this.images = images;
 	}
+	public BigDecimal getCostPrice() {
+		return costPrice;
+	}
+	public void setCostPrice(BigDecimal costPrice) {
+		this.costPrice = costPrice;
+	}
+	
 }
