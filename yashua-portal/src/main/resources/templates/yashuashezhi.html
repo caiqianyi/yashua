@@ -4,14 +4,20 @@
 <#include "/new_header.html">
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"> </script>
 <title>设置</title>
+<style type="text/css">
+ .shezhi-moshi{position: relative;}
+ .zhineng{width:1.3rem;height:.6rem;border:1px solid #63ed98;background: none;position:absolute;bottom:.2rem;right:.3rem;box-shadow:0 .05rem .05rem #000;border-radius:.05rem;}
+ .zhineng:active{box-shadow:0 0 .05rem #000;}
+</style>
 </head>
 <body>
 <div class="Top"><h3 onclick="javascript:history.go(-1);">设置</h3><!-- <a href="">完成</a> --></div>
-<div class="nichen font-36 center">牙刷名称<em></em></div>
+<div class="nichen font-36 center" id="shebeihaot">牙刷名称<em></em></div>
 
 <div class="shezhi-moshi center font-28">
 	<p>牙刷模式</p>
     <span>开启您想要的牙刷模式</span>
+    <input type="button" class="zhineng" value="智能设置"/>
 </div>
 
 <div class="qj-moshi font-26">
@@ -34,6 +40,9 @@
 		<em style="width:0%"></em>
 	</ul>
 </div>
+<!--  <div class="weui_cell_bd weui_cell_primary">
+                    <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
+                </div> -->
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048625</span>
  <span id="nonceStr">a784287b835449eb</span>
@@ -45,6 +54,14 @@
 </body>
 </html>
 <script type="text/javascript">
+
+
+function mlog(m){
+    var log=$('#logtext').val();
+    //log=log+m;
+    log =log+ "\n"+ m;
+    $('#logtext').val(log);
+}
 	 jQuery(document).ready(function(){
 
 	   //base64_to_bytes_array('UgAFDQo=');
@@ -127,7 +144,6 @@
 	   var x=0; 
 	   WeixinJSBridge.invoke('openWXDeviceLib', {}, 
 	   function(res){
-	       mlog("打开设备返回："+res.err_msg);
 	      if(res.err_msg=='openWXDeviceLib:ok')
 	        {
 	          if(res.bluetoothState=='off')
@@ -200,7 +216,8 @@
 		
 	    WeixinJSBridge.on('onReceiveDataFromWXDevice', function(argv) {
 	      var sss=argv.base64Data;
-	    mlog("接收的数据-->"+base64_to_bytes_array(sss));
+	      base64_to_bytes_array(sss);
+	     // mlog("收到的原始数据："+sss);
 	        //var Bytes=base64_to_bytes_array(argv.base64Data);
 	        //alert("硬件设备返回的base64数据"+argv.base64Data);
 	      //  mlog("接收的数据-->"+pHex(base64_to_bytes_array(argv.base64Data)));
@@ -468,7 +485,8 @@
 	}
 	function CharToHex(str) {
 	    var out, i, h,j;
-	    var zxieyi,sxieyi;
+	    var zxieyi,sxieyi,zvalue,svalue;
+	    var shebeixieyi,shebeia,shebeib,shebeic,shebeid,shebeie,shebeif,shebeig,shebeih,shebeii,shebeij,shebeihao;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
@@ -476,70 +494,109 @@
 	        h = str.charCodeAt(i++).toString(16);
 	        if(h==52){
 	        	zxieyi=52;
+	        	sxieyi=0;
 	          j=i;
 	        }else if(h==53){
 	        	sxieyi=53;
+	        	zxieyi=0;
 	          j=i;
+	        }else if(h==56){
+	        	shebeixieyi=56; 
+		          j=i;
+		        }
+	        if(zxieyi==52 && i-j==2){
+	        	zvalue=h;
 	        }
-	        if(zxieyi==52 && i-j==1){
-	          kgaowei=h;
-	          if(h=1){
-	        	 $("#qinrou").attr('class','on');
-	        	 $("#biaozhun").removeClass("on");
-	        	 $("#shendu").removeClass("on");
-	          }else if(h=2){
-		        	 $("#biaozhun").attr('class','on');
-		        	 $("#qinrou").removeClass("on");
-		        	 $("#shendu").removeClass("on");
-	          }else if(h=3){
-		        	 $("#shendu").attr('class','on');
-		        	 $("#biaozhun").removeClass("on");
-		        	 $("#qinrou").removeClass("on");
-	          }
+	        if(sxieyi==53 && i-j==2){
+	        	svalue=h;
 	        }
-	        if(sxieyi==53 && i-j==1){
-	        	 if(h=1){
-		        	 $("#shimiao").attr('class','on');
-	        		 $("#shiwumiao").removeClass("on");
-	        		 $("#ershimiao").removeClass("on");
-	        		 $("#ershiwumiao").removeClass("on");
-	        		 $("#sanshimiao").removeClass("on");
-		          }else if(h=2){
-			        	 $("#shiwumiao").attr('class','on');
-		        		 $("#shimiao").removeClass("on");
-		        		 $("#ershimiao").removeClass("on");
-		        		 $("#ershiwumiao").removeClass("on");
-		        		 $("#sanshimiao").removeClass("on");
-		          }else if(h=3){
-			        	 $("#ershimiao").attr('class','on');
-		        		 $("#shiwumiao").removeClass("on");
-		        		 $("#shimiao").removeClass("on");
-		        		 $("#ershiwumiao").removeClass("on");
-		        		 $("#sanshimiao").removeClass("on");
-		          }else if(h=4){
-			        	 $("#ershiwumiao").attr('class','on');
-		        		 $("#shiwumiao").removeClass("on");
-		        		 $("#ershimiao").removeClass("on");
-		        		 $("#shimiao").removeClass("on");
-		        		 $("#sanshimiao").removeClass("on"); 
-		          }else if(h=5){
-			        	 $("#sanshimiao").attr('class','on');
-		        		 $("#shiwumiao").removeClass("on");
-		        		 $("#ershimiao").removeClass("on");
-		        		 $("#ershiwumiao").removeClass("on");
-		        		 $("#shimiao").removeClass("on");
-		          }
-	        }
-	        
-	        
-	        
+	        if(shebeixieyi==56 && i-j==1){
+		          shebeia=h-30;
+		        }
+		        if(shebeixieyi==56 && i-j==2){
+		        	shebeib=h-30;
+		        }
+		        if(shebeixieyi==56 && i-j==3){
+		        	shebeic=h-30;
+			        }
+		        if(shebeixieyi==56 && i-j==4){
+		        	shebeid=h-30;
+			        }
+		        if(shebeixieyi==56 && i-j==5){
+		        	shebeie=h-30;
+			        }
+		        if(shebeixieyi==56 && i-j==6){
+		        	shebeif=h-30;
+			        }
+		        if(shebeixieyi==56 && i-j==7){
+		        	shebeig=h-30;
+			        }
+		        if(shebeixieyi==56 && i-j==8){
+		        	shebeih=h-30;
+			        }
+		        if(shebeixieyi==56 && i-j==9){
+		        	shebeii=h-30;
+			        }
+		        if(shebeixieyi==56 && i-j==10){
+		        	shebeij=h-30;
+			        }
+	        if(zvalue==1){
+	          	 $("#qinrou").attr('class','on');
+	          	 $("#biaozhun").removeClass("on");
+	          	 $("#shendu").removeClass("on");
+	            }else if(zvalue==2){
+	   	        	 $("#biaozhun").attr('class','on');
+	   	        	 $("#qinrou").removeClass("on");
+	   	        	 $("#shendu").removeClass("on");
+	            }else if(zvalue==3){
+	   	        	 $("#shendu").attr('class','on');
+	   	        	 $("#biaozhun").removeClass("on");
+	   	        	 $("#qinrou").removeClass("on");
+	            }
+	           if(svalue==1){
+	          	 $("#shimiao").attr('class','on');
+	     		     $("#shiwumiao").removeClass("on");
+	     		 	 $("#ershimiao").removeClass("on");
+	     			 $("#ershiwumiao").removeClass("on");
+	     		 	 $("#sanshimiao").removeClass("on");
+	            }else if(svalue==2){
+	   	        	 $("#shiwumiao").attr('class','on');
+	          		 $("#shimiao").removeClass("on");
+	          		 $("#ershimiao").removeClass("on");
+	          		 $("#ershiwumiao").removeClass("on");
+	          		 $("#sanshimiao").removeClass("on");
+	            }else if(svalue==3){
+	   	        	 $("#ershimiao").attr('class','on');
+	          		 $("#shiwumiao").removeClass("on");
+	          		 $("#shimiao").removeClass("on");
+	          		 $("#ershiwumiao").removeClass("on");
+	          		 $("#sanshimiao").removeClass("on");
+	            }else if(svalue==4){
+	   	        	 $("#ershiwumiao").attr('class','on');
+	          		 $("#shiwumiao").removeClass("on");
+	          		 $("#ershimiao").removeClass("on");
+	          		 $("#shimiao").removeClass("on");
+	          		 $("#sanshimiao").removeClass("on"); 
+	            }else if(svalue==5){
+	   	        	 $("#sanshimiao").attr('class','on');
+	          		 $("#shiwumiao").removeClass("on");
+	          		 $("#ershimiao").removeClass("on");
+	          		 $("#ershiwumiao").removeClass("on");
+	          		 $("#shimiao").removeClass("on");
+	            }
+	           if(shebeixieyi==56){
+	   	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
+	   	       }
+	           if(shebeihao!=null && shebeihao !=""){
+	  	    	 $("#shebeihaot").html(shebeihao);
+	  	    }
 	        if(h.length==1){
 	          h="0"+h;
 	        }
 	        out += "\\0x" + h;
 	        out +=(i > 0 && i % 8 == 0)?"\r\n":", ";
 	    }
-	   
+	    //mlog("收到的包值："+out);
 	    return out;
 	}
 

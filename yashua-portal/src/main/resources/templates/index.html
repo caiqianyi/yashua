@@ -298,35 +298,28 @@ $('.inBox span').click(function(){
 	        {
 	          if(res.bluetoothState=='off')
 	            {    
-	              showdialog("太着急啦","亲,使用前请先打开手机蓝牙！");  
-	              $("#lbInfo").innerHTML="1.请打开手机蓝牙";
-	              $("#lbInfo").css({color:"red"});
+	             // alert("亲,使用前请先打开手机蓝牙！");  
 	              x=1;
 	              //isOver();
 	            };
 	          if(res.bluetoothState=='unauthorized')
 	            {
-	              showdialog("出错啦","亲,请授权微信蓝牙功能并打开蓝牙！");    
-	              $("#lbInfo").html("1.请授权蓝牙功能");
-	              $("#lbInfo").css({color:"red"});
+	        	 // alert("亲,请授权微信蓝牙功能并打开蓝牙！");    
 	              x=1;
 	              //isOver();
 	            }; 
 	          if(res.bluetoothState=='on')
 	            {
 	              //showdialog("太着急啦","亲,请查看您的设备是否打开！");   
-	              $("#lbInfo").html("1.蓝牙已打开,未找到设备");
-	              $("#lbInfo").css({color:"red"});
-	              //$("#lbInfo").attr(("style", "background-color:#000");
+	             // alert("蓝牙已打开,未找到设备");
 	              x=0;
 	              //isOver();
 	            };      
 	        }
 	      else
 	        {
-	          $("#lbInfo").html("1.微信蓝牙打开失败");
 	          x=1; 
-	          showdialog("微信蓝牙状态","亲,请授权微信蓝牙功能并打开蓝牙！");   
+	        //  alert("亲,请授权微信蓝牙功能并打开蓝牙！");   
 	        }
 	    });
 	   return x;  //0表示成功 1表示失败
@@ -388,20 +381,22 @@ $('.inBox span').click(function(){
 	function my_getWXDeviceInfos(){
 	    WeixinJSBridge.invoke('getWXDeviceInfos', {}, function(res){
 	        var len=res.deviceInfos.length;  //绑定设备总数量
+	        var decon = 0;
 	        for(i=0; i<=len-1;i++)
 	         {
 	           //alert(i + ' ' + res.deviceInfos[i].deviceId + ' ' +res.deviceInfos[i].state); 
 	           if(res.deviceInfos[i].state==="connected")
 	            {
-	              $("#lbdeviceid").html(res.deviceInfos[i].deviceId); 
+	        	   //连接的微信设备id
 	              C_DEVICEID = res.deviceInfos[i].deviceId;
-	              $("#lbInfo").html("2.设备已成功连接");
-	              $("#lbInfo").css({color:"green"});
-	              woshou();
+	          	  woshou();
+	          	  decon=1;
 	              break;   
-	            }  
+	            }
 	         }
-	            
+	        if(decon==0){
+            	setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
+            }
 	    }); 
 	  return;    
 	}
@@ -436,7 +431,7 @@ $('.inBox span').click(function(){
 	        
 	            Bytes[1]=0x01;
 	        
-	            Bytes[2]=0x02;
+	            Bytes[2]=0x01;
 	           
 	            Bytes[3]=0x0d;
 	            Bytes[4]=0x0a;
@@ -775,9 +770,9 @@ $('.inBox span').click(function(){
 	    $("#dianliang").html(dianliang);
 	    $("#shouming").html(shouming);
 	    $("#shuayaci").html(shuayaci);
-	    if(shebeihao!=null && shebeihao !=""){
+	  /*   if(shebeihao!=null && shebeihao !=""){
 	    	 $("#shebeihaot").html(shebeihao);
-	    }
+	    } */
 	   // $("#kouqi").html(kouqi);
 	   // $("#jiujing").html(jiujing);
 	    
