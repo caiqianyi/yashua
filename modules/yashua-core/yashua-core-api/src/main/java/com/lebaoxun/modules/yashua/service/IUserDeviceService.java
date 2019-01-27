@@ -86,6 +86,19 @@ public interface IUserDeviceService {
 
     @RequestMapping("/yashua/device/connect")
 	ResponseMessage connect(@RequestParam("account") String account, @RequestParam("identity") String identity);
+
+
+    /**
+     * 设置牙刷名称
+     */
+    @RequestMapping("/yashua/device/setName")
+	ResponseMessage setName(@RequestParam("account") String account,@RequestParam("name") String name, @RequestParam("identity") String identity);
+
+    /**
+     * 获取牙刷名称
+     */
+    @RequestMapping("/yashua/device/getDeviceName")
+	ResponseMessage getDeviceName(@RequestParam("account") String account, @RequestParam("identity") String identity);
     
 }
 
