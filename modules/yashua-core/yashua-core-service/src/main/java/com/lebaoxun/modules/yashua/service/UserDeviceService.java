@@ -25,5 +25,8 @@ public interface UserDeviceService extends IService<UserDeviceEntity> {
     
 	void connect(String account, String identity);
 
+	void setName(String account, String name,String identity);
+
+	
 }
 
