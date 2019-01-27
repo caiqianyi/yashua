@@ -96,4 +96,26 @@ public class UserDeviceController {
     	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
         return userDeviceService.connect(ue.getAccount(), identity);
     }
+    
+    /**
+     * 设置牙刷名称
+     */
+    
+    @RequestMapping("/yashua/device/setName")
+    ResponseMessage setName(@RequestParam("name") String name,@RequestParam("identity") String identity){
+    	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+        return userDeviceService.setName(ue.getAccount(), name,identity);
+    }
+    
+    
+    
+    /**
+     * 获取牙刷名称
+     */
+    
+    @RequestMapping("/yashua/device/getDeviceName")
+    ResponseMessage getDeviceName(@RequestParam("identity") String identity){
+    	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+        return userDeviceService.getDeviceName(ue.getAccount(),identity);
+    }
 }
