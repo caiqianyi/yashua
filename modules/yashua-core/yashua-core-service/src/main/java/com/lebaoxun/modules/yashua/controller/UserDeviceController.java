@@ -138,4 +138,21 @@ public class UserDeviceController {
     }
     
 
+    /**
+     * 设置牙刷名称
+     */
+    
+    @RequestMapping("/yashua/device/setName")
+    @RedisLock(value="yashua:userdevice:setName:lock:#arg0")
+   	ResponseMessage setName(@RequestParam("account") String account, @RequestParam("name") String name,@RequestParam("identity") String identity){
+       	userDeviceService.setName(account,name,identity);
+       	return ResponseMessage.ok();
+       }
+    
+    @RequestMapping("/yashua/device/getDeviceName")
+   	ResponseMessage getDeviceName(@RequestParam("account") String account, @RequestParam("identity") String identity){
+    	UserDeviceEntity userDevice = userDeviceService.selectOne( new EntityWrapper<UserDeviceEntity>().eq("identity", identity));
+
+    	return ResponseMessage.ok().put("userDevice", userDevice);
+    }
 }
