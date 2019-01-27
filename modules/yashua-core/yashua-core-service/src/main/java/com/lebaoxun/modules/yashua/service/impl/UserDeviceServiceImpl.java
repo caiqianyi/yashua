@@ -77,9 +77,22 @@ public class UserDeviceServiceImpl extends ServiceImpl<UserDeviceDao, UserDevice
 			}
 		}
 		UserDeviceEntity userDevice = new UserDeviceEntity();
+		
 		userDevice.setIdentity(identity);
 		userDevice.setDefaultDevice(1);
+		userDevice.setAccount(account);
 		baseMapper.update(userDevice, new EntityWrapper<UserDeviceEntity>().eq("identity", identity));
 	}
 
+	/**
+	 *设置牙刷名称
+	 */
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void setName(String account, String name,String identity) {
+		
+		baseMapper.setName(name,identity);
+	}
+
+	
 }
