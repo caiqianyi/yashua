@@ -16,4 +16,9 @@
 	<update id="unbind">
 	    UPDATE user_device SET account=null WHERE (identity = #{identity} AND account = #{account}) 
 	</update>
+	
+	
+	<update id="setName">
+	    UPDATE user_device SET name=#{name} WHERE identity = #{identity}
+	</update>
 </mapper>
