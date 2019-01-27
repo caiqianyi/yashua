@@ -67,5 +67,15 @@ public class UserDeviceServiceHystrix implements IUserDeviceService {
 	public ResponseMessage connect(String account, String identity) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+	
+	@Override
+	public ResponseMessage setName(String account, String name,String identity) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+
+	@Override
+	public ResponseMessage getDeviceName(String account, String identity) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
 }
 
