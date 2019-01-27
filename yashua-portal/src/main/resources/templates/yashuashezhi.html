@@ -3,16 +3,20 @@
 <head>
 <#include "/new_header.html">
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"> </script>
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"> </script>
 <title>设置</title>
 <style type="text/css">
  .shezhi-moshi{position: relative;}
  .zhineng{width:1.3rem;height:.6rem;border:1px solid #63ed98;background: none;position:absolute;bottom:.2rem;right:.3rem;box-shadow:0 .05rem .05rem #000;border-radius:.05rem;}
  .zhineng:active{box-shadow:0 0 .05rem #000;}
+ .yashuaname{width: 100%;height:.9rem;line-height:.9rem;background:#63ed98;color: #1e1e1f;text-align: center;display: block;}
+ 
 </style>
 </head>
 <body>
 <div class="Top"><h3 onclick="javascript:history.go(-1);">设置</h3><!-- <a href="">完成</a> --></div>
-<div class="nichen font-36 center" id="shebeihaot">牙刷名称<em></em></div>
+<div class="nichen font-36 center" id="shebeihaot"><span>我的牙刷</span><em id="setyashuaname"></em></div>
 
 <div class="shezhi-moshi center font-28">
 	<p>牙刷模式</p>
@@ -51,6 +55,22 @@
   <span id="trueCardRandom"></span>
  
 </div>
+<!-- 牙刷名称设置 -->
+<div class="ui-dialog">
+    <div class="ui-dialog-cnt">
+	    <header class="ui-dialog-hd ui-border-b">
+                  <h3>设备名称</h3>
+                  <i class="ui-dialog-close" data-role="button"></i>
+              </header>
+        <div class="ui-dialog-bd">
+            <div><input type="text" class="yashuaname" name="name" maxlength="20" placeholder="请输入设备名称"/></div>
+        </div>
+        <div class="ui-dialog-ft">
+            <button type="button" data-role="button">取消</button>
+            <button type="button" data-role="button">设置</button>
+        </div>
+    </div>        
+</div>  
 </body>
 </html>
 <script type="text/javascript">
@@ -483,6 +503,7 @@ function mlog(m){
 	    //alert(CharToHex(output));
 	    return CharToHex(output);
 	}
+	var _shebeihao="";
 	function CharToHex(str) {
 	    var out, i, h,j;
 	    var zxieyi,sxieyi,zvalue,svalue;
@@ -588,7 +609,10 @@ function mlog(m){
 	   	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
 	   	       }
 	           if(shebeihao!=null && shebeihao !=""){
-	  	    	 $("#shebeihaot").html(shebeihao);
+//	  	    	 $("#shebeihaot").html(shebeihao);
+	        	   _shebeihao=shebeihao;
+	        	   getDeviceName(_shebeihao);
+	        	  
 	  	    }
 	        if(h.length==1){
 	          h="0"+h;
@@ -599,5 +623,83 @@ function mlog(m){
 	    //mlog("收到的包值："+out);
 	    return out;
 	}
+	function getDeviceName(_shebeihao){
+		$.ajax({
+			type: "POST",
+		    url: "/yashua/device/getDeviceName",
+		    data: {'identity':_shebeihao},
+		    success: function(r){
+		    
+		    	if(r.errcode == 0){
+		    		var userDevice=r.data.userDevice;
+		    		
+		    		if(userDevice.name!=null && userDevice.name!="" )
+		    		$("#shebeihaot").children("span").text(userDevice.name);
+		    		return;
+		    	}
+		    	alert(r.errmsg);
+		    }
+		});
+	}
+	
 
+	//设置牙刷名称
+	$("#setyashuaname").click(function(){
+		if(_shebeihao==''){
+			alert("连接设备号为空，请重新连接！");
+			return;
+		}
+		var dia = $(".ui-dialog").dialog("show");
+		
+		dia.on("dialog:action",function(e){
+			if(e.index == 2){//0==关闭，1==取消，2==确定
+				
+				var l3 = $.loading({content:'请稍后...'}).show();
+				var name = $("input[name=name]").val();
+				$.ajax({
+					type: "POST",
+				    url: "/yashua/device/setName",
+				    data: {'name':name,'identity':_shebeihao},
+				    success: function(r){
+				    	l3.hide();
+				    	if(r.errcode == 0){
+				    		getDeviceName(_shebeihao);
+				    		$("input[name=name]").val('');
+				    		return;
+				    	}
+				    	alert(r.errmsg);
+				    }
+				});
+			}
+	    });
+	});
+	//仅供测试用
+	$(".zhineng").click(function(){
+		var id=0,arry1=[];aver1=0;
+		$.ajax({
+    		type: "GET",
+    	    url: "/yashua/userdata/history/list/"+id,
+    	    success: function(r){
+    	    	if(r.errcode == 0){
+    		   	 	var datas = r.data;
+    		   	 	if(id==0){//一周的口气
+	    		   	 	for(var i=0;i<datas.list.length;i++){
+	    		   	 		var data = datas.list[i];
+	    		   	 		if(data.biaoshi==1){
+	    		   	 			arry1.push(datas.list[i].fenshu);
+	    		   	 			aver1+=datas.list[i].fenshu;
+	    		   	 		}
+	    		   	 	}
+	    		   	  	if(arry1.length<7){
+	    		   	  		var a1=0,a2=0;
+	    		   	  		if(arry1.length>0) a1 = Math.ceil(aver1/arry1.length);
+	    		   	  		alert("早上的口气平均值      "  +a1);
+	    		   	 	} 
+	    		   	}
+    	    	}
+    	    }
+	
+	});
+	});
+		
 </script>
