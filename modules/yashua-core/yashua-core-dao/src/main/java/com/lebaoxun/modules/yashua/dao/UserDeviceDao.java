@@ -18,4 +18,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 public interface UserDeviceDao extends BaseMapper<UserDeviceEntity> {
 	void unbind(@Param("account") String account,
 			@Param("identity") String identity);
+	
+	void setName(
+			@Param("name") String name,@Param("identity") String identity);
+
+	
 }
