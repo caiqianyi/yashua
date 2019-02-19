@@ -515,20 +515,16 @@ function mlog(m){
 	        h = str.charCodeAt(i++).toString(16);
 	        if(h==52){
 	        	zxieyi=52;
-	        	sxieyi=0;
-	          j=i;
-	        }else if(h==53){
-	        	sxieyi=53;
-	        	zxieyi=0;
+	        	
 	          j=i;
 	        }else if(h==56){
 	        	shebeixieyi=56; 
 		          j=i;
 		        }
-	        if(zxieyi==52 && i-j==2){
+	        if(zxieyi==52 && i-j==1){
 	        	zvalue=h;
 	        }
-	        if(sxieyi==53 && i-j==2){
+	        if(zxieyi==52 && i-j==2){
 	        	svalue=h;
 	        }
 	        if(shebeixieyi==56 && i-j==1){
@@ -694,6 +690,13 @@ function mlog(m){
 	    		   	  		var a1=0,a2=0;
 	    		   	  		if(arry1.length>0) a1 = Math.ceil(aver1/arry1.length);
 	    		   	  		alert("早上的口气平均值      "  +a1);
+	    		   	  		if(a1==0){
+	    		   	  			
+	    		   	  		}
+	    		   	  		
+	    		   	  		
+	    		   	  		
+	    		   	  		
 	    		   	 	} 
 	    		   	}
     	    	}
