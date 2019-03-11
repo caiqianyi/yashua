@@ -121,9 +121,9 @@
         <li onclick="kaishiceliang(1);"  class="last on">酒精</li>
     </ul>
 </div> -->
- <div class="weui_cell_bd weui_cell_primary">
+<!--  <div class="weui_cell_bd weui_cell_primary">
                     <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
-                </div> 
+                </div>  -->
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048575</span>
  <span id="nonceStr">77b9f3dc71294e86</span>
@@ -490,7 +490,7 @@ $('.inBox span').click(function(){
 	            Bytes[4]=0x0a;
 	 	       $('.pop-kefu div').hide();
 		       $('.pop-kefu ul').hide();
-		       alert("请吹气，等待结果上传！");
+		       alert("待设备红灯长亮时吹气，并等待结果上传！");
 		       //setTimeout("kouqitttt();",5000);
 					
 	       var x=senddataBytes(Bytes,C_DEVICEID);
@@ -766,7 +766,7 @@ $('.inBox span').click(function(){
 	    //	alert(r.errmsg);
 	    }
 	});
-	  mlog("收到的包值："+out);
+	//  mlog("收到的包值："+out);
 	    return out;
 	}
 
