@@ -18,6 +18,8 @@ public interface UserDeviceService extends IService<UserDeviceEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
     
+    List<UserDeviceEntity> selcone(Map<String, Object> params);
+    
     void bind(String account,String identity,Integer maxBindNum);
     
     void unbind(String account,String identity);

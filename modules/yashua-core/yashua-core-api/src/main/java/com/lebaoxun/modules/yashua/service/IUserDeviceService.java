@@ -29,7 +29,11 @@ public interface IUserDeviceService {
     @RequestMapping("/yashua/userdevice/list")
     ResponseMessage list(@RequestParam Map<String, Object> params);
 
-
+	/**
+     * 列表
+     */
+    @RequestMapping("/yashua/userdevice/selcone")
+    ResponseMessage selcone(@RequestParam Map<String, Object> params);
     /**
      * 信息
      */

@@ -25,7 +25,11 @@ public class UserDeviceServiceHystrix implements IUserDeviceService {
 	public ResponseMessage list(Map<String, Object> params) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
-
+	@Override
+	public ResponseMessage selcone(Map<String, Object> params) {
+		throw new I18nMessageException("502","服务器异常，请稍后重试");
+	}
+	
 	@Override
 	public ResponseMessage info(Integer id, Long userId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
