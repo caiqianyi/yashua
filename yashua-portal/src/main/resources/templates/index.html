@@ -12,7 +12,7 @@
 <div class="sy-top bg-new">
 	<div class="set center fl font-26">
     	<a href="yashuashezhi.html"><img src="/statics/new_images/sy-set.png" alt=""/></a>
-        <p id="shebeihaot">设置我的牙刷</p>
+        <p>设置我的牙刷</p>
     </div>
     <div class="con fl font-24">
     	<div class="conup">
@@ -121,7 +121,9 @@
         <li onclick="kaishiceliang(1);"  class="last on">酒精</li>
     </ul>
 </div> -->
-
+<!--  <div class="weui_cell_bd weui_cell_primary">
+                    <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
+                </div>  -->
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048575</span>
  <span id="nonceStr">77b9f3dc71294e86</span>
@@ -134,6 +136,12 @@
 </body>
 </html>
 <script type="text/javascript">
+function mlog(m){
+    var log=$('#logtext').val();
+    //log=log+m;
+    log =log+ "\n"+ m;
+    $('#logtext').val(log);
+}
 //刷头弹窗
 $('.inBox span').click(function(){
  $('#jcchuangkou').show();
@@ -147,7 +155,7 @@ $('.inBox span').click(function(){
 		$('#clchuangkou2').show();
 	});
 
-	 var dianliang, shouming,shuayaci, jiujing, kouqi,shebeihao; 
+	 var dianliang, shouming,shuayaci, jiujing, kouqi; 
 	//
 	/* var colors = [
 			['#FFF', '#fb2653'], ['#FFF', '#11ff6c']
@@ -298,7 +306,7 @@ $('.inBox span').click(function(){
 	        {
 	          if(res.bluetoothState=='off')
 	            {    
-	             // alert("亲,使用前请先打开手机蓝牙！");  
+	            // alert("亲,使用前请先打开手机蓝牙！");  
 	              x=1;
 	              //isOver();
 	            };
@@ -311,7 +319,7 @@ $('.inBox span').click(function(){
 	          if(res.bluetoothState=='on')
 	            {
 	              //showdialog("太着急啦","亲,请查看您的设备是否打开！");   
-	             // alert("蓝牙已打开,未找到设备");
+	            // alert("蓝牙已打开,未找到设备");
 	              x=0;
 	              //isOver();
 	            };      
@@ -359,7 +367,8 @@ $('.inBox span').click(function(){
 		
 	    WeixinJSBridge.on('onReceiveDataFromWXDevice', function(argv) {
 	      var sss=argv.base64Data;
-	    mlog("接收的数据-->"+base64_to_bytes_array(sss));
+	      base64_to_bytes_array(sss);
+	    mlog("接收的原始数据-->"+sss);
 	        //var Bytes=base64_to_bytes_array(argv.base64Data);
 	        //alert("硬件设备返回的base64数据"+argv.base64Data);
 	      //  mlog("接收的数据-->"+pHex(base64_to_bytes_array(argv.base64Data)));
@@ -401,12 +410,6 @@ $('.inBox span').click(function(){
 	  return;    
 	}
 	 
-	function mlog(m){
-	    var log=$('#logtext').val();
-	    //log=log+m;
-	    log = m;
-	    $('#logtext').val(log);
-	}
 	 
 	/***************************************************************
 	 * 显示提示信息
@@ -487,7 +490,7 @@ $('.inBox span').click(function(){
 	            Bytes[4]=0x0a;
 	 	       $('.pop-kefu div').hide();
 		       $('.pop-kefu ul').hide();
-		       alert("请吹气，等待结果上传！");
+		       alert("待设备红灯长亮时吹气，并等待结果上传！");
 		       //setTimeout("kouqitttt();",5000);
 					
 	       var x=senddataBytes(Bytes,C_DEVICEID);
@@ -647,13 +650,15 @@ $('.inBox span').click(function(){
 	}
 	function CharToHex(str) {
 	    var out, i, h,j;
-	    var kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei;
-	    var shebeixieyi,shebeia,shebeib,shebeic,shebeid,shebeie,shebeif,shebeig,shebeih,shebeii,shebeij;
+	    var toubiaozhi,kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
 	    {
 	        h = str.charCodeAt(i++).toString(16);
+	        if(h=='aa'){
+	        	toubiaozhi='aa';
+	        }
 	        if(h==54){
 	          kxieyi=54;
 	          j=i;
@@ -663,10 +668,7 @@ $('.inBox span').click(function(){
 	        }else if(h==51){
 	          dxieyi=51; 
 	          j=i;
-	        }else if(h==56){
-	        	shebeixieyi=56; 
-		          j=i;
-		        }
+	        }
 	        if(kxieyi==54 && i-j==1){
 	          kgaowei=h;
 	        }
@@ -694,45 +696,18 @@ $('.inBox span').click(function(){
 	        if(dxieyi==51 && i-j==5){
 		          stdiwei=h;
 		        }
-	        if(shebeixieyi==56 && i-j==1){
-		          shebeia=h;
-		        }
-		        if(shebeixieyi==56 && i-j==2){
-		        	shebeib=h;
-		        }
-		        if(shebeixieyi==56 && i-j==3){
-		        	shebeic=h;
-			        }
-		        if(shebeixieyi==56 && i-j==4){
-		        	shebeid=h;
-			        }
-		        if(shebeixieyi==56 && i-j==5){
-		        	shebeie=h;
-			        }
-		        if(shebeixieyi==56 && i-j==6){
-		        	shebeif=h;
-			        }
-		        if(shebeixieyi==56 && i-j==7){
-		        	shebeig=h;
-			        }
-		        if(shebeixieyi==56 && i-j==8){
-		        	shebeih=h;
-			        }
-		        if(shebeixieyi==56 && i-j==9){
-		        	shebeii=h;
-			        }
-		        if(shebeixieyi==56 && i-j==10){
-		        	shebeij=h;
-			        }
+	       
 	        if(h.length==1){
 	          h="0"+h;
 	        }
 	        out += "\\0x" + h;
 	        out +=(i > 0 && i % 8 == 0)?"\r\n":", ";
 	    }
-
-	    if(kxieyi==54){
+	    if(toubiaozhi=='aa' && kxieyi==54){
 	      kouqi=parseInt(kgaowei,16)*256+parseInt(kdiwei,16);
+	      if(kouqi>10){
+	    	  kouqi=9; 
+	      }
 	      //$("#circles-2 span").html(kouqi);
 	      if(0<= kouqi && kouqi<=3){
 				$('#kouqijc').attr('class','green');
@@ -744,38 +719,37 @@ $('.inBox span').click(function(){
 			$('#kouqisz').html(kouqi);
 			document.getElementById("kouqijc").style.width= kouqi+"4%"; 
 	      }
-	    if(jxieyi==55){
+	    if(toubiaozhi=='aa' && jxieyi==55){
 	      jiujing=parseInt(jgaowei,16)*256+parseInt(jdiwei,16);
+	      if(jiujing>100){
+	    	  jiujing=90; 
+	      }
 	      //$("#circles-1 span").html(jiujing);
-	      if(0<= jiujing && jiujing<=2){
+	      if(0<= jiujing && jiujing<=20){
 	    	  $('#jiujingjc').attr('class','green');
-			}else if(2< jiujing && jiujing<=8){
+			}else if(20< jiujing && jiujing<=80){
 				$('#jiujingjc').attr('class','red');
 			}else {
 				$('#jiujingjc').attr('class','gray');
 			}
-			$('#jiujingsz').html(jiujing*10);
-			document.getElementById("jiujingjc").style.width= jiujing+"4%";
+			$('#jiujingsz').html(jiujing);
+			document.getElementById("jiujingjc").style.width= jiujing/10+"4%";
 	      }
-	    if(dxieyi==51){
+	    if(toubiaozhi=='aa' && dxieyi==51){
 	      dianliang=parseInt(dgaowei,16);
+	      if(dianliang>100){
+	    	  dianliang=90; 
+	      }
 	      shouming=parseInt(stgaowei,16)*256+parseInt(stdiwei,16);
 	      shuayaci=parseInt(sdiwei,16)*256+parseInt(sanwei,16);
 	      }
-	    
-	    if(shebeixieyi==56){
-	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
-	    }
 	   
 	    $("#dianliang").html(dianliang);
 	    $("#shouming").html(shouming);
 	    $("#shuayaci").html(shuayaci);
-	  /*   if(shebeihao!=null && shebeihao !=""){
-	    	 $("#shebeihaot").html(shebeihao);
-	    } */
 	   // $("#kouqi").html(kouqi);
 	   // $("#jiujing").html(jiujing);
-	    
+	    toubiaozhi='';
 	  //保存口气数据
 	  $.ajax({
 		type: "POST",
@@ -792,7 +766,7 @@ $('.inBox span').click(function(){
 	    //	alert(r.errmsg);
 	    }
 	});
-		
+	//  mlog("收到的包值："+out);
 	    return out;
 	}
 

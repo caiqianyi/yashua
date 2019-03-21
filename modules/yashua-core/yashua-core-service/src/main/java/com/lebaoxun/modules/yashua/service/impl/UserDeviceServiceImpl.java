@@ -33,6 +33,26 @@ public class UserDeviceServiceImpl extends ServiceImpl<UserDeviceDao, UserDevice
         return new PageUtils(page);
     }
 
+    @Override
+    public List<UserDeviceEntity> selcone(Map<String, Object> params) {
+    	String identity = (String) params.get("identity");
+    	String mac = (String) params.get("mac");
+    	List<UserDeviceEntity> lie =this.selectList(new EntityWrapper<UserDeviceEntity>().eq("identity", identity)); //this.selectByMap(params);
+    	List<UserDeviceEntity> li =this.selectList(new EntityWrapper<UserDeviceEntity>().eq("mac", mac)); //this.selectByMap(params);
+    	 System.out.println("identity===="+identity+"===mac===="+mac);
+    	if(lie.size()>0){
+    		 System.out.println("====lie.size()====="+lie.size());
+    			throw new I18nMessageException("-2","设备号重复");
+    	}
+    	if(li.size()>0){
+    			UserDeviceEntity ude = new UserDeviceEntity();
+    			ude =li.get(0);
+    			ude.setIdentity(identity);
+    			baseMapper.updateAllColumnById(ude);
+    			throw new I18nMessageException("-3","mac重复");
+    		}
+        return this.selectByMap(params);
+    }
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void bind(String account,String identity, Integer maxBindNum) {

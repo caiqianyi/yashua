@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="Top"><h3 onclick="javascript:history.go(-1);">设置</h3><!-- <a href="">完成</a> --></div>
-<div class="nichen font-36 center" id="shebeihaot"><span>我的牙刷</span><em id="setyashuaname"></em></div>
+<div class="nichen font-36 center"  id="shebeihaot"><span id="shebeihaott">我的牙刷</span><em id="setyashuaname"></em></div>
 
 <div class="shezhi-moshi center font-28">
 	<p>牙刷模式</p>
@@ -46,7 +46,7 @@
 </div>
 <!--  <div class="weui_cell_bd weui_cell_primary">
                     <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
-                </div> -->
+                </div>  -->
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048625</span>
  <span id="nonceStr">a784287b835449eb</span>
@@ -54,6 +54,12 @@
  <span id="appId">wx3916e075f64cf1b5</span>
   <span id="trueCardRandom"></span>
  
+</div>
+<!--遮罩层-->
+<div class="pop-kefu" id="zhezhaoceng">
+ <div class="font-28" style="display: block;">
+  <p  style="text-align:center;width:66%;height:.8rem;line-height:.8rem; margin:auto; position:absolute;left:0;right:0;top:0;bottom:0;border:1px solid #fff;box-shadow:0 0 .1rem #fff;">数据上传中，请等待...</p >
+ </div>
 </div>
 <!-- 牙刷名称设置 -->
 <div class="ui-dialog">
@@ -75,7 +81,11 @@
 </html>
 <script type="text/javascript">
 
+/* $(function () { 
 
+	setTimeout(function(){  $("#zhezhaoceng").hide(); }, 3000);
+
+}); */
 function mlog(m){
     var log=$('#logtext').val();
     //log=log+m;
@@ -99,7 +109,7 @@ function mlog(m){
 				  //初始化库 
 				 loadXMLDoc();
 				 //初始化库结束
-				 // $("#CallGetWXrefresh").on("click",function(e){  
+				 // $("#CallGetWXrefresh").on("click",function(e){  }
 				    //showdialog();
 				 setTimeout("my_openWXDeviceLib();my_installwxEvents();my_onReceiveDataFromWXDevice();my_getWXDeviceInfos();woshou();",2000);
 			}
@@ -237,7 +247,7 @@ function mlog(m){
 	    WeixinJSBridge.on('onReceiveDataFromWXDevice', function(argv) {
 	      var sss=argv.base64Data;
 	      base64_to_bytes_array(sss);
-	     // mlog("收到的原始数据："+sss);
+	     mlog("收到的原始数据："+sss);
 	        //var Bytes=base64_to_bytes_array(argv.base64Data);
 	        //alert("硬件设备返回的base64数据"+argv.base64Data);
 	      //  mlog("接收的数据-->"+pHex(base64_to_bytes_array(argv.base64Data)));
@@ -506,29 +516,28 @@ function mlog(m){
 	var _shebeihao="";
 	function CharToHex(str) {
 	    var out, i, h,j;
-	    var zxieyi,sxieyi,zvalue,svalue;
+	    var toubiaozhi,zxieyi,sxieyi,zvalue,svalue;
 	    var shebeixieyi,shebeia,shebeib,shebeic,shebeid,shebeie,shebeif,shebeig,shebeih,shebeii,shebeij,shebeihao;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
 	    {
 	        h = str.charCodeAt(i++).toString(16);
+	        if(h=='aa'){
+	        	toubiaozhi='aa';
+	        }
 	        if(h==52){
 	        	zxieyi=52;
-	        	sxieyi=0;
-	          j=i;
-	        }else if(h==53){
-	        	sxieyi=53;
-	        	zxieyi=0;
+	        	
 	          j=i;
 	        }else if(h==56){
 	        	shebeixieyi=56; 
 		          j=i;
 		        }
-	        if(zxieyi==52 && i-j==2){
+	        if(zxieyi==52 && i-j==1){
 	        	zvalue=h;
 	        }
-	        if(sxieyi==53 && i-j==2){
+	        if(zxieyi==52 && i-j==2){
 	        	svalue=h;
 	        }
 	        if(shebeixieyi==56 && i-j==1){
@@ -605,22 +614,25 @@ function mlog(m){
 	          		 $("#ershiwumiao").removeClass("on");
 	          		 $("#shimiao").removeClass("on");
 	            }
-	           if(shebeixieyi==56){
+	           $("#zhezhaoceng").hide();
+	           if(toubiaozhi=='aa' && shebeixieyi==56){
 	   	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
 	   	       }
+	           $("#shebeihaott").html(shebeihao);
 	           if(shebeihao!=null && shebeihao !=""){
 //	  	    	 $("#shebeihaot").html(shebeihao);
 	        	   _shebeihao=shebeihao;
 	        	   getDeviceName(_shebeihao);
 	        	  
 	  	    }
+	           toubiaozhi='';
 	        if(h.length==1){
 	          h="0"+h;
 	        }
 	        out += "\\0x" + h;
 	        out +=(i > 0 && i % 8 == 0)?"\r\n":", ";
 	    }
-	    //mlog("收到的包值："+out);
+	   // mlog("收到的包值："+out);
 	    return out;
 	}
 	function getDeviceName(_shebeihao){
@@ -693,7 +705,122 @@ function mlog(m){
 	    		   	  	if(arry1.length<7){
 	    		   	  		var a1=0,a2=0;
 	    		   	  		if(arry1.length>0) a1 = Math.ceil(aver1/arry1.length);
-	    		   	  		alert("早上的口气平均值      "  +a1);
+	    		   	  		//alert("早上的口气平均值      "  +a1);
+	    		   	  		if(a1==0){
+	    			          	 $("#qinrou").attr('class','on');
+	    			          	 $("#biaozhun").removeClass("on");
+	    			          	 $("#shendu").removeClass("on");
+	    			          	 $("#shimiao").attr('class','on');
+	    			          	 senddatap(0,0x01);
+	    		     		     $("#shiwumiao").removeClass("on");
+	    		     		 	 $("#ershimiao").removeClass("on");
+	    		     			 $("#ershiwumiao").removeClass("on");
+	    		     		 	 $("#sanshimiao").removeClass("on");
+	    		     		 	senddatap(1,0x01);
+	    		   	  		}else if(a1==1){
+	    			          	 $("#qinrou").attr('class','on');
+	    			          	 $("#biaozhun").removeClass("on");
+	    			          	 $("#shendu").removeClass("on");
+	    			        	 senddatap(0,0x01);
+	    			          	 $("#shiwumiao").attr('class','on');
+	    		          		 $("#shimiao").removeClass("on");
+	    		          		 $("#ershimiao").removeClass("on");
+	    		          		 $("#ershiwumiao").removeClass("on");
+	    		          		 $("#sanshimiao").removeClass("on");
+	    		          		senddatap(1,0x02);
+	    		   	  		}else if(a1==2){
+	    			          	 $("#qinrou").attr('class','on');
+	    			          	 $("#biaozhun").removeClass("on");
+	    			          	 $("#shendu").removeClass("on");
+	    			        	 senddatap(0,0x01);
+	    			          	 $("#ershimiao").attr('class','on');
+	    		          		 $("#shiwumiao").removeClass("on");
+	    		          		 $("#shimiao").removeClass("on");
+	    		          		 $("#ershiwumiao").removeClass("on");
+	    		          		 $("#sanshimiao").removeClass("on");
+	    		          		senddatap(1,0x03);
+	    		   	  		}else if(a1==3){
+	    			          	 $("#qinrou").attr('class','on');
+	    			          	 $("#biaozhun").removeClass("on");
+	    			          	 $("#shendu").removeClass("on");
+	    			        	 senddatap(0,0x01);
+	    			          	 $("#ershiwumiao").attr('class','on');
+	    		          		 $("#shiwumiao").removeClass("on");
+	    		          		 $("#ershimiao").removeClass("on");
+	    		          		 $("#shimiao").removeClass("on");
+	    		          		 $("#sanshimiao").removeClass("on"); 
+	    		          		senddatap(1,0x04);
+	    		   	  		}else if(a1==4){
+	    		   	  		 $("#biaozhun").attr('class','on');
+	    	   	        	 $("#qinrou").removeClass("on");
+	    	   	        	 $("#shendu").removeClass("on");
+	    	   	     	 	 senddatap(0,0x02);
+	    	   	        	 $("#ershimiao").attr('class','on');
+	    	          		 $("#shiwumiao").removeClass("on");
+	    	          		 $("#shimiao").removeClass("on");
+	    	          		 $("#ershiwumiao").removeClass("on");
+	    	          		 $("#sanshimiao").removeClass("on");
+	    	          		senddatap(1,0x03);
+	    		   	  		}else if(a1==5){
+	    		   	  		 $("#biaozhun").attr('class','on');
+	    	   	        	 $("#qinrou").removeClass("on");
+	    	   	        	 $("#shendu").removeClass("on");
+	    	   	     		 senddatap(0,0x02);
+	    	   	        	 $("#ershiwumiao").attr('class','on');
+	    	          		 $("#shiwumiao").removeClass("on");
+	    	          		 $("#ershimiao").removeClass("on");
+	    	          		 $("#shimiao").removeClass("on");
+	    	          		 $("#sanshimiao").removeClass("on"); 
+	    	          		senddatap(1,0x04);
+	    		   	  		}else if(a1==6){
+	    		   	  		 $("#biaozhun").attr('class','on');
+	    	   	        	 $("#qinrou").removeClass("on");
+	    	   	        	 $("#shendu").removeClass("on");
+	    	   	     		 senddatap(0,0x02);
+	    	   	        	 $("#sanshimiao").attr('class','on');
+	    	          		 $("#shiwumiao").removeClass("on");
+	    	          		 $("#ershimiao").removeClass("on");
+	    	          		 $("#ershiwumiao").removeClass("on");
+	    	          		 $("#shimiao").removeClass("on");
+	    	          		senddatap(1,0x05);
+	    		   	  		}else if(a1==7){
+	    		   	  		 $("#shendu").attr('class','on');
+	    	   	        	 $("#biaozhun").removeClass("on");
+	    	   	        	 $("#qinrou").removeClass("on");
+	    	   	     		 senddatap(0,0x03);
+	    	   	        	 $("#ershimiao").attr('class','on');
+	    	          		 $("#shiwumiao").removeClass("on");
+	    	          		 $("#shimiao").removeClass("on");
+	    	          		 $("#ershiwumiao").removeClass("on");
+	    	          		 $("#sanshimiao").removeClass("on");
+	    	          		senddatap(1,0x03);
+	    		   	  		}else if(a1==8){
+	    		   	  		 $("#shendu").attr('class','on');
+	    	   	        	 $("#biaozhun").removeClass("on");
+	    	   	        	 $("#qinrou").removeClass("on");
+	    	   	        	senddatap(0,0x03);
+	    	   	        	 $("#ershiwumiao").attr('class','on');
+	    	          		 $("#shiwumiao").removeClass("on");
+	    	          		 $("#ershimiao").removeClass("on");
+	    	          		 $("#shimiao").removeClass("on");
+	    	          		 $("#sanshimiao").removeClass("on"); 
+	    	          		senddatap(1,0x04);
+	    		   	  		}else if(a1==9){
+	    		   	  		 $("#shendu").attr('class','on');
+	    	   	        	 $("#biaozhun").removeClass("on");
+	    	   	        	 $("#qinrou").removeClass("on");
+	    	   	        	senddatap(0,0x03);
+	    	   	        	 $("#sanshimiao").attr('class','on');
+	    	          		 $("#shiwumiao").removeClass("on");
+	    	          		 $("#ershimiao").removeClass("on");
+	    	          		 $("#ershiwumiao").removeClass("on");
+	    	          		 $("#shimiao").removeClass("on");
+	    	          		senddatap(1,0x05);
+	    		   	  		}
+	    		   	  		
+	    		   	  		
+	    		   	  		
+	    		   	  		
 	    		   	 	} 
 	    		   	}
     	    	}

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.modules.yashua.entity.UserDeviceEntity;
@@ -41,7 +42,14 @@ public class UserDeviceController {
         return ResponseMessage.ok(page);
     }
 
-
+    /**
+     * 列表
+     */
+    @RequestMapping("/yashua/userdevice/selcone")
+    ResponseMessage selcone(@RequestParam Map<String, Object> params){
+    	List<UserDeviceEntity> li= userDeviceService.selcone(params);
+        return ResponseMessage.ok(li);
+    }
     /**
      * 信息
      */
