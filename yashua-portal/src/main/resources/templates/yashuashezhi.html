@@ -280,6 +280,7 @@ function mlog(m){
 	              $("#lbInfo").html("2.设备已成功连接");
 	              $("#lbInfo").css({color:"green"});
 	              woshou();
+	             
 	              break;   
 	            }  
 	         }
@@ -622,6 +623,7 @@ function mlog(m){
 	           if(shebeihao!=null && shebeihao !=""){
 //	  	    	 $("#shebeihaot").html(shebeihao);
 	        	   _shebeihao=shebeihao;
+	        	   connect(_shebeihao);
 	        	   getDeviceName(_shebeihao);
 	        	  
 	  	    }
@@ -685,6 +687,25 @@ function mlog(m){
 			}
 	    });
 	});
+	
+	//绑定连接牙刷
+   function connect(obj){
+	var identity = obj;
+	$.ajax({
+		type: "POST",
+	    url: "/yashua/device/connect",
+	    data: {identity:identity},
+	    success: function(r){
+	    
+	    	if(r.errcode == 0){
+
+	    		return;
+	    	}
+	    	alert(r.errmsg);
+	    }
+	});
+	}
+	
 	//仅供测试用
 	$(".zhineng").click(function(){
 		var id=0,arry1=[];aver1=0;

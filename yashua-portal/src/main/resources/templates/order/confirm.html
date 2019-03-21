@@ -43,7 +43,7 @@
 	<p><span>支付方式：</span><select class="payTypeToggle" style="float: right;margin-top: 10px;"><option value="1">现金支付</option><option value="0">积分兑换</option></select></p>
 	<div class="showPayType1">
 		<p><span>订单金额：</span><em class="orderMoney money">0.00</em></p>
-	    <p><span>运费：</span><em>0.00</em></p>
+		<p id="yunfei"></p>
 	    <p><em>小计：<i class="totalMoney">0.00</i></em></p>
 	</div>
 	<div class="showPayType0" style="display: none;">
@@ -196,6 +196,12 @@ $(function(){
 				}
 				$(".dingdan-txt").html(html);
 				$(".orderMoney").text("￥"+r.data.payAmount.toFixed(2));
+				if(r.data.payAmount>=100){
+					$("#yunfei").append('<span>免运费</span><em></em>');
+				}
+				else{
+					$("#yunfei").append('<span>运费：</span><em>0.00</em>');
+				}
 				$(".orderScore").text(r.data.orderScore.toFixed(2));
 				
 				if(r.data.orderScore <= 0){//不能使用积分兑换
