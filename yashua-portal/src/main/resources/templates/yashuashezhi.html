@@ -44,9 +44,9 @@
 		<em style="width:0%"></em>
 	</ul>
 </div>
-<!--  <div class="weui_cell_bd weui_cell_primary">
+<div class="weui_cell_bd weui_cell_primary">
                     <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
-                </div>  -->
+                </div>  
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048625</span>
  <span id="nonceStr">a784287b835449eb</span>
@@ -615,10 +615,10 @@ function mlog(m){
 	          		 $("#shimiao").removeClass("on");
 	            }
 	           $("#zhezhaoceng").hide();
-	           if(toubiaozhi=='aa' && shebeixieyi==56){
+	           if(shebeixieyi==56){
 	   	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
 	   	       }
-	           $("#shebeihaott").html(shebeihao);
+	          // $("#shebeihaott").html(shebeihao);
 	           if(shebeihao!=null && shebeihao !=""){
 //	  	    	 $("#shebeihaot").html(shebeihao);
 	        	   _shebeihao=shebeihao;
@@ -632,7 +632,7 @@ function mlog(m){
 	        out += "\\0x" + h;
 	        out +=(i > 0 && i % 8 == 0)?"\r\n":", ";
 	    }
-	   // mlog("收到的包值："+out);
+	   mlog("收到的包值："+out);
 	    return out;
 	}
 	function getDeviceName(_shebeihao){

@@ -96,7 +96,8 @@ public class UserDeviceController {
 			String accessToken =getAccessToken(); //"16_LN17KXa9jdOU5Eg4qjupBupH_XxdEbIHLxCzZ944nAoIC9wHmL1fKhx82duWdX7ad_0B8W-Sip5jGnM1DAckBzAgD61a4_kbt8P7tsfm8dDrnlyGKtrPVsv-EuMFKSaAJAUZH";  
 			System.out.println("accessToken========="+accessToken);
 			//2、获取deviceid与qrticket 
-			String deviceId =getdeviceid(accessToken); //"16_LN17KXa9jdOU5Eg4qjupBupH_XxdEbIHLxCzZ944nAoIC9wHmL1fKhx82duWdX7ad_0B8W-Sip5jGnM1DAckBzAgD61a4_kbt8P7tsfm8dDrnlyGKtrPVsv-EuMFKSaAJAUZH";  
+			Map<String,String> mtemp = getdeviceid(accessToken);
+			String deviceId =mtemp.get("deviceid"); //"16_LN17KXa9jdOU5Eg4qjupBupH_XxdEbIHLxCzZ944nAoIC9wHmL1fKhx82duWdX7ad_0B8W-Sip5jGnM1DAckBzAgD61a4_kbt8P7tsfm8dDrnlyGKtrPVsv-EuMFKSaAJAUZH";  
 			System.out.println("deviceId========="+deviceId);
 			//3、绑定deviceid 
 			String params="{\"device_num\":\"1\",\"device_list\":[{"
@@ -117,7 +118,7 @@ public class UserDeviceController {
 			String s=sendPost("https://api.weixin.qq.com/device/authorize_device?access_token="+accessToken, params);
             System.out.println("=========s返回：===="+s);
 			//4、验证qrticket 
-            String qrticket =getqrticket(accessToken);
+            String qrticket =mtemp.get("qrticket");
             String params1="{\"ticket\":\""+qrticket+"\""
 	                   + "}";
             String s1=sendPost("https://api.weixin.qq.com/device/verify_qrcode?access_token="+accessToken, params1);
@@ -197,7 +198,7 @@ public class UserDeviceController {
 		     String token = json.getString("access_token");
 	        return token;
 	    }
-	 private String getdeviceid(String acctoken) throws Exception{
+	 private Map<String,String> getdeviceid(String acctoken) throws Exception{
 	        String Url = "https://api.weixin.qq.com/device/getqrcode?access_token="+acctoken+"&product_id=50972";
 	        URL url = new URL(Url);
 		     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -216,30 +217,13 @@ public class UserDeviceController {
 		     JSONObject json = JSON.parseObject(message);
 		     //获取access_token
 		     String deviceid = json.getString("deviceid");
-	        return deviceid;
-	    }
-	 
-	 private String getqrticket(String acctoken) throws Exception{
-	        String Url = "https://api.weixin.qq.com/device/getqrcode?access_token="+acctoken+"&product_id=50972";
-	        URL url = new URL(Url);
-		     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-	 
-		     connection.setRequestMethod("GET");
-		     connection.setDoOutput(true);
-		     connection.setDoInput(true);
-		     connection.connect();
-	 
-		     //获取返回的字符
-		     InputStream inputStream = connection.getInputStream();
-		     int size =inputStream.available();
-		     byte[] bs =new byte[size];
-		     inputStream.read(bs);
-		     String message=new String(bs,"UTF-8");
-		     JSONObject json = JSON.parseObject(message);
-		     //获取access_token
 		     String qrticket = json.getString("qrticket");
-	        return qrticket;
+		     Map<String,String> dqm = new HashMap<String,String>();
+		     dqm.put("deviceid", deviceid);
+		     dqm.put("qrticket", qrticket);
+	        return dqm;
 	    }
+	 
 	 public static String sendPost(String requrl,String param){
          URL url;
           String sTotalString="";  
