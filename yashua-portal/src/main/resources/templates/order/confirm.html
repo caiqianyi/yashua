@@ -56,6 +56,7 @@
     <a href="javascript:void(0);" class="confirmBtn">提交订单</a>
 </div>
 <script type="text/javascript">
+var payAmount=0;
 $(function(){
 	var orderNo = url("orderNo"),
 		payType = url("payType");
@@ -65,7 +66,10 @@ $(function(){
 	$(".payTypeToggle").change(function(){
 		var val = $(this).val();
 		$("div[class^=showPayType]").hide();
-		$(".totalMoney").text($(".money",".showPayType"+val).text());
+		if(val=="0")
+			$(".totalMoney").text($(".money",".showPayType"+val).text());
+		else
+			$(".totalMoney").text(payAmount);
 		$(".showPayType"+val).show();
 	});
 	var pickerSetup = new PickerSetup({
@@ -194,16 +198,16 @@ $(function(){
 					html += '     <em>&times; '+r.data.childs[i].buyNumber+'</em>';
 					html += ' </dl>';
 				}
-				$(".dingdan-txt").html(html);
-				$(".orderMoney").text("￥"+r.data.payAmount.toFixed(2));
-				if(r.data.payAmount>=100){
+				$(".dingdan-txt").html(html);console.info(r.data);
+				$(".orderMoney").text("￥"+r.data.orderAmount.toFixed(2));
+				if(r.data.shipmentAmount==0){
 					$("#yunfei").append('<span>免运费</span><em></em>');
 				}
 				else{
-					$("#yunfei").append('<span>运费：</span><em>0.00</em>');
+					$("#yunfei").append('<span>运费：</span><em>￥'+r.data.shipmentAmount.toFixed(2)+'</em>');
 				}
 				$(".orderScore").text(r.data.orderScore.toFixed(2));
-				
+				payAmount=r.data.payAmount.toFixed(2);
 				if(r.data.orderScore <= 0){//不能使用积分兑换
 					payType = 1;
 					$(".payTypeToggle option[value=0]").remove();

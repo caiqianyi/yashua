@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -136,7 +137,7 @@ public class MallOrderServiceImpl extends
 		order.setUserId(userId);
 		order.setOrderStatus(0);
 		order.setPayType(0);// 在线支付
-		order.setShipmentAmount(new BigDecimal(0));// 快递费
+		
 		order.setOrderNo(orderNo);
 		Integer totalBuyNumber = 0, orderScore = 0;
 		BigDecimal totalMoney = new BigDecimal(0);
@@ -183,7 +184,13 @@ public class MallOrderServiceImpl extends
 
 		logger.debug("totalMoney={}", totalMoney);
 		logger.debug("totalBuyNumber={}", totalBuyNumber);
-		order.setPayAmount(totalMoney);
+		if(totalMoney.compareTo(new BigDecimal(100))>-1){
+			order.setShipmentAmount(new BigDecimal(0));// 快递费
+		}
+		else{
+			order.setShipmentAmount(new BigDecimal(10));
+		}
+		order.setPayAmount(totalMoney.add(order.getShipmentAmount()));
 		order.setOrderAmount(totalMoney);
 		order.setBuyNumber(totalBuyNumber);
 		order.setOrderScore(orderScore);
