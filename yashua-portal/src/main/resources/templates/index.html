@@ -121,9 +121,9 @@
         <li onclick="kaishiceliang(1);"  class="last on">酒精</li>
     </ul>
 </div> -->
-<!--  <div class="weui_cell_bd weui_cell_primary">
+ <div class="weui_cell_bd weui_cell_primary">
                     <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
-                </div>  -->
+                </div> 
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048575</span>
  <span id="nonceStr">77b9f3dc71294e86</span>
@@ -733,7 +733,7 @@ $('.inBox span').click(function(){
 				$('#jiujingjc').attr('class','gray');
 			}
 			$('#jiujingsz').html(jiujing);
-			document.getElementById("jiujingjc").style.width= jiujing/10+"4%";
+			document.getElementById("jiujingjc").style.width= (Number(jiujing)+Number(4))+"%";
 	      }
 	    if(toubiaozhi=='aa' && dxieyi==51){
 	      dianliang=parseInt(dgaowei,16);
@@ -751,22 +751,24 @@ $('.inBox span').click(function(){
 	   // $("#jiujing").html(jiujing);
 	    toubiaozhi='';
 	  //保存口气数据
-	  $.ajax({
-		type: "POST",
-	    url: "/yashua/userdata/save",
-	    data: {kouqi:kouqi},
-	    success: function(r){
-	    	
-	    	 if(r.errcode == 0){
-
-	    		
-	    		//alert("保存成功");
-	    		return;
-	    	} 
-	    //	alert(r.errmsg);
-	    }
-	});
-	//  mlog("收到的包值："+out);
+	  if(kouqi>=0){
+		  $.ajax({
+			type: "POST",
+		    url: "/yashua/userdata/save",
+		    data: {kouqi:kouqi},
+		    success: function(r){
+		    	
+		    	 if(r.errcode == 0){
+	
+		    		
+		    		//alert("保存成功");
+		    		return;
+		    	} 
+		    //	alert(r.errmsg);
+		    }
+		});
+	  }
+	 mlog("收到的包值："+out);
 	    return out;
 	}
 
