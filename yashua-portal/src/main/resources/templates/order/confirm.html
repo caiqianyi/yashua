@@ -82,7 +82,7 @@ $(function(){
 	});
 	$.ajax({
 		url: "/account/address/defaultUse",
-		success: function(r){
+		success: function(r){console.info(r);
 			if(r.errcode == 0){
 				var address = r.data;
 				var d = pickerSetup.getCityByCode(r.data.areaCode.split(","));
@@ -177,6 +177,7 @@ $(function(){
 			}
 		}
 	});
+	getNoPay("");
 	function getNoPay(address){
 		$.ajax({
 			url: "/mall/order/nopay",
@@ -201,6 +202,7 @@ $(function(){
 					}
 					$(".dingdan-txt").html(html);console.info(r.data);
 					$(".orderMoney").text("￥"+r.data.orderAmount.toFixed(2));
+					$("#yunfei").html("");
 					if(r.data.shipmentAmount==0){
 						$("#yunfei").append('<span>免运费</span><em></em>');
 					}
