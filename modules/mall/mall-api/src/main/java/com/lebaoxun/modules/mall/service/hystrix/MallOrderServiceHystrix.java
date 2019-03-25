@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
@@ -69,7 +70,7 @@ public class MallOrderServiceHystrix implements IMallOrderService {
 	}
 
 	@Override
-	public MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,
+	public MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,String address,
 			Integer status) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}

@@ -46,9 +46,9 @@ public class MallOrderController extends BaseController {
 	}
 
 	@RequestMapping("/mall/order/nopay")
-	ResponseMessage nopay(@RequestParam("orderNo") String orderNo) {
+	ResponseMessage nopay(@RequestParam("orderNo") String orderNo,@RequestParam("address") String address) {
 		return ResponseMessage.ok(mallOrderService.selectOrderByOrderNo(
-				oauth2SecuritySubject.getCurrentUser(), orderNo, 0));
+				oauth2SecuritySubject.getCurrentUser(), orderNo,address,0));
 	}
 
 	@RequestMapping("/mall/order/confirmOrder")
@@ -87,7 +87,7 @@ public class MallOrderController extends BaseController {
 			@RequestParam("mobile") String mobile) {
 		Long userId = oauth2SecuritySubject.getCurrentUser();
 		UserEntity user = userService.findByUserId(userId);
-		MallOrderEntity order = mallOrderService.selectOrderByOrderNo(userId, orderNo, 0);
+		MallOrderEntity order = mallOrderService.selectOrderByOrderNo(userId, orderNo,address, 0);
 		if(order.getOrderScore() > user.getBalance()){
 			throw new I18nMessageException("-1","账户余额不足");
 		}

@@ -42,6 +42,7 @@ public interface IMallOrderService {
 	@RequestMapping("/mall/mallorder/selectOrderByOrderNo")
     MallOrderEntity selectOrderByOrderNo(@RequestParam("userId")Long userId,
     		@RequestParam("orderNo")String orderNo,
+    		@RequestParam("address") String address,
     		@RequestParam("status")Integer status);
 	
 	@RequestMapping("/mall/mallorder/selectOrderProductByOrderProductId")
@@ -114,5 +115,6 @@ public interface IMallOrderService {
     @RequestMapping("/mall/mallorder/confirmReceive")
 	ResponseMessage confirmReceive(@RequestParam("userId") Long userId,
 			@RequestParam("orderNo") String orderNo);
+
 }
 

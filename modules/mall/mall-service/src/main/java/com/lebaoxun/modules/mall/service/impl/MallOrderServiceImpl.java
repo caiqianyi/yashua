@@ -54,6 +54,8 @@ import com.lebaoxun.modules.pay.service.IWxPayService;
 public class MallOrderServiceImpl extends
 		ServiceImpl<MallOrderDao, MallOrderEntity> implements MallOrderService {
 
+	private static final String[] FARAWAY_ADDRESS={"内蒙古","宁夏","青海","海南","甘肃","云南","贵州","广西"};
+	private static final String[] LONG_FARAWAY_ADDRESS={"新疆","西藏"};
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource
@@ -160,7 +162,12 @@ public class MallOrderServiceImpl extends
 						+ mpse.getSpecAttrName() + "”库存不足");
 			}
 			totalBuyNumber += cart.getBuyNumber();
-			BigDecimal money = mpse.getPrice().multiply(
+			BigDecimal mprice = mpse.getPrice();
+			if(cart.getBuyNumber()>=2)
+				mprice=mprice.multiply(new BigDecimal(0.95));
+			else if(cart.getBuyNumber()>=4)
+				mprice=mprice.multiply(new BigDecimal(0.9));
+			BigDecimal money = mprice.multiply(
 					new BigDecimal(cart.getBuyNumber()));
 			logger.debug("mpse.getPrice={},money={}", mpse.getPrice(), money);
 			totalMoney = totalMoney.add(money);
@@ -184,12 +191,7 @@ public class MallOrderServiceImpl extends
 
 		logger.debug("totalMoney={}", totalMoney);
 		logger.debug("totalBuyNumber={}", totalBuyNumber);
-		if(totalMoney.compareTo(new BigDecimal(100))>-1){
-			order.setShipmentAmount(new BigDecimal(0));// 快递费
-		}
-		else{
-			order.setShipmentAmount(new BigDecimal(10));
-		}
+		order.setShipmentAmount(new BigDecimal(0));// 快递费
 		order.setPayAmount(totalMoney.add(order.getShipmentAmount()));
 		order.setOrderAmount(totalMoney);
 		order.setBuyNumber(totalBuyNumber);
@@ -218,10 +220,53 @@ public class MallOrderServiceImpl extends
 	}
 
 	@Override
-	public MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,
+	public MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,String address,
 			Integer status) {
-		// TODO Auto-generated method stub
-		return this.baseMapper.selectOrderByOrderNo(userId, orderNo, status);
+		MallOrderEntity mallOrderEntity = this.baseMapper.selectOrderByOrderNo(userId, orderNo, status);
+		BigDecimal orderAmount = mallOrderEntity.getOrderAmount();
+		
+		
+			if(checkAddress(address)==1){
+				if(orderAmount.compareTo(new BigDecimal(199))>-1){
+					mallOrderEntity.setShipmentAmount(new BigDecimal(0));
+				}
+				else
+					mallOrderEntity.setShipmentAmount(new BigDecimal(20));
+			}
+	
+		
+			else if(checkAddress(address)==2){
+				if(orderAmount.compareTo(new BigDecimal(299))>-1){
+					mallOrderEntity.setShipmentAmount(new BigDecimal(0));
+				}
+				else
+					mallOrderEntity.setShipmentAmount(new BigDecimal(25));	
+			}
+			else if(checkAddress(address)==0){
+				if(orderAmount.compareTo(new BigDecimal(99))>-1){
+					mallOrderEntity.setShipmentAmount(new BigDecimal(0));
+				}
+				else
+					mallOrderEntity.setShipmentAmount(new BigDecimal(10));
+			}
+			mallOrderEntity.setPayAmount(mallOrderEntity.getOrderAmount().add(mallOrderEntity.getShipmentAmount()));
+			this.baseMapper.updateById(mallOrderEntity);
+			return this.baseMapper.selectOrderByOrderNo(userId, orderNo, status);
+	}
+	
+	public int checkAddress(String address){
+		int flag=0;
+		for(int i=0;i<FARAWAY_ADDRESS.length;i++){
+			if(address.startsWith(FARAWAY_ADDRESS[i])){
+				flag=1;break;
+			}
+		}
+		for(int i=0;i<LONG_FARAWAY_ADDRESS.length;i++){
+			if(address.startsWith(LONG_FARAWAY_ADDRESS[i])){
+				flag=2;break;
+			}
+		}
+		return flag;
 	}
 
 	@Override

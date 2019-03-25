@@ -89,6 +89,7 @@ $(function(){
 				$(".dizhi-ok .consignee").text(address.consignee);
 				$(".dizhi-ok .mobile").text(address.mobile);
 				$(".dizhi-ok .addressA").text(d.toString().replace(new RegExp(",","gm"),"")+address.address);
+				getNoPay($(".dizhi-ok .addressA").text());
 				$(".confirmBtn").click(function(){
 					if(!login.isLogin()){
 						window.location.href = loginCallUri();
@@ -176,48 +177,48 @@ $(function(){
 			}
 		}
 	});
-	
-	$.ajax({
-		url: "/mall/order/nopay",
-		data: {orderNo:orderNo},
-		success: function(r){
-			
-			if(r.errcode == '0'){
-				if(!r.data || r.data.length == 0){
-					alert("订单已支付或不存在！");
-					return;
+	function getNoPay(address){
+		$.ajax({
+			url: "/mall/order/nopay",
+			data: {orderNo:orderNo,address:address},
+			success: function(r){
+				
+				if(r.errcode == '0'){
+					if(!r.data || r.data.length == 0){
+						alert("订单已支付或不存在！");
+						return;
+					}
+					var html = "";
+					for(var i=0;i<r.data.childs.length;i++){
+						html += '<dl style="background:#fff;">';
+						html += '    <dt><img src="'+r.data.childs[i].picImg+'" alt=""/></dt>';
+						html += '    <dd>';
+						html += '        <span>'+r.data.childs[i].name+'</span>';
+						html += '        <i>'+r.data.childs[i].productSpecName+'</i>';
+						html += '    </dd>';
+						html += '     <em>&times; '+r.data.childs[i].buyNumber+'</em>';
+						html += ' </dl>';
+					}
+					$(".dingdan-txt").html(html);console.info(r.data);
+					$(".orderMoney").text("￥"+r.data.orderAmount.toFixed(2));
+					if(r.data.shipmentAmount==0){
+						$("#yunfei").append('<span>免运费</span><em></em>');
+					}
+					else{
+						$("#yunfei").append('<span>运费：</span><em>￥'+r.data.shipmentAmount.toFixed(2)+'</em>');
+					}
+					$(".orderScore").text(r.data.orderScore.toFixed(2));
+					payAmount=r.data.payAmount.toFixed(2);
+					if(r.data.orderScore <= 0){//不能使用积分兑换
+						payType = 1;
+						$(".payTypeToggle option[value=0]").remove();
+					}
+					$(".payTypeToggle option[value="+payType+"]").prop("selected", 'selected');
+					$(".payTypeToggle").change();
 				}
-				var html = "";
-				for(var i=0;i<r.data.childs.length;i++){
-					html += '<dl style="background:#fff;">';
-					html += '    <dt><img src="'+r.data.childs[i].picImg+'" alt=""/></dt>';
-					html += '    <dd>';
-					html += '        <span>'+r.data.childs[i].name+'</span>';
-					html += '        <i>'+r.data.childs[i].productSpecName+'</i>';
-					html += '    </dd>';
-					html += '     <em>&times; '+r.data.childs[i].buyNumber+'</em>';
-					html += ' </dl>';
-				}
-				$(".dingdan-txt").html(html);console.info(r.data);
-				$(".orderMoney").text("￥"+r.data.orderAmount.toFixed(2));
-				if(r.data.shipmentAmount==0){
-					$("#yunfei").append('<span>免运费</span><em></em>');
-				}
-				else{
-					$("#yunfei").append('<span>运费：</span><em>￥'+r.data.shipmentAmount.toFixed(2)+'</em>');
-				}
-				$(".orderScore").text(r.data.orderScore.toFixed(2));
-				payAmount=r.data.payAmount.toFixed(2);
-				if(r.data.orderScore <= 0){//不能使用积分兑换
-					payType = 1;
-					$(".payTypeToggle option[value=0]").remove();
-				}
-				$(".payTypeToggle option[value="+payType+"]").prop("selected", 'selected');
-				$(".payTypeToggle").change();
 			}
-		}
-	});
-	
+		});
+	}
 });
 </script>
 </body>

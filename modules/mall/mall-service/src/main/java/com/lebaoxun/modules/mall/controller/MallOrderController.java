@@ -59,8 +59,9 @@ public class MallOrderController {
 	@RequestMapping("/mall/mallorder/selectOrderByOrderNo")
 	MallOrderEntity selectOrderByOrderNo(@RequestParam("userId") Long userId,
 			@RequestParam("orderNo") String orderNo,
+			@RequestParam("address") String address,
 			@RequestParam("status") Integer status) {
-		return mallOrderService.selectOrderByOrderNo(userId, orderNo, status);
+		return mallOrderService.selectOrderByOrderNo(userId, orderNo, address,status);
 	}
 
 	@RequestMapping("/mall/mallorder/selectOrderProductByOrderProductId")

@@ -3,6 +3,8 @@ package com.lebaoxun.modules.mall.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
@@ -35,7 +37,7 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 	 */
 	MallOrderEntity payMallOrder(String orderNo, String buyTime);
 
-	MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,
+	MallOrderEntity selectOrderByOrderNo(Long userId, String orderNo,String address,
 			Integer status);
 
 	List<MallOrderEntity> mylist(Long userId, Integer status, 
