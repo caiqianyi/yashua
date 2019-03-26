@@ -251,7 +251,7 @@ public class MallOrderServiceImpl extends
 			}
 			mallOrderEntity.setPayAmount(mallOrderEntity.getOrderAmount().add(mallOrderEntity.getShipmentAmount()));
 			this.baseMapper.updateById(mallOrderEntity);
-			return this.baseMapper.selectOrderByOrderNo(userId, orderNo, status);
+			return mallOrderEntity;
 	}
 	
 	public int checkAddress(String address){

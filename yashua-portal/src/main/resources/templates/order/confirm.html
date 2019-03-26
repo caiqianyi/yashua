@@ -85,10 +85,12 @@ $(function(){
 		success: function(r){console.info(r);
 			if(r.errcode == 0){
 				var address = r.data;
-				var d = pickerSetup.getCityByCode(r.data.areaCode.split(","));
-				$(".dizhi-ok .consignee").text(address.consignee);
-				$(".dizhi-ok .mobile").text(address.mobile);
-				$(".dizhi-ok .addressA").text(d.toString().replace(new RegExp(",","gm"),"")+address.address);
+				if(address!=null){
+					var d = pickerSetup.getCityByCode(address.areaCode.split(","));
+					$(".dizhi-ok .consignee").text(address.consignee);
+					$(".dizhi-ok .mobile").text(address.mobile);
+					$(".dizhi-ok .addressA").text(d.toString().replace(new RegExp(",","gm"),"")+address.address);
+				}
 				getNoPay($(".dizhi-ok .addressA").text());
 				$(".confirmBtn").click(function(){
 					if(!login.isLogin()){
@@ -177,7 +179,6 @@ $(function(){
 			}
 		}
 	});
-	getNoPay("");
 	function getNoPay(address){
 		$.ajax({
 			url: "/mall/order/nopay",
