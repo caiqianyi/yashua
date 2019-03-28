@@ -82,13 +82,13 @@ public class MallProductSpecificationServiceImpl
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void update(MallProductSpecificationEntity specification) {
-		MallProductSpecificationEntity mps = this
-				.selectOne(new EntityWrapper<MallProductSpecificationEntity>()
-						.eq("product_spec_number",
-								specification.getProductSpecNumber()));
-		if (mps != null) {
-			throw new I18nMessageException("-1", "规格编号已存在,请重新设置");
-		}
+//		MallProductSpecificationEntity mps = this
+//				.selectOne(new EntityWrapper<MallProductSpecificationEntity>()
+//						.eq("product_spec_number",
+//								specification.getProductSpecNumber()));
+//		if (mps != null) {
+//			throw new I18nMessageException("-1", "规格编号已存在,请重新设置");
+//		}
 		// TODO Auto-generated method stub
 		List<MallProductSpecificationEntity> list = this
 				.selectList(new EntityWrapper<MallProductSpecificationEntity>()
