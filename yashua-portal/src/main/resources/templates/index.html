@@ -11,7 +11,7 @@
 <!---->
 <div class="sy-top bg-new">
 	<div class="set center fl font-26">
-    	<a href="yashuashezhi.html"><img src="/statics/new_images/sy-set.png" alt=""/></a>
+    	<a  href="javascript:checkelectricity();"><img src="/statics/new_images/sy-set.png" alt=""/></a>
         <p>设置我的牙刷</p>
     </div>
     <div class="con fl font-24">
@@ -136,6 +136,16 @@
 </body>
 </html>
 <script type="text/javascript">
+
+function checkelectricity(){
+	var dianliang = $("#dianliang").html();
+	if(dianliang=="-"){
+		alert("设备未连接");
+	}
+	else
+	 window.location.href="yashuashezhi.html";
+}
+
 function mlog(m){
     var log=$('#logtext').val();
     //log=log+m;
@@ -473,7 +483,12 @@ $('.inBox span').click(function(){
 	         else {$("#lbInfo").html('x.失败')}; 
 	    }
 	         function kaishiceliang(biaoshi){
-
+	        	 var dianliang = $("#dianliang").html();
+	        	if(dianliang=="-"){
+	        		alert("设备未连接");
+	        		return;
+	        	}
+	        	 
 	           var Bytes=new Array();
 	            Bytes[0]=0x31;
 	         
