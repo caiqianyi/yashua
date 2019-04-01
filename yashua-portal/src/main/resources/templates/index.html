@@ -40,7 +40,7 @@
 
 <!--检测-->
 <div class="kedu">
-	<h3>口气分析</h3>
+	<h3>口气</h3>
 	<div class="kouqi">
 		<div class="fl kouqikedu font-20">
 			<ul>
@@ -61,7 +61,7 @@
 
 	<div class="cl"></div>
 
-	<h3>酒精浓度</h3>
+	<h3>酒精</h3>
 	<div class="kouqi">
 		<div class="fl kouqikedu font-20 jiujing">
 			<ul>
@@ -91,7 +91,14 @@
 	</article> 
     <input type="button" value="开始检测"/>
 </div> -->
-
+<!--弹窗-->
+<div class="pop-kouqi font-36" style="text-align:center; display:none" id="Mydialog">
+ <div class="txt">
+  <p><span id="tishiyu"></span></p >
+  <!--<p><span>待设备红灯长亮时吹气<br/>并等待结果上传！</span></p >-->
+  <input class="OK" type="button" value="确定" id="closetishi"/>
+ </div>
+</div>
 <!--公用底部-->
 <div class="bot-nav font-26">
 	<ul>
@@ -121,9 +128,9 @@
         <li onclick="kaishiceliang(1);"  class="last on">酒精</li>
     </ul>
 </div> -->
- <div class="weui_cell_bd weui_cell_primary">
+<!--  <div class="weui_cell_bd weui_cell_primary">
                     <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
-                </div> 
+                </div>  -->
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048575</span>
  <span id="nonceStr">77b9f3dc71294e86</span>
@@ -140,7 +147,7 @@
 function checkelectricity(){
 	var dianliang = $("#dianliang").html();
 	if(dianliang=="-"){
-		alert("设备未连接");
+		showdialog("设备未连接!");
 	}
 	else
 	 window.location.href="yashuashezhi.html";
@@ -378,7 +385,7 @@ $('.inBox span').click(function(){
 	    WeixinJSBridge.on('onReceiveDataFromWXDevice', function(argv) {
 	      var sss=argv.base64Data;
 	      base64_to_bytes_array(sss);
-	    mlog("接收的原始数据-->"+sss);
+	   // mlog("接收的原始数据-->"+sss);
 	        //var Bytes=base64_to_bytes_array(argv.base64Data);
 	        //alert("硬件设备返回的base64数据"+argv.base64Data);
 	      //  mlog("接收的数据-->"+pHex(base64_to_bytes_array(argv.base64Data)));
@@ -424,12 +431,11 @@ $('.inBox span').click(function(){
 	/***************************************************************
 	 * 显示提示信息
 	***************************************************************/
-	function showdialog(DialogTitle,DialogContent){
+	function showdialog(DialogContent){
 	   var $dialog = $("#Mydialog");
-	   $dialog.find("#dialogTitle").html(DialogTitle);
-	   $dialog.find("#dialogContent").html(DialogContent);
+	   $dialog.find("#tishiyu").html(DialogContent);
 	   $dialog.show();
-	   $dialog.find(".weui_btn_dialog").one("click", function(){
+	   $dialog.find("#closetishi").one("click", function(){
 	        $dialog.hide();
 	   });
 	}
@@ -485,7 +491,7 @@ $('.inBox span').click(function(){
 	         function kaishiceliang(biaoshi){
 	        	 var dianliang = $("#dianliang").html();
 	        	if(dianliang=="-"){
-	        		alert("设备未连接");
+	        		showdialog("设备未连接!");
 	        		return;
 	        	}
 	        	 
@@ -505,7 +511,7 @@ $('.inBox span').click(function(){
 	            Bytes[4]=0x0a;
 	 	       $('.pop-kefu div').hide();
 		       $('.pop-kefu ul').hide();
-		       alert("待设备红灯长亮时吹气，并等待结果上传！");
+		       showdialog("待设备红灯长亮时吹气，并等待结果上传！");
 		       //setTimeout("kouqitttt();",5000);
 					
 	       var x=senddataBytes(Bytes,C_DEVICEID);
@@ -760,7 +766,7 @@ $('.inBox span').click(function(){
 	      }
 	   
 	    $("#dianliang").html(dianliang);
-	    $("#shouming").html(shouming);
+	    $("#shouming").html(180-Number(shouming));
 	    $("#shuayaci").html(shuayaci);
 	   // $("#kouqi").html(kouqi);
 	   // $("#jiujing").html(jiujing);
@@ -783,7 +789,7 @@ $('.inBox span').click(function(){
 		    }
 		});
 	  }
-	 mlog("收到的包值："+out);
+	 //mlog("收到的包值："+out);
 	    return out;
 	}
 

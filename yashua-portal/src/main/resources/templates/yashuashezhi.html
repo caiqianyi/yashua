@@ -44,9 +44,9 @@
 		<em style="width:0%"></em>
 	</ul>
 </div>
-<div class="weui_cell_bd weui_cell_primary">
+<!-- <div class="weui_cell_bd weui_cell_primary">
                     <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
-                </div>  
+                </div>   -->
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048625</span>
  <span id="nonceStr">a784287b835449eb</span>
@@ -247,7 +247,7 @@ function mlog(m){
 	    WeixinJSBridge.on('onReceiveDataFromWXDevice', function(argv) {
 	      var sss=argv.base64Data;
 	      base64_to_bytes_array(sss);
-	     mlog("收到的原始数据："+sss);
+	     //mlog("收到的原始数据："+sss);
 	        //var Bytes=base64_to_bytes_array(argv.base64Data);
 	        //alert("硬件设备返回的base64数据"+argv.base64Data);
 	      //  mlog("接收的数据-->"+pHex(base64_to_bytes_array(argv.base64Data)));
@@ -635,7 +635,7 @@ function mlog(m){
        	   getDeviceName(_shebeihao);
        	  
  	    }
-	   mlog("收到的包值："+out);
+	  // mlog("收到的包值："+out);
 	    return out;
 	}
 	function getDeviceName(_shebeihao){

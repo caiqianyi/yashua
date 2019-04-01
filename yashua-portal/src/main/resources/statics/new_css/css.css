@@ -672,6 +672,11 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .jiujing dl dd:nth-child(2){margin-left:15%;}
 .jiujing dl dd:nth-child(3){margin-left:52%;}
 .jiujing dl dd:nth-child(4){margin-left:12%;}
+/*0404弹框*/
+.pop-kouqi .txt{width:6.5rem;height: 3.2rem;background:#fff;border-radius:.15rem;position:absolute; margin:auto;top:0;left:0;bottom:0;right:0;overflow: hidden;}
+.pop-kouqi .txt p{height:2rem;line-height:2rem;color:#000;border-bottom:1px solid #c8cccf;}
+.pop-kouqi .txt p span{display: inline-block;line-height:normal;vertical-align: middle;}
+.pop-kouqi .txt .OK{height: 1.2rem;line-height:1.2rem;font-size:.38rem;width: 100%;background:#63ed98;color:#fff;letter-spacing:.1rem;}
 
 
 

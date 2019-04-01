@@ -113,7 +113,7 @@ public class UserDeviceController {
 	                    +"\"ser_mac_pos\":\"-2\""
 	                    + "}],"
 	                    +"\"op_type\":\"1\","
-	                    +"\"product_id\": \"50972\""
+	                    +"\"product_id\": \"52675\""
 	                   + "}";
 			String s=sendPost("https://api.weixin.qq.com/device/authorize_device?access_token="+accessToken, params);
             System.out.println("=========s返回：===="+s);
@@ -199,7 +199,7 @@ public class UserDeviceController {
 	        return token;
 	    }
 	 private Map<String,String> getdeviceid(String acctoken) throws Exception{
-	        String Url = "https://api.weixin.qq.com/device/getqrcode?access_token="+acctoken+"&product_id=50972";
+	        String Url = "https://api.weixin.qq.com/device/getqrcode?access_token="+acctoken+"&product_id=52675";
 	        URL url = new URL(Url);
 		     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 	 
