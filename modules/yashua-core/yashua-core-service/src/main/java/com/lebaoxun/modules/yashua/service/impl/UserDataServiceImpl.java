@@ -141,13 +141,13 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 			List<UserDataEntity> list=null;
 			Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
 			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-			if(hour>=7 && hour<=9){//早上的口气
+			if(hour>=6 && hour<=10){//第一次口气测量
 				list = userDataDao.lookList(newDate, user_id,1L);
 				if(list.size()>0) return;
 				userDataEntity.setBiaoshi(1L);
 				userDataDao.insert(userDataEntity);
 			}
-			else if(hour>=19 && hour<=21){//晚上的口气
+			else if(hour>=6 && hour<=10){//第二次口气测量
 				list = userDataDao.lookList(newDate, user_id,2L);
 				if(list.size()>0) return;
 				userDataEntity.setBiaoshi(2L);
