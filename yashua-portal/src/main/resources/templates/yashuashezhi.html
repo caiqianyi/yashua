@@ -571,62 +571,7 @@ function mlog(m){
 		        if(shebeixieyi==56 && i-j==10){
 		        	shebeij=h-30;
 			        }
-	        if(zvalue==1){
-	          	 $("#qinrou").attr('class','on');
-	          	 $("#biaozhun").removeClass("on");
-	          	 $("#shendu").removeClass("on");
-	            }else if(zvalue==2){
-	   	        	 $("#biaozhun").attr('class','on');
-	   	        	 $("#qinrou").removeClass("on");
-	   	        	 $("#shendu").removeClass("on");
-	            }else if(zvalue==3){
-	   	        	 $("#shendu").attr('class','on');
-	   	        	 $("#biaozhun").removeClass("on");
-	   	        	 $("#qinrou").removeClass("on");
-	            }
-	           if(svalue==1){
-	          	 $("#shimiao").attr('class','on');
-	     		     $("#shiwumiao").removeClass("on");
-	     		 	 $("#ershimiao").removeClass("on");
-	     			 $("#ershiwumiao").removeClass("on");
-	     		 	 $("#sanshimiao").removeClass("on");
-	            }else if(svalue==2){
-	   	        	 $("#shiwumiao").attr('class','on');
-	          		 $("#shimiao").removeClass("on");
-	          		 $("#ershimiao").removeClass("on");
-	          		 $("#ershiwumiao").removeClass("on");
-	          		 $("#sanshimiao").removeClass("on");
-	            }else if(svalue==3){
-	   	        	 $("#ershimiao").attr('class','on');
-	          		 $("#shiwumiao").removeClass("on");
-	          		 $("#shimiao").removeClass("on");
-	          		 $("#ershiwumiao").removeClass("on");
-	          		 $("#sanshimiao").removeClass("on");
-	            }else if(svalue==4){
-	   	        	 $("#ershiwumiao").attr('class','on');
-	          		 $("#shiwumiao").removeClass("on");
-	          		 $("#ershimiao").removeClass("on");
-	          		 $("#shimiao").removeClass("on");
-	          		 $("#sanshimiao").removeClass("on"); 
-	            }else if(svalue==5){
-	   	        	 $("#sanshimiao").attr('class','on');
-	          		 $("#shiwumiao").removeClass("on");
-	          		 $("#ershimiao").removeClass("on");
-	          		 $("#ershiwumiao").removeClass("on");
-	          		 $("#shimiao").removeClass("on");
-	            }
-	           $("#zhezhaoceng").hide();
-	           if(shebeixieyi==56){
-	   	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
-	   	       }
-	          // $("#shebeihaott").html(shebeihao);
-	           if(shebeihao!=null && shebeihao !=""){
-//	  	    	 $("#shebeihaot").html(shebeihao);
-	        	   _shebeihao=shebeihao;
-	        	   connect(_shebeihao);
-	        	   getDeviceName(_shebeihao);
-	        	  
-	  	    }
+	        
 	           toubiaozhi='';
 	        if(h.length==1){
 	          h="0"+h;
@@ -634,6 +579,62 @@ function mlog(m){
 	        out += "\\0x" + h;
 	        out +=(i > 0 && i % 8 == 0)?"\r\n":", ";
 	    }
+	    if(zvalue==1){
+         	 $("#qinrou").attr('class','on');
+         	 $("#biaozhun").removeClass("on");
+         	 $("#shendu").removeClass("on");
+           }else if(zvalue==2){
+  	        	 $("#biaozhun").attr('class','on');
+  	        	 $("#qinrou").removeClass("on");
+  	        	 $("#shendu").removeClass("on");
+           }else if(zvalue==3){
+  	        	 $("#shendu").attr('class','on');
+  	        	 $("#biaozhun").removeClass("on");
+  	        	 $("#qinrou").removeClass("on");
+           }
+          if(svalue==1){
+         	 $("#shimiao").attr('class','on');
+    		     $("#shiwumiao").removeClass("on");
+    		 	 $("#ershimiao").removeClass("on");
+    			 $("#ershiwumiao").removeClass("on");
+    		 	 $("#sanshimiao").removeClass("on");
+           }else if(svalue==2){
+  	        	 $("#shiwumiao").attr('class','on');
+         		 $("#shimiao").removeClass("on");
+         		 $("#ershimiao").removeClass("on");
+         		 $("#ershiwumiao").removeClass("on");
+         		 $("#sanshimiao").removeClass("on");
+           }else if(svalue==3){
+  	        	 $("#ershimiao").attr('class','on');
+         		 $("#shiwumiao").removeClass("on");
+         		 $("#shimiao").removeClass("on");
+         		 $("#ershiwumiao").removeClass("on");
+         		 $("#sanshimiao").removeClass("on");
+           }else if(svalue==4){
+  	        	 $("#ershiwumiao").attr('class','on');
+         		 $("#shiwumiao").removeClass("on");
+         		 $("#ershimiao").removeClass("on");
+         		 $("#shimiao").removeClass("on");
+         		 $("#sanshimiao").removeClass("on"); 
+           }else if(svalue==5){
+  	        	 $("#sanshimiao").attr('class','on');
+         		 $("#shiwumiao").removeClass("on");
+         		 $("#ershimiao").removeClass("on");
+         		 $("#ershiwumiao").removeClass("on");
+         		 $("#shimiao").removeClass("on");
+           }
+          $("#zhezhaoceng").hide();
+          if(shebeixieyi==56){
+  	    	shebeihao="XX"+shebeia+shebeib+shebeic+shebeid+shebeie+shebeif+shebeig+shebeih+shebeii+shebeij;
+  	       }
+         // $("#shebeihaott").html(shebeihao);
+          if(shebeihao!=null && shebeihao !=""){
+// 	    	 $("#shebeihaot").html(shebeihao);
+       	   _shebeihao=shebeihao;
+       	   connect(_shebeihao);
+       	   getDeviceName(_shebeihao);
+       	  
+ 	    }
 	   mlog("收到的包值："+out);
 	    return out;
 	}

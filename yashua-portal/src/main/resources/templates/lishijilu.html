@@ -21,21 +21,21 @@
     	<div class="chart-container">
        		<p class="mark">分数</p>
        		<p class="time">周（天）</p>
-       		  <p class="biaoti"><em class="zao">早</em><em class="wan">晚</em></p>
+       		  <p class="biaoti"><em class="zao">刷牙前</em><em class="wan">刷牙后</em></p>
         	<canvas id="myChart" height="260"></canvas>
         </div>
         <!--月记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
        		<p class="time">月（天）</p>
-       		  <p class="biaoti"><em class="zao">早</em><em class="wan">晚</em></p>
+       		  <p class="biaoti"><em class="zao">刷牙前</em><em class="wan">刷牙后</em></p>
         	<canvas id="myChart-month" height="260"></canvas>
         </div>
         <!--季记录-->
         <div class="chart-container">
         	<p class="mark">分数</p>
        		<p class="time">季（周）</p>
-       		  <p class="biaoti"><em class="zao">早</em><em class="wan">晚</em></p>
+       		  <p class="biaoti"><em class="zao">刷牙前</em><em class="wan">刷牙后</em></p>
         	<canvas id="myChart-season" height="260"></canvas>
         </div>
     </div>	
@@ -46,10 +46,10 @@
 	<div class="fenxi font-30">数据分析<p>口气平均分</p></div>
 	<div class="zhi font-30">
 		<div class="score">
-			<div><p><i></i>分<span>早</span></p></div>
+			<div><p><i></i>分<span>刷牙前</span></p></div>
 		</div>
 		<div class="score">
-			<div><p><i></i>分<span>晚</span></p></div>
+			<div><p><i></i>分<span>刷牙后</span></p></div>
 		</div>
 	</div>
 </div>
@@ -146,7 +146,7 @@
     			         data: {
     			             labels: labels,
     			             datasets: [{
-    			 				label: '早',
+    			 				label: '刷牙前',
     			 				fill: true,//是否填充背景色
     			  				//backgroundColor:'rgb(99, 237, 152,.2)',//背景色
     			 				pointBorderColor:'#fff',//圆点边框
@@ -154,7 +154,7 @@
     			                 borderColor: 'rgb(99, 237, 152)',//线条颜色
     			                 data: arry1
     			             },  {
-    			 				label: '晚',
+    			 				label: '刷牙后',
     			 				fill: true,
     			  				//backgroundColor:'rgb(254, 223, 80,.2)',
     			 				pointBorderColor:'#fff',
@@ -298,7 +298,7 @@
     		         data: {
     		             labels: ["一","二","三","四","五","六","日"],
     		             datasets: [{
-    		 				label: '早',
+    		 				label: '刷牙前',
     		 				fill: true,//是否填充背景色
     		  				//backgroundColor:'rgb(99, 237, 152,.2)',//背景色
     		 				pointBorderColor:'#fff',//圆点边框
@@ -306,7 +306,7 @@
     		                 borderColor: 'rgb(99, 237, 152)',//线条颜色
     		                 data: arry1
     		             },  {
-    		 				label: '晚',
+    		 				label: '刷牙后',
     		 				fill: true,
     		  				//backgroundColor:'rgb(254, 223, 80,.2)',
     		 				pointBorderColor:'#fff',
