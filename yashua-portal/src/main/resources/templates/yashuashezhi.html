@@ -527,14 +527,16 @@ function mlog(m){
 	        if(h=='aa'){
 	        	toubiaozhi='aa';
 	        }
-	        if(h==52){
-	        	zxieyi=52;
-	        	
-	          j=i;
-	        }else if(h==56){
-	        	shebeixieyi=56; 
-		          j=i;
-		        }
+	        if(i==2){
+	        	  if(h==52){
+	  	        	zxieyi=52;
+	  	          j=i;
+	  	        }else if(h==56){
+	  	        	shebeixieyi=56; 
+	  		          j=i;
+	  		        }
+	        }
+	      
 	        if(zxieyi==52 && i-j==1){
 	        	zvalue=h;
 	        }

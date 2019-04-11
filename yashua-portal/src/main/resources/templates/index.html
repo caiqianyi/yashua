@@ -30,6 +30,7 @@
 	<div class="inBox bg-new fl">
     	<h3>牙刷电量</h3>
        <p><i id="dianliang">-</i>%</p>
+       <img class="Charging" src="/statics/new_images/chongdian.png" alt=""  style="display:none" id="chongdianbiaoshi"/>
     </div>
     <div class="inBox bg-new fr">
     	<h3>刷头剩余寿命</h3>
@@ -54,9 +55,9 @@
 				<dd>6</dd>
 				<dd>10</dd>
 			</dl>
-			<em class="green" style="width:4%;" id="kouqijc"><b><i id='kouqisz'>0</i>分</b></em>
+			<em class="green" style="width:4%;" id="kouqijc"><b><i id='kouqisz'>-</i>分</b></em>
 		</div>
-		<input type="button"  onclick="kaishiceliang(0);">
+		<input type="button"  onclick="zhunbeiceliang(1);">
 	</div>
 
 	<div class="cl"></div>
@@ -75,9 +76,9 @@
 				<dd>80</dd>
 				<dd>100</dd>
 			</dl>
-			<em class="green" style="width:4%;" id="jiujingjc"><b><i id='jiujingsz'>0</i>mg/100ml</b></em>
+			<em class="green" style="width:4%;" id="jiujingjc"><b><i id='jiujingsz'>-</i>mg/100ml</b></em>
 		</div>
-		<input class="jiu" type="button"  onclick="kaishiceliang(1);">
+		<input class="jiu" type="button"  onclick="zhunbeiceliang(2);">
 	</div>
 </div>
 <!--检测-->
@@ -147,7 +148,7 @@
 function checkelectricity(){
 	var dianliang = $("#dianliang").html();
 	if(dianliang=="-"){
-		showdialog("设备未连接!");
+		showdialog("设备未连接!",0);
 	}
 	else
 	 window.location.href="yashuashezhi.html";
@@ -170,6 +171,11 @@ $('.inBox span').click(function(){
 		$('#clchuangkou').show();
 		$('#clchuangkou1').show();
 		$('#clchuangkou2').show();
+	});
+	$('#jcchuangkou2').click(function(){
+		$('#jcchuangkou').hide();
+		$('#jcchuangkou1').hide();
+		$('#jcchuangkou2').hide();
 	});
 
 	 var dianliang, shouming,shuayaci, jiujing, kouqi; 
@@ -431,11 +437,14 @@ $('.inBox span').click(function(){
 	/***************************************************************
 	 * 显示提示信息
 	***************************************************************/
-	function showdialog(DialogContent){
+	function showdialog(DialogContent,biaoshi){
 	   var $dialog = $("#Mydialog");
 	   $dialog.find("#tishiyu").html(DialogContent);
 	   $dialog.show();
 	   $dialog.find("#closetishi").one("click", function(){
+		   if(biaoshi>0){
+			   kaishiceliang(biaoshi);
+		   }
 	        $dialog.hide();
 	   });
 	}
@@ -488,19 +497,27 @@ $('.inBox span').click(function(){
 	         if(x===0){$("#lbInfo").html('x.完成')}
 	         else {$("#lbInfo").html('x.失败')}; 
 	    }
+        function zhunbeiceliang(biaoshi){
+
+       	 var dianliang = $("#dianliang").html();
+       	if(dianliang=="-"){
+       		showdialog("设备未连接!",0);
+       		return;
+       	}
+		$('#kouqisz').html("-");
+		document.getElementById("kouqijc").style.width= "4%"; 
+		$('#jiujingsz').html("-");
+		document.getElementById("jiujingjc").style.width= "4%";
+	    showdialog("待设备红灯长亮时吹气，并等待结果上传！",biaoshi);
+				
+   }
 	         function kaishiceliang(biaoshi){
-	        	 var dianliang = $("#dianliang").html();
-	        	if(dianliang=="-"){
-	        		showdialog("设备未连接!");
-	        		return;
-	        	}
-	        	 
 	           var Bytes=new Array();
 	            Bytes[0]=0x31;
 	         
 	            Bytes[1]=0x00;
 	        
-	           if(biaoshi==0){
+	           if(biaoshi==1){
 	            Bytes[2]=0x01;
 	           }else{
 	               
@@ -511,9 +528,6 @@ $('.inBox span').click(function(){
 	            Bytes[4]=0x0a;
 	 	       $('.pop-kefu div').hide();
 		       $('.pop-kefu ul').hide();
-		       showdialog("待设备红灯长亮时吹气，并等待结果上传！");
-		       //setTimeout("kouqitttt();",5000);
-					
 	       var x=senddataBytes(Bytes,C_DEVICEID);
 
 	         if(x===0){}
@@ -671,7 +685,7 @@ $('.inBox span').click(function(){
 	}
 	function CharToHex(str) {
 	    var out, i, h,j;
-	    var toubiaozhi,kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei;
+	    var toubiaozhi,kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei,chongdian;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
@@ -680,16 +694,19 @@ $('.inBox span').click(function(){
 	        if(h=='aa'){
 	        	toubiaozhi='aa';
 	        }
-	        if(h==54){
-	          kxieyi=54;
-	          j=i;
-	        }else if(h==55){
-	          jxieyi=55;
-	          j=i;
-	        }else if(h==51){
-	          dxieyi=51; 
-	          j=i;
+	        if(i==2){
+	        	 if(h==54){
+	   	          kxieyi=54;
+	   	          j=i;
+	   	        }else if(h==55){
+	   	          jxieyi=55;
+	   	          j=i;
+	   	        }else if(h==51){
+	   	          dxieyi=51; 
+	   	          j=i;
+	   	        }
 	        }
+	       
 	        if(kxieyi==54 && i-j==1){
 	          kgaowei=h;
 	        }
@@ -716,6 +733,9 @@ $('.inBox span').click(function(){
 		        }
 	        if(dxieyi==51 && i-j==5){
 		          stdiwei=h;
+		        }
+	        if(dxieyi==51 && i-j==6){
+		          chongdian=h;
 		        }
 	       
 	        if(h.length==1){
@@ -768,6 +788,12 @@ $('.inBox span').click(function(){
 	    $("#dianliang").html(dianliang);
 	    $("#shouming").html(180-Number(shouming));
 	    $("#shuayaci").html(shuayaci);
+	    if(chongdian==0){
+	    	 $("#chongdianbiaoshi").hide();
+	    }else{
+	    	 $("#chongdianbiaoshi").show();
+	    }
+	   
 	   // $("#kouqi").html(kouqi);
 	   // $("#jiujing").html(jiujing);
 	    toubiaozhi='';
