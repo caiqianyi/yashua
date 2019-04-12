@@ -55,9 +55,10 @@
 				<dd>6</dd>
 				<dd>10</dd>
 			</dl>
-			<em class="green" style="width:4%;" id="kouqijc"><b><i id='kouqisz'>-</i>分</b></em>
+			<em class="green" style="width:4%;" id="kouqijc"><b><i id='kouqisz'></i>分</b></em>
 		</div>
-		<input type="button"  onclick="zhunbeiceliang(1);">
+		<input type="button"  onclick="zhunbeiceliang(1);" id="celiangkq">
+		<span style="display:none"  id="jishikq"></span>
 	</div>
 
 	<div class="cl"></div>
@@ -76,9 +77,10 @@
 				<dd>80</dd>
 				<dd>100</dd>
 			</dl>
-			<em class="green" style="width:4%;" id="jiujingjc"><b><i id='jiujingsz'>-</i>mg/100ml</b></em>
+			<em class="green" style="width:4%;" id="jiujingjc"><b><i id='jiujingsz'></i>mg/100ml</b></em>
 		</div>
-		<input class="jiu" type="button"  onclick="zhunbeiceliang(2);">
+		<input class="jiu" type="button"  onclick="zhunbeiceliang(2);" id="celiangjj">
+		<span class="jiu" style="display:none"  id="jishijj"></span>
 	</div>
 </div>
 <!--检测-->
@@ -498,16 +500,20 @@ $('.inBox span').click(function(){
 	         else {$("#lbInfo").html('x.失败')}; 
 	    }
         function zhunbeiceliang(biaoshi){
-
        	 var dianliang = $("#dianliang").html();
        	if(dianliang=="-"){
        		showdialog("设备未连接!",0);
        		return;
        	}
-		$('#kouqisz').html("-");
-		document.getElementById("kouqijc").style.width= "4%"; 
-		$('#jiujingsz').html("-");
-		document.getElementById("jiujingjc").style.width= "4%";
+       	if(biaoshi==1){
+       		$('#kouqisz').html("");
+    		$('#kouqijc').attr('class','green');
+    		document.getElementById("kouqijc").style.width= "4%"; 
+       	}else if(biaoshi==2){
+       		$('#jiujingsz').html("");
+    		$('#jiujingjc').attr('class','green');
+    		document.getElementById("jiujingjc").style.width= "4%";
+       	}
 	    showdialog("待设备红灯长亮时吹气，并等待结果上传！",biaoshi);
 				
    }
@@ -529,7 +535,36 @@ $('.inBox span').click(function(){
 	 	       $('.pop-kefu div').hide();
 		       $('.pop-kefu ul').hide();
 	       var x=senddataBytes(Bytes,C_DEVICEID);
-
+	       
+ 	       var num = 60;
+ 	       if(biaoshi==1){
+ 	    		$("#jishikq").show();
+ 	    		$("#jishikq").text(num+'秒');
+ 				$("#celiangkq").hide(); 
+ 	       }else{
+ 	    		$("#jishijj").show();
+ 	    	    $("#jishijj").text(num+'秒');
+				$("#celiangjj").hide();  
+ 	       }
+			timer = setInterval(function(){
+				num--;
+				 if(biaoshi==1){
+		 	    		$("#jishikq").text(num+'秒');
+		 	       }else{
+		 	    	    $("#jishijj").text(num+'秒');
+		 	       }
+				if(num <= 0 ){
+			 	       if(biaoshi==1){
+			 	    	    $("#jishikq").hide();
+							$("#celiangkq").show();
+			 	       }else{
+			 	    		$("#jishijj").hide();
+							$("#celiangjj").show();  
+			 	       }
+					clearInterval(timer);
+				}
+			},1000)	
+			
 	         if(x===0){}
 	         else {}; 
 	    }
@@ -790,7 +825,7 @@ $('.inBox span').click(function(){
 	    $("#shuayaci").html(shuayaci);
 	    if(chongdian==0){
 	    	 $("#chongdianbiaoshi").hide();
-	    }else{
+	    }else if(chongdian==1){
 	    	 $("#chongdianbiaoshi").show();
 	    }
 	   
