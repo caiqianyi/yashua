@@ -535,35 +535,36 @@ $('.inBox span').click(function(){
 	 	       $('.pop-kefu div').hide();
 		       $('.pop-kefu ul').hide();
 	       var x=senddataBytes(Bytes,C_DEVICEID);
-	       
- 	       var num = 60;
  	       if(biaoshi==1){
+ 	    	  var num = 60;
  	    		$("#jishikq").show();
  	    		$("#jishikq").text(num+'秒');
  				$("#celiangkq").hide(); 
+ 				timer = setInterval(function(){
+ 					num--;
+ 			 	    $("#jishikq").text(num+'秒');
+ 					if(num <= 0 ){
+ 				 	    $("#jishikq").hide();
+ 						$("#celiangkq").show();
+ 						clearInterval(timer);
+ 					}
+ 				},1000)	
  	       }else{
+ 	    	    var num1 = 60;
  	    		$("#jishijj").show();
- 	    	    $("#jishijj").text(num+'秒');
+ 	    	    $("#jishijj").text(num1+'秒');
 				$("#celiangjj").hide();  
+				timer1 = setInterval(function(){
+					num1--;
+			 	    $("#jishijj").text(num1+'秒');
+					if(num1 <= 0 ){
+				 	    $("#jishijj").hide();
+						$("#celiangjj").show();  
+						clearInterval(timer1);
+					}
+				},1000)	
  	       }
-			timer = setInterval(function(){
-				num--;
-				 if(biaoshi==1){
-		 	    		$("#jishikq").text(num+'秒');
-		 	       }else{
-		 	    	    $("#jishijj").text(num+'秒');
-		 	       }
-				if(num <= 0 ){
-			 	       if(biaoshi==1){
-			 	    	    $("#jishikq").hide();
-							$("#celiangkq").show();
-			 	       }else{
-			 	    		$("#jishijj").hide();
-							$("#celiangjj").show();  
-			 	       }
-					clearInterval(timer);
-				}
-			},1000)	
+			
 			
 	         if(x===0){}
 	         else {}; 
