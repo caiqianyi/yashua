@@ -647,8 +647,8 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .qian-ok p{margin-left:1.5rem;}
 
 /*------------------------------首页刻度------------------------------*/
-.kedu{padding:0 .25rem;}
-.kedu h3{font-size:.3rem;color:#63ed98;text-align: right;padding:.4rem .18rem 0;margin-bottom:.4rem;}
+.kedu{padding:0 .25rem;margin-top:1.2rem;}
+.kedu h3 {font-size: .3rem;color: #63ed98;text-align: right;padding: .8rem .18rem 0;margin-bottom: 1.2rem;}
 .kedu .kouqi{}
 .kouqikedu{width: 5.65rem;background:url(../new_images/kedutiao-kouqi.png) no-repeat bottom center;-webkit-background-size:100% .22rem;background-size:100% .22rem;position: relative;height:.3rem;margin:.1rem 0 .8rem .1rem;}
 .kouqikedu ul{position: absolute;width: 100%;top:-.25rem;}
