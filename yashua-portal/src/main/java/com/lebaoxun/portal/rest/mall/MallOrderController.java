@@ -35,8 +35,7 @@ public class MallOrderController extends BaseController {
 
 	@RequestMapping("/mall/order/create")
 	ResponseMessage create(@RequestBody List<MallCartEntity> products) {
-		return mallOrderService.create(oauth2SecuritySubject.getCurrentUser(),
-				5,products);
+		return mallOrderService.create(oauth2SecuritySubject.getCurrentUser(), 5, products);
 	}
 
 	@RequestMapping("/mall/order/delete")

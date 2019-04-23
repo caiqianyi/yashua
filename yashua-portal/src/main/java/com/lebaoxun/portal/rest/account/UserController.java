@@ -95,8 +95,8 @@ public class UserController {
 	 * 退出
 	 */
 	@RequestMapping(value = "/account/logout", method = RequestMethod.GET)
-	public String logout() {
+	public ResponseMessage logout() {
 		oauth2SecuritySubject.logout();
-		return "redirect:/login.html";
+		return ResponseMessage.ok();
 	}
 }

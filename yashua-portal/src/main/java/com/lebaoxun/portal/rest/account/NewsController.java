@@ -35,13 +35,27 @@ public class NewsController extends BaseController{
 	@Resource
 	private IRedisHash redisHash;
 	
+	@RequestMapping("/news/list")
+	@ResponseBody
+	ResponseMessage datas(@RequestParam(value="size",required=false)Integer size,
+			@RequestParam(value="offset",required=false)Integer offset,
+			@RequestParam(value="class_id",required=false)Integer class_id,
+			Map<String,Object> map){
+		return new ResponseMessage(newsService.list(size, offset, class_id));
+	}
+	
 	@RequestMapping("/news/list.html")
-	public String list(@RequestParam(value="size",required=false)Integer size,
+	String list(@RequestParam(value="size",required=false)Integer size,
 			@RequestParam(value="offset",required=false)Integer offset,
 			@RequestParam(value="class_id",required=false)Integer class_id,
 			Map<String,Object> map){
 		map.put("release", newsService.list(size, offset, class_id));
 		return "/news/list";
+	}
+	
+	@RequestMapping("/news/info/{id}")
+	ResponseMessage info(@PathVariable("id") Long id){
+		return new ResponseMessage(newsService.releaseInfo(id));
 	}
 	
 	@RequestMapping("/news/info/{id}.html")

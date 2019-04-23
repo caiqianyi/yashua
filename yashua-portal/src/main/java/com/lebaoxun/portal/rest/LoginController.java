@@ -181,6 +181,8 @@ public class LoginController extends BaseController{
 			String account = username,passwd = null;
 			if("wechatOA".equals(platform)){
 				a = userService.findByAccount(account);
+			}else if("app".equals(platform)){
+				a = userService.login(account, passwd);
 			}else{
 				String secret = (String) request.getSession().getAttribute("app.secret");
 				if(StringUtils.isBlank(secret)){
@@ -319,10 +321,11 @@ public class LoginController extends BaseController{
 	ResponseMessage register(@RequestParam("username") String username,
 			@RequestParam("password") String password,
 			@RequestParam("vfcode") String vfcode,
-			@RequestParam(name="wxopenid",required = false) String wxopenid){
+			@RequestParam(name="wxopenid",required = false) String wxopenid,
+			@RequestParam(name="verify",required = false) String verify){
 		String account = username,passwd = null;
 		String secret = (String) request.getSession().getAttribute("app.secret");
-		if(StringUtils.isBlank(secret)){
+		if(StringUtils.isBlank(verify) && StringUtils.isBlank(secret)){
 			throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");
 		}
 		try {

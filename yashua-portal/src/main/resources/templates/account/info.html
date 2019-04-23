@@ -59,7 +59,12 @@
 		window.storage.clear();
 		$.ajax({
 			type: "GET",
-		    url: "/account/logout"
+		    url: "/account/logout",
+		    success: function(r){
+		    	if(r.errcode == 0){
+			    	window.location.href="/login.html";
+		    	}
+		    }
 		});
 	});
  $(function(){
