@@ -436,10 +436,10 @@ background-size:.19rem .37rem;}
 .shuju .hd{background:#2a292e;line-height:1.2rem;margin-bottom:.35rem;overflow: hidden;}
 .shuju .hd li{float: left;width: 32.33%;font-size:.44rem;border-bottom:.04rem solid #4E4D52;margin:0 0.5%;}
 .shuju .hd li.on{color:#63ED98;border-color: #63ED98;}
-.chart-container{padding:0 .25rem;position: relative;}
+.chart-container {padding: .3rem .25rem 0;position: relative;}
 .chart-container .mark{position: absolute;top:.3rem;}
-.chart-container .time{position: absolute;bottom:.3rem;right:.3rem;}
-.chart-container .biaoti{position: absolute;top:.4rem;right:.2rem;text-align: center;width:2rem;}
+.chart-container .time{position: absolute;bottom: 0rem;right: .3rem;}
+.chart-container .biaoti{ position: absolute;top: 0rem;right: .2rem;text-align: center;width: 2rem;}
 .chart-container .biaoti em{display:inline-block;margin-left:.7rem;position:relative;}
 .chart-container .biaoti em::after{content: "";position:absolute;left:-.4rem;top:.13rem;width:.25rem;border:.03rem solid #63ED98;}
 .chart-container .biaoti em.wan::after{border-color:#fedf50;}
