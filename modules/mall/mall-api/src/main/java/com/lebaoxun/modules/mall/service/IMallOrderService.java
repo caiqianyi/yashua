@@ -62,6 +62,18 @@ public interface IMallOrderService {
 			@RequestParam("spbill_create_ip") String spbill_create_ip,
 			@RequestParam(name="fuid",required=false) Long fuid);
 	
+	@RequestMapping("/mall/mallorder/confirmOrderForApp")
+	ResponseMessage confirmOrderForApp(@RequestParam("userId") Long userId,
+			@RequestParam("orderNo") String orderNo,
+			@RequestParam("invoiceType") Integer invoiceType,
+			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
+			@RequestParam("address") String address,
+			@RequestParam("consignee") String consignee,
+			@RequestParam("mobile") String mobile,
+			@RequestParam("spbill_create_ip") String spbill_create_ip,
+			@RequestParam(name="fuid",required=false) Long fuid);
+	
 	@RequestMapping("/mall/mallorder/scoreExchange")
 	ResponseMessage scoreExchange(@RequestParam("userId") Long userId,
 			@RequestParam("orderNo") String orderNo,

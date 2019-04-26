@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
-import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -293,6 +292,31 @@ public class MallOrderServiceImpl extends
 		Integer totalFee = order.getPayAmount().setScale(2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal("100")).intValue();
 		return wxPayService.payment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua", wxopenid, userId, new BigDecimal("0"), "shopping");
 		//return wxPayService.payment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua", wxopenid, userId);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public ResponseMessage confirmOrderForApp(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String invoiceNo, String address, String consignee, String mobile,
+			String spbill_create_ip, Long fuid) {
+		// TODO Auto-generated method stub
+		MallOrderEntity order = this.baseMapper.selectOrderByOrderNo(userId,
+				orderNo, 0);
+		if (order == null) {
+			throw new I18nMessageException("-1", "此订单不存在或已支付");
+		}
+		order.setAddress(address);
+		order.setConsignee(consignee);
+		order.setMobile(mobile);
+		order.setInvoiceTitle(invoiceTitle);
+		order.setInvoiceNo(invoiceNo);
+		order.setInvoiceType(invoiceType);
+		order.setUpdateTime(new Date());
+		order.setPayType(2);// 现金支付
+		order.setFuid(fuid);
+		this.baseMapper.updateById(order);
+		Integer totalFee = order.getPayAmount().setScale(2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal("100")).intValue();
+		return wxPayService.appPayment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua", userId, new BigDecimal("0"), "shopping");
 	}
 
 	@Override

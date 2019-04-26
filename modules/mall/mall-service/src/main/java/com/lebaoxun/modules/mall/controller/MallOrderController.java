@@ -89,6 +89,23 @@ public class MallOrderController {
 				invoiceTitle, invoiceNo, address, consignee, mobile, 
 				wxopenid, spbill_create_ip,fuid);
 	}
+	
+	@RequestMapping("/mall/mallorder/confirmOrderForApp")
+	@RedisLock(value = "mall:mallorder:confirmOrder:lock:#arg0")
+	ResponseMessage confirmOrderForApp(@RequestParam("userId") Long userId,
+			@RequestParam("orderNo") String orderNo,
+			@RequestParam("invoiceType") Integer invoiceType,
+			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
+			@RequestParam("address") String address,
+			@RequestParam("consignee") String consignee,
+			@RequestParam("mobile") String mobile,
+			@RequestParam("spbill_create_ip") String spbill_create_ip,
+			@RequestParam(name="fuid",required=false) Long fuid) {
+		return mallOrderService.confirmOrderForApp(userId, orderNo, invoiceType,
+				invoiceTitle, invoiceNo, address, consignee, mobile, 
+				spbill_create_ip,fuid);
+	}
 
 	@RequestMapping("/mall/mallorder/scoreExchange")
 	@RedisLock(value = "mall:mallorder:scoreExchange:lock:#arg0")

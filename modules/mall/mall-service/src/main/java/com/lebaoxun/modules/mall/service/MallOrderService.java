@@ -3,8 +3,6 @@ package com.lebaoxun.modules.mall.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
@@ -46,6 +44,11 @@ public interface MallOrderService extends IService<MallOrderEntity> {
 	ResponseMessage confirmOrder(Long userId, String orderNo, Integer invoiceType,
 			String invoiceTitle, String invoiceNo, String address, 
 			String consignee, String mobile, String wxopenid,
+			String spbill_create_ip, Long fuid);
+	
+	ResponseMessage confirmOrderForApp(Long userId, String orderNo, Integer invoiceType,
+			String invoiceTitle, String invoiceNo, String address, 
+			String consignee, String mobile,
 			String spbill_create_ip, Long fuid);
 	
 	void delete(Long userId, String orderNo);
