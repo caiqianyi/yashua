@@ -328,13 +328,15 @@ public class LoginController extends BaseController{
 		if(StringUtils.isBlank(verify) && StringUtils.isBlank(secret)){
 			throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");
 		}
-		try {
-			logger.debug("secret={}",secret);
-			DesUtils desUtils = new DesUtils(secret);
-			account = desUtils.decrypt(username);
-			passwd = desUtils.decrypt(password);
-		} catch (Exception e) {
-			throw new I18nMessageException("10015", "密钥不对");
+		if(StringUtils.isNotBlank(secret)) {
+			try {
+				logger.debug("secret={}",secret);
+				DesUtils desUtils = new DesUtils(secret);
+				account = desUtils.decrypt(username);
+				passwd = desUtils.decrypt(password);
+			} catch (Exception e) {
+				throw new I18nMessageException("10015", "密钥不对");
+			}
 		}
 		logger.info("username={},password={}",account,passwd);
 		ResponseMessage sm = smsGatewayService.checkVfCode(smsCstid, account, vfcode);

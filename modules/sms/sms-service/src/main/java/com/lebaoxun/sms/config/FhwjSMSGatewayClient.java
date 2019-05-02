@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lebaoxun.commons.utils.Assert;
 import com.lebaoxun.commons.utils.MD5;
-import com.lebaoxun.sms.core.RedisKeyConstant;
 import com.lebaoxun.sms.core.SMSGateway;
 import com.lebaoxun.sms.core.SMSGatewayClient;
 import com.lebaoxun.sms.service.ISMSClientService;
 import com.lebaoxun.sms.service.ISMSTemplateService;
-import com.lebaoxun.soa.core.redis.IRedisHash;
 /**
  * 容联 云通信 短信发送
  * @author caiqianyi 2017.9.25
@@ -38,7 +36,7 @@ public class FhwjSMSGatewayClient extends SMSGatewayClient {
 	public boolean doSend(String mobile, String template_id,
 			String cst_id,String ...datas) {
 		
-		String passwd = MD5.md5("ohv2ycjy");
+		String passwd = MD5.md5("Steven260809");
 		String seed = DateFormatUtils.format(new Date(), "yyyyMMddHHmmSS");
 		String key = MD5.md5(passwd+seed);
 		//烽火万家短信网关
