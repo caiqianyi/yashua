@@ -73,6 +73,9 @@ public class LoginController extends BaseController{
 	@Resource
 	private ISMSGatewayService smsGatewayService;
 	
+	@Resource
+	private DesUtils openidDes;
+	
 	@Value("${sms.cst_id}")
 	private String smsCstid;
 
@@ -218,6 +221,13 @@ public class LoginController extends BaseController{
 				isCorrectPwd = !PwdUtil.isCorrectPwd(passwd);
 			}
 			openid = oauth2SecuritySubject.getOpenid(account);
+		}else {
+			try {
+				String account = openidDes.decrypt(openid);
+				a = userService.findByAccount(account);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		Oauth2 oauth2 = oauth2SecuritySubject.refreshToken(request,openid);
 		Oauth2AccessToken.setToken(oauth2.getAssess_token());
