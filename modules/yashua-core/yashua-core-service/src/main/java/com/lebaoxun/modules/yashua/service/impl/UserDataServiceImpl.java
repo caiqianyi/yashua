@@ -133,25 +133,27 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 		if(kouqi==null || kouqi<=0 || kouqi>=10)
 			throw new I18nMessageException("-1","口气数据无效");
 		try {
-			Calendar calendar = Calendar.getInstance();
 			UserDataEntity userDataEntity = new UserDataEntity();
 			userDataEntity.setAdddate(new Date());
 			userDataEntity.setFenshu(kouqi);
 			userDataEntity.setUserid(user_id);
-			List<UserDataEntity> list=null;
-			Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
-			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-			if(hour>=6 && hour<=10){//第一次口气测量
-				list = userDataDao.lookList(newDate, user_id,1L);
-				if(list.size()>0) return;
-				userDataEntity.setBiaoshi(1L);
-				userDataDao.insert(userDataEntity);
-			}
-			else if(hour>=6 && hour<=10){//第二次口气测量
-				list = userDataDao.lookList(newDate, user_id,2L);
-				if(list.size()>0) return;
-				userDataEntity.setBiaoshi(2L);
-				userDataDao.insert(userDataEntity);
+			Date date = new Date();
+			Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(date));
+			String str6 = new SimpleDateFormat("yyyy-MM-dd 06:00:00").format(date);
+			String str10 = new SimpleDateFormat("yyyy-MM-dd 10:00:00").format(date);
+		    Date date6 =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(str6);
+		    Date date10 =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(str10);
+			if(date.compareTo(date6)>0 && date.compareTo(date10)<0){
+				List<UserDataEntity> list6 = userDataDao.lookList(newDate, user_id,1L);
+				List<UserDataEntity> list10 = userDataDao.lookList(newDate, user_id,2L);
+				if(list6.size()<=0){
+					userDataEntity.setBiaoshi(1L);
+					userDataDao.insert(userDataEntity);
+				}
+				else if(list10.size()<=0){
+					userDataEntity.setBiaoshi(2L);
+					userDataDao.insert(userDataEntity);
+				}
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
