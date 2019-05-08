@@ -30,6 +30,7 @@
 	<div class="inBox bg-new fl">
     	<h3>牙刷电量</h3>
        <p><i id="dianliang">-</i>%</p>
+       <img class="Charging" src="/statics/new_images/chongdian.png" alt=""  style="display:none" id="chongdianbiaoshi"/>
     </div>
     <div class="inBox bg-new fr">
     	<h3>刷头剩余寿命</h3>
@@ -40,7 +41,6 @@
 
 <!--检测-->
 <div class="kedu">
-	<h3>口气分析</h3>
 	<div class="kouqi">
 		<div class="fl kouqikedu font-20">
 			<ul>
@@ -54,14 +54,16 @@
 				<dd>6</dd>
 				<dd>10</dd>
 			</dl>
-			<em class="green" style="width:4%;" id="kouqijc"><b><i id='kouqisz'>0</i>分</b></em>
+			<em class="green" style="width:4%;" id="kouqijc"><b><i id='kouqisz'></i>分</b></em>
 		</div>
-		<input type="button"  onclick="kaishiceliang(0);">
+		<input type="button"  onclick="zhunbeiceliang(1);" id="celiangkq">
+		<span style="display:none"  id="jishikq"></span>
+		<h3>口气</h3>
 	</div>
 
 	<div class="cl"></div>
 
-	<h3>酒精浓度</h3>
+	
 	<div class="kouqi">
 		<div class="fl kouqikedu font-20 jiujing">
 			<ul>
@@ -75,9 +77,11 @@
 				<dd>80</dd>
 				<dd>100</dd>
 			</dl>
-			<em class="green" style="width:4%;" id="jiujingjc"><b><i id='jiujingsz'>0</i>mg/100ml</b></em>
+			<em class="green" style="width:4%;" id="jiujingjc"><b><i id='jiujingsz'></i>mg/100ml</b></em>
 		</div>
-		<input class="jiu" type="button"  onclick="kaishiceliang(1);">
+		<input class="jiu" type="button"  onclick="zhunbeiceliang(2);" id="celiangjj">
+		<span class="jiu" style="display:none"  id="jishijj"></span>
+		<h3>酒精</h3>
 	</div>
 </div>
 <!--检测-->
@@ -91,7 +95,14 @@
 	</article> 
     <input type="button" value="开始检测"/>
 </div> -->
-
+<!--弹窗-->
+<div class="pop-kouqi font-36" style="text-align:center; display:none" id="Mydialog">
+ <div class="txt">
+  <p><span id="tishiyu"></span></p >
+  <!--<p><span>待设备红灯长亮时吹气<br/>并等待结果上传！</span></p >-->
+  <input class="OK" type="button" value="确定" id="closetishi"/>
+ </div>
+</div>
 <!--公用底部-->
 <div class="bot-nav font-26">
 	<ul>
@@ -121,9 +132,9 @@
         <li onclick="kaishiceliang(1);"  class="last on">酒精</li>
     </ul>
 </div> -->
- <div class="weui_cell_bd weui_cell_primary">
+<!--  <div class="weui_cell_bd weui_cell_primary">
                     <textarea id="logtext" class="weui_textarea" placeholder="日志" rows="5"></textarea>
-                </div> 
+                </div>  -->
 <div id="myparams" style="display: none">
  <span id="timestamp">1545048575</span>
  <span id="nonceStr">77b9f3dc71294e86</span>
@@ -140,7 +151,7 @@
 function checkelectricity(){
 	var dianliang = $("#dianliang").html();
 	if(dianliang=="-"){
-		alert("设备未连接");
+		showdialog("设备未连接!",0);
 	}
 	else
 	 window.location.href="yashuashezhi.html";
@@ -163,6 +174,11 @@ $('.inBox span').click(function(){
 		$('#clchuangkou').show();
 		$('#clchuangkou1').show();
 		$('#clchuangkou2').show();
+	});
+	$('#jcchuangkou2').click(function(){
+		$('#jcchuangkou').hide();
+		$('#jcchuangkou1').hide();
+		$('#jcchuangkou2').hide();
 	});
 
 	 var dianliang, shouming,shuayaci, jiujing, kouqi; 
@@ -378,7 +394,7 @@ $('.inBox span').click(function(){
 	    WeixinJSBridge.on('onReceiveDataFromWXDevice', function(argv) {
 	      var sss=argv.base64Data;
 	      base64_to_bytes_array(sss);
-	    mlog("接收的原始数据-->"+sss);
+	   // mlog("接收的原始数据-->"+sss);
 	        //var Bytes=base64_to_bytes_array(argv.base64Data);
 	        //alert("硬件设备返回的base64数据"+argv.base64Data);
 	      //  mlog("接收的数据-->"+pHex(base64_to_bytes_array(argv.base64Data)));
@@ -424,12 +440,14 @@ $('.inBox span').click(function(){
 	/***************************************************************
 	 * 显示提示信息
 	***************************************************************/
-	function showdialog(DialogTitle,DialogContent){
+	function showdialog(DialogContent,biaoshi){
 	   var $dialog = $("#Mydialog");
-	   $dialog.find("#dialogTitle").html(DialogTitle);
-	   $dialog.find("#dialogContent").html(DialogContent);
+	   $dialog.find("#tishiyu").html(DialogContent);
 	   $dialog.show();
-	   $dialog.find(".weui_btn_dialog").one("click", function(){
+	   $dialog.find("#closetishi").one("click", function(){
+		   if(biaoshi>0){
+			   kaishiceliang(biaoshi);
+		   }
 	        $dialog.hide();
 	   });
 	}
@@ -482,19 +500,31 @@ $('.inBox span').click(function(){
 	         if(x===0){$("#lbInfo").html('x.完成')}
 	         else {$("#lbInfo").html('x.失败')}; 
 	    }
+        function zhunbeiceliang(biaoshi){
+       	 var dianliang = $("#dianliang").html();
+       	if(dianliang=="-"){
+       		showdialog("设备未连接!",0);
+       		return;
+       	}
+       	if(biaoshi==1){
+       		$('#kouqisz').html("");
+    		$('#kouqijc').attr('class','green');
+    		document.getElementById("kouqijc").style.width= "4%"; 
+       	}else if(biaoshi==2){
+       		$('#jiujingsz').html("");
+    		$('#jiujingjc').attr('class','green');
+    		document.getElementById("jiujingjc").style.width= "4%";
+       	}
+	    showdialog("待设备红灯长亮时吹气，并等待结果上传！",biaoshi);
+				
+   }
 	         function kaishiceliang(biaoshi){
-	        	 var dianliang = $("#dianliang").html();
-	        	if(dianliang=="-"){
-	        		alert("设备未连接");
-	        		return;
-	        	}
-	        	 
 	           var Bytes=new Array();
 	            Bytes[0]=0x31;
 	         
 	            Bytes[1]=0x00;
 	        
-	           if(biaoshi==0){
+	           if(biaoshi==1){
 	            Bytes[2]=0x01;
 	           }else{
 	               
@@ -505,11 +535,38 @@ $('.inBox span').click(function(){
 	            Bytes[4]=0x0a;
 	 	       $('.pop-kefu div').hide();
 		       $('.pop-kefu ul').hide();
-		       alert("待设备红灯长亮时吹气，并等待结果上传！");
-		       //setTimeout("kouqitttt();",5000);
-					
 	       var x=senddataBytes(Bytes,C_DEVICEID);
-
+ 	       if(biaoshi==1){
+ 	    	  var num = 60;
+ 	    		$("#jishikq").show();
+ 	    		$("#jishikq").text(num+'秒');
+ 				$("#celiangkq").hide(); 
+ 				timer = setInterval(function(){
+ 					num--;
+ 			 	    $("#jishikq").text(num+'秒');
+ 					if(num <= 0 ){
+ 				 	    $("#jishikq").hide();
+ 						$("#celiangkq").show();
+ 						clearInterval(timer);
+ 					}
+ 				},1000)	
+ 	       }else{
+ 	    	    var num1 = 60;
+ 	    		$("#jishijj").show();
+ 	    	    $("#jishijj").text(num1+'秒');
+				$("#celiangjj").hide();  
+				timer1 = setInterval(function(){
+					num1--;
+			 	    $("#jishijj").text(num1+'秒');
+					if(num1 <= 0 ){
+				 	    $("#jishijj").hide();
+						$("#celiangjj").show();  
+						clearInterval(timer1);
+					}
+				},1000)	
+ 	       }
+			
+			
 	         if(x===0){}
 	         else {}; 
 	    }
@@ -665,7 +722,7 @@ $('.inBox span').click(function(){
 	}
 	function CharToHex(str) {
 	    var out, i, h,j;
-	    var toubiaozhi,kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei;
+	    var toubiaozhi,kxieyi,jxieyi,dxieyi, kgaowei, kdiwei, jgaowei, jdiwei, dgaowei, sdiwei,sanwei,stgaowei,stdiwei,chongdian;
 	    out = "";
 	    i = 0;
 	    while(i < str.length) 
@@ -674,16 +731,19 @@ $('.inBox span').click(function(){
 	        if(h=='aa'){
 	        	toubiaozhi='aa';
 	        }
-	        if(h==54){
-	          kxieyi=54;
-	          j=i;
-	        }else if(h==55){
-	          jxieyi=55;
-	          j=i;
-	        }else if(h==51){
-	          dxieyi=51; 
-	          j=i;
+	        if(i==2){
+	        	 if(h==54){
+	   	          kxieyi=54;
+	   	          j=i;
+	   	        }else if(h==55){
+	   	          jxieyi=55;
+	   	          j=i;
+	   	        }else if(h==51){
+	   	          dxieyi=51; 
+	   	          j=i;
+	   	        }
 	        }
+	       
 	        if(kxieyi==54 && i-j==1){
 	          kgaowei=h;
 	        }
@@ -710,6 +770,9 @@ $('.inBox span').click(function(){
 		        }
 	        if(dxieyi==51 && i-j==5){
 		          stdiwei=h;
+		        }
+	        if(dxieyi==51 && i-j==6){
+		          chongdian=h;
 		        }
 	       
 	        if(h.length==1){
@@ -760,8 +823,14 @@ $('.inBox span').click(function(){
 	      }
 	   
 	    $("#dianliang").html(dianliang);
-	    $("#shouming").html(shouming);
+	    $("#shouming").html(180-Number(shouming));
 	    $("#shuayaci").html(shuayaci);
+	    if(chongdian==0){
+	    	 $("#chongdianbiaoshi").hide();
+	    }else if(chongdian==1){
+	    	 $("#chongdianbiaoshi").show();
+	    }
+	   
 	   // $("#kouqi").html(kouqi);
 	   // $("#jiujing").html(jiujing);
 	    toubiaozhi='';
@@ -783,7 +852,7 @@ $('.inBox span').click(function(){
 		    }
 		});
 	  }
-	 mlog("收到的包值："+out);
+	 //mlog("收到的包值："+out);
 	    return out;
 	}
 

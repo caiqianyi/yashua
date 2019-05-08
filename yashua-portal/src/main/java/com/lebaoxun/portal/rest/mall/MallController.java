@@ -1,5 +1,6 @@
 package com.lebaoxun.portal.rest.mall;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.mall.entity.MallProductCommentEntity;
 import com.lebaoxun.modules.mall.entity.MallProductEntity;
@@ -38,13 +40,38 @@ public class MallController extends BaseController {
 	private IMallProductCommentService mallProductCommentService;
 	
 	@RequestMapping("/mall/list.html")
-	public String list(Map<String, Object> map) {
+	String list(Map<String, Object> map) {
 		map.put("categorys", mallCategoryService.release());
 		return "/mall/list";
 	}
+	
+	@RequestMapping("/mall/categorys")
+	@ResponseBody
+	ResponseMessage categorys() {
+		return new ResponseMessage(mallCategoryService.release());
+	}
 
+	@RequestMapping("/mall/info/{id}")
+	@ResponseBody
+	ResponseMessage info(@PathVariable("id") Long id) {
+		MallProductEntity product = mallProductService.findShowProdcutInfo(id);
+		if (product == null) {
+			throw new I18nMessageException("-1","找不到相对应的产品！");
+		}
+		List<MallProductSpecificationEntity> specs = mallProductSpecification
+				.queryByProductId(id);
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("product", product);
+		map.put("specs", specs);
+		MallProductCommentEntity lastComment = mallProductCommentService
+				.selectLastByProduct(id);
+		logger.debug("lastComment={}",new Gson().toJson(lastComment));
+		map.put("lastComment", lastComment);
+		return new ResponseMessage(map);
+	}
+	
 	@RequestMapping("/mall/info/{id}.html")
-	public String info(@PathVariable("id") Long id, Map<String, Object> map) {
+	String info(@PathVariable("id") Long id, Map<String, Object> map) {
 		MallProductEntity product = mallProductService.findShowProdcutInfo(id);
 		if (product == null) {
 			return "redirect:/404.html";
@@ -61,7 +88,7 @@ public class MallController extends BaseController {
 	}
 	
 	@RequestMapping("/mall/comment/{id}.html")
-	public String comment(@PathVariable("id") Long id, Map<String, Object> map) {
+	String comment(@PathVariable("id") Long id, Map<String, Object> map) {
 		MallProductEntity product = mallProductService.findShowProdcutInfo(id);
 		if (product == null) {
 			return "redirect:/404.html";

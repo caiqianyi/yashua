@@ -436,10 +436,10 @@ background-size:.19rem .37rem;}
 .shuju .hd{background:#2a292e;line-height:1.2rem;margin-bottom:.35rem;overflow: hidden;}
 .shuju .hd li{float: left;width: 32.33%;font-size:.44rem;border-bottom:.04rem solid #4E4D52;margin:0 0.5%;}
 .shuju .hd li.on{color:#63ED98;border-color: #63ED98;}
-.chart-container{padding:0 .25rem;position: relative;}
+.chart-container {padding: .3rem .25rem 0;position: relative;}
 .chart-container .mark{position: absolute;top:.3rem;}
-.chart-container .time{position: absolute;bottom:.3rem;right:.3rem;}
-.chart-container .biaoti{position: absolute;top:.4rem;right:.2rem;text-align: center;width:2rem;}
+.chart-container .time{position: absolute;bottom: 0rem;right: .3rem;}
+.chart-container .biaoti{ position: absolute;top: 0rem;right: .2rem;text-align: center;width: 2rem;}
 .chart-container .biaoti em{display:inline-block;margin-left:.7rem;position:relative;}
 .chart-container .biaoti em::after{content: "";position:absolute;left:-.4rem;top:.13rem;width:.25rem;border:.03rem solid #63ED98;}
 .chart-container .biaoti em.wan::after{border-color:#fedf50;}
@@ -647,8 +647,8 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .qian-ok p{margin-left:1.5rem;}
 
 /*------------------------------首页刻度------------------------------*/
-.kedu{padding:0 .25rem;}
-.kedu h3{font-size:.36rem;color:#63ed98;text-align: center;padding:.2rem 0;margin-bottom:.5rem;}
+.kedu{padding:0 .25rem;margin-top:1.2rem;}
+.kedu h3 {font-size: .3rem;color: #63ed98;text-align: right;padding: .8rem .18rem 0;margin-bottom: 1.2rem;}
 .kedu .kouqi{}
 .kouqikedu{width: 5.65rem;background:url(../new_images/kedutiao-kouqi.png) no-repeat bottom center;-webkit-background-size:100% .22rem;background-size:100% .22rem;position: relative;height:.3rem;margin:.1rem 0 .8rem .1rem;}
 .kouqikedu ul{position: absolute;width: 100%;top:-.25rem;}
@@ -660,6 +660,8 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .kouqikedu dl dd:nth-child(4){margin-left:34%;}
 .kedu .kouqi input{float: right;width: 1rem;height: .6rem;background:url(../new_images/kouqi.png) no-repeat center; -webkit-background-size: contain;background-size: contain;box-shadow:0.02rem 0.1rem 0.15rem #000;transition:all .2s;}
 .kedu .kouqi input.jiu{background-image:url(../new_images/jiujing.png);}
+.kedu .kouqi span{width:1rem;height:.6rem;line-height:.6rem;float: right;box-shadow:0.02rem 0.1rem 0.15rem #000;transition:all .2s;font-size:.24rem;text-align: center;border:1px solid #63ed98;color: #63ed98;}
+.kedu .kouqi span.jiu{}
 .kedu .kouqi input:active{transform: scale(.9);}
 .kouqikedu em{height:1.35rem;font-size:.18rem;color:#63ed98;text-align:right;background:url(../new_images/kedutiao-white.png) no-repeat right bottom;-webkit-background-size:.22rem .88rem;background-size:.22rem .88rem;position:absolute;top:-1.06rem;left:-.1rem;}
 .kouqikedu em b{width:.62rem;font-weight:normal;position:absolute;top:0;right:-.15rem;text-align:center;}
@@ -672,8 +674,13 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .jiujing dl dd:nth-child(2){margin-left:15%;}
 .jiujing dl dd:nth-child(3){margin-left:52%;}
 .jiujing dl dd:nth-child(4){margin-left:12%;}
+/*0404弹框*/
+.pop-kouqi .txt{width:6.5rem;height: 3.2rem;background:#fff;border-radius:.15rem;position:absolute; margin:auto;top:0;left:0;bottom:0;right:0;overflow: hidden;}
+.pop-kouqi .txt p{height:2rem;line-height:2rem;color:#000;border-bottom:1px solid #c8cccf;}
+.pop-kouqi .txt p span{display: inline-block;line-height:normal;vertical-align: middle;}
+.pop-kouqi .txt .OK{height: 1.2rem;line-height:1.2rem;font-size:.38rem;width: 100%;background:#63ed98;color:#fff;letter-spacing:.1rem;}
 
-
+.sy-syu .inBox .Charging{position:absolute;left:.33rem;top:1.05rem;width: .21rem;}
 
 
 

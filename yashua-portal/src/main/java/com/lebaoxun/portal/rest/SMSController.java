@@ -35,10 +35,13 @@ public class SMSController extends BaseController{
 
 	@RequestMapping(value = "/sms/send")
 	ResponseMessage sendSMS(@RequestParam("mobile") String mobile,
-			@RequestParam("token") String token){
-		String secret = (String) request.getSession().getAttribute("app.secret");
-		if(StringUtils.isBlank(secret) || !token.equals(secret)){
-			throw new I18nMessageException("10015", "密钥不对");
+			@RequestParam(value="token",required=false) String token,
+			String app){
+		if(StringUtils.isBlank(app)) {
+			String secret = (String) request.getSession().getAttribute("app.secret");
+			if(StringUtils.isBlank(secret) || !token.equals(secret)){
+				throw new I18nMessageException("10015", "密钥不对");
+			}
 		}
 		
 		if(!ValidatorUtils.checkTel(mobile)){

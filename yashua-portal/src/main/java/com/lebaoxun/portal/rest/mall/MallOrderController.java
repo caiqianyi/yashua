@@ -35,8 +35,7 @@ public class MallOrderController extends BaseController {
 
 	@RequestMapping("/mall/order/create")
 	ResponseMessage create(@RequestBody List<MallCartEntity> products) {
-		return mallOrderService.create(oauth2SecuritySubject.getCurrentUser(),
-				5,products);
+		return mallOrderService.create(oauth2SecuritySubject.getCurrentUser(), 5, products);
 	}
 
 	@RequestMapping("/mall/order/delete")
@@ -75,6 +74,22 @@ public class MallOrderController extends BaseController {
 		return mallOrderService.confirmOrder(
 				userId, orderNo, invoiceType, invoiceTitle, invoiceNo,
 				address, consignee, mobile, wxopenid, spbill_create_ip, fuid);
+	}
+	
+	@RequestMapping("/mall/order/confirmOrderForApp")
+	ResponseMessage confirmOrderForApp(@RequestParam("orderNo") String orderNo,
+			@RequestParam("invoiceType") Integer invoiceType,
+			@RequestParam("invoiceTitle") String invoiceTitle,
+			@RequestParam(value="invoiceNo",required=false) String invoiceNo,
+			@RequestParam("address") String address,
+			@RequestParam("consignee") String consignee,
+			@RequestParam("mobile") String mobile,
+			@RequestParam(name="fuid",required=false) Long fuid) {
+		Long userId = oauth2SecuritySubject.getCurrentUser();
+		String spbill_create_ip = CommonUtil.getIp2(request);
+		return mallOrderService.confirmOrderForApp(
+				userId, orderNo, invoiceType, invoiceTitle, invoiceNo,
+				address, consignee, mobile, spbill_create_ip, fuid);
 	}
 
 	@RequestMapping("/mall/order/scoreExchange")

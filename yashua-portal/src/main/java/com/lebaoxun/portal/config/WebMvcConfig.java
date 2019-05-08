@@ -40,6 +40,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	        .excludePathPatterns("/register/**")
 	        .excludePathPatterns("/sms/**")
 	        .excludePathPatterns("/news/modify/clicks")
+	        .excludePathPatterns("/news/list")
+	        .excludePathPatterns("/news/info/**")
 	        .excludePathPatterns("/news/replys")
 	        .excludePathPatterns("/mall/product/list")//商品列表
 	        .excludePathPatterns("/mall/product/score/list")//积分商城商品列表

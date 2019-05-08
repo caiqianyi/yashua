@@ -153,7 +153,7 @@ public class MallOrderEntity implements Serializable {
 		return userId;
 	}
 	/**
-	 * 设置：支付方式 0=积分兑换，1=在线支付
+	 * 设置：支付方式 0=积分兑换，1=在线支付，2=APP在线支付
 	 */
 	public void setPayType(Integer payType) {
 		this.payType = payType;

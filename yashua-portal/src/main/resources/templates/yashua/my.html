@@ -51,7 +51,7 @@
 </div>
      <div class="tianjia font-32">   		
     	<ul>    	
-    		<li id="scanQRCode" style="position: absolute;left: 0;right: 0;bottom: 0;top: 0;margin: auto;">扫二维码添加</li>     		  		
+    		<li id="scanQRCode" style="margin-left: 28%;">扫二维码添加</li>     		  		
     		<!-- <li id="addYashuaBtn">手动添加</li> -->
     	</ul>
     </div> 
@@ -147,14 +147,14 @@ $(function(){
 	    		for(var i=0;i<datas.list.length;i++){
 	    			var device = datas.list[i];
 	    			html += '<div class="binding">';
-	    			html += '	<img src="'+device.icon+'" alt=""/>';
+	    			html += '	<img src="http://moya.phenointec.com/upload/admin/1/1552981438386.png" alt=""/>';
 	    			html += '	<div class="txt">';
     				html += '		<p class="who">'+device.name+'</p>'
     				html += '		<p class="code">'+device.identity+'</p>';
     				if(device.defaultDevice==1)
-    					html += '		<p class="join on" onclick="connect(this)">连接设备</p>';
+    					html += '		<p class="font-30">当前连接设备</p>';
     				if(device.defaultDevice==0)
-    					html += '		<p class="join" onclick="connect(this)">连接设备</p>';
+    					html += '		<p></p>';
     				html += '	</div>';
    					html += '	<em class="unbindBtn" data="'+device.identity+'">删除</em>';
  					html += '</div>';

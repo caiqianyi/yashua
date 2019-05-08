@@ -73,6 +73,9 @@ public class LoginController extends BaseController{
 	@Resource
 	private ISMSGatewayService smsGatewayService;
 	
+	@Resource
+	private DesUtils openidDes;
+	
 	@Value("${sms.cst_id}")
 	private String smsCstid;
 
@@ -181,6 +184,8 @@ public class LoginController extends BaseController{
 			String account = username,passwd = null;
 			if("wechatOA".equals(platform)){
 				a = userService.findByAccount(account);
+			}else if("app".equals(platform)){
+				a = userService.login(account, passwd);
 			}else{
 				String secret = (String) request.getSession().getAttribute("app.secret");
 				if(StringUtils.isBlank(secret)){
@@ -216,6 +221,13 @@ public class LoginController extends BaseController{
 				isCorrectPwd = !PwdUtil.isCorrectPwd(passwd);
 			}
 			openid = oauth2SecuritySubject.getOpenid(account);
+		}else {
+			try {
+				String account = openidDes.decrypt(openid);
+				a = userService.findByAccount(account);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		Oauth2 oauth2 = oauth2SecuritySubject.refreshToken(request,openid);
 		Oauth2AccessToken.setToken(oauth2.getAssess_token());
@@ -319,19 +331,22 @@ public class LoginController extends BaseController{
 	ResponseMessage register(@RequestParam("username") String username,
 			@RequestParam("password") String password,
 			@RequestParam("vfcode") String vfcode,
-			@RequestParam(name="wxopenid",required = false) String wxopenid){
+			@RequestParam(name="wxopenid",required = false) String wxopenid,
+			@RequestParam(name="verify",required = false) String verify){
 		String account = username,passwd = null;
 		String secret = (String) request.getSession().getAttribute("app.secret");
-		if(StringUtils.isBlank(secret)){
+		if(StringUtils.isBlank(verify) && StringUtils.isBlank(secret)){
 			throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");
 		}
-		try {
-			logger.debug("secret={}",secret);
-			DesUtils desUtils = new DesUtils(secret);
-			account = desUtils.decrypt(username);
-			passwd = desUtils.decrypt(password);
-		} catch (Exception e) {
-			throw new I18nMessageException("10015", "密钥不对");
+		if(StringUtils.isNotBlank(secret)) {
+			try {
+				logger.debug("secret={}",secret);
+				DesUtils desUtils = new DesUtils(secret);
+				account = desUtils.decrypt(username);
+				passwd = desUtils.decrypt(password);
+			} catch (Exception e) {
+				throw new I18nMessageException("10015", "密钥不对");
+			}
 		}
 		logger.info("username={},password={}",account,passwd);
 		ResponseMessage sm = smsGatewayService.checkVfCode(smsCstid, account, vfcode);
