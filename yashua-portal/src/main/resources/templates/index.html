@@ -218,6 +218,33 @@ $('.inBox span').click(function(){
 		} */
 
 	 jQuery(document).ready(function(){
+ 	    	  var cnum = 60;
+ 	    		$("#jishikq").show();
+ 	    		$("#jishikq").text(cnum+'秒');
+ 				$("#celiangkq").hide(); 
+ 				timer = setInterval(function(){
+ 					cnum--;
+ 			 	    $("#jishikq").text(cnum+'秒');
+ 					if(cnum <= 0 ){
+ 				 	    $("#jishikq").hide();
+ 						$("#celiangkq").show();
+ 						clearInterval(timer);
+ 					}
+ 				},1000)	
+ 	    	    var cnum1 = 60;
+ 	    		$("#jishijj").show();
+ 	    	    $("#jishijj").text(cnum1+'秒');
+				$("#celiangjj").hide();  
+				timer1 = setInterval(function(){
+					cnum1--;
+			 	    $("#jishijj").text(cnum1+'秒');
+					if(cnum1 <= 0 ){
+				 	    $("#jishijj").hide();
+						$("#celiangjj").show();  
+						clearInterval(timer1);
+					}
+				},1000)	
+		 
 		 $.ajax({
 				type: "GET",
 			    url: "/account/user/info",
