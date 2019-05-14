@@ -137,22 +137,35 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 			userDataEntity.setAdddate(new Date());
 			userDataEntity.setFenshu(kouqi);
 			userDataEntity.setUserid(user_id);
-			Date date = new Date();
+		
+			Calendar calendar=Calendar.getInstance();
+			Date date = calendar.getTime();
 			Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(date));
-			String str6 = new SimpleDateFormat("yyyy-MM-dd 06:00:00").format(date);
-			String str10 = new SimpleDateFormat("yyyy-MM-dd 10:00:00").format(date);
-		    Date date6 =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(str6);
-		    Date date10 =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(str10);
-			if(date.compareTo(date6)>0 && date.compareTo(date10)<0){
+			calendar.set(Calendar.HOUR_OF_DAY,0);
+	        calendar.set(Calendar.MINUTE,0);
+	        calendar.set(Calendar.SECOND,0);
+	        Date date0 = calendar.getTime();
+	        calendar.add(Calendar.HOUR_OF_DAY,12);
+	        Date date12 = calendar.getTime();
+	        calendar.add(Calendar.HOUR_OF_DAY,12);
+	        Date date24 = calendar.getTime();
+			
+		    if(date.compareTo(date0)>=0 && date.compareTo(date12)<0){
 				List<UserDataEntity> list6 = userDataDao.lookList(newDate, user_id,1L);
-				List<UserDataEntity> list10 = userDataDao.lookList(newDate, user_id,2L);
 				if(list6.size()<=0){
 					userDataEntity.setBiaoshi(1L);
 					userDataDao.insert(userDataEntity);
 				}
-				else if(list10.size()<=0){
-					userDataEntity.setBiaoshi(2L);
+			}
+		    if(date.compareTo(date12)>=0 && date.compareTo(date24)<0){
+				List<UserDataEntity> list10 = userDataDao.lookList(newDate, user_id,2L);
+				userDataEntity.setBiaoshi(2L);
+				if(list10.size()<=0){
 					userDataDao.insert(userDataEntity);
+				}
+				else{
+					userDataEntity.setId(list10.get(0).getId());
+					userDataDao.updateById(userDataEntity);
 				}
 			}
 		} catch (ParseException e) {
