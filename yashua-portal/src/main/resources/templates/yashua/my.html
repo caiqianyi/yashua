@@ -139,7 +139,7 @@ $(function(){
 	$.ajax({
 		type: "GET",
 	    url: "/yashua/device/mylist",
-	    success: function(r){
+	    success: function(r){console.info(r);
 	    	l1.hide();
 	    	if(r.errcode == 0){
 	    		var html = "";
