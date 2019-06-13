@@ -103,6 +103,12 @@
   <input class="OK" type="button" value="确定" id="closetishi"/>
  </div>
 </div>
+<div class="pop-kouqi1 font-36" style="text-align:center; display:none" id="Mydialog1">
+ <div class="txt">
+  <p><span id="tishiyu">请吹气！</span></p >
+  <!--<p><span>待设备红灯长亮时吹气<br/>并等待结果上传！</span></p >-->
+ </div>
+</div>
 <!--公用底部-->
 <div class="bot-nav font-26">
 	<ul>
@@ -218,7 +224,7 @@ $('.inBox span').click(function(){
 		} */
 
 	 jQuery(document).ready(function(){
- 	    	  var cnum = 60;
+/*  	    	  var cnum = 60;
  	    		$("#jishikq").show();
  	    		$("#jishikq").text(cnum+'秒');
  				$("#celiangkq").hide(); 
@@ -243,9 +249,9 @@ $('.inBox span').click(function(){
 						$("#celiangjj").show();  
 						clearInterval(timer1);
 					}
-				},1000)	
+				},1000)	 */
 		 
-		 $.ajax({
+		  $.ajax({
 				type: "GET",
 			    url: "/account/user/info",
 			    success: function(r){
@@ -570,6 +576,12 @@ $('.inBox span').click(function(){
  				$("#celiangkq").hide(); 
  				timer = setInterval(function(){
  					num--;
+ 					if(num==41){
+ 						 $("#Mydialog1").show();
+ 					}
+ 					if(num==38){
+ 					    $("#Mydialog1").hide();
+ 					}
  			 	    $("#jishikq").text(num+'秒');
  					if(num <= 0 ){
  				 	    $("#jishikq").hide();
@@ -584,6 +596,12 @@ $('.inBox span').click(function(){
 				$("#celiangjj").hide();  
 				timer1 = setInterval(function(){
 					num1--;
+					if(num1==41){
+						 $("#Mydialog1").show();
+ 					}
+ 					if(num1==38){
+ 					    $("#Mydialog1").hide();
+ 					}
 			 	    $("#jishijj").text(num1+'秒');
 					if(num1 <= 0 ){
 				 	    $("#jishijj").hide();
