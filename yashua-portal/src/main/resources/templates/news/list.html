@@ -16,7 +16,11 @@
 			</h3>
 			 <div class="txt font-28">
 		    	<#if news.picItems??>
-		    		<img src="${news.picItems}" alt=""/>
+		    		<#list news.picItems?split(",") as pic>
+				         <#if pic_index == 0>
+				    		<img src="${pic}" alt="${pic_index}"/>
+				         </#if>
+				     </#list>
 		    	</#if>
 				<#if news.content?length gt 60>
 					<p>${news.content?substring(0,60)}...<a href="/news/info/${news.id}.html">阅读全文>></a></p>

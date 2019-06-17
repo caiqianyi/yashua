@@ -103,9 +103,8 @@ var vm = new Vue({
 				pic_items += $(this).attr("src")+",";
 			})
 			if(pic_items.length > 0){
-				pic_items.substring(0,pic_items.length-1);
+				pic_items = pic_items.substring(0,pic_items.length-1);
 			}
-			
 			vm.news.content = content;
 			vm.news.picItems = pic_items;
 			$.ajax({

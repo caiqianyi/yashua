@@ -145,7 +145,18 @@ public class NewsController {
     @RequestMapping("/news/news/update")
     @RedisLock(value="news:news:update:lock:#arg0")
     ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody NewsEntity news){
-		newsService.updateById(news);
+    	NewsEntity n = newsService.selectById(news.getId());
+    	n.setAuthor(news.getAuthor());
+    	n.setCheckStatus(news.getCheckStatus());
+    	n.setClassId(news.getClassId());
+    	n.setClicks(news.getClicks());
+    	n.setContent(news.getContent());
+    	n.setIsTop(news.getIsTop());
+    	n.setLastReplyId(news.getLastReplyId());
+    	n.setPicItems(news.getPicItems());
+    	n.setPraises(news.getPraises());
+    	n.setTitle(news.getTitle());
+		newsService.updateAllColumnById(n);
         return ResponseMessage.ok();
     }
     
