@@ -54,7 +54,8 @@ public class UploadLocalController {
 				return new ResponseMessage(request);
 			}
 		}catch(Exception e){
-			logger.error("uploadImg|error={}",e.fillInStackTrace());
+			e.fillInStackTrace();
+			logger.error("uploadImg|error={}",e);
 			if(file != null){
             	localUploadService.deleteFile(file);
             }
