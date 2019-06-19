@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/new_header.html">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<title>我的报告</title>
+
+</head>
+<body>
+<div class="Top"><h3 onclick="javascript:window.location.href='/account.html'">我的报告</h3></div>
+
+<div class="baogao">
+	<dl>
+		<dt class="c-green font-36 center" id="kouqizhuanttai">状态不错哦！</dt>
+		<dd class="font-30"><span id="md">04.14~04.20</span>周报告</dd>
+	</dl>
+	
+	<div class="shebei-name font-28">
+		<p>设备 &nbsp;|<i class="c-green font-32" id="shebeiashebei">声波电动牙刷</i> <span id="shebeihaoashebeihao">YS-bdyg123</span></p>
+	</div>
+	
+	<ul class="font-24">
+		<li><i id="denglucishu">0</i>登录次数</li>
+		<li><i id="jibaiq"></i>击败全国用户</li>
+		<li><i id="huodejifen"></i>获得积分</li>
+	</ul>
+	
+	<div class="pjfen font-24">
+		<span>口气平均分<i class="c-green">6</i>分</span>
+		<p>您的口气有些浑浊，请注意口腔卫生</p>
+	</div>
+	
+	<div class="chart-container">
+		<canvas id="myChart" ></canvas>
+	</div>
+
+</div>
+
+</body>
+</html>
+<script>
+//获取上一周的口气记录
+var id=3;
+var l1 = $.loading().show();
+var arry1=[];//保存早上的口气数据
+var arry2=[];//保存晚上的口气数据
+var aver=0;//早上口气的总值
+var akouqicount=0;
+var a1=0;//早上口气平均值
+$.ajax({
+	type: "GET",
+    url: "/yashua/userdata/history/list/"+id,
+    success: function(r){
+    	l1.hide();
+    	if(r.errcode == 0){
+	   	 	var datas = r.data;
+		   	 for(var i=0;i<datas.list.length;i++){
+		   	 	var data = datas.list[i];
+		   	 	if(data.biaoshi==1){
+		   	 		arry1.push(datas.list[i].fenshu);
+		   	 		aver+=datas.list[i].fenshu;
+		   	 		akouqicount++;
+		   	 	}
+		   	 	else if(data.biaoshi==2)
+		   	 		arry2.push(datas.list[i].fenshu);
+		   	 }
+		   	if(akouqicount>0)
+		   		a1 = Math.ceil(aver/akouqicount);
+		   	$(".pjfen").find("i").text(a1);
+		   	if(arry1.length<7){
+	   	  		var arrylength1=arry1.length,arrylength2=arry2.length;
+		   	 	for(var j=0;j<7-arrylength1;j++){
+		   	 		arry1.push(0);
+		   	 	}
+    		   	for(var k=0;k<7-arrylength2;k++){
+		   	 		arry2.push(0);
+		   	 	}
+		   	 }
+		 }
+    	var kouqiinfo="",zhuangtai="";
+    	if(a1>=0 && a1<=3){
+    		kouqiinfo="您的口气状况良好，请继续保持";
+    		zhuangtai="状况良好"    
+    	}
+    	else if(a1>3 && a1<=6){
+    		kouqiinfo="您的口气有些浑浊，请注意口腔卫生";
+    		zhuangtai="口气浑浊"
+    	}
+    	else if(a1>6 && a1<=10){
+    		kouqiinfo="您的口气状况比较糟糕，如有必要请咨询口腔医生";
+    		zhuangtai=" 状况糟糕"
+    	}
+    	$(".pjfen").find("p").text(kouqiinfo);
+    	$("#kouqizhuanttai").text(zhuangtai);
+    	//折线图
+        var ctx = document.getElementById("myChart").getContext("2d");
+    	var ctx1 = document.getElementById("myChart");
+    	ctx1.height=260;
+    	
+    	Chart.defaults.global.defaultFontColor = 'white';
+    	Chart.defaults.global.defaultFontSize =14;
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["一","二","三","四","五","六","日"],
+                datasets: [{
+    				label: '早',
+    				fill: false,//是否填充背景色
+     				backgroundColor:'rgba(99, 237, 152,.4)',//背景色
+    				pointBorderColor:'#fff',//圆点边框
+                    pointBackgroundColor:'rgba(25, 149, 72)',//圆点背景色
+                    borderColor: 'rgba(99, 237, 152, 1)',//线条颜色
+                    data: arry1
+                },  {
+    				label: '晚',
+    				fill: false,
+     				backgroundColor:'rgba(254, 223, 80,.4)',
+    				pointBorderColor:'#fff',
+                    pointBackgroundColor:'rgba(254, 223, 80)',
+                    borderColor: 'rgba(254, 223, 80, 1)',
+                    data: arry2
+                }]
+            },
+    	    
+            // 配置文件
+            options: {
+                //标题设置
+                title:{
+                    display:true,
+                    text:'口气历史变化曲线',
+    				fontStyle:'normal',
+    				fontSize:16,
+                },
+                //动画
+                animation:{
+                  duration:true,
+                },
+                hover:{
+                    animationDuration:0,
+                },
+                responsiveAnimationDuration: 0,
+                //提示功能
+                tooltips:{
+                  enable:true
+                },
+                //设置x,y轴网格线显示,标题等
+                scales :{
+    				precision:5,	
+                    xAxes:[{
+    						
+                        //轴标题
+                        scaleLabel:{
+                            display:true,
+                            labelString:'',  
+                        },
+    					 
+                        //网格显示
+                        gridLines:{
+                            display:false,//是否显示网格线	
+                        },
+     						ticks: {
+    						fontColor: "#fff", // this here
+    						},
+    						 
+                    }],
+                    yAxes:[{
+    					
+                        scaleLabel:{
+                            display:true,
+    						padding:-10,
+                            labelString:'',
+    						fontColor:'#fff'
+                        },
+                        gridLines:{
+                            display:false,//是否显示网格线	
+                        },
+     					ticks: {
+    						
+    						min : 0,
+                   	    	max : 10,
+    						stepSize: 3,
+    						fontColor: "#fff", // this here
+    						},
+                    }],
+     
+                },
+     
+                //禁用赛尔曲线
+                elements: {
+                    line: {
+                        tension: 0,
+                    }
+                }
+     
+            }
+        });
+    	
+    }
+    }); 
+	
+	
+	//获取用户上一星期的登录次数
+	$.ajax({
+	type: "GET",
+    url: "/account/loginCount",
+    success: function(r){
+    	l1.hide();
+    	if(r.errcode == 0){
+    		$("#denglucishu").text(r.data);
+    	}
+    }
+	});
+   
+	//获取积分和我的击败次数
+	 l1.show();
+	$.ajax({
+		type:"GET",
+		url:"/sign/findWeekInfoByUserId",
+		success:function(r){
+			l1.hide();
+			 if(r.errcode == 0){
+				var score,jibai ;
+				if(r.data){
+					score = 2*r.data.countById;
+					count=r.data.count;
+					countDayu=r.data.countDayu;
+					jibai = count> 0 ? ((count-countDayu)/count).toFixed(2) * 100 : 0;
+				}else{
+					score = 0;
+					jibai = 0;
+				}
+				$("#huodejifen").text(score);
+				$("#jibaiq").text(jibai+"%");
+			} 
+		}
+	});
+	
+	//获取牙刷设备信息
+	$.ajax({
+		url:"/yashua/deviceByAccount",
+		success:function(r){
+			l1.hide();
+			if(r.errcode == 0){
+				if(r.data.name!=null)
+					$("#shebeiashebei").text(r.data.name)
+				if(r.data.identity!=null)
+					$("#shebeihaoashebeihao").text(r.data.identity)
+			}
+		}
+	});
+	
+	//开头的日期显示
+	
+	var now = new Date(); 
+	var nowTime = now.getTime() ; 
+	var day = now.getDay();
+	var oneDayTime = 24*60*60*1000 ; 
+	//显示周一
+	var MondayTime = (nowTime - (day-1)*oneDayTime)-7*oneDayTime ; 
+	//显示周日
+	var SundayTime =  (nowTime + (7-day)*oneDayTime)-7*oneDayTime ; 
+	var monDate = new Date(MondayTime);
+	var sunDate= new Date(SundayTime)
+	var monStr = monDate.format("MM.dd");
+	var sunStr= sunDate.format("MM.dd");
+	$("#md").text(monStr+"~"+sunStr);
+    </script>

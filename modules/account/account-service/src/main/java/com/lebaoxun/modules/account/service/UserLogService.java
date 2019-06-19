@@ -30,5 +30,7 @@ public interface UserLogService extends IService<UserLogEntity> {
     void zRange(Long userId,String logType,String time);
     
     Map<String,Object> zRank(Long userId,String logType,String time);
+
+	Map<String, Long> zRankWeek(Long userId, String logType);
 }
 

@@ -70,6 +70,14 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 		         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);  
 				 endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
 			} 
+			else if(id==3){//查询上一周的起止时间
+				 calendar = Calendar.getInstance();  
+				 calendar.add(Calendar.DATE, -1*7);
+				 calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+				 startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
+			     calendar.add(Calendar.DAY_OF_MONTH,6);
+			     endDate=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
+			}
 			else if(id==1){//查询一个月的起止时间
 				calendar = Calendar.getInstance();
 				calendar.set(Calendar.DATE, 1);

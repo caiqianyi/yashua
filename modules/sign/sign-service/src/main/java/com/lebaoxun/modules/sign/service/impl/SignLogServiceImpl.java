@@ -153,5 +153,4 @@ public class SignLogServiceImpl extends ServiceImpl<SignLogDao, SignLogEntity> i
 		// TODO Auto-generated method stub
 		return signUinfoDao.queryMonthSignLog(userId, time);
 	}
-
 }

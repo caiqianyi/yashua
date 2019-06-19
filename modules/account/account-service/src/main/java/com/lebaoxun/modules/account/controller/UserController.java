@@ -269,4 +269,13 @@ public class UserController {
 		userService.loginLog(userId, logType, adjunctInfo, descr);
 		return ResponseMessage.ok();
     }
+	
+	
+	/**
+	 * 获取上一周的登录次数
+	 */
+	@RequestMapping("/account/user/loginCount")
+	public long loginCount(@RequestParam("userId") Long userId){
+		return userService.loginCount(userId);
+	}
 }

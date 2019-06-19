@@ -1,6 +1,9 @@
 package com.lebaoxun.modules.account.service.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -395,6 +398,27 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 	
 	void insertLog(UserEntity user,UserLogAction logType,String descr){
 		insertLog(user, logType, 0, descr, null);
+	}
+
+	@Override
+	public long loginCount(Long userId) {
+		long count=0;
+		 try {
+		 Calendar calendar = Calendar.getInstance();
+		 calendar = Calendar.getInstance();  
+		 calendar.add(Calendar.DATE, -1*7);
+		 calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+		 Date startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
+		 calendar.add(Calendar.DAY_OF_MONTH,6);
+		 Date endDate= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
+		 count= userLogDao.loginCount(userId,startDate,endDate);
+		 System.out.println(startDate+"wdwdwd"+endDate+"wewewe"+userId);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   
+		return count;
 	}
 
 }

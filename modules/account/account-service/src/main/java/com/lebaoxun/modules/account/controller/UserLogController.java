@@ -1,6 +1,7 @@
 package com.lebaoxun.modules.account.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,5 +82,15 @@ public class UserLogController {
     		@RequestParam(value="time") String time){
     	return ResponseMessage.ok(userLogService.zRank(userId, logType, time));
     }
-
+    
+    /**
+     * 本周击败次数和所获积分
+     */
+    @RequestMapping("/account/findWeekInfoByUserId")
+	Map<String,Long> zRankWeek(@RequestParam(value="userId") Long userId, 
+			@RequestParam(value="logType") String logType){
+    	Map<String,Long> map = new HashMap<String,Long>();
+    	map = userLogService.zRankWeek(userId,logType);
+    	return map;
+    } 
 }

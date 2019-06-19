@@ -97,5 +97,10 @@ public interface UserService extends IService<UserEntity> {
     UserEntity recharge(Long userId,String adjunct_info,Long buyTime,String total_fee);
     
     UserEntity rechargeForSys(Long userId, String logType, String adjunctInfo, String total_fee, Long logTime);
+
+    /**
+     * 获取上一周的登录次数
+     */
+	long loginCount(Long userId);
 }
 
