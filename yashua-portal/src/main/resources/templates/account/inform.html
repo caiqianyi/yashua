@@ -51,11 +51,19 @@ $(function(){
                     if(arrLen > 0){
                     	for(var i=0;i<response.data.length;i++){
                     		var item = response.data[i];
-                    		html += '<div class="tongzhi">';
-                    		html += '	<p><span>系统通知</span><i>'+new Date(parseInt(item.createTime,10)).format("yyyy-MM-dd  hh:mm:ss")+'</i></p>';
-                    		html += '    <h4>'+item.title+'</h4>';
-                    		html += '    <a href="/account/inform/info.html?id='+item.id+'">查看详情</a>';
-                    		html += '</div>';
+                    		for(var k=0;k<item.mid.length;k++){
+                    			var maStatus = item.mid[k];
+                        		if(maStatus.status == 0){
+                        			html += '<div class="tongzhi Unread">';
+                        		}else if(maStatus.status == 1){
+                        			html += '<div class="tongzhi">';
+                        		}
+                        		html += '	<p><span>系统通知</span><i>'+new Date(parseInt(item.createTime,10)).format("yyyy-MM-dd  hh:mm:ss")+'</i></p>';
+                        		html += '    <h4>'+item.title+'</h4>';
+                        		html += '    <a href="/account/inform/info.html?id='+item.id+'">查看详情</a>';
+                        		html += '</div>';
+                    		}
+                    		
                     	}
                     	if(arrLen < 10){
                     		// 锁定

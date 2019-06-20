@@ -33,7 +33,7 @@ public class UserMessageController {
     
     @Resource
 	private Oauth2SecuritySubject oauth2SecuritySubject;
-
+   
     /**
      * 列表
      */
@@ -59,6 +59,7 @@ public class UserMessageController {
     	userMessage.setCreateBy(oauth2SecuritySubject.getCurrentUser());
     	userMessage.setCreateTime(new Date());
     	userMessage.setType(1);
+    	userMessage.setDelFlag(0);
         return userMessageService.save(oauth2SecuritySubject.getCurrentUser(),userMessage);
     }
 
@@ -74,7 +75,7 @@ public class UserMessageController {
      * 删除
      */
     @RequestMapping("/account/usermessage/delete")
-    ResponseMessage delete(@RequestBody Integer[] ids){
+    ResponseMessage delete(@RequestBody Long[] ids){
         return userMessageService.delete(oauth2SecuritySubject.getCurrentUser(),ids);
     }
 
