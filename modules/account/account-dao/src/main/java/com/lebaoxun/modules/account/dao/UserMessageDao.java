@@ -23,4 +23,6 @@ public interface UserMessageDao extends BaseMapper<UserMessageEntity> {
 			@Param("offset")Integer offset);
 	
 	UserMessageEntity findOneInformByUserId(@Param("user_id") Long userId,@Param("id") long id);
+	
+	long addUserMessage(UserMessageEntity userMessage);
 }

@@ -158,6 +158,8 @@ public class LoginController extends BaseController{
 			String wxopenid){
 		Boolean isCorrectPwd = null; 
 		UserEntity a = null;
+		System.out.println("==============password==================="+password);
+		
 		if(StringUtils.isBlank(openid)){
 //			if(!"app".equals(platform)
 //					&& !"wechatOA".equals(platform)){
@@ -196,6 +198,7 @@ public class LoginController extends BaseController{
 					DesUtils desUtils = new DesUtils(secret);
 					account = desUtils.decrypt(username);
 					passwd = desUtils.decrypt(password);
+					System.out.println("=============passwd========================="+passwd);
 				} catch (Exception e) {
 					throw new I18nMessageException("10015", "密钥不对");
 				}
@@ -231,7 +234,6 @@ public class LoginController extends BaseController{
 		}
 		Oauth2 oauth2 = oauth2SecuritySubject.refreshToken(request,openid);
 		Oauth2AccessToken.setToken(oauth2.getAssess_token());
-		
 		Map<String,Object> json = new TreeMap<String,Object>();
 		json.put("uid", a.getUserId());
 		json.put("access_token", oauth2.getAssess_token());

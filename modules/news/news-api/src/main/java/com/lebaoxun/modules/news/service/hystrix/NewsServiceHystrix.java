@@ -3,13 +3,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lebaoxun.modules.news.entity.NewsEntity;
-import com.lebaoxun.modules.news.service.INewsService;
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.modules.news.entity.NewsEntity;
+import com.lebaoxun.modules.news.service.INewsService;
 
 /**
  * 新闻表
@@ -20,7 +18,7 @@ import com.lebaoxun.commons.exception.ResponseMessage;
  */
 
 @Component
-public class NewsServiceHystrix implements INewsService {
+public class NewsServiceHystrix implements INewsService{
 
 	@Override
 	public ResponseMessage list(Map<String, Object> params) {
@@ -32,6 +30,7 @@ public class NewsServiceHystrix implements INewsService {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
+	
 	@Override
 	public ResponseMessage save(Long adminId,NewsEntity news) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
@@ -42,6 +41,7 @@ public class NewsServiceHystrix implements INewsService {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
 
+	
 	@Override
 	public ResponseMessage delete(Long adminId,Integer[] ids) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
@@ -79,5 +79,8 @@ public class NewsServiceHystrix implements INewsService {
 	public ResponseMessage modifyClicks(Long id, boolean flag) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+
+	
+
 }
 

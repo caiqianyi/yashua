@@ -7,12 +7,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.modules.news.entity.NewsEntity;
 import com.lebaoxun.modules.news.service.INewsService;
 import com.lebaoxun.modules.news.service.IReplysService;
 import com.lebaoxun.portal.rest.BaseController;
@@ -112,4 +114,17 @@ public class NewsController extends BaseController{
     	redisHash.hSet(k, uuid, new Date().getTime());
     	return newsService.modifyClicks(id, true);
     }
+    
+    
+    /**
+     * 发布新闻
+     */
+    @RequestMapping("/news/news/save")
+    @ResponseBody
+    ResponseMessage save(@RequestBody NewsEntity news){
+    	news.setUId(1l);
+    	news.setCreateTime(new Date());
+    	return newsService.save(1l,news);
+    }
+    
 }

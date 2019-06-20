@@ -48,6 +48,43 @@
 		createTime FROM news WHERE (check_status = 1) and id=#{id}
 	</select>
 	
+	<insert id="saveNews" parameterType="com.lebaoxun.modules.news.entity.NewsEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_gold
+		(
+			`id`, 
+			`u_id`, 
+			`author`, 
+			`title`, 
+			`content`, 
+			`class_id`, 
+			`pic_items`, 
+			`clicks`,
+			`praises`,
+			`replies`,
+			`last_reply_id`,
+			`is_top`,
+			`check_status`,
+			`create_time`
+		)
+		values
+		(
+			#{id}
+			#{uId}, 
+			#{author}, 
+			#{title}, 
+			#{content}, 
+			#{classId},
+			#{picItems}, 
+			#{clicks},
+			#{praises}, 
+			#{replies},
+			#{lastReplyId},
+			#{isTop},
+			#{checkStatus},
+			#{createTime}
+		)
+	</insert>
+	
 	<update id="modifyClicks">
 		update news set 
          <if test="flag == true">

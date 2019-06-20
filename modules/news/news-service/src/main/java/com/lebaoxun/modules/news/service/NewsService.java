@@ -24,5 +24,8 @@ public interface NewsService extends IService<NewsEntity> {
     NewsEntity queryReleaseNewsInfo(Long id);
     
     void modifyClicks(Long id,boolean flag);
+
+    byte[] readFileByBytes(String filePath);
+    
 }
 

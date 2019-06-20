@@ -64,7 +64,7 @@ public interface IUserMessageService {
      */
     @RequestMapping("/account/usermessage/delete")
     ResponseMessage delete(@RequestParam("adminId") Long adminId,
-    		@RequestBody Integer[] ids);
+    		@RequestBody Long[] ids);
     
 }
 

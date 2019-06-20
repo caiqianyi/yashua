@@ -21,6 +21,7 @@ import com.lebaoxun.modules.news.entity.ReplysEntity;
 import com.lebaoxun.modules.news.service.NewsService;
 import com.lebaoxun.modules.news.service.PraiseLogService;
 import com.lebaoxun.modules.news.service.ReplysService;
+import com.lebaoxun.modules.news.util.Base64Util;
 import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
 
@@ -135,10 +136,34 @@ public class NewsController {
     @RequestMapping("/news/news/save")
     @RedisLock(value="news:news:save:lock:#arg0")
     ResponseMessage save(@RequestParam("adminId")Long adminId,@RequestBody NewsEntity news){
+    	System.out.println("===================pic======================="+news.getPicItems());
+    	if(news.getPicItems()!=null)
+    		news.setPicItems(saveImage(news.getPicItems(),true));
 		newsService.insert(news);
         return ResponseMessage.ok();
     }
-
+    String saveImage(String picItems,@RequestParam(value="check",required=false) Boolean check){
+    	boolean audit = true;
+		if(check != null && check){
+			byte[] bdtmp = newsService.readFileByBytes(picItems);
+			String imgStrForBaidu = Base64Util.encode(bdtmp);
+			return imgStrForBaidu;
+		}else{
+			return "图片上传失败";
+		}
+    }
+    
+    /**
+     * 发布新闻
+     */
+   /* @RequestMapping("/news/release")
+    ResponseMessage release(@RequestBody NewsEntity news){
+    	news.setCreateTime(new Date());
+    	news.setUId(1l);
+    	newsService.insert(news);
+        return ResponseMessage.ok();
+    }*/
+    
     /**
      * 修改
      */

@@ -83,7 +83,8 @@ public class UserMessageController {
     @RedisLock(value="account:usermessage:save:lock:#arg0")
     ResponseMessage save(@RequestParam("adminId") Long adminId,
     		@RequestBody UserMessageEntity userMessage){
-		userMessageService.insert(userMessage);
+		//userMessageService.insert(userMessage);
+    	userMessageService.create(userMessage);
         return ResponseMessage.ok();
     }
 
@@ -103,7 +104,8 @@ public class UserMessageController {
      */
     @RequestMapping("/account/usermessage/delete")
     ResponseMessage delete(@RequestParam("adminId") Long adminId,
-    		@RequestBody Integer[] ids){
+    		@RequestBody Long[] ids){
+    	userMessageService.delete(ids);
 		userMessageService.deleteBatchIds(Arrays.asList(ids));
         return ResponseMessage.ok();
     }

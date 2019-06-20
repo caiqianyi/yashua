@@ -21,7 +21,7 @@ spring:
       password: yashua0921
       uri: http://47.95.192.172:7369/
       label: master
-      
+
 # Define the port where the API gateway server would be running
 server:
   port: 8088
