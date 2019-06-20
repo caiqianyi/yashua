@@ -21,7 +21,7 @@
 	</dl>
 	
 	<div class="shebei-name font-28">
-		<p>设备 &nbsp;|<i class="c-green font-32" id="shebeiashebei">声波电动牙刷</i> <span id="shebeihaoashebeihao">YS-bdyg123</span></p>
+		<p>设备 &nbsp;|<i class="c-green font-32" id="shebeiashebei"></i> <span id="shebeihaoashebeihao"></span></p>
 	</div>
 	
 	<ul class="font-24">
@@ -225,11 +225,11 @@ $.ajax({
 			l1.hide();
 			 if(r.errcode == 0){
 				var score,jibai ;
-				if(r.data){
+				if(r.data!=null){
 					score = 2*r.data.countById;
 					count=r.data.count;
 					countDayu=r.data.countDayu;
-					jibai = count> 0 ? ((count-countDayu)/count).toFixed(2) * 100 : 0;
+					jibai = score>0?( count> 0 ? ((count-countDayu)/count).toFixed(2) * 100 : 0) :0;
 				}else{
 					score = 0;
 					jibai = 0;

@@ -99,7 +99,7 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogDao, UserLogEntity> i
 			 calendar.add(Calendar.DAY_OF_MONTH,6);
 		     Date endDate=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
 		     countById  = userLogDao.countByUserId(userId,logType,startDate,endDate);//我上周的签到次数
-		     countDayu=userLogDao.countDayu(logType, startDate, endDate,countById);//上周牵到比我少的人
+		     countDayu=userLogDao.countDayu(logType, startDate, endDate,countById);//上周牵到比我多的人
 		     count= userLogDao.count(logType, startDate, endDate);//总的人数
 		 } catch (ParseException e) {
 			// TODO Auto-generated catch block

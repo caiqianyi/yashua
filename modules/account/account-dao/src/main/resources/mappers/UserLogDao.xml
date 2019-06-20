@@ -63,7 +63,7 @@
 	</select>
 	
 	<select id="countDayu" resultType="long">
-	 select count(1) from (	select u.* from user_log u where log_type=#{logType} and create_time between #{startDate} and #{endDate}   group by user_id having count(1) &gt;= #{countById}) p
+	 select count(1) from (	select u.* from user_log u where log_type=#{logType} and create_time between #{startDate} and #{endDate}   group by user_id having count(1) <![CDATA[ >= ]]> #{countById}) p
 	</select>
 	
 	<select id="count" resultType="long">
