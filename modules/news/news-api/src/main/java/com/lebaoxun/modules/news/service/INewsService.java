@@ -3,15 +3,19 @@ package com.lebaoxun.modules.news.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.record.formula.functions.T;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.modules.news.entity.NewsEntity;
 import com.lebaoxun.modules.news.service.hystrix.NewsServiceHystrix;
+
 
 /**
  * 新闻表
@@ -22,7 +26,7 @@ import com.lebaoxun.modules.news.service.hystrix.NewsServiceHystrix;
  */
 
 @FeignClient(value="news-service",fallback=NewsServiceHystrix.class)
-public interface INewsService {
+public interface INewsService{
 	/**
      * 列表
      */
@@ -45,7 +49,7 @@ public interface INewsService {
     /**
      * 修改
      */
-    @RequestMapping("/news/news/update")
+    @RequestMapping(value="/news/news/update")
     ResponseMessage update(@RequestParam("adminId")Long adminId,@RequestBody NewsEntity news);
 
     /**
@@ -100,5 +104,15 @@ public interface INewsService {
      */
     @RequestMapping("/news/modify/clicks")
     ResponseMessage modifyClicks(@RequestParam("id") Long id,@RequestParam("flag") boolean flag);
+
+
+	
+
+	
+
+
+	
+
+    
 }
 

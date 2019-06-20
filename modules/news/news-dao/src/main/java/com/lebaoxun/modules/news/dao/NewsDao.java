@@ -23,4 +23,5 @@ public interface NewsDao extends BaseMapper<NewsEntity> {
 	NewsEntity queryReleaseNewsInfo(@Param("id") Long id);
 	
 	void modifyClicks(@Param("id") Long id,@Param("flag")boolean flag);
+	
 }

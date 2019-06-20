@@ -32,7 +32,11 @@
 			${news.content!} 
 		</#if>
 	</p>
-	<h6>作者：王国军</h6>
+	<h6>作者：
+		<#if news.author??>
+			${news.author} 
+		</#if>
+	</h6>
 	
 	<h6>
 		${news.createTime?string('yyyy-MM-dd HH:mm:ss')}

@@ -243,4 +243,13 @@ public class NewsEntity implements Serializable {
 	public Date getCreateTime() {
 		return createTime;
 	}
+	@Override
+	public String toString() {
+		return "NewsEntity [id=" + id + ", uId=" + uId + ", author=" + author + ", title=" + title + ", content="
+				+ content + ", classId=" + classId + ", picItems=" + picItems + ", clicks=" + clicks + ", praises="
+				+ praises + ", replies=" + replies + ", lastReplyId=" + lastReplyId + ", isTop=" + isTop
+				+ ", checkStatus=" + checkStatus + ", createTime=" + createTime + "]";
+	}
+	
+	
 }
