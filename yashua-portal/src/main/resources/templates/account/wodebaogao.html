@@ -221,7 +221,7 @@ $.ajax({
 	$.ajax({
 		type:"GET",
 		url:"/sign/findWeekInfoByUserId",
-		success:function(r){
+		success:function(r){console.info(r);
 			l1.hide();
 			 if(r.errcode == 0){
 				var score,jibai ;
@@ -269,4 +269,9 @@ $.ajax({
 	var monStr = monDate.format("MM.dd");
 	var sunStr= sunDate.format("MM.dd");
 	$("#md").text(monStr+"~"+sunStr);
+	
+	
+
+	
+	
     </script>
