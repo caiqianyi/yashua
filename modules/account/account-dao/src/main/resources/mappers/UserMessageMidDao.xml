@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lebaoxun.modules.account.dao.UserMessageMidDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lebaoxun.modules.account.entity.UserMessageMidEntity" id="userMessageMidMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="messageId" column="message_id"/>
+        <result property="status" column="status"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+	<update id="updateUserMsg" parameterType="com.lebaoxun.modules.account.entity.UserMessageMidEntity">
+		update user_message_mid  set status = 1 where user_id = #{user_id} and message_id = #{message_id}
+	</update>
+	
+	<delete id="deleteByMessage">  
+	    DELETE FROM user_message_mid WHERE message_id = #{messageId}
+	</delete>
+</mapper>

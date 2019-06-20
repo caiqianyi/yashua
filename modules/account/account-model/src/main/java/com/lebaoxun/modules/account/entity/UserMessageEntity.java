@@ -1,10 +1,12 @@
 package com.lebaoxun.modules.account.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户消息
@@ -67,6 +69,9 @@ public class UserMessageEntity implements Serializable {
 	 * 所在地区
 	 */
 	private String areaCode;
+	
+	@TableField(exist=false)
+	private List<UserMessageMidEntity> mid;
 
 	/**
 	 * 设置：
@@ -200,4 +205,12 @@ public class UserMessageEntity implements Serializable {
 	public void setAreaCode(String areaCode) {
 		this.areaCode = areaCode;
 	}
+	public List<UserMessageMidEntity> getMid() {
+		return mid;
+	}
+	public void setMid(List<UserMessageMidEntity> mid) {
+		this.mid = mid;
+	}
+	
+	
 }

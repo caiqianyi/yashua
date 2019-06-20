@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/new_header.html">
+<script type="text/javascript" src="/statics/new_js/libs/oauth2_token_listener.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/city.js"></script>
+<script type="text/javascript" src="/statics/plugins/picker/picker.min.js"></script>
+
+<title>口腔知识发布</title>
+</head>
+<body>
+<div class="Top"><h3 onclick="javascript:window.location.href='/news/list.html'">口腔知识发布</h3></div>
+<div class="add-shuaya font-36">
+	<div class="add-tit bg-new">
+    	<p class="c-green">标题</p>
+        <input type="text" id="title" name="title" placeholder="输入标题"/>
+    </div>
+	<div class="add-time bg-new">
+    	<p class="c-green">发布内容</p>
+        <textarea name="content" id="content" cols="30" rows="10" placeholder="请输入编辑的内容"></textarea>
+    </div>
+   <!--  <div class="add-tit add-img bg-new" id="img">
+		<form id="form_face" enctype="multipart/form-data" style="width:auto;">
+			<input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();" style="display:none;">
+		</form>
+    	<li id="imgli" style="display: none;"><img name="picItems" id="picItems" /></li>
+    	<li>
+    		<img class="normalFace" src="/statics/new_images/add_picwhite.png" onclick="fileSelect();">
+    	</li>
+    </div> -->
+    <input class="tijiao font-40" id="fabu-button" type="submit" value="发布"/>	
+</div>
+
+<script>
+	function fileSelect() {
+		document.getElementById("fileToUpload").click();
+		
+	}
+	
+	var image = '';
+    var canvas;
+    var base64;//将canvas压缩为base64格式
+	
+	function fileSelected() {
+		var reads = new FileReader();
+		f = document.getElementById('fileToUpload').files[0];
+		reads.readAsDataURL(f);
+		reads.onload = function(e) {
+			document.getElementById('picItems').src = this.result;
+			document.getElementById('imgli').style.display = "block";
+			
+			/* image = document.getElementById('imgli');
+			image.onload = function(){
+				  canvas = convertImageToCanvas(image); //图片转canvas 
+				  base64 = canvas.toDataURL('image/jpeg'); //将图片数据转为base64.
+				   //alert(base64);
+				   $.post( 
+					"//", //服务器接口(返回图片路径)
+					{data:base64}, 
+					function(data) {
+						alert(data.target);
+						//alert(eval(data));
+						//修改上传文件的路径名字(图片完整路径)
+						$('#img').val('http://path/'+data.target);
+					}, "json");
+			  }  */
+		}
+	}
+	
+	
+	
+	$('#fabu-button').click(function(event) {
+		event.preventDefault();
+		var fabu = {};
+		fabu.title = $("input[name=title]").val();
+		fabu.content = $("textarea[name=content]").val();
+		fabu.classId = '1';
+		fabu.picItems = $("img[name=picItems]").attr("src");
+		
+		if(!fabu.title|| fabu.title == '' || fabu.title.length == 0){
+			alert("请您填写标题");
+			return;
+		}
+		if(!fabu.content || fabu.content == '' || fabu.content.length == 0){
+			alert("请您填写发布内容");
+			return;
+		}
+		
+		
+		var l1 = $.loading().show({content:"处理中..."});
+		$.ajax({
+			type : "POST",
+			url : "/news/news/save",
+			contentType: "application/json",
+		    data: JSON.stringify(fabu),
+			dataType : "json",
+			
+			success : function(data) {
+				l1.hide();
+				if (data.errcode == 0) {//添加成功
+					alert("发布成功！");
+					window.location.href = '/news/list.html';
+				} else {
+					alert(data.errmsg);
+				}
+			},
+			complete: function(jqXHR){
+		        console.log(jqXHR.status);
+		    },
+		    error: function (xhr) {
+		        console.log(xhr.status);
+		    }
+			
+		});
+});
+	
+</script>
+
+</body>
+</html>
+

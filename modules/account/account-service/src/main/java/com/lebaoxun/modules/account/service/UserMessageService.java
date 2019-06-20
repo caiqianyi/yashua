@@ -22,5 +22,10 @@ public interface UserMessageService extends IService<UserMessageEntity> {
 									Integer size, Integer offset);
 	
 	UserMessageEntity findOneInformByUserId(Long userId,long id);
+	
+    void create(UserMessageEntity userMessage);
+    
+    void delete(Long[] ids);
+
 }
 
