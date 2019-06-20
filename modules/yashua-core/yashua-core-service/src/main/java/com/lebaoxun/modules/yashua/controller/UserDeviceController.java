@@ -163,4 +163,14 @@ public class UserDeviceController {
 
     	return ResponseMessage.ok().put("userDevice", userDevice);
     }
+    
+    /**
+     * 获取连接的牙刷
+     */
+    @RequestMapping("/yashua/deviceByAccount")
+    UserDeviceEntity deviceByAccount(@RequestParam("account") String account){
+    	UserDeviceEntity userDevice = userDeviceService.selectOne( new EntityWrapper<UserDeviceEntity>().eq("account", account).eq("default_device", 1));
+
+    	return userDevice;
+    }
 }

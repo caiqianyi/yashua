@@ -21,5 +21,6 @@ public interface SignLogService extends IService<SignLogEntity> {
     SignUinfoEntity signIn(Long userId,String groupId);
     
     SignUinfoEntity findMonthSignLog(Long userId,String time);
+    
 }
 

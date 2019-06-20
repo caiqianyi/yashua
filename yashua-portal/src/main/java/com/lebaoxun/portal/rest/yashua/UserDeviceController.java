@@ -165,6 +165,17 @@ public class UserDeviceController {
         return userDeviceService.setName(ue.getAccount(), name,identity);
     }
     
+    /**
+     * 
+  		获取连接的牙刷
+     */
+    
+    @RequestMapping("/yashua/deviceByAccount")
+    ResponseMessage deviceByAccount(){
+    	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+    	UserDeviceEntity userDeviceEntity= userDeviceService.deviceByAccount(ue.getAccount());
+    	return ResponseMessage.ok(userDeviceEntity);
+    }
     
     
     /**

@@ -65,4 +65,13 @@ public class SignController extends BaseController {
     	Long userId = oauth2SecuritySubject.getCurrentUser();
     	return userLogService.zRank(userId, "SIGN_AWARD", time);
     }
+    
+    /**
+     * 本周击败次数和所获积分
+     */
+    @RequestMapping("/sign/findWeekInfoByUserId")
+    ResponseMessage findWeekInfoByUserId(){
+    	Long userId = oauth2SecuritySubject.getCurrentUser();
+    	return  ResponseMessage.ok(userLogService.zRankWeek(userId, "SIGN_AWARD"));
+    }
 }

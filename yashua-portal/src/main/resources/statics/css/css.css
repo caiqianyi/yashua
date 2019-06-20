@@ -631,6 +631,10 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .tt-ok .tt-had p{overflow: hidden;line-height:.6rem;}
 .tt-ok p span{float: left;}
 .tt-ok p em{float: right;}
+<<<<<<< HEAD
+.tt-ok p em i{color:red;font-size:.28rem;}
+.qian-ok p{margin-left:1.5rem;}
+
 .tt-ok .tt-hxj{line-height:.92rem;text-align:right;padding:0 .4rem;}
 .tt-ok .tt-hxj i{color:#f83d4a;}
 
@@ -678,6 +682,7 @@ background-size:contain;position: absolute;right:-.1rem;top:0;}
 .pjfen span{vertical-align: middle;display: inline-block;}
 .pjfen span i{font-size:.42rem;padding:0 .22rem;}
 .pjfen p{display: inline-block;width: 2.2rem;line-height:normal;vertical-align:middle;color:#fcc738;margin-left: 1.4rem;}
+
 
 
 

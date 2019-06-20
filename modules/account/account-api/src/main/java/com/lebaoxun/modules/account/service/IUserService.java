@@ -187,5 +187,11 @@ public interface IUserService {
 			@RequestParam(value="logType") UserLogAction logType,
 			@RequestParam(value="adjunctInfo",required=false) String adjunctInfo,
 			@RequestParam(value="descr",required=false) String descr);
+	
+	/**
+	 * 获取上一周的登录次数
+	 */
+	@RequestMapping("/account/user/loginCount")
+	long loginCount(@RequestParam("userId") Long userId);
 }
 

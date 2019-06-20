@@ -99,4 +99,14 @@ public class UserController {
 		oauth2SecuritySubject.logout();
 		return ResponseMessage.ok();
 	}
+	
+	/**
+	 * 获取上一星期的登录次数
+	 */
+	@RequestMapping(value = "/account/loginCount", method = RequestMethod.GET)
+	public ResponseMessage loginCount() {
+		long userId = oauth2SecuritySubject.getCurrentUser();
+		long count = userService.loginCount(userId);
+		return ResponseMessage.ok(count);
+	}
 }

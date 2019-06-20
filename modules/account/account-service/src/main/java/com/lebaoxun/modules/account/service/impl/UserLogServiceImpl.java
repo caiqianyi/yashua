@@ -1,11 +1,16 @@
 package com.lebaoxun.modules.account.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -25,6 +30,8 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogDao, UserLogEntity> i
 	
 	@Resource
 	private IRedisSorted redisSorted;
+	@Autowired
+	private UserLogDao userLogDao;
 	
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -78,5 +85,31 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogDao, UserLogEntity> i
 		result.put("rank", rank);
 		result.put("size", size);
 		return result;
+	}
+
+	@Override
+	public Map<String, Long> zRankWeek(Long userId, String logType) {
+		 long countById=0,countDayu=0,count=0;
+		 try {
+			
+			 Calendar calendar = Calendar.getInstance();  
+			 calendar.add(Calendar.DATE, -1*7);
+			 calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+			 Date  startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(calendar.getTime()));
+			 calendar.add(Calendar.DAY_OF_MONTH,6);
+		     Date endDate=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(calendar.getTime()));
+		     countById  = userLogDao.countByUserId(userId,logType,startDate,endDate);//我上周的签到次数
+		     countDayu=userLogDao.countDayu(logType, startDate, endDate,countById);//上周牵到比我少的人
+		     count= userLogDao.count(logType, startDate, endDate);//总的人数
+		 } catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Map<String,Long> map = new HashMap<String,Long>();
+	    map.put("countById", countById);
+	    map.put("countDayu", countDayu);
+	    map.put("count", count);
+	    System.out.println(map.get("countById")+"dwsdwdewqedqweq "+map.get("count"));
+		return map;
 	}
 }

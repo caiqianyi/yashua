@@ -60,5 +60,11 @@ public interface IUserLogService {
     ResponseMessage zRank(@RequestParam(value="userId") Long userId,
     		@RequestParam(value="logType") String logType,
     		@RequestParam(value="time") String time);
+
+    /**
+     * 本周击败次数和所获积分
+     */
+    @RequestMapping("/account/findWeekInfoByUserId")
+	Map<String,Long> zRankWeek(@RequestParam(value="userId") Long userId, @RequestParam(value="logType") String logType);
 }
 

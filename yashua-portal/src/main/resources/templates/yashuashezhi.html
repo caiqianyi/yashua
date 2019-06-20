@@ -640,12 +640,13 @@ function mlog(m){
 	  // mlog("收到的包值："+out);
 	    return out;
 	}
+
 	function getDeviceName(_shebeihao){
 		$.ajax({
 			type: "POST",
 		    url: "/yashua/device/getDeviceName",
 		    data: {'identity':_shebeihao},
-		    success: function(r){
+		    success: function(r){ console.info(r);
 		    
 		    	if(r.errcode == 0){
 		    		var userDevice=r.data.userDevice;

@@ -66,5 +66,7 @@ public interface ISignLogService {
     @RequestMapping("/sign/findMonthInfoByUserId")
     ResponseMessage findMonthInfoByUserId(@RequestParam("userId")Long userId,
     		@RequestParam("time")String time);
+
+  
 }
 

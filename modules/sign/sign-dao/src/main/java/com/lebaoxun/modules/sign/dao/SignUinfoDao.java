@@ -18,4 +18,6 @@ public interface SignUinfoDao extends BaseMapper<SignUinfoEntity> {
 	SignUinfoEntity findSignUinfoByUserId(@Param("userId")Long userId);
 	
 	SignUinfoEntity queryMonthSignLog(@Param("userId")Long userId,@Param("time") String time);
+
+	SignUinfoEntity findWeekInfoByUserId( @Param("userId") Long userId,@Param("time") String time);
 }

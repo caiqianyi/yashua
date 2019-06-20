@@ -103,6 +103,11 @@ public interface IUserDeviceService {
      */
     @RequestMapping("/yashua/device/getDeviceName")
 	ResponseMessage getDeviceName(@RequestParam("account") String account, @RequestParam("identity") String identity);
+    /**
+     * 获取连接的牙刷
+     */
+    @RequestMapping("/yashua/deviceByAccount")
+    UserDeviceEntity deviceByAccount(@RequestParam("account") String account);
     
 }
 
