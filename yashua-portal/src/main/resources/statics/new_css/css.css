@@ -194,7 +194,8 @@ h1{display:none;}
 .my-txt li.lie{background-image: url(../new_images/wode_icon9.png);}
 .my-txt li.lif{background-image: url(../new_images/wode_icon7.png);}
 .my-txt li.lig{background-image: url(../new_images/wode_icon8.png);}
-
+.my-txt li.lib.Unread{position: relative;}
+.my-txt li.lib.Unread::after{content:"";width: .15rem;height: .15rem;background:#f33a43;border-radius:50%;position: absolute;right: .15rem;top:.32rem;}
 /*------------------------------绑定成功------------------------------*/
 .ok{text-align: center;}
 .ok p{color:#14dbfa;margin:.6rem 0;}
@@ -500,7 +501,7 @@ background-size:.19rem .37rem;}
 .msg-tongzhi .tongzhi h4{width:100%;padding:.35rem .25rem;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size:.38rem;color:#63ed98;border-bottom:1px solid #bfbfbf;}
 .msg-tongzhi .tongzhi a{font-size:.32rem;color:#fff;display: block;margin:0 .24rem;line-height: .88rem;background:url(../new_images/arr-r.png) no-repeat right center;-webkit-background-size:.18rem .3rem;background-size:.18rem .3rem;}
 .Unread{position: relative;}
-.Unread::after{content:"";width: .15rem;height: .15rem;background:#f33a43;border-radius:50%;position: absolute;right: .15rem;top:.32rem;}
+.Unread::after{content:"";width: .25rem;height: .25rem;background:#f33a43;border-radius:50%;position: absolute;right: .10rem;top:.28rem;}
 /*------------------------------消息详情---OK---------------------------*/
 .msg-xiangq{margin:.1rem;background: #373c3f;border-radius:.15rem;overflow: hidden;}
 .msg-xiangq .tz_tit{width: 100%;padding:.2rem .25rem .15rem;border-bottom:1px solid #bfbfbf;overflow: hidden;}

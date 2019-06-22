@@ -99,6 +99,13 @@ public class UserMessageServiceImpl extends ServiceImpl<UserMessageDao, UserMess
 		}
 		
 	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public int messageS(Long userId) {
+		return userMessageMidDao.queryUM(userId);
+		
+	}
 		
 
 }
