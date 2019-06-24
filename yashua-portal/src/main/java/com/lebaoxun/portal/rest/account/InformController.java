@@ -40,9 +40,9 @@ public class InformController extends BaseController{
     	return userMessageService.findOneInformByUserId(oauth2SecuritySubject.getCurrentUser(), id);
     }
     
-    @RequestMapping(value="/account/inform/messS" , method = RequestMethod.GET)
-    int messS(){
-
-    	return userMessageService.messageS(oauth2SecuritySubject.getCurrentUser());
+    @RequestMapping(value="/account/inform/messS")
+    ResponseMessage messS(){
+    	int messageS = userMessageService.messageS(oauth2SecuritySubject.getCurrentUser());
+    	return ResponseMessage.ok(messageS);
     }
 }

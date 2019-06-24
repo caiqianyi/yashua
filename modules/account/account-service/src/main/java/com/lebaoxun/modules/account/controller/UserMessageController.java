@@ -111,7 +111,7 @@ public class UserMessageController {
     }
 
     @RequestMapping("/account/usermessage/messS")
-    int messS(@RequestParam(value="userId") Long userId){
+    int messS(@RequestParam("userId") Long userId){
 		return userMessageService.messageS(userId);
     	
     }

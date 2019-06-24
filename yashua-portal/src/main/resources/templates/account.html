@@ -233,11 +233,14 @@ $(function(){
 		type: "GET",
 	    url: "/account/inform/messS",
 	    success: function(r){
-	    	//console.log(r);
-	    	if(r != 0){
-	    		$('.my-txt li.lib').addClass("Unread");
-	    	}else{
-	    		$('.my-txt li.lib').addClass("");
+	    	console.log(r);
+	    	console.log(r.data);
+	    	if(r.errcode == 0){
+	    		if(r != 0){
+		    		$('.my-txt li.lib').addClass("Unread");
+		    	}else{
+		    		$('.my-txt li.lib').addClass("");
+		    	}
 	    	}
 		}
 	});
