@@ -59,28 +59,12 @@ $.ajax({
     	l1.hide();
     	if(r.errcode == 0){
 	   	 	var datas = r.data;
-		   	 for(var i=0;i<datas.list.length;i++){
-		   	 	var data = datas.list[i];
-		   	 	if(data.biaoshi==1){
-		   	 		arry1.push(datas.list[i].fenshu);
-		   	 		aver+=datas.list[i].fenshu;
-		   	 		akouqicount++;
-		   	 	}
-		   	 	else if(data.biaoshi==2)
-		   	 		arry2.push(datas.list[i].fenshu);
-		   	 }
-		   	if(akouqicount>0)
-		   		a1 = Math.ceil(aver/akouqicount);
-		   	$(".pjfen").find("i").text(a1);
-		   	if(arry1.length<7){
-	   	  		var arrylength1=arry1.length,arrylength2=arry2.length;
-		   	 	for(var j=0;j<7-arrylength1;j++){
-		   	 		arry1.push(0);
-		   	 	}
-    		   	for(var k=0;k<7-arrylength2;k++){
-		   	 		arry2.push(0);
-		   	 	}
-		   	 }
+	   	 var arryc=countweekkouqidata(datas);
+	   		arry1=arryc.zkouqi;
+			arry2=arryc.pkouqi;
+			a1=arryc.ak;
+			a2=arryc.pk;
+			$(".pjfen").find("i").text(a1);
 		 }
     	var kouqiinfo="",zhuangtai="";
     	if(a1>=0 && a1<=3){
@@ -202,6 +186,63 @@ $.ajax({
     	
     }
     }); 
+    
+    function countweekkouqidata(datas){
+    	var arry1=[],//早上口气
+    		arry2=[],//晚上口气
+    		zp=0,//早上口气的总值
+    		wp=0,//晚上口气的总值
+    		zc=0,//早上口气检测记录数
+    		wc=0,//晚上口气检测记录数
+    		av1=0,//早上口气检测平均值
+    		pv1=0;//晚上检测平均值
+		//初始化
+		for(var i=0;i<7;i++){
+			arry1.push(0);
+			arry2.push(0);
+		}
+		for(var i=0;i<datas.list.length;i++){
+			var data=datas.list[i];
+			var date=new Date(parseInt(data.adddate,10));
+			var day=date.getDay();
+			if(day==0){//星期天，特殊处理
+				if(data.biaoshi==1){
+					arry1[6]=data.fenshu;
+					zp+=data.fenhsu;
+					zc++;
+				}
+				if(data.biaoshi==2){
+					arry2[6]=data.fenshu;
+					wp+=data.fenshu;
+					wc++;
+				}
+			}
+
+			if(day>=1){
+				if(data.biaoshi==1){
+					arry1[day-1]=data.fenshu;
+					zp+=data.fenshu;
+					zc++;
+				}
+				if(data.biaoshi==2){
+					arry2[day-1]=data.fenshu;	
+					wp+=data.fenshu 
+					wc++;
+				}
+			}
+
+			var av1=zc>0? Math.ceil(zp/zc):0;
+			var pv1=wc>0? Math.ceil(wp/wc):0;
+		}
+		
+		var arryc={};
+		arryc.zkouqi=arry1;
+		arryc.pkouqi=arry2;
+		arryc.ak=av1;
+		arryc.pk=pv1;
+		return arryc;
+
+    }
 	
 	
 	//获取用户上一星期的登录次数
@@ -210,7 +251,7 @@ $.ajax({
     url: "/account/loginCount",
     success: function(r){
     	l1.hide();
-    	if(r.errcode == 0){
+    	if(r.errcode == 0){  
     		$("#denglucishu").text(r.data);
     	}
     }
@@ -243,7 +284,7 @@ $.ajax({
 	//获取牙刷设备信息
 	$.ajax({
 		url:"/yashua/deviceByAccount",
-		success:function(r){
+		success:function(r){console.info(r);
 			l1.hide();
 			if(r.errcode == 0){
 				if(r.data.name!=null)
@@ -271,7 +312,6 @@ $.ajax({
 	$("#md").text(monStr+"~"+sunStr);
 	
 	
-
 	
 	
     </script>
