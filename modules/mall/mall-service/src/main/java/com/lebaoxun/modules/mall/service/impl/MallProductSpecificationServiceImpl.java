@@ -112,5 +112,9 @@ public class MallProductSpecificationServiceImpl
 		// TODO Auto-generated method stub
 		return this.baseMapper.queryByProductId(productId);
 	}
+	
+	public static void main(String[] args) {
+		System.out.println("\u767b\u5f55\u8d85\u65f6\uff0c\u8bf7\u91cd\\u65b0\u767b\\u5f55\uff01");
+	}
 
 }

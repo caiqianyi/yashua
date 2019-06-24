@@ -102,7 +102,10 @@ var vm = new Vue({
 			$("img",um.getContent()).each(function(){
 				pic_items += $(this).attr("src")+",";
 			})
-			if(pic_items.length > 0){
+			
+			if(pic_items.length == 0){
+				pic_items = vm.news.picItems;
+			}else{
 				pic_items = pic_items.substring(0,pic_items.length-1);
 			}
 			vm.news.content = content;
