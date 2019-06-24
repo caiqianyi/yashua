@@ -151,7 +151,7 @@ $(function(){
 		type: "GET",
 	    url: "/yashua/device/mylist",
 	    data:{},
-	    success: function(r){console.info(r)
+	    success: function(r){//console.info(r)
 	    	loadc++;
 	    	if(loadc == 2){
 		    	l1.hide();
@@ -223,8 +223,26 @@ $(function(){
     			}
     		}
     	});
+        
     })
+    
+
 })
+
+    $.ajax({
+		type: "GET",
+	    url: "/account/inform/messS",
+	    success: function(r){
+	    	//console.log(r);
+	    	if(r != 0){
+	    		$('.my-txt li.lib').addClass("Unread");
+	    	}else{
+	    		$('.my-txt li.lib').addClass("");
+	    	}
+		}
+	});
+	
+	
     function qidai(){
 		alert("即将上线！");
 	}	

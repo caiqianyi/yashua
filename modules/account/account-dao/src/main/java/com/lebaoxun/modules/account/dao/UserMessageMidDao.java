@@ -16,4 +16,6 @@ public interface UserMessageMidDao extends BaseMapper<UserMessageMidEntity> {
 	int updateUserMsg(@Param("user_id") Long userId,@Param("message_id") long id);
 	
 	void deleteByMessage(@Param("messageId") Long messageId);
+	
+	int queryUM(@Param("user_id") Long userId);
 }

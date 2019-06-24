@@ -27,5 +27,6 @@ public interface UserMessageService extends IService<UserMessageEntity> {
     
     void delete(Long[] ids);
 
+    int messageS(Long userId);
 }
 

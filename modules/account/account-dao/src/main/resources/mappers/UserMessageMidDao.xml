@@ -20,4 +20,7 @@
 	<delete id="deleteByMessage">  
 	    DELETE FROM user_message_mid WHERE message_id = #{messageId}
 	</delete>
+	<select id="queryUM" resultType="int">
+		SELECT count(1) FROM user_message_mid where user_id = #{user_id} and `status`=0
+	</select>
 </mapper>
