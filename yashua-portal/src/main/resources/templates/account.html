@@ -233,8 +233,7 @@ $(function(){
 		type: "GET",
 	    url: "/account/inform/messS",
 	    success: function(r){
-	    	console.log(r);
-	    	console.log(r.data);
+	    	//console.log(r);
 	    	if(r.errcode == 0){
 	    		if(r != 0){
 		    		$('.my-txt li.lib').addClass("Unread");
