@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lebaoxun.commons.exception.ResponseMessage;
+import com.lebaoxun.modules.account.entity.UserEntity;
+import com.lebaoxun.modules.account.service.IUserService;
 import com.lebaoxun.modules.news.entity.NewsEntity;
 import com.lebaoxun.modules.news.service.INewsService;
 import com.lebaoxun.modules.news.service.IReplysService;
@@ -21,6 +23,7 @@ import com.lebaoxun.portal.rest.BaseController;
 import com.lebaoxun.security.oauth2.Oauth2SecuritySubject;
 import com.lebaoxun.security.oauth2.entity.Oauth2UserLog;
 import com.lebaoxun.soa.core.redis.IRedisHash;
+import com.lebaoxun.upload.service.IUploadLocalService;
 
 @Controller
 public class NewsController extends BaseController{
@@ -33,6 +36,12 @@ public class NewsController extends BaseController{
 	
 	@Resource
 	private Oauth2SecuritySubject oauth2SecuritySubject;
+	
+	@Resource
+    private IUserService userService;
+    
+    @Resource
+    private IUploadLocalService uploadLocalService;
 	
 	@Resource
 	private IRedisHash redisHash;
@@ -124,6 +133,16 @@ public class NewsController extends BaseController{
     ResponseMessage save(@RequestBody NewsEntity news){
     	news.setUId(1l);
     	news.setCreateTime(new Date());
+    	news.setAuthor(userService.findByUserId(oauth2SecuritySubject.getCurrentUser()).getRealname());
+    	String namespace = "user/"+oauth2SecuritySubject.getCurrentUser();
+    	ResponseMessage r = uploadLocalService.uploadImg("yashua", namespace, "png", false, news.getPicItems());
+    	if(!"0".equals(r.getErrcode())){
+    		return r;
+    	}
+    	Map<String,String> data = (Map<String, String>) r.getData();
+    	String imgurl = data.get("uri");
+    	news.setPicItems(imgurl);
+    	System.out.println("imgurl========================"+imgurl);
     	return newsService.save(1l,news);
     }
     

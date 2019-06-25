@@ -75,53 +75,5 @@ public class NewsServiceImpl extends ServiceImpl<NewsDao, NewsEntity> implements
 		this.baseMapper.modifyClicks(id, flag);
 	}
 
-	@Override
-	public byte[] readFileByBytes(String filePath) {
-		try {
-			String uri = filePath;
-			if (filePath.startsWith("http://")) {
-				uri = filePath.substring(filePath.indexOf("/", "http://".length()));
-				int ix = staticsHost.indexOf("/", "http://".length());
-				if (ix > -1) {
-					String s = staticsHost.substring(ix);
-					uri = uri.substring(s.length());
-				}
-			}
-			logger.debug("readFileByBytes|uri={}", uri);
-			String path = baseDir + uri;
-			logger.info("staticsHost={},baseDir={},path={}", staticsHost, baseDir, path);
-			File file = new File(path);
-			if (!file.exists()) {
-				throw new FileNotFoundException(filePath);
-			} else {
-				ByteArrayOutputStream bos = new ByteArrayOutputStream((int) file.length());
-				BufferedInputStream in = null;
-				try {
-					in = new BufferedInputStream(new FileInputStream(file));
-					short bufSize = 1024;
-					byte[] buffer = new byte[bufSize];
-					int len1;
-					while (-1 != (len1 = in.read(buffer, 0, bufSize))) {
-						bos.write(buffer, 0, len1);
-					}
-					byte[] var7 = bos.toByteArray();
-					return var7;
-				} finally {
-					try {
-						if (in != null) {
-							in.close();
-						}
-					} catch (IOException var14) {
-						var14.printStackTrace();
-					}
-
-					bos.close();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new I18nMessageException("500");
-		}
-	}
 
 }

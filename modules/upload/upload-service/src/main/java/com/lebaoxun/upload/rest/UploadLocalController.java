@@ -41,6 +41,7 @@ public class UploadLocalController {
 		String file = null;
 		try{
 			file = localUploadService.uploadImg(namespace, imgStr, fileType);
+			System.out.println("=============file=====111==========="+file);
 			boolean audit = true;
 			if(check != null && check){
 				byte[] bdtmp = localUploadService.readFileByBytes(file);

@@ -33,6 +33,7 @@ public class LocalUploadServiceImpl implements IUploadService{
 	@Override
 	public byte[] readFileByBytes(String filePath) {
 		try{
+			System.out.println("=====filePath===="+filePath);
 			String uri = filePath;
 			if(filePath.startsWith("http://")){
 				uri = filePath.substring(filePath.indexOf("/","http://".length()));
