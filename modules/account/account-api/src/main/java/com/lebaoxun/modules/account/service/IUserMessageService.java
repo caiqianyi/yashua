@@ -67,7 +67,7 @@ public interface IUserMessageService {
     		@RequestBody Long[] ids);
     
     @RequestMapping("/account/usermessage/messS")
-    int messageS(@RequestParam(value="userId") Long userId);
+    int messageS(@RequestParam("userId") Long userId);
     
 }
 
