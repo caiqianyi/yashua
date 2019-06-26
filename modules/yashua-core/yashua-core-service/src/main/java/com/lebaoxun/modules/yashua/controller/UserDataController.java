@@ -1,5 +1,12 @@
 package com.lebaoxun.modules.yashua.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lebaoxun.commons.exception.ResponseMessage;
 import com.lebaoxun.commons.utils.PageUtils;
+import com.lebaoxun.modules.yashua.entity.AppData;
+import com.lebaoxun.modules.yashua.entity.UserDataEntity;
 import com.lebaoxun.modules.yashua.service.UserDataService;
 import com.lebaoxun.soa.core.redis.lock.RedisLock;
 
@@ -45,4 +54,18 @@ public class UserDataController {
     return ResponseMessage.ok();
    }
 
+    /**
+     * 获取历史口气数据App端使用
+     */
+    @RequestMapping("/yashua/userdata/history/listforApp")
+    ResponseMessage hlistApp(@RequestParam Map<String, Object> params){
+    	 PageUtils page = userDataService.queryByConditgions(params);
+    	 List<UserDataEntity> list=(List<UserDataEntity>) page.getList();
+    	 Integer id = Integer.parseInt((String) params.get("id"));
+    	 AppData appData=userDataService.createAppData(list,id);
+    	 
+		 return ResponseMessage.ok(appData);
+    	 
+    }
+   
 }
