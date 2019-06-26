@@ -88,7 +88,7 @@
     	    url: "/yashua/userdata/history/list/"+id,
     	    success: function(r){
     	    	l1.hide();
-    	    	if(r.errcode == 0){console.info(r);
+    	    	if(r.errcode == 0){
     		   	 	var datas = r.data;
     		   	 	if(id==0){//一周的口气
     		   	 	 var arryc=countweekkouqidata(datas);
@@ -242,32 +242,15 @@
     	    	if(r.errcode == 0){
     		   	 	var datas = r.data;
     		   	 	if(id==0){//一周的口气
-	    		   	 	for(var i=0;i<datas.list.length;i++){
-	    		   	 		var data = datas.list[i];
-	    		   	 		if(data.biaoshi==1){
-	    		   	 			arry1.push(datas.list[i].fenshu);
-	    		   	 			aver1+=datas.list[i].fenshu;
-	    		   	 		}
-	    		   	 		else if(data.biaoshi==2){
-	    		   	 			arry2.push(datas.list[i].fenshu);
-	    		   	 			aver2+=datas.list[i].fenshu;
-	    		   	 		}
-	    		   	 	}
-	    		   	  	if(arry1.length<7){
-	    		   	  		var a1=0,a2=0;
-	    		   	  		if(arry1.length>0) a1 = Math.ceil(aver1/arry1.length);
-	  		   	  			$(".jilu-fen").find("i").eq(0).text(a1);
-	    		   	  		
-	    		   	  		if(arry2.length>0) a2 = Math.ceil(aver2/arry2.length);
-	    		   	  		$(".jilu-fen").find("i").eq(1).text(a2);
-			   	  			var arrylength1=arry1.length,arrylength2=arry2.length;
-	    		   	 		for(var j=0;j<7-arrylength1;j++){
-	    		   	 			arry1.push(0);
-	    		   	 		}
-		    		   	 	for(var k=0;k<7-arrylength2;k++){
-				   	 			arry2.push(0);
-				   	 		}
-	    		   	 	}
+	    		   	 	
+    		   	 	 var arryc=countweekkouqidata(datas);
+ 			   		arry1=arryc.zkouqi;
+ 					arry2=arryc.pkouqi;
+ 					aver1=arryc.ak;
+ 					aver2=arryc.pk;
+ 					$(".jilu-fen").find("i").eq(0).text(aver1);
+ 					$(".jilu-fen").find("i").eq(1).text(aver2);
+ 				 
 	    		 	
     		   	 }
     		   
@@ -403,9 +386,10 @@
 			var date=new Date(parseInt(data.adddate,10));
 			var day=date.getDay();
 			if(day==0){//星期天，特殊处理
+				
 				if(data.biaoshi==1){
 					arry1[6]=data.fenshu;
-					zp+=data.fenhsu;
+					zp+=data.fenshu;     
 					zc++;
 				}
 				if(data.biaoshi==2){
@@ -418,7 +402,7 @@
 			if(day>=1){
 				if(data.biaoshi==1){
 					arry1[day-1]=data.fenshu;
-					zp+=data.fenshu;
+					zp+=data.fenshu; 
 					zc++;
 				}
 				if(data.biaoshi==2){
@@ -426,12 +410,11 @@
 					wp+=data.fenshu 
 					wc++;
 				}
-			}
-
-			var av1=zc>0? Math.ceil(zp/zc):0;
-			var pv1=wc>0? Math.ceil(wp/wc):0;
+			}			
 		}
-		
+		var av1=zc>0? Math.ceil(zp/zc):0;
+		var pv1=wc>0? Math.ceil(wp/wc):0;
+	 
 		var arryc={};
 		arryc.zkouqi=arry1;
 		arryc.pkouqi=arry2;
@@ -585,8 +568,9 @@
     				if(zcs>date.getDate())
     					return 0;//当前月的前几天不是周一，返回0，不计入当前月的口气统计
     			}
-    			var weekday=Math.ceil(date.getDate()/7);console.info(weekday+":"+date.format("yyyy-MM-dd hh:mm:ss"));
+    			var weekday=Math.ceil(date.getDate()/7);
     			return weekday;
+    			
     		}
     	}
     
@@ -598,7 +582,7 @@
     		avera=0,//早上口气的平均值
     		averp=0;//晚上口气的平均值
     	if(datas.list.length==0){//一个季度内都没有检测口气
-    		for(var i=0;i<13;i++){
+    		for(var i=0;i<15;i++){
     			jiduakouqi.push(0);
     			jidupkopuqi.push(0);
     		}
@@ -607,7 +591,7 @@
     	}
     	else{
     		var arrya=[],arryp=[],an1=0,pn1=0;
-    		for(var i=0;i<13;i++){
+    		for(var i=0;i<15;i++){
     			arrya.push({'fenshu':0,'num':0});
     			arryp.push({'fenshu':0,'num':0});
     		}
@@ -692,7 +676,16 @@
 		arryc.pkouqi=jidupkopuqi;
 		arryc.ak=avera;
 		arryc.pk=averp;
-		console.info("一个季度=  "+arryc);
 		return arryc;
     }
+    
+    //app测试
+    
+    $.ajax({
+		type: "GET",
+	    url: "/yashua/userdata/history/listforApp/"+2,
+	    success: function(r){console.info("一个季度");
+	    	console.info(r);
+	    }
+    });
     </script>

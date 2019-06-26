@@ -57,4 +57,16 @@ public class UserDataController {
             return userDataService.save(kouqi,ue.getUserId());
         }
     	
+    	/**
+    	 * 获取历史口气数据(App端使用)
+    	 */
+    	@RequestMapping("/yashua/userdata/history/listforApp/{id}")
+    	ResponseMessage hlistApp(@RequestParam Map<String, Object> params,@PathVariable("id") Integer id){
+    	UserEntity ue = userService.findByUserId(oauth2SecuritySubject.getCurrentUser());
+    	params.put("user_id", ue.getUserId());
+    	params.put("id", id);
+    	params.put("limit",300);
+        return userDataService.hlistApp(params);
+    	}	
+    	
 }

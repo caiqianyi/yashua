@@ -31,4 +31,9 @@ public interface IUserDataService {
     @RequestMapping("/yashua/userdata/save")
 	ResponseMessage save(@RequestParam("kouqi") Long kouqi,@RequestParam("user_id") Long user_id);
 
+    /**
+     * 获取历史口气数据App端使用
+     */
+    @RequestMapping("/yashua/userdata/history/listforApp")
+    ResponseMessage hlistApp(@RequestParam Map<String, Object> params);
 }

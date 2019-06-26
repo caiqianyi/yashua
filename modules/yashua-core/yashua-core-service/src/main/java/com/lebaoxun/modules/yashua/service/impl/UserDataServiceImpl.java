@@ -4,7 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,7 @@ import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.utils.PageUtils;
 import com.lebaoxun.commons.utils.Query;
 import com.lebaoxun.modules.yashua.dao.UserDataDao;
+import com.lebaoxun.modules.yashua.entity.AppData;
 import com.lebaoxun.modules.yashua.entity.UserDataEntity;
 import com.lebaoxun.modules.yashua.service.UserDataService;
 
@@ -130,6 +135,8 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 	       return new PageUtils(page);
 	}
 
+	
+	
    
 	/**
 	 * 保存口气数据
@@ -182,4 +189,207 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 		}
 		
 	}
+
+   /**
+    * 拼装App的口气显示数据
+    */
+	@Override
+	public AppData createAppData(List<UserDataEntity> list, int id) {
+		AppData appData=  new AppData();
+		if(list!=null){
+			if(id==0){
+				appData= weekData(list);
+			}
+			if(id==1){
+				appData= monthData(list);
+			}
+			if(id==2){
+				appData= jiduData(list);
+			}
+		}
+		return appData;
+		
+	}
+
+	 /**
+     *拼装一个季度内的数据
+     */
+    private AppData jiduData(List<UserDataEntity> list) {
+    	Map<Double,Long> amap = new LinkedHashMap<Double,Long>();
+		Map<Double,Long> pmap = new LinkedHashMap<Double,Long>();
+		int[] az=new int[13],bz=new int[13];
+		int acount=0,//早上的 口气和
+			bcount=0,//晚上的口气和
+			av1=0,//早上口气的检测数
+			bv1=0;//晚上口气的检测数
+		
+		for(int i=1;i<=12;i++){
+			amap.put((double)(i), 0l);
+			pmap.put((double)(i), 0l);
+		}
+		for(UserDataEntity userDataEntity:list){
+			Calendar calendar=Calendar.getInstance();
+    		calendar.setTime(userDataEntity.getAdddate());
+    		int month=(calendar.get(Calendar.MONTH)+1)%3;
+			if(month==0) month=3;//本季度的第几个月
+    	    int day=getDay(calendar);
+    	    int ind= (month-1)*4+day;
+    		double index=(double)(ind);//日期对应的下标值
+    		if(ind<13){
+	    		if(userDataEntity.getBiaoshi()==1){//早上的口气
+	    			amap.put(index, amap.get(index)+userDataEntity.getFenshu());
+	    			az[ind]=az[ind]+1;
+	    			acount+=userDataEntity.getFenshu();
+	    			av1++;
+	    		}
+	    		if(userDataEntity.getBiaoshi()==2){//晚上的口气
+	    			pmap.put(index, pmap.get(index)+userDataEntity.getFenshu());
+	    			bz[ind]=bz[ind]+1;
+	    			bcount+=userDataEntity.getFenshu();
+	    			bv1++;
+	    		}
+			}
+		}
+		for(int i=1;i<=12;i++){
+			double index=(double)i;
+			if(az[i]>0){
+				amap.put(index, (long)(Math.ceil((float)amap.get(index)/az[i])));
+			}
+			if(bz[i]>0){
+				pmap.put(index, (long)(Math.ceil((float)pmap.get(index)/bz[i])));
+			}
+		}
+		
+		AppData appData = new AppData();
+		appData.setAlist(new ArrayList<>(amap.values()));
+		appData.setPlist(new ArrayList<>(pmap.values()));
+		appData.setZp((int) (av1>0 ? Math.ceil((float)acount/av1) : 0));
+		appData.setWp((int) (bv1>0 ? Math.ceil((float)bcount/bv1) : 0));
+		return appData;
+		
+    }
+    /**
+     * 拼装一个月内的数据
+     */
+	private AppData monthData(List<UserDataEntity> list) {
+		Map<Double,Long> amap = new LinkedHashMap<Double,Long>();
+		Map<Double,Long> pmap = new LinkedHashMap<Double,Long>();
+		int[] az=new int[11],bz=new int[11];
+		int acount=0,//早上的 口气和
+			bcount=0,//晚上的口气和
+			av1=0,//早上口气的检测数
+			bv1=0;//晚上口气的检测数
+		
+		for(int i=1;i<=10;i++){
+			amap.put((double)(i), 0l);
+			pmap.put((double)(i), 0l);
+		}
+		for(UserDataEntity userDataEntity:list){
+			Calendar calendar=Calendar.getInstance();
+    		calendar.setTime(userDataEntity.getAdddate());
+    		int day=calendar.get(Calendar.DAY_OF_MONTH);
+    		double index= Math.ceil((float)day/3);
+    		int ind=(int)index;
+    		if(userDataEntity.getBiaoshi()==1){//早上的口气
+    			amap.put(index, amap.get(index)+userDataEntity.getFenshu());
+    			az[ind]=az[ind]+1;
+    			acount+=userDataEntity.getFenshu();
+    			av1++;
+    		}
+    		if(userDataEntity.getBiaoshi()==2){//晚上的口气
+    			pmap.put(index, pmap.get(index)+userDataEntity.getFenshu());
+    			bz[ind]=bz[ind]+1;
+    			bcount+=userDataEntity.getFenshu();
+    			bv1++;
+    		}
+		}
+		for(int i=1;i<11;i++){
+			double index=(double)i;
+			if(az[i]>0){
+				amap.put(index, (long)(Math.ceil((float)amap.get(index)/az[i])));
+			}
+			if(bz[i]>0){
+				pmap.put(index, (long)(Math.ceil((float)pmap.get(index)/bz[i])));
+			}
+		}
+		
+		AppData appData = new AppData();
+		appData.setAlist(new ArrayList<>(amap.values()));
+		appData.setPlist(new ArrayList<>(pmap.values()));
+		appData.setZp((int) (av1>0 ? Math.ceil((float)acount/av1) : 0));
+		appData.setWp((int) (bv1>0 ? Math.ceil((float)bcount/bv1) : 0));
+		return appData;
+	}
+	/**
+	 * 拼装一个星期内的数据
+	 */
+	private AppData weekData(List<UserDataEntity> list) {
+		long[] along=new long[7],blong=new long[7];
+    	int acount=0,bcount=0,az=0,bz=0;
+    	for(UserDataEntity userDataEntity:list){
+    		Calendar calendar=Calendar.getInstance();
+    		calendar.setTime(userDataEntity.getAdddate());
+    		int day=calendar.get(Calendar.DAY_OF_WEEK);
+    		if(day==1){//当期是星期天  记在一周的最后一天
+    			if(userDataEntity.getBiaoshi()==1){//早上的口气记录
+    				along[6]=userDataEntity.getFenshu();
+    				acount+=along[6];
+    				az++;
+    			}
+    			if(userDataEntity.getBiaoshi()==2){//晚上的口气记录
+    				blong[6]=userDataEntity.getFenshu();
+    				bcount+=blong[6];
+    				bz++;
+    			}
+    		}
+    		if(day>=2){//当期是星期天  记在一周的最后一天
+    			if(userDataEntity.getBiaoshi()==1){//早上的口气记录
+    				along[day-2]=userDataEntity.getFenshu();
+    				acount+=along[day-2];
+    				az++;
+    			}
+    			if(userDataEntity.getBiaoshi()==2){//晚上的口气记录
+    				blong[day-2]=userDataEntity.getFenshu();
+    				bcount+=blong[day-2];
+    				bz++;
+    			}
+    		}
+    	}
+    	
+    	az = (int) (az>0 ? Math.ceil((float)acount/az) : 0);
+    	bz = (int) (bz>0 ? Math.ceil((float)bcount/bz) : 0);
+    	AppData appData = new AppData();
+    	appData.setAlist(changeToList(along));
+    	appData.setPlist(changeToList(blong));
+    	appData.setZp(az);
+    	appData.setWp(bz);
+    	return appData;
+	}
+	
+	/**
+	 * 判断当前星期一个月内第几周
+	 */
+	 public static int getDay(Calendar calendar) {
+	        int day = calendar.get(Calendar.DAY_OF_MONTH);
+	        if (day < 7) {
+	            int ifsunday = calendar.get(Calendar.DAY_OF_WEEK);
+	            if (ifsunday == 1)
+	                ifsunday = 7;
+	            if (ifsunday > day)
+	                return 0;//当前月的前几天不是周一，返回0，不计入当前月的口气统计
+	        }
+	        System.out.println(day);
+	        int weekday = (int) Math.ceil((float) day / 7);
+	        return  weekday;
+	    }
+	
+	public List<Long> changeToList(long[] arry){
+		List<Long> list = new ArrayList<Long>();
+		if(arry!=null &&  arry.length>0){
+			for(int i=0;i<arry.length;i++)
+				list.add(arry[i]);
+		}
+		return list;
+	}
+	
 }
