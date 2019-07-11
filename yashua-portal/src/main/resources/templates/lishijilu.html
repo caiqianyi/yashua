@@ -566,13 +566,14 @@
     				var zcs=date.getDay();
     				if(zcs==0) zcs=7;//周日
     				if(zcs>date.getDate())
-    					return 0;//当前月的前几天不是周一，返回0，不计入当前月的口气统计
+    					return 0;
     			}
     			var weekday=Math.ceil(date.getDate()/7);
     			return weekday;
     			
     		}
     	}
+   
     
     //统计一个季度内的口气
     

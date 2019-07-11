@@ -376,7 +376,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataDao,UserDataEntity>
 	            if (ifsunday == 1)
 	                ifsunday = 7;
 	            if (ifsunday > day)
-	                return 0;//当前月的前几天不是周一，返回0，不计入当前月的口气统计
+	                return 1;
 	        }
 	        System.out.println(day);
 	        int weekday = (int) Math.ceil((float) day / 7);
