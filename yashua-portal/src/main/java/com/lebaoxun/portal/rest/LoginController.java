@@ -306,7 +306,7 @@ public class LoginController extends BaseController{
 			@RequestParam("password") String password,
 			@RequestParam("vfcode") String vfcode,
 			String platform){
-		String account = username,passwd = null;
+		String account = username,passwd = password;
 		if(StringUtils.isNotBlank(platform)) {
 			String secret = (String) request.getSession().getAttribute("app.secret");
 			if(StringUtils.isBlank(secret)){
