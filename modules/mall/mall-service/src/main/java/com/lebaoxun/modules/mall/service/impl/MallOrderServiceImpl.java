@@ -513,4 +513,7 @@ public class MallOrderServiceImpl extends
 			mallOrderProductDao.updateById(mope);
 		}
 	}
+	public static void main(String[] args) {
+		kuaid100QueryBase("");
+	}
 }
