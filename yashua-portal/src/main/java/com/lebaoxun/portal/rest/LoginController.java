@@ -187,7 +187,7 @@ public class LoginController extends BaseController{
 			if("wechatOA".equals(platform)){
 				a = userService.findByAccount(account);
 			}else if("app".equals(platform)){
-				a = userService.login(account, passwd);
+				a = userService.login(account, password);
 			}else{
 				String secret = (String) request.getSession().getAttribute("app.secret");
 				if(StringUtils.isBlank(secret)){
