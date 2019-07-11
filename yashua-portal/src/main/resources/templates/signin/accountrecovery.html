@@ -104,6 +104,7 @@ $(function() {
 					data.username = response.data[0];
 					data.password = response.data[1];
 					data.vfcode = vfcode;
+					data.platform = 'wechat';
 					$.ajax({
 						type : "POST",
 						url : "/oauth2/modifyPassword",

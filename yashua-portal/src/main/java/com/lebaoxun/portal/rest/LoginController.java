@@ -187,7 +187,7 @@ public class LoginController extends BaseController{
 			if("wechatOA".equals(platform)){
 				a = userService.findByAccount(account);
 			}else if("app".equals(platform)){
-				a = userService.login(account, passwd);
+				a = userService.login(account, password);
 			}else{
 				String secret = (String) request.getSession().getAttribute("app.secret");
 				if(StringUtils.isBlank(secret)){
@@ -304,20 +304,24 @@ public class LoginController extends BaseController{
     @RequestMapping("/oauth2/modifyPassword")
     ResponseMessage modifyPassword(@RequestParam("username") String username,
 			@RequestParam("password") String password,
-			@RequestParam("vfcode") String vfcode){
+			@RequestParam("vfcode") String vfcode,
+			String platform){
 		String account = username,passwd = null;
-		String secret = (String) request.getSession().getAttribute("app.secret");
-		if(StringUtils.isBlank(secret)){
-			throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");
+		if(StringUtils.isNotBlank(platform)) {
+			String secret = (String) request.getSession().getAttribute("app.secret");
+			if(StringUtils.isBlank(secret)){
+				throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");
+			}
+			try {
+				logger.debug("secret={}",secret);
+				DesUtils desUtils = new DesUtils(secret);
+				account = desUtils.decrypt(username);
+				passwd = desUtils.decrypt(password);
+			} catch (Exception e) {
+				throw new I18nMessageException("10015", "密钥不对");
+			}
 		}
-		try {
-			logger.debug("secret={}",secret);
-			DesUtils desUtils = new DesUtils(secret);
-			account = desUtils.decrypt(username);
-			passwd = desUtils.decrypt(password);
-		} catch (Exception e) {
-			throw new I18nMessageException("10015", "密钥不对");
-		}
+		
 		ResponseMessage sm = smsGatewayService.checkVfCode(smsCstid, account, vfcode);
 		if(!"0".equals(sm.getErrcode())){
 			return sm;
