@@ -64,7 +64,7 @@ public class NewsController extends BaseController{
 		return "/news/list";
 	}
 	
-	@RequestMapping("/news/info/{id}")
+	@RequestMapping("/news/i/{id}")
 	ResponseMessage info(@PathVariable("id") Long id){
 		return new ResponseMessage(newsService.releaseInfo(id));
 	}
