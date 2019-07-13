@@ -49,6 +49,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	        .excludePathPatterns("/mall/cart/product/list")//购物车列表
 	        .excludePathPatterns("/mall/comment/list")//评论列表
 	        .excludePathPatterns("/yashua/device/macupload")//上传mac
+	        .excludePathPatterns("/version/version/**")//版本更新
         	;
     }
     
