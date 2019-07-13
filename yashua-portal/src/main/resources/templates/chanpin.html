@@ -9,7 +9,9 @@
 </style>
 </head>
 <body>
-<div class="Top"><h3 onclick="javascript:history.go(-1);">产品介绍</h3></div>
+<#if showTop??>
+	<div class="Top"><h3 onclick="javascript:history.go(-1);">产品介绍</h3></div>
+</#if>
 <div >
 	<img src="/statics/new_images/SM1.jpg" alt=""/>
 	<img src="/statics/new_images/SM2.jpg" alt=""/>
