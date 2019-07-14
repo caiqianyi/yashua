@@ -23,9 +23,9 @@
 				     </#list>
 		    	</#if>
 				<#if news.content?length gt 60>
-					<p>${news.content?substring(0,60)}...<a href="/news/info/${news.id}.html">阅读全文>></a></p>
+					<p>${news.content?substring(0,60)}...<a href="/news/info/${news.id}.html?showTop=true">阅读全文>></a></p>
 				<#else>
-					<p>${news.content!}<a href="/news/info/${news.id}.html">阅读全文>></a></p>
+					<p>${news.content!}<a href="/news/info/${news.id}.html?showTop=true">阅读全文>></a></p>
 				</#if>				
 		    </div>	   
 		    <div class="all">
