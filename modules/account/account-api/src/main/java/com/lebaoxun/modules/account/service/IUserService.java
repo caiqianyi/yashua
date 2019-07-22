@@ -123,7 +123,8 @@ public interface IUserService {
      */
     @RequestMapping("/account/user/bindOpenid")
     ResponseMessage bindOpenid(@RequestParam(value="userId") Long userId,
-    		@RequestParam(value="openid") String openid);
+    		@RequestParam(value="openid",required=false) String openid,
+    		@RequestParam(value="unionid",required=false) String unionid);
     
     /**
      * 微信公众号注册

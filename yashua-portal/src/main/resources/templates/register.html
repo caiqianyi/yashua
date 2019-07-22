@@ -106,6 +106,9 @@ $(function() {
 					data.password = response.data[1];
 					data.vfcode = vfcode;
 					data.wxopenid = window.storage.get("login.wxopenid" , false, false);
+					data.unionid = window.storage.get("login.unionid" , false, false);
+					data.nickname = window.storage.get("login.nickname" , false, false);
+					data.headimgurl = window.storage.get("login.headimgurl" , false, false);
 					$.ajax({
 						type : "POST",
 						url : "/register/add",

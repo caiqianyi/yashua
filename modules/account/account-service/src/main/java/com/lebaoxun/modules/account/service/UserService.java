@@ -74,7 +74,7 @@ public interface UserService extends IService<UserEntity> {
      * @param userId 用户ID
      * @param openid 微信openid
      */
-    void bindOpenid(Long userId,String openid);
+    void bindOpenid(Long userId,String openid,String unionid);
     
     /**
      * 微信公众号注册

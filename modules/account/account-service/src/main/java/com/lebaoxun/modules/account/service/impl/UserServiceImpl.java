@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -269,7 +268,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void bindOpenid(Long userId, String openid) {
+	public void bindOpenid(Long userId, String openid, String unionid) {
 		// TODO Auto-generated method stub
 		UserEntity user = this.selectOne( new EntityWrapper<UserEntity>().eq("user_id", userId));
 		if(user == null){
@@ -281,7 +280,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		
 		UserEntity entity = new UserEntity();
 		entity.setId(user.getId());
-		entity.setOpenid(openid);
+		if(StringUtils.isNotBlank(openid)) {
+			entity.setOpenid(openid);
+		}
+		if(StringUtils.isNotBlank(unionid)) {
+			entity.setUnionid(unionid);
+		}
 		this.updateById(entity);
 	}
 	

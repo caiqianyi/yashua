@@ -1,8 +1,6 @@
 package com.lebaoxun.portal.rest;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -17,9 +15,6 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
-
-import com.lebaoxun.commons.utils.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,13 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.code.kaptcha.Constants;
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.exception.ResponseMessage;
-import com.lebaoxun.commons.utils.CommonUtil;
 import com.lebaoxun.commons.utils.DesUtils;
 import com.lebaoxun.commons.utils.GenerateCode;
 import com.lebaoxun.commons.utils.PwdUtil;
+import com.lebaoxun.commons.utils.StringUtils;
 import com.lebaoxun.modules.account.entity.UserEntity;
 import com.lebaoxun.modules.account.service.IUserService;
 import com.lebaoxun.modules.sms.service.ISMSGatewayService;
@@ -47,6 +41,7 @@ import com.lebaoxun.security.oauth2.entity.Oauth2;
 import com.lebaoxun.soa.core.redis.IRedisCache;
 import com.lebaoxun.wechat.service.IWechatService;
 import com.lebaoxun.wechat.vo.AccessToken;
+import com.lebaoxun.wechat.vo.WechatUserInfo;
 
 /**
  * 登录相关
@@ -155,7 +150,8 @@ public class LoginController extends BaseController{
 			String platform,
 			//String captcha,
 			String openid,
-			String wxopenid){
+			String wxopenid,
+			String unionid){
 		Boolean isCorrectPwd = null; 
 		UserEntity a = null;
 		System.out.println("==============password==================="+password);
@@ -214,8 +210,8 @@ public class LoginController extends BaseController{
 				throw new I18nMessageException("10014","账户已被禁用，请联系管理员");
 			}
 			
-			if(StringUtils.isNotBlank(wxopenid)){
-				ResponseMessage sm = userService.bindOpenid(a.getUserId(), wxopenid);
+			if(StringUtils.isNotBlank(wxopenid) || StringUtils.isNotBlank(unionid)){
+				ResponseMessage sm = userService.bindOpenid(a.getUserId(), wxopenid, unionid);
 				if(!"0".equals(sm.getErrcode())){
 					return sm;
 				}
@@ -254,19 +250,29 @@ public class LoginController extends BaseController{
 	ResponseMessage oauthTokenForWechatOA(String code,
 			String openid) throws Exception{
 		logger.info("wechatOA|code={}",code);
+		String access_token = null;
 		if(StringUtils.isNotBlank(code)){
 			AccessToken accessToken = wechatService.getAccessToken(code, "yashua");
 			if(accessToken == null || StringUtils.isBlank(accessToken.getOpenid())){
 				throw new I18nMessageException("40001","微信授权失败");
 			}
+			access_token = accessToken.getAccess_token();
 			openid = accessToken.getOpenid();
 		}
 		UserEntity user = userService.findByOpenid(openid,null);
 		if(user == null){
+			WechatUserInfo wxuser = null;
+			if(access_token != null) {
+				wxuser = wechatService.getUserInfo(access_token, openid);
+			}
+			if(wxuser == null) {
+				wxuser = new WechatUserInfo();
+				wxuser.setOpenid(openid);
+			}
 			ResponseMessage error = new ResponseMessage();
 			error.setErrcode("40004");
 			error.setErrmsg("当前微信号未绑定代理帐号，无法登录");
-			error.setData(openid);
+			error.setData(wxuser);
 			return error;
 		}
 		if("N".equals(user.getStatus())){
@@ -338,6 +344,9 @@ public class LoginController extends BaseController{
 			@RequestParam("password") String password,
 			@RequestParam("vfcode") String vfcode,
 			@RequestParam(name="wxopenid",required = false) String wxopenid,
+			@RequestParam(name="unionid",required = false) String unionid,
+			@RequestParam(name="nickname",required = false) String nickname,
+			@RequestParam(name="headimgurl",required = false) String headimgurl,
 			@RequestParam(name="verify",required = false) String verify){
 		String account = username,passwd = null;
 		String secret = (String) request.getSession().getAttribute("app.secret");
@@ -359,6 +368,7 @@ public class LoginController extends BaseController{
 		if(!"0".equals(sm.getErrcode())){
 			return sm;
 		}
+		
 		UserEntity user = new UserEntity();
 		Long userId = GenerateCode.gen16(9);
 		user.setBalance(0);
@@ -370,6 +380,9 @@ public class LoginController extends BaseController{
     	user.setPassword(passwd);
     	user.setAccount(account);
     	user.setOpenid(wxopenid);
+    	user.setUnionid(unionid);
+    	user.setNickname(nickname);
+    	user.setHeadimgurl(headimgurl);
     	ResponseMessage success = userService.save(userId, user);
     	if(!"0".equals(success.getErrcode())){
     		return success;

@@ -86,7 +86,7 @@
 	login.el = ".captchaImg";
 	$(function() {
 		
-		var openid = url("openid");
+		var openid = window.storage.get("login.wxopenid", false, false);
 		if(openid){
 			$("#ckBox").prop("checked","checked").parent().show();
 		}else{
@@ -107,6 +107,8 @@
 			}
 			var l1 = $.loading({content:"登录中..."}).show();
 			var wxopenid = $("#ckBox").is(":checked") && openid ? openid: '' ;
+			var wxunionid = window.storage.get("login.unionid", false, false);
+			var unionid = $("#ckBox").is(":checked") && wxunionid ? wxunionid: '' ;
 			//验证登录
 		    login.action(
 		    	{
@@ -114,6 +116,7 @@
 		    		password:password,
 		    		//captcha:captcha,
 		    		wxopenid:wxopenid
+		    		unionid:unionid
 		    	},function(){
 		    		l1.hide();
 		    	}

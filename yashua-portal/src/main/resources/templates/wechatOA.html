@@ -46,7 +46,11 @@
 					}
 					$(window).attr('location',returnuri);
                 }else if(data.errcode == 40004){
-                	window.storage.set("login.wxopenid", data.data, false);
+                	let wxuser = data.data;
+                	window.storage.set("login.wxopenid", wxuser.openid, false);
+                	window.storage.set("login.unionid", wxuser.unionid, false);
+                	window.storage.set("login.headimgurl", wxuser.headimgurl, false);
+                	window.storage.set("login.nickname", wxuser.nickname, false);
                     $('#box h4').text('当前微信号未绑定账号，无法登陆')
                     $('#box .bdTurn').css('display','block');
 
@@ -56,7 +60,7 @@
                         num--;
                         $('.timeOver').text(num);
                         if(num <= 0){
-                            $(window).attr('location','/login.html?openid='+data.data+'&state='+param.state);
+                            $(window).attr('location','/login.html?state='+param.state);
                             clearInterval(timer)
                         }
 

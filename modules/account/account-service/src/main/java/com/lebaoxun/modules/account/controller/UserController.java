@@ -182,8 +182,9 @@ public class UserController {
     @RequestMapping("/account/user/bindOpenid")
     @RedisLock(value="account:user:bindOpenid:lock:#arg0")
     ResponseMessage bindOpenid(@RequestParam(value="userId") Long userId,
-    		@RequestParam(value="openid") String openid){
-    	userService.bindOpenid(userId, openid);
+    		@RequestParam(value="openid",required=false) String openid,
+    		@RequestParam(value="unionid",required=false) String unionid){
+    	userService.bindOpenid(userId, openid, unionid);
     	return ResponseMessage.ok();
     }
     
