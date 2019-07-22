@@ -278,7 +278,7 @@ public class LoginController extends BaseController{
 		if("N".equals(user.getStatus())){
 			throw new I18nMessageException("10014","账户已被禁用，请联系管理员");
 		}
-		ResponseMessage success = oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null,null);
+		ResponseMessage success = oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null,null,null);
 		Map<String,Object> json = (Map<String, Object>) success.getData();
 		json.put("wxappid", openid);
 		return success;
@@ -387,7 +387,7 @@ public class LoginController extends BaseController{
     	if(!"0".equals(success.getErrcode())){
     		return success;
     	}
-		return oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null);
+		return oauthToken(user.getAccount(), user.getPassword(), "wechatOA", null, null ,null);
 	}
     
     @RequestMapping(method = RequestMethod.GET, value = "/oauth2/tokentick")
