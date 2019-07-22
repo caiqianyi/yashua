@@ -120,6 +120,12 @@ public class UserServiceHystrix implements IUserService {
 	public long loginCount(Long userId) {
 		throw new I18nMessageException("502","服务器异常，请稍后重试");
 	}
+	
+	@Override
+	public UserEntity findByUnionid(String unionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
 

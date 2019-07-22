@@ -166,6 +166,13 @@ public interface IUserService {
 	@RequestMapping("/account/user/findByOpenid")
 	UserEntity findByOpenid(@RequestParam("openid") String openid,
 			@RequestParam(value="groupid",required=false) String groupid);
+	/**
+	 * 根据unionid查询用户信息
+	 * @param username
+	 * @return
+	 */
+	@RequestMapping("/account/user/findByUnionid")
+	UserEntity findByUnionid(@RequestParam("unionid") String unionid);
 	
 	/**
      * 根据用户名，密码验证登录

@@ -242,6 +242,15 @@ public class UserController {
 			@RequestParam(value="groupid",required=false) String groupid){
 		return userService.selectOne( new EntityWrapper<UserEntity>().eq("openid", openid));
 	}
+	/**
+	 * 根据unionid查询用户信息
+	 * @param username
+	 * @return
+	 */
+	@RequestMapping("/account/user/findByUnionid")
+	UserEntity findByUnionid(@RequestParam("unionid") String unionid){
+		return userService.selectOne( new EntityWrapper<UserEntity>().eq("unionid", unionid));
+	}
 	
 	/**
      * 根据用户名，密码验证登录
