@@ -357,7 +357,7 @@ public class LoginController extends BaseController{
 			@RequestParam(name="nickname",required = false) String nickname,
 			@RequestParam(name="headimgurl",required = false) String headimgurl,
 			@RequestParam(name="verify",required = false) String verify){
-		String account = username,passwd = null;
+		String account = username,passwd = password;
 		String secret = (String) request.getSession().getAttribute("app.secret");
 		if(StringUtils.isBlank(verify) && StringUtils.isBlank(secret)){
 			throw new I18nMessageException("10015", "您在当前页面停留时间过长，密钥已过期。稍后将刷新页面获取新的密钥，请重新操作！");

@@ -316,7 +316,7 @@ public class MallOrderServiceImpl extends
 		order.setFuid(fuid);
 		this.baseMapper.updateById(order);
 		Integer totalFee = order.getPayAmount().setScale(2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal("100")).intValue();
-		return wxPayService.appPayment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua", userId, new BigDecimal("0"), "shopping");
+		return wxPayService.appPayment(spbill_create_ip, orderNo, "购买魔牙产品", totalFee, "", "yashua_app", userId, new BigDecimal("0"), "shopping");
 	}
 
 	@Override

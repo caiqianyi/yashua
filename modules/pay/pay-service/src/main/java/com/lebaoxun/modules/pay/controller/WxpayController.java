@@ -154,9 +154,10 @@ public class WxpayController {
 		String return_code=retMap.get("return_code").toString();
 		
 		logger.debug("retMap={}",retMap);
-		logger.debug("请求统一下单接口返回结果 ==return_code={}",return_code);
+		logger.info("请求统一下单接口返回结果 ==return_code={}",return_code);
 		if("FAIL".equals(return_code)){
-			throw new I18nMessageException("-1","支付失败");
+			logger.error("retMap={}",retMap);
+			throw new I18nMessageException("-1","支付失败,"+retMap.get("return_msg"));
 		}
 		//支付结果
 		String result_code=retMap.get("result_code").toString();
