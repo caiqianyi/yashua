@@ -183,13 +183,15 @@ public class LoginController extends BaseController{
 			if("wechatOA".equals(platform)){
 				a = userService.findByAccount(account);
 			}else if("app".equals(platform)){
-				if(StringUtils.isNotBlank(unionid)) {
+				if(StringUtils.isNotBlank(account)
+						&& StringUtils.isNotBlank(password)) {
+					a = userService.login(account, password);
+				}else if(StringUtils.isNotBlank(unionid)){
 					a = userService.findByUnionid(unionid);
 					if(a == null){
-						throw new I18nMessageException("10003", "微信登录失败，未进行账号绑定！");
+						throw new I18nMessageException("12003", "微信登录失败，未进行账号绑定！");
 					}
-				}else {
-					a = userService.login(account, password);
+					account = a.getAccount();
 				}
 			}else{
 				String secret = (String) request.getSession().getAttribute("app.secret");
