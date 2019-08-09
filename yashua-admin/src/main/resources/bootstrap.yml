@@ -7,10 +7,10 @@ spring:
     store-type: none
   http:
     multipart:
-    location: /www/cache
-    max-file-size: 10MB
-    max-request-size: 10MB
-    enabled: true
+      location: /www/cache
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
   freemarker:
     request-context-attribute: req  #req访问request
     suffix: .html  #后缀名

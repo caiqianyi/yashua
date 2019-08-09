@@ -365,9 +365,9 @@ public class MallOrderServiceImpl extends
 			throw new I18nMessageException("-1", "此订单不存在或已支付");
 		}
 
-		if (order.getOrderScore() <= 0) {
-			throw new I18nMessageException("-1", "此商品无法进行兑换");
-		}
+//		if (order.getOrderScore() <= 0) {
+//			throw new I18nMessageException("-1", "此商品无法进行兑换");
+//		}
 		order.setUpdateTime(new Date(Long.parseLong(buyTime)));
 		order.setPayType(1);//
 		order.setOrderStatus(1);// 支付成功

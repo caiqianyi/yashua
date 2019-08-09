@@ -639,6 +639,16 @@ public class WxpayController {
 		String ios_resign = WXSignUtils.createSign("UTF-8", parameters1,secret);
 		parameters1.put("appid", appid);
 		String and_resign = WXSignUtils.createSign("UTF-8", parameters1,secret);
+		
+		SortedMap<Object, Object> parameters2 = new TreeMap<>();
+		parameters2.put("appid", appid);
+		parameters2.put("noncestr", nonce_str);
+		parameters2.put("package", "Sign=WXPay");
+		parameters2.put("partnerid", mch_id);
+		parameters2.put("prepayid", prepay_id);
+		parameters2.put("timestamp", timetoken +"");
+		String signStr = WXSignUtils.createSign2("UTF-8", parameters2, secret);
+		
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.put("appid", appid);
 		ret.put("partnerid", mch_id);
@@ -647,6 +657,8 @@ public class WxpayController {
 		ret.put("timestamp", timetoken + "");
 		ret.put("iossign", ios_resign);
 		ret.put("andsign", and_resign);
+		ret.put("sign", signStr);
+		
 		return new ResponseMessage(ret);
 	}
 	
@@ -846,6 +858,18 @@ public class WxpayController {
 			}
 		}
 		return new ResponseMessage(retMap);
+	}
+	
+	public static void main(String[] args) {
+		SortedMap<Object, Object> parameters2 = new TreeMap<>();
+		parameters2.put("appid", "wx44b65b4afbdbdb25");
+		parameters2.put("noncestr", "SFju3Gh2jM1f9XqL");
+		parameters2.put("package", "Sign=WXPay");
+		parameters2.put("partnerid", "1517531571");
+		parameters2.put("prepayid", "wx27165028819618057c36f90c1237028300");
+		parameters2.put("timestamp", "1564217428");
+		String signStr = WXSignUtils.createSign2("UTF-8", parameters2, "Nwx0t0vekoJvQ2q8CG07RoTnFJIKCI92");
+		System.out.println(signStr);
 	}
 	
 }
